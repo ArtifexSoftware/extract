@@ -12,28 +12,16 @@ Unless otherwise stated, all functions return 0 on success or -1 with errno
 set.
 */
 
-#include "../../include/mupdf/memento.h"
-
-#include "mupdf/fitz.h"
-#include "mupdf/ucdn.h"
-
-#include <pthread.h>
+#include "extract.h"
 
 #include <assert.h>
 #include <errno.h>
 #include <math.h>
-#include <float.h>
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include <sys/stat.h>
-#include <sys/types.h>
-
-
-/* Crudely #include the stext-device.c code. */
-#include "../fitz/stext-device.c"
 
 
 /* Use this in preference to strdup() so that Memento works. */
@@ -47,31 +35,33 @@ static char* local_strdup(const char* text)
 }
 
 
+/* Appends first <s_len> chars of string <s> to *p, which is assumed to have
+been allocated with malloc/realloc. Returns 0, or +1 if realloc() failed. */
+static int str_catl(char** p, const char* s, int s_len)
+{
+    int p_len = (*p) ? strlen(*p) : 0;
+    char* pp = realloc(*p, p_len + s_len + 1);
+    if (!pp)    return -1;
+    memcpy(pp + p_len, s, s_len);
+    pp[p_len + s_len] = 0;
+    *p = pp;
+    return 0;
+}
+
 /* Appends a char to a zero-terminated string which is assumed to have been
 allocated with malloc/realloc. Returns 0, or -1 with errno set if realloc()
 failed. */
 static int str_catc(char** p, char c)
 {
-    int l = (*p) ? strlen(*p) : 0;
-    l += 1;
-    char* pp = realloc(*p, l+1);
-    if (!pp)    return -1;
-    *p = pp;
-    (*p)[l-1] = c;
-    (*p)[l] = 0;
-    return 0;
+    return str_catl(p, &c, 1);
 }
 
-/* Appends a string to a string. Returns 0, or +1 if realloc() failed. */
+/* Appends a char to a zero-terminated string which is assumed to have been
+allocated with malloc/realloc. Returns 0, or -1 with errno set if realloc()
+failed. */
 static int str_cat(char** p, const char* s)
 {
-    int l_old = (*p) ? strlen(*p) : 0;
-    int l_new = strlen(s);
-    char* pp = realloc(*p, l_old + l_new + 1);
-    if (!pp)    return -1;
-    memcpy(pp + l_old, s, l_new + 1);
-    *p = pp;
-    return 0;
+    return str_catl(p, s, strlen(s));
 }
 
 /* std::string in C. */
@@ -97,7 +87,8 @@ static int string_catl(string_t* string, const char* s, int s_len)
 {
     char* chars = realloc(string->chars, string->chars_num + s_len + 1);
     if (!chars)    return -1;
-    memcpy(chars + string->chars_num, s, s_len+1);
+    memcpy(chars + string->chars_num, s, s_len);
+    chars[string->chars_num + s_len] = 0;
     string->chars = chars;
     string->chars_num += s_len;
     return 0;
@@ -333,8 +324,8 @@ static FILE* pparse_init(const char* path)
 }
 
 /* Returns 0 with *out containing next tag; or -1 with errno set if error; or
-+1 if EOF. *out is initially passed to xml_tag_free(), so *out must have been
-initialised, e.g. by by xml_tag_init(). */
++1 with errno=ESRCH if EOF. *out is initially passed to xml_tag_free(), so *out
+must have been initialised, e.g. by by xml_tag_init(). */
 static int pparse_next(FILE* in, xml_tag_t* out)
 {
     int ret = -1;
@@ -373,7 +364,10 @@ static int pparse_next(FILE* in, xml_tag_t* out)
             /* Read attribute name. */
             for(;;) {
                 c = getc(in);
-                if (c == EOF) goto end;
+                if (c == EOF) {
+                    errno = -ESRCH;
+                    goto end;
+                }
                 if (c == '=' || c == '>' || c == ' ') break;
                 if (str_catc(&attribute_name, c)) goto end;
             }
@@ -396,7 +390,10 @@ static int pparse_next(FILE* in, xml_tag_t* out)
                     else if (c == '\\') {
                         // Escape next character.
                         c = getc(in);
-                        if (c == EOF) goto end;
+                        if (c == EOF) {
+                            errno = ESRCH;
+                            goto end;
+                        }
                     }
                     if (str_catc(&attribute_value, c)) goto end;
                 }
@@ -456,7 +453,36 @@ static int pparse_next(FILE* in, xml_tag_t* out)
     return ret;
 }
 
-static int s_read_matrix(const char* text, fz_matrix* matrix)
+typedef struct
+{
+    float a;
+    float b;
+    float c;
+    float d;
+    float e;
+    float f;
+} matrix_t;
+
+float fz_matrix_expansion(matrix_t m)
+{
+    return sqrtf(fabsf(m.a * m.d - m.b * m.c));
+}
+
+typedef struct
+{
+    float x;
+    float y;
+} point_t;
+
+point_t transform_vector(point_t p, matrix_t m)
+{
+    float x = p.x;
+    p.x = x * m.a + p.y * m.c;
+    p.y = x * m.b + p.y * m.d;
+    return p;
+}
+
+static int s_read_matrix(const char* text, matrix_t* matrix)
 {
     int n = sscanf(text,
             "%f %f %f %f %f %f",
@@ -473,7 +499,7 @@ static int s_read_matrix(const char* text, fz_matrix* matrix)
 
 /* Like s_read_matrix() but only expects four values, and sets .e and .g to
 zero. */
-static int s_read_matrix4(const char* text, fz_matrix* matrix)
+static int s_read_matrix4(const char* text, matrix_t* matrix)
 {
     int n = sscanf(text,
             "%f %f %f %f",
@@ -487,250 +513,6 @@ static int s_read_matrix4(const char* text, fz_matrix* matrix)
     matrix->f = 0;
     return 0;
 }
-
-
-
-/* Reads from intermediate .xml file containing spans, into a new
-fz_stext_device, which is returned.
-
-(Wec use code directly #included from ../fitz/stext-device.c above). */
-
-typedef struct
-{
-    fz_stext_page* page;
-    fz_stext_device* dev;
-} stext_dev_and_page;
-
-/* Caller should clean up with:
-    stext_dev_and_page dev_page = spans_to_stext_device(ctx, ...);
-    ...
-    fz_close_device(ctx, &dev_page.dev->super);
-    fz_drop_device(ctx, &dev_page.dev->super);
-    fz_drop_stext_page(ctx, dev_page.page);
-*/
-static stext_dev_and_page spans_to_stext_device(fz_context* ctx, const char* path)
-{
-    stext_dev_and_page  dev_page;
-    dev_page.page = fz_new_stext_page(ctx, fz_infinite_rect);
-    dev_page.dev = (void*) fz_new_stext_device(ctx, dev_page.page, NULL /*options*/);
-
-    FILE* in = pparse_init(path);
-    if (!in) {
-        fprintf(stderr, "Failed to open path='%s', errno=%i\n", path, errno);
-    }
-    assert(in);
-    int         e;
-    xml_tag_t   tag;
-    xml_tag_init(&tag);
-
-    for(;;) {
-        e = pparse_next(in, &tag);
-        if (e) break;
-
-        /* We essentially ignore <page> tags - not really relevant for creating
-        logical runs of text etc. */
-        assert(!strcmp(tag.name, "page"));
-
-        for(;;) {
-            e = pparse_next(in, &tag);
-            assert(!e);
-            if (!strcmp(tag.name, "/page")) {
-                break;
-            }
-            //printf("tag.name=%s\n", tag.name);
-            assert(!strcmp(tag.name, "span"));
-            fz_matrix   ctm;
-            fz_matrix   trm;
-            s_read_matrix(xml_tag_attributes_find(&tag, "ctm"), &ctm);
-            s_read_matrix(xml_tag_attributes_find(&tag, "trm"), &trm);
-            const char* font_name = xml_tag_attributes_find(&tag, "font_name");
-            const char* f = strchr(font_name, '+');
-            if (f)  font_name = f + 1;
-            int is_bold;
-            int is_italic;
-            xml_tag_attributes_find_int(&tag, "is_bold", &is_bold);
-            xml_tag_attributes_find_int(&tag, "is_italic", &is_italic);
-            char* font_name2 = local_strdup(font_name);
-            //if (is_bold) str_cat(&font_name2, "-Bold");
-            //if (is_italic) str_cat(&font_name2, "-Oblique");
-
-            //fz_font* font = fz_new_builtin_font(ctx, font_name, is_bold, is_italic);
-            fz_font* font = malloc(sizeof(*font));
-            bzero(font, sizeof(*font));
-            snprintf(font->name, sizeof(font->name), "%s", font_name2);
-            free(font_name2);
-
-            int wmode;
-            xml_tag_attributes_find_int(&tag, "wmode", &wmode);
-
-            #if 0
-            if (0) fprintf(stderr, "%s:%i: trm={%f %f %f %f %f %f} ctm={%f %f %f %f %f %f} trm2={%f %f %f %f %f %f}\n",
-                    __FILE__, __LINE__,
-                    trm.a,
-                    trm.b,
-                    trm.c,
-                    trm.d,
-                    trm.e,
-                    trm.f,
-                    ctm.a,
-                    ctm.b,
-                    ctm.c,
-                    ctm.d,
-                    ctm.e,
-                    ctm.f,
-                    trm2.a,
-                    trm2.b,
-                    trm2.c,
-                    trm2.d,
-                    trm2.e,
-                    trm2.f
-                    );
-            #endif
-
-            for(;;) {
-                e = pparse_next(in, &tag);
-                assert(!e);
-                //printf("tag.name=%s\n", tag.name);
-                if (!strcmp(tag.name, "/span")) {
-                    break;
-                }
-                assert(!strcmp(tag.name, "span_item"));
-
-                float x;
-                float y;
-                int gid;
-                int ucs;
-                float adv;
-                xml_tag_attributes_find_float(&tag, "x", &x);
-                xml_tag_attributes_find_float(&tag, "y", &y);
-                xml_tag_attributes_find_float(&tag, "adv", &adv);
-                xml_tag_attributes_find_int(&tag, "gid", &gid);
-                xml_tag_attributes_find_int(&tag, "ucs", &ucs);
-
-                fz_matrix trm2 = trm;
-                trm2.e = x;
-                trm2.f = y;
-                trm2 = fz_concat(trm2, ctm);
-
-                /* This is a hack to prevent fz_add_stext_char() eventually
-                getting SEGV in fz_font_ascender(). */
-                static fz_buffer*   t3procs[256];
-                font->t3procs = t3procs;
-
-                fz_add_stext_char(ctx, dev_page.dev, font, ucs, gid, trm2, adv, wmode);
-
-                /* As of 2020-07-17, fz_add_stext_char() doesn't keep <font>
-                so we leak font here. We could keep track of fonts, but prob
-                better to fix stext to keep/drop and simply drop <font> here.
-                */
-            }
-        }
-    }
-    fclose(in);
-
-    return dev_page;
-}
-
-/* Like fprintf() but returns quietly if <out> is NULL. */
-static int safe_fprintf(FILE* out, const char* format, ...)
-{
-    if ( !out)  return 0;
-    va_list va;
-    va_start(va, format);
-    int ret = vfprintf(out, format, va);
-    va_end(va);
-    return ret;
-}
-
-/* Detailed XML dump of the entire structured text data */
-
-static void page_to_xml(fz_context* ctx, fz_stext_page *page, int id, FILE* out_xml)
-{
-    fz_stext_block *block;
-    fz_stext_line *line;
-    fz_stext_char *ch;
-
-    safe_fprintf(out_xml, "<page id=\"page%d\" width=\"%g\" height=\"%g\">\n", id,
-        page->mediabox.x1 - page->mediabox.x0,
-        page->mediabox.y1 - page->mediabox.y0);
-
-    for (block = page->first_block; block; block = block->next)
-    {
-        switch (block->type)
-        {
-        case FZ_STEXT_BLOCK_TEXT:
-            safe_fprintf(out_xml, "<block bbox=\"%g %g %g %g\">\n",
-                    block->bbox.x0, block->bbox.y0, block->bbox.x1, block->bbox.y1);
-            for (line = block->u.t.first_line; line; line = line->next)
-            {
-                fz_font *font = NULL;
-                float size = 0;
-                const char *name = NULL;
-
-                safe_fprintf(out_xml, "<line bbox=\"%g %g %g %g\" wmode=\"%d\" dir=\"%g %g\">\n",
-                        line->bbox.x0, line->bbox.y0, line->bbox.x1, line->bbox.y1,
-                        line->wmode,
-                        line->dir.x, line->dir.y);
-
-                for (ch = line->first_char; ch; ch = ch->next)
-                {
-                    if (ch->font != font || ch->size != size)
-                    {
-                        if (font)
-                            safe_fprintf(out_xml, "</font>\n");
-                        font = ch->font;
-                        size = ch->size;
-                        safe_fprintf(out_xml, "<font name=\"%s\" size=\"%g\">\n", font->name, size);
-                    }
-                    safe_fprintf(out_xml, "<char quad=\"%g %g %g %g %g %g %g %g\" x=\"%f\" y=\"%g\" color=\"#%06x\" c=\"",
-                            ch->quad.ul.x, ch->quad.ul.y,
-                            ch->quad.ur.x, ch->quad.ur.y,
-                            ch->quad.ll.x, ch->quad.ll.y,
-                            ch->quad.lr.x, ch->quad.lr.y,
-                            ch->origin.x, ch->origin.y,
-                            ch->color);
-                    switch (ch->c)
-                    {
-                    case '<': safe_fprintf(out_xml, "&lt;"); break;
-                    case '>': safe_fprintf(out_xml, "&gt;"); break;
-                    case '&': safe_fprintf(out_xml, "&amp;"); break;
-                    case '"': safe_fprintf(out_xml, "&quot;"); break;
-                    case '\'': safe_fprintf(out_xml, "&apos;"); break;
-                    default:
-                           if (ch->c >= 32 && ch->c <= 127)
-                               safe_fprintf(out_xml, "%c", ch->c);
-                           else
-                               safe_fprintf(out_xml, "&#x%x;", ch->c);
-                           break;
-                    }
-                    safe_fprintf(out_xml, "\"/>\n");
-                }
-
-                if (font)
-                    safe_fprintf(out_xml, "</font>\n");
-
-                safe_fprintf(out_xml, "</line>\n");
-            }
-            safe_fprintf(out_xml, "</block>\n");
-            break;
-
-        case FZ_STEXT_BLOCK_IMAGE:
-            safe_fprintf(out_xml, "<image bbox=\"%g %g %g %g\" />\n",
-                    block->bbox.x0, block->bbox.y0, block->bbox.x1, block->bbox.y1);
-            break;
-        }
-    }
-    safe_fprintf(out_xml, "</page>\n");
-}
-
-
-
-
-
-
-
-
-
 
 
 
@@ -805,121 +587,6 @@ static int docx_char_truncate_if(string_t* content, char c)
 }
 
 
-/* Creates docx content from fz_stext_page, applying some heuristics to clean
-up the output, and makes *content point to zero-terminated text allocated by
-realloc(). */
-static int page_to_docx_content(fz_context* ctx, fz_stext_page *page, string_t* content)
-{
-    fz_stext_block* block;
-    for (block = page->first_block; block; block = block->next)
-    {
-        if (block->type == FZ_STEXT_BLOCK_TEXT) {
-
-            docx_paragraph_start(content);
-
-            fz_stext_char *ch_prev = NULL;
-            fz_font *font = NULL;
-            float font_size = 0;
-
-            fz_stext_line* line;
-            for (line = block->u.t.first_line; line; line = line->next)
-            {
-                /* If previous line did not end with hyphen, append a space. */
-                if (ch_prev && ch_prev->c != '-') {
-                    docx_char_append_char(content, ' ');
-                }
-
-                fz_stext_char *ch;
-                for (ch = line->first_char; ch; ch = ch->next)
-                {
-                    if (ch->font != font || ch->size != font_size)
-                    {
-                        if (font) {
-                            docx_run_finish(content);
-                            font = NULL;
-                            font_size = 0;
-                        }
-
-                        font = ch->font;
-                        font_size = ch->size;
-                        int bold = strstr(font->name, "-Bold") ? 1 : 0;
-                        int italic = strstr(font->name, "-Oblique") ? 1 : 0;
-
-                        docx_run_start(content, font->name, font_size, bold, italic);
-                        ch_prev = NULL; /* Need to avoid removing prev space. */
-                    }
-
-                    /* Discard spaces which overlap with the following
-                    character - these sometimes seem to appear in the
-                    middle of words. */
-                    if (ch_prev && ch_prev->c == ' ') {
-                        /* We get slight rounding errors, so sometimes the
-                        normal behaviour where quads are adjacent ends up with
-                        them slightly overlapping, so we use a small correction
-                        to avoid spurious removal of legitimate spaces. */
-                        if (ch_prev->quad.ur.x - 0.001 > ch->quad.ul.x) {
-                            const char* tail = content->chars;
-                            if (content->chars_num > 20) {
-                                tail = content->chars + content->chars_num - 20;
-                            }
-                            if (0) fprintf(stderr, "removing space:\n"
-                                    "    ch_prev->quad=(ul=(%f, %f) ur=(%f, %f) ll==(%f, %f) lr==(%f, %f)\n"
-                                    "         ch->quad=(ul=(%f, %f) ur=(%f, %f) ll==(%f, %f) lr==(%f, %f)\n"
-                                    "    ch->c=%c\n"
-                                    "    tail='%s'\n"
-                                    ,
-                                    ch_prev->quad.ul.x,
-                                    ch_prev->quad.ul.y,
-                                    ch_prev->quad.ur.x,
-                                    ch_prev->quad.ur.y,
-                                    ch_prev->quad.ll.x,
-                                    ch_prev->quad.ll.y,
-                                    ch_prev->quad.lr.x,
-                                    ch_prev->quad.lr.y,
-                                    ch->quad.ul.x,
-                                    ch->quad.ul.y,
-                                    ch->quad.ur.x,
-                                    ch->quad.ur.y,
-                                    ch->quad.ll.x,
-                                    ch->quad.ll.y,
-                                    ch->quad.lr.x,
-                                    ch->quad.lr.y,
-                                    ch->c,
-                                    tail
-                                    );
-
-                            docx_char_truncate(content, 1);
-                        }
-                    }
-
-                    if (0) {}
-                    else if (ch->c == '<')  docx_char_append_string(content, "&lt;");
-                    else if (ch->c == '>')  docx_char_append_string(content, "&gt;");
-                    else if (ch->c == '&')  docx_char_append_string(content, "&amp;");
-                    else if (ch->c == '"')  docx_char_append_string(content, "&quot;");
-                    else if (ch->c == '\'') docx_char_append_string(content, "&apos;");
-                    else if (ch->c >= 32 && ch->c <= 127) docx_char_append_char(content, ch->c);
-                    else {
-                        char    buffer[32];
-                        snprintf(buffer, sizeof(buffer), "&#x%x;", ch->c);
-                        docx_char_append_string(content, buffer);
-                    }
-
-                    ch_prev = ch;
-                }
-                /* Remove any trailing '-' at end of line. */
-                docx_char_truncate_if(content, '-');
-            }
-
-            if (font) {
-                docx_run_finish(content);
-                font = NULL;
-            }
-            docx_paragraph_finish(content);
-        }
-    }
-    return 0;
-}
 
 static int local_vasprintf(char** out, const char* format, va_list va0)
 {
@@ -1125,8 +792,8 @@ static void char_init(char_t* item)
 
 typedef struct span_t
 {
-    fz_matrix   ctm;
-    fz_matrix   trm;
+    matrix_t   ctm;
+    matrix_t   trm;
     char*       font_name;
     // font size is fz_matrix_expansion(trm).
     int         font_bold;
@@ -1287,7 +954,7 @@ static int lines_are_compatible(line_t* a, line_t* b, double angle_a)
     if (memcmp(
             &line_span_first(a)->ctm,
             &line_span_first(b)->ctm,
-            sizeof(fz_matrix)
+            sizeof(matrix_t)
             )) {
         return 0;
     }
@@ -1916,7 +1583,7 @@ static int page_span_end_clean( page_t* page)
 
     float font_size = fz_matrix_expansion(span->trm);
 
-    fz_point dir;
+    point_t dir;
     if (span->wmode) {
         dir.x = 0;
         dir.y = 1;
@@ -1925,7 +1592,7 @@ static int page_span_end_clean( page_t* page)
         dir.x = 1;
         dir.y = 0;
     }
-    dir = fz_transform_vector(dir, span->trm);
+    dir = transform_vector(dir, span->trm);
 
     float x = char_[-1].x + char_[-1].adv * dir.x;
     float y = char_[-1].y + char_[-1].adv * dir.y;
@@ -2140,6 +1807,11 @@ static int read_spans_trace(const char* path, document_t* document)
     xml_tag_init(&tag);
 
     int e = pparse_next(in, &tag);
+    if (e) {
+        fprintf(stderr, "Failed to read <document...> at start\n");
+        goto end;
+    }
+        
     if (strcmp(tag.name, "document")) {
         fprintf(stderr, "expected '<document...>' but tag.name='%s'\n", tag.name);
         errno = ESRCH;
@@ -2167,7 +1839,7 @@ static int read_spans_trace(const char* path, document_t* document)
                 break;
             }
             if (strcmp(tag.name, "fill_text")) continue;
-            fz_matrix   ctm;
+            matrix_t   ctm;
             s_read_matrix(xml_tag_attributes_find(&tag, "transform"), &ctm);
 
             for(;;) {
@@ -2414,19 +2086,6 @@ static int document_to_docx_content(document_t* document, string_t* content)
 
 /* Things to allow creation of a fz_context*. */
 
-static pthread_mutex_t     m_mutexes[FZ_LOCK_MAX];
-static fz_locks_context    m_locks;
-
-static void lock(void *user, int lock)
-{
-    pthread_mutex_lock(&m_mutexes[lock]);
-}
-
-static void unlock(void *user, int lock)
-{
-    pthread_mutex_unlock(&m_mutexes[lock]);
-}
-
 
 int main(int argc, char** argv)
 {
@@ -2461,9 +2120,6 @@ int main(int argc, char** argv)
                     "                <input-path> is from 'raw' device; use native conversion.\n"
                     "            trace\n"
                     "                <input-path> is from 'trace' device; use native conversion.\n"
-                    "            stext\n"
-                    "                <input-path> is from 'raw' device; use in-built stext\n"
-                    "                conversion.\n"
                     "    -i <input-path>\n"
                     "        Name of XML file containing low-level text spans.\n"
                     "    -o <docx-path>\n"
@@ -2514,27 +2170,6 @@ int main(int argc, char** argv)
         fprintf(stderr, "Must specify -m <method>\n");
         errno = ESRCH;
         goto end;
-    }
-    else if (!strcmp(method, "stext")) {
-        fprintf(stderr, "Using stext to do main extraction\n");
-        m_locks.user = NULL;
-        m_locks.lock = lock;
-        m_locks.unlock = unlock;
-        int i;
-        for (i=0; i<FZ_LOCK_MAX; ++i) {
-            pthread_mutex_init(&m_mutexes[i], NULL /*attr*/);
-        }
-        fz_context* ctx = fz_new_context(NULL /*alloc*/, &m_locks, FZ_STORE_DEFAULT);
-
-        stext_dev_and_page dev_page = spans_to_stext_device(ctx, input_path);
-
-        page_to_docx_content(ctx, dev_page.page, &content);
-
-        fz_close_device(ctx, &dev_page.dev->super);
-        fz_drop_device(ctx, &dev_page.dev->super);
-        fz_drop_stext_page(ctx, dev_page.page);
-
-        fz_drop_context(ctx);
     }
     else if (!strcmp(method, "trace")) {
         if (read_spans_trace(input_path, &document)) {
