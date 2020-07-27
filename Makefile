@@ -54,10 +54,16 @@ clean:
 	rm $(obj) $(dep) $(exe)
 
 %.pdf-test: %.pdf $(exe)
+	@echo
+	@echo == Testing $<
 	mkdir -p test
+	@echo == Generating intermediate with mutool.s
 	../mupdf/build/debug/mutool draw -F raw -o test/$<.mu-raw-intermediate.xml $<
+	@echo == Generating output.
 	./$(exe) -c test/$<.content.xml -m raw -i test/$<.mu-raw-intermediate.xml -o test/$<.raw.docx -p 1 -t template.docx
+	@echo == Comparing output with reference output.
 	diff -u $<.content.ref.xml test/$<.content.xml
+	@echo == Test succeeded.
 
 test: Python2.pdf-test zlib.3.pdf-test
 
