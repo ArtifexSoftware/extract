@@ -1,12 +1,12 @@
 # Example commands:
-#   make build=debug
+#   make build=debug test
 #   make build=debug-opt
 #   make build=opt
 #
 
-#build = debug
-#build = debug-opt
 
+# Build flags.
+#
 flags_link      = -W -Wall -lm
 flags_compile   = -W -Wall -MMD -MP
 
@@ -26,32 +26,27 @@ else
   $(error unrecognised $$(build) = $(build))
 endif
 
+
+# Source code.
+#
 src = extract.c
 
 ifeq ($(build),memento)
     src += memento.c
 endif
 
+
+# Build files.
+#
 exe = build/extract-$(build).exe
 obj = $(src:.c=.c-$(build).o)
 obj := $(addprefix build/, $(obj))
 dep = $(obj:.o=.d)
 
 
-$(exe): $(obj)
-	mkdir -p build
-	cc $(flags_link) -o $@ $^
-
-build/%.c-$(build).o: %.c
-	mkdir -p build
-	cc -c $(flags_compile) -o $@ $<
-
-clean-test:
-	rm -r {zlib.3,Python2}.pdf-*
-
-.PHONY: clean
-clean:
-	rm $(obj) $(dep) $(exe)
+# Test rules.
+#
+test: Python2.pdf-test zlib.3.pdf-test
 
 %.pdf-test: %.pdf $(exe)
 	@echo
@@ -65,6 +60,28 @@ clean:
 	diff -u $<.content.ref.xml test/$<.content.xml
 	@echo == Test succeeded.
 
-test: Python2.pdf-test zlib.3.pdf-test
 
+# Build rules.
+#
+$(exe): $(obj)
+	mkdir -p build
+	cc $(flags_link) -o $@ $^
+
+build/%.c-$(build).o: %.c
+	mkdir -p build
+	cc -c $(flags_compile) -o $@ $<
+
+clean-test:
+	rm -r {zlib.3,Python2}.pdf-*
+
+
+# Clean rule.
+#
+.PHONY: clean
+clean:
+	rm $(obj) $(dep) $(exe)
+
+
+# Dynamic dependencies.
+#
 -include $(dep)
