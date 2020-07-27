@@ -32,19 +32,33 @@ ifeq ($(build),memento)
     src += memento.c
 endif
 
-exe = extract-$(build).exe
+exe = build/extract-$(build).exe
 obj = $(src:.c=.c-$(build).o)
-dep = $(src:.c=.c-$(build).d)
+obj := $(addprefix build/, $(obj))
+dep = $(obj:.o=.d)
 
 
 $(exe): $(obj)
+	mkdir -p build
 	cc $(flags_link) -o $@ $^
 
-%.c-$(build).o: %.c
+build/%.c-$(build).o: %.c
+	mkdir -p build
 	cc -c $(flags_compile) -o $@ $<
+
+clean-test:
+	rm -r {zlib.3,Python2}.pdf-*
 
 .PHONY: clean
 clean:
 	rm $(obj) $(dep) $(exe)
+
+%.pdf-test: %.pdf $(exe)
+	mkdir -p test
+	../mupdf/build/debug/mutool draw -F raw -o test/$<.mu-raw-intermediate.xml $<
+	./$(exe) -c test/$<.content.xml -m raw -i test/$<.mu-raw-intermediate.xml -o test/$<.raw.docx -p 1 -t template.docx
+	diff -u $<.content.ref.xml test/$<.content.xml
+
+test: Python2.pdf-test zlib.3.pdf-test
 
 -include $(dep)
