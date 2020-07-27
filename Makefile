@@ -71,9 +71,6 @@ build/%.c-$(build).o: %.c
 	mkdir -p build
 	cc -c $(flags_compile) -o $@ $<
 
-clean-test:
-	rm -r {zlib.3,Python2}.pdf-*
-
 
 # Clean rule.
 #
