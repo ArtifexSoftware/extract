@@ -19,11 +19,18 @@ else ifeq ($(build),opt)
 else ifeq ($(build),debug-opt)
     flags_link      += -g -O2
     flags_compile   += -g -O2
+else ifeq ($(build),memento)
+    flags_link      += -g
+    flags_compile   += -g -D MEMENTO
 else
   $(error unrecognised $$(build) = $(build))
 endif
 
 src = extract.c
+
+ifeq ($(build),memento)
+    src += memento.c
+endif
 
 exe = extract-$(build).exe
 obj = $(src:.c=.c-$(build).o)
