@@ -81,6 +81,8 @@ clean-test:
 clean:
 	rm $(obj) $(dep) $(exe)
 
+clean-all:
+	rm -r build test 
 
 # Dynamic dependencies.
 #
