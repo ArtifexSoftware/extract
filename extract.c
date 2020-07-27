@@ -12,7 +12,9 @@ Unless otherwise stated, all functions return 0 on success or -1 with errno
 set.
 */
 
-#include "extract.h"
+#ifdef MEMENTO
+    #include "memento.h"
+#endif
 
 #include <assert.h>
 #include <errno.h>
