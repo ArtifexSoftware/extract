@@ -275,7 +275,7 @@ consumes the next '<' before returning the previous tag.
 
 Opens specified file, verifies that prefix is as expected. Returns NULL if
 error. */
-static FILE* pparse_init(const char* path)
+static FILE* pparse_init(const char* path, const char* first_line)
 {
     FILE* in = NULL;
     char* buffer = NULL;
@@ -283,26 +283,27 @@ static FILE* pparse_init(const char* path)
 
     in = fopen(path, "r");
     if (!in) {
-        fprintf(stderr, "%s:%i: error: Could not open mutool output filename=%s\n",
+        fprintf(stderr, "%s:%i: error: Could not open filename=%s\n",
                 __FILE__, __LINE__, path);
         goto end;
     }
 
-    const char  prefix[] = "<?xml version=\"1.0\"?>\n";
-    buffer = malloc(sizeof(prefix));
-    if (!buffer) {
-        fprintf(stderr, "%s:%i: error: malloc() failed\n", __FILE__, __LINE__);
-        goto end;
-    }
-    ssize_t n = fread(buffer, sizeof(prefix)-1, 1 /*nmemb*/, in);
-    if (n != 1) {
-        fprintf(stderr, "%s:%i: error: fread() failed. n=%zi. path='%s'\n", __FILE__, __LINE__, n, path);
-        goto end;
-    }
-    buffer[sizeof(prefix)-1] = 0;
-    if (strcmp(prefix, buffer)) {
-        fprintf(stderr, "Unrecognised prefix in path=%s: %s\n", path, buffer);
-        goto end;
+    if (first_line) {
+        size_t first_line_len = strlen(first_line);
+        buffer = malloc(first_line_len + 1);
+        if (!buffer) goto end;
+        
+        ssize_t n = fread(buffer, first_line_len, 1 /*nmemb*/, in);
+        if (n != 1) {
+            fprintf(stderr, "%s:%i: error: fread() failed. n=%zi. path='%s'\n", __FILE__, __LINE__, n, path);
+            goto end;
+        }
+        buffer[first_line_len] = 0;
+        if (strcmp(first_line, buffer)) {
+            fprintf(stderr, "Unrecognised prefix in path=%s: %s\n", path, buffer);
+            errno = ESRCH;
+            goto end;
+        }
     }
 
     {
@@ -486,6 +487,11 @@ point_t transform_vector(point_t p, matrix_t m)
 
 static int s_read_matrix(const char* text, matrix_t* matrix)
 {
+    if (!text) {
+        fprintf(stderr, "text is NULL in s_read_matrix()\n");
+        errno = EINVAL;
+        return -1;
+    }
     int n = sscanf(text,
             "%f %f %f %f %f %f",
             &matrix->a,
@@ -503,6 +509,11 @@ static int s_read_matrix(const char* text, matrix_t* matrix)
 zero. */
 static int s_read_matrix4(const char* text, matrix_t* matrix)
 {
+    if (!text) {
+        fprintf(stderr, "text is NULL in s_read_matrix4()\n");
+        errno = EINVAL;
+        return -1;
+    }
     int n = sscanf(text,
             "%f %f %f %f",
             &matrix->a,
@@ -776,11 +787,11 @@ without using mupdf's stext device. */
 
 typedef struct
 {
-    float   x;
-    float   y;
-    int     gid;
-    int     ucs;
-    float   adv;
+    float       x;
+    float       y;
+    int         gid;
+    unsigned    ucs;
+    float       adv;
 } char_t;
 
 static void char_init(char_t* item)
@@ -794,8 +805,8 @@ static void char_init(char_t* item)
 
 typedef struct span_t
 {
-    matrix_t   ctm;
-    matrix_t   trm;
+    matrix_t    ctm;
+    matrix_t    trm;
     char*       font_name;
     // font size is fz_matrix_expansion(trm).
     int         font_bold;
@@ -1619,7 +1630,7 @@ static int page_span_end_clean( page_t* page)
         character. We discard previous space character - these
         sometimes seem to appear in the middle of words for some
         reason. */
-        if (0) fprintf(stderr, "removing space\n");
+        if (1) fprintf(stderr, "removing space\n");
         span->chars[span->chars_num-2] = span->chars[span->chars_num-1];
         span->chars_num -= 1;
         return 0;
@@ -1629,21 +1640,16 @@ static int page_span_end_clean( page_t* page)
         previous characters, so split into two spans. This often
         splits text incorrectly, but this is corrected later when
         we join spans into lines. */
-        if (0) {
+        if (1) {
             fprintf(stderr, "Splitting into new span. err=(%f, %f) pos=(%f, %f): ",
                     err_x, err_y,
                     x, y
                     );
-            #if 0
-            if (0) {
-                int j;
-                for (j=i<10; j<i+10; ++j) {
-                    if (j < 0) continue;
-                    if (j >= span->chars_num) break;
-                    fprintf(stderr, "%c%c",
-                            (j==i) ? '_' : ' ',
-                            span->chars[j].ucs
-                            );
+            #if 1
+            if (1) {
+                int i;
+                for (i=0; i<span->chars_num; ++i) {
+                    fprintf(stderr, "%c", span->chars[i].ucs);
                 }
             }
             #endif
@@ -1677,14 +1683,14 @@ static int read_spans_raw(const char* path, document_t *document)
     FILE* in = NULL;
     document_init(document);
 
-    in = pparse_init(path);
+    xml_tag_t   tag;
+    xml_tag_init(&tag);
+
+    in = pparse_init(path, "<?xml version=\"1.0\"?>\n");
     if (!in) {
         fprintf(stderr, "Failed to open: %s\n", path);
         goto end;
     }
-    xml_tag_t   tag;
-    xml_tag_init(&tag);
-
     /* Data read from <path> is expected to be XML looking like:
 
     <page>
@@ -1792,6 +1798,134 @@ static int read_spans_raw(const char* path, document_t *document)
 }
 
 
+/* Reads from 'raw' device output into document_t. */
+static int read_spans_gs(const char* path, document_t *document)
+{
+    int ret = -1;
+
+    FILE* in = NULL;
+    document_init(document);
+
+    xml_tag_t   tag;
+    xml_tag_init(&tag);
+
+    in = pparse_init(path, NULL);
+    if (!in) {
+        fprintf(stderr, "Failed to open: %s\n", path);
+        goto end;
+    }
+
+    for(;;) {
+        int e = pparse_next(in, &tag);
+        if (e == 1) break; /* EOF. */
+        if (e) goto end;
+        if (strcmp(tag.name, "page")) {
+            fprintf(stderr, "Expected <page> but tag.name='%s'\n", tag.name);
+            errno = ESRCH;
+            goto end;
+        }
+        if (0) fprintf(stderr, "loading spans for page %i...\n", document->pages_num);
+        page_t* page = document_page_append(document);
+        if (!page) goto end;
+
+        for(;;) {
+            if (pparse_next(in, &tag)) goto end;
+            if (!strcmp(tag.name, "/page")) {
+                break;
+            }
+            if (strcmp(tag.name, "span")) {
+                fprintf(stderr, "Expected <span> but tag.name='%s'\n", tag.name);
+                errno = ESRCH;
+                goto end;
+            }
+
+            span_t* span = page_span_append(page);
+            if (s_read_matrix4(xml_tag_attributes_find(&tag, "bbox"), &span->ctm)) goto end;
+            float font_size;
+            if (xml_tag_attributes_find_float(&tag, "size", &font_size)) goto end;
+            span->trm.a = font_size;
+            span->trm.d = font_size;
+            char* f = xml_tag_attributes_find(&tag, "font");
+            char* ff = strchr(f, '+');
+            if (ff)  f = ff + 1;
+            span->font_name = local_strdup(f);
+            if (!span->font_name) goto end;
+            span->font_bold = strstr(span->font_name, "-Bold") ? 1 : 0;
+            span->font_italic = strstr(span->font_name, "-Oblique") ? 1 : 0;
+            span->wmode = 0;
+
+            for(;;) {
+                if (pparse_next(in, &tag)) goto end;
+                if (!strcmp(tag.name, "/span")) {
+                    break;
+                }
+                if (strcmp(tag.name, "char")) {
+                    fprintf(stderr, "Expected <char> but tag.name='%s'\n", tag.name);
+                    errno = ESRCH;
+                    goto end;
+                }
+                if (span_append_c(span, 0 /*c*/)) goto end;
+                char_t* char_ = &span->chars[ span->chars_num-1];
+                matrix_t    bbox;
+                if (s_read_matrix4(xml_tag_attributes_find(&tag, "bbox"), &bbox)) goto end;
+                char_->x = bbox.a;
+                char_->y = bbox.b;
+                char_->adv = (bbox.c - bbox.a) / font_size;
+                const char* c = xml_tag_attributes_find(&tag, "c");
+                if (!c) goto end;
+                if (strlen(c) == 1) {
+                    char_->ucs = c[0];
+                }
+                else if (!strcmp(c, "&quot;")) {
+                    char_->ucs = '"';
+                }
+                else if (!strcmp(c, "&amp;")) {
+                    char_->ucs = '&';
+                }
+                else if (!strcmp(c, "&lt;")) {
+                    char_->ucs = '<';
+                }
+                else if (!strcmp(c, "&gt;")) {
+                    char_->ucs = '>';
+                }
+                else if (!strcmp(c, "&apos;")) {
+                    char_->ucs = '\'';
+                }
+                else {
+                    if (sscanf(c, "&#x%x;", &char_->ucs) != 1) {
+                        fprintf(stderr, "Failed to read hex value in c='%s'\n", c);
+                        errno = EINVAL;
+                        goto end;
+                    }
+                }
+                fprintf(stderr, "have read x=%f y=%f c=%c\n", char_->x, char_->y, char_->ucs);
+
+                if (page_span_end_clean(page)) goto end;
+                span = page->spans[page->spans_num-1];
+            }
+            xml_tag_free(&tag);
+        }
+        if (0) fprintf(stderr, "page=%i page->num_spans=%i\n", document->pages_num, page->spans_num);
+    }
+
+    ret = 0;
+
+    end:
+    xml_tag_free(&tag);
+    if (in) {
+        fclose(in);
+        in = NULL;
+    }
+
+    if (ret) {
+        fprintf(stderr, "read_spans1() returning error\n");
+        document_free(document);
+    }
+
+    return ret;
+}
+
+
 /* Reads from mupdf's trace-device into document_t. */
 static int read_spans_trace(const char* path, document_t* document)
 {
@@ -1800,7 +1934,7 @@ static int read_spans_trace(const char* path, document_t* document)
 
     document_init(document);
 
-    in = pparse_init(path);
+    in = pparse_init(path, "<?xml version=\"1.0\"?>\n");
     if (!in) {
         fprintf(stderr, "Failed to open: %s\n", path);
         goto end;
@@ -2091,6 +2225,9 @@ static int document_to_docx_content(document_t* document, string_t* content)
 
 int main(int argc, char** argv)
 {
+    (void) str_cat;
+    (void) compare_tags;
+
     const char* docx_out_path       = NULL;
     const char* input_path          = NULL;
     const char* docx_template_path  = NULL;
@@ -2122,6 +2259,8 @@ int main(int argc, char** argv)
                     "                <input-path> is from 'raw' device; use native conversion.\n"
                     "            trace\n"
                     "                <input-path> is from 'trace' device; use native conversion.\n"
+                    "            gs\n"
+                    "                <input-path> is from gs 'txtwrite' device; use native conversion.\n"
                     "    -i <input-path>\n"
                     "        Name of XML file containing low-level text spans.\n"
                     "    -o <docx-path>\n"
@@ -2193,6 +2332,16 @@ int main(int argc, char** argv)
             return 1;
         }
     }
+    else if (!strcmp(method, "gs")) {
+        if (read_spans_gs(input_path, &document)) {
+            fprintf(stderr, "Failed to read 'raw' output from: %s\n", input_path);
+            goto end;
+        }
+        if (document_to_docx_content(&document, &content)) {
+            fprintf(stderr, "Failed to create docx content errno=%i: %s\n", errno, strerror(errno));
+            return 1;
+        }
+    }
     else {
         fprintf(stderr, "Unrecognised method '%s'\n", method);
         errno = ESRCH;
@@ -2214,7 +2363,12 @@ int main(int argc, char** argv)
     string_free(&content);
     document_free(&document);
 
-    fprintf(stderr, "Finished, e=%i\n", e);
+    if (e) {
+        fprintf(stderr, "Failed, errno: %s\n", strerror(errno));
+    }
+    else {
+        fprintf(stderr, "Finished.\n");
+    }
 
     return e;
 }
