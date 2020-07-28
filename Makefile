@@ -10,7 +10,9 @@
 flags_link      = -W -Wall -lm
 flags_compile   = -W -Wall -MMD -MP
 
-ifeq ($(build),debug)
+ifeq ($(build),)
+    $(error Need to specify build=debug|opt|debug-opt|memento)
+else ifeq ($(build),debug)
     flags_link      += -g
     flags_compile   += -g
 else ifeq ($(build),opt)
@@ -23,7 +25,7 @@ else ifeq ($(build),memento)
     flags_link      += -g
     flags_compile   += -g -D MEMENTO
 else
-  $(error unrecognised $$(build) = $(build))
+    $(error unrecognised $$(build)=$(build))
 endif
 
 
@@ -52,7 +54,7 @@ test: Python2.pdf-test zlib.3.pdf-test
 	@echo
 	@echo == Testing $<
 	mkdir -p test
-	@echo == Generating intermediate with mutool.s
+	@echo == Generating intermediate with mutool.
 	../mupdf/build/debug/mutool draw -F raw -o test/$<.mu-raw-intermediate.xml $<
 	@echo == Generating output.
 	./$(exe) -c test/$<.content.xml -m raw -i test/$<.mu-raw-intermediate.xml -o test/$<.raw.docx -p 1 -t template.docx
@@ -80,6 +82,7 @@ clean:
 
 clean-all:
 	rm -r build test 
+
 
 # Dynamic dependencies.
 #
