@@ -48,20 +48,33 @@ dep = $(obj:.o=.d)
 
 # Test rules.
 #
-test: Python2.pdf-test zlib.3.pdf-test
+test: Python2.pdf-test-mu zlib.3.pdf-test-mu
 
-%.pdf-test: %.pdf $(exe)
+%.pdf-test-mu: %.pdf $(exe)
 	@echo
 	@echo == Testing $<
 	mkdir -p test
 	@echo == Generating intermediate with mutool.
 	../mupdf/build/debug/mutool draw -F raw -o test/$<.mu-raw-intermediate.xml $<
 	@echo == Generating output.
-	./$(exe) -c test/$<.content.xml -m raw -i test/$<.mu-raw-intermediate.xml -o test/$<.raw.docx -p 1 -t template.docx
+	./$(exe) -c test/$<.mu-raw.content.xml -m raw -i test/$<.mu-raw.intermediate.xml -o test/$<.mu-raw.docx -p 1 -t template.docx
 	@echo == Comparing output with reference output.
-	diff -u $<.content.ref.xml test/$<.content.xml
+	diff -u $<.mu-raw.content.ref.xml test/$<.mu-raw.content.xml
 	@echo == Test succeeded.
 
+test-gs: zlib.3.pdf-test-gs Python2.pdf-test-gs
+
+%.pdf-test-gs: %.pdf $(exe)
+	@echo
+	@echo == Testing $<
+	mkdir -p test
+	@echo == Generating intermediate with mutool.
+	../ghostpdl/debug-bin/gs -sDEVICE=txtwrite -dTextFormat=0 -o test/$<.gs.intermediate.xml $<
+	@echo == Generating output.
+	./$(exe) -c test/$<.gs.content.xml -m gs -i test/$<.gs.intermediate.xml -o test/$<.gs.docx -p 1 -t template.docx
+	@echo == Comparing output with reference output.
+	diff -u $<.gs.content.ref.xml test/$<.gs.content.xml
+	@echo == Test succeeded.
 
 # Build rules.
 #
