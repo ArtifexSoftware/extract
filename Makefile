@@ -48,14 +48,16 @@ dep = $(obj:.o=.d)
 
 # Test rules.
 #
-test: Python2.pdf-test-mu zlib.3.pdf-test-mu
+test: test-mu test-gs
+
+test-mu: Python2.pdf-test-mu zlib.3.pdf-test-mu
 
 %.pdf-test-mu: %.pdf $(exe)
 	@echo
 	@echo == Testing $<
 	mkdir -p test
 	@echo == Generating intermediate with mutool.
-	../mupdf/build/debug/mutool draw -F raw -o test/$<.mu-raw-intermediate.xml $<
+	../mupdf/build/debug/mutool draw -F raw -o test/$<.mu-raw.intermediate.xml $<
 	@echo == Generating output.
 	./$(exe) -c test/$<.mu-raw.content.xml -m raw -i test/$<.mu-raw.intermediate.xml -o test/$<.mu-raw.docx -p 1 -t template.docx
 	@echo == Comparing output with reference output.
