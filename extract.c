@@ -816,6 +816,59 @@ typedef struct span_t
     int         chars_num;
 } span_t;
 
+const char* span_string(span_t* span)
+{
+    float x0 = 0;
+    float y0 = 0;
+    float x1 = 0;
+    float y1 = 0;
+    int c0 = 0;
+    int c1 = 0;
+    if (span->chars_num) {
+        c0 = span->chars[0].ucs;
+        x0 = span->chars[0].x;
+        y0 = span->chars[0].y;
+        c1 = span->chars[span->chars_num-1].ucs;
+        x1 = span->chars[span->chars_num-1].x;
+        y1 = span->chars[span->chars_num-1].y;
+    }
+    static string_t ret = {0};
+    string_free(&ret);
+    char buffer[200];
+    snprintf(buffer, sizeof(buffer),
+            "span %p: (%c:%f,%f)..(%c:%f,%f) font=%s:(%f,%f) wmode=%i chars_num=%i: ",
+            span,
+            c0, x0, y0,
+            c1, x1, y1,
+            span->font_name,
+            span->trm.a,
+            span->trm.d,
+            span->wmode,
+            span->chars_num
+            );
+    string_cat(&ret, buffer);
+    string_catc(&ret, '"');
+    int i;
+    for (i=0; i<span->chars_num; ++i) {
+        string_catc(&ret, span->chars[i].ucs);
+    }
+    string_catc(&ret, '"');
+    return ret.chars;
+}
+
+const char* span_string2(span_t* span)
+{
+    static string_t ret = {0};
+    string_free(&ret);
+    string_catc(&ret, '"');
+    int i;
+    for (i=0; i<span->chars_num; ++i) {
+        string_catc(&ret, span->chars[i].ucs);
+    }
+    string_catc(&ret, '"');
+    return ret.chars;
+}
+
 /* Appends new char_t with .ucs=c and all other fields zeroed. */
 static int span_append_c(span_t* span, int c)
 {
@@ -863,6 +916,36 @@ typedef struct
     span_t**    spans;
     int         spans_num;
 } line_t;
+
+static const char* line_string(line_t* line)
+{
+    static string_t ret = {0};
+    char    buffer[32];
+    string_free(&ret);
+    snprintf(buffer, sizeof(buffer), "line %p spans_num=%i:", line, line->spans_num);
+    string_cat(&ret, buffer);
+    int i;
+    for (i=0; i<line->spans_num; ++i) {
+        string_cat(&ret, " ");
+        string_cat(&ret, span_string(line->spans[i]));
+    }
+    return ret.chars;
+}
+
+static const char* line_string2(line_t* line)
+{
+    static string_t ret = {0};
+    char    buffer[32];
+    string_free(&ret);
+    snprintf(buffer, sizeof(buffer), "line %p y=%f spans_num=%i:", line, line->spans[0]->chars[0].y, line->spans_num);
+    string_cat(&ret, buffer);
+    int i;
+    for (i=0; i<line->spans_num; ++i) {
+        string_cat(&ret, " ");
+        string_cat(&ret, span_string2(line->spans[i]));
+    }
+    return ret.chars;
+}
 
 /* Returns first span in a line. */
 static span_t* line_span_last(line_t* line)
@@ -959,7 +1042,7 @@ static double spans_adv(span_t* a_span, char_t* a, char_t* b)
 }
 
 /* Returns 1 if lines have same wmode and are at the same angle, else 0. */
-static int lines_are_compatible(line_t* a, line_t* b, double angle_a)
+static int lines_are_compatible(line_t* a, line_t* b, double angle_a, int verbose)
 {
     if (a == b) return 0;
     if (!a->spans || !b->spans) return 0;
@@ -969,10 +1052,34 @@ static int lines_are_compatible(line_t* a, line_t* b, double angle_a)
             &line_span_first(b)->ctm,
             sizeof(matrix_t)
             )) {
+        if (verbose) {
+            fprintf(stderr, "%s:%i: ctm's differ: \n",
+                    __FILE__, __LINE__);
+            fprintf(stderr, "    %f %f %f %f %f %f\n",
+                    line_span_first(a)->ctm.a,
+                    line_span_first(a)->ctm.b,
+                    line_span_first(a)->ctm.c,
+                    line_span_first(a)->ctm.d,
+                    line_span_first(a)->ctm.e,
+                    line_span_first(a)->ctm.f
+                    );
+            fprintf(stderr, "    %f %f %f %f %f %f\n",
+                    line_span_first(b)->ctm.a,
+                    line_span_first(b)->ctm.b,
+                    line_span_first(b)->ctm.c,
+                    line_span_first(b)->ctm.d,
+                    line_span_first(b)->ctm.e,
+                    line_span_first(b)->ctm.f
+                    );
+        }
         return 0;
     }
     double angle_b = span_angle(line_span_first(b));
-    if (angle_b != angle_a) return 0;
+    if (angle_b != angle_a) {
+        if (verbose) fprintf(stderr, "%s:%i: angles differ\n",
+                __FILE__, __LINE__);
+        return 0;
+    }
     return 1;
 }
 
@@ -1018,6 +1125,11 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
         if (!lines[a]->spans)   goto end;
         lines[a]->spans_num = 1;
         lines[a]->spans[0] = spans[a];
+        fprintf(stderr, "%s:%i: initial line a=%i: %s\n",
+                __FILE__, __LINE__,
+                a,
+                line_string(lines[a])
+                );
     }
 
     /* For each line, look for nearest aligned line, and append if found. */
@@ -1028,11 +1140,13 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
         if (!line_a) {
             continue;
         }
-        //if (!line_a->spans) {
-        //    /* This line is empty - already been appended to a different line. */
-        //    continue;
-        //}
 
+        int verbose = (a==77);
+        if (verbose) fprintf(stderr, "%s:%i: a=%i: %s\n",
+                __FILE__, __LINE__,
+                a,
+                line_string(line_a)
+                );
         line_t* nearest_line = NULL;
         int nearest_line_b = -1;
         double nearest_adv = 0;
@@ -1044,9 +1158,24 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
         for (b=0; b<lines_num; ++b) {
 
             line_t* line_b = lines[b];
-            if (!line_b) continue;
-
-            if (!lines_are_compatible(line_a, line_b, angle_a)) {
+            if (!line_b) {
+                if (verbose) fprintf(stderr, "%s:%i: b=%i: !line_b\n",
+                    __FILE__, __LINE__,
+                    b
+                    );
+                continue;
+            }
+            if (verbose) fprintf(stderr, "%s:%i: a=%i b=%i: nearest_line_b=%i nearest_adv=%lf: %s\n",
+                    __FILE__, __LINE__,
+                    a,
+                    b,
+                    nearest_line_b,
+                    nearest_adv,
+                    line_string(line_b)
+                    );
+            if (!lines_are_compatible(line_a, line_b, angle_a, verbose)) {
+                if (verbose) fprintf(stderr, "%s:%i: not compatible\n",
+                        __FILE__, __LINE__);
                 continue;
             }
 
@@ -1060,23 +1189,45 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                     );
             /* Might want to relax this when we test on non-horizontal lines.
             */
+            const double    pi = 3.14159265;
             const double    angle_tolerance_deg = 1;
-            if (fabs(angle_a_b - angle_a) * 180/3.14 <= angle_tolerance_deg) {
+            if (fabs(angle_a_b - angle_a) * 180/pi <= angle_tolerance_deg) {
                 /* Find distance between end of line_a and beginning of line_b. */
                 double adv = spans_adv(span_a, span_char_last(span_a), span_char_first(span_b));
+                fprintf(stderr, "%s:%i: nearest_adv=%lf. angle_a_b=%lf adv=%lf\n",
+                        __FILE__, __LINE__,
+                        nearest_adv,
+                        angle_a_b,
+                        adv
+                        );
                 if (!nearest_line || adv < nearest_adv) {
                     nearest_line = line_b;
                     nearest_adv = adv;
                     nearest_line_b = b;
                 }
             }
+            else {
+                if (verbose) fprintf(stderr, "%s:%i: angle beyond tolerance: span_a last=(%f,%f) span_b first=(%f,%f) angle_a_b=%lg angle_a=%lg span_a.trm{a=%f b=%f}\n",
+                        __FILE__, __LINE__,
+                        span_char_last(span_a)->x,
+                        span_char_last(span_a)->y,
+                        span_char_first(span_b)->x,
+                        span_char_first(span_b)->y,
+                        angle_a_b * 180/pi,
+                        angle_a * 180/pi,
+                        span_a->trm.a,
+                        span_a->trm.b
+                        );
+            }
         }
 
         if (nearest_line) {
-
             /* line_a and nearest_line are aligned so we can move line_b's spans on
             to the end of line_a. */
-
+            b = nearest_line_b;
+            fprintf(stderr, "%s:%i: found nearest line. a=%i b=%i\n",
+                    __FILE__, __LINE__,
+                    a, b);
             span_t* span_b = line_span_first(nearest_line);
 
             if (1
@@ -1096,7 +1247,10 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                 int insert_space = (nearest_adv > 0.25 * average_adv);
                 if (insert_space) {
                     /* Append space to span_a before concatenation. */
-                    if (0) fprintf(stderr, "(inserted space)\n");
+                    if (1) fprintf(stderr, "(inserted space) nearest_adv=%lf average_adv=%lf\n",
+                            nearest_adv,
+                            average_adv
+                            );
                     char_t* p = realloc(span_a->chars, (span_a->chars_num + 1) * sizeof(char_t));
                     if (!p) goto end;
                     span_a->chars = p;
@@ -1107,14 +1261,17 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                     item->adv = nearest_adv;
                 }
 
+                fprintf(stderr, "%s:%i: Joining spans a=%i b=%i:\n", __FILE__, __LINE__, a, b);
+                fprintf(stderr, "    %s\n", span_string(span_a));
+                fprintf(stderr, "    %s\n", span_string(span_b));
                 if (0) {
                     /* Show details about what we're joining. */
                     fprintf(stderr,
-                            "joining line insert_space=%i a=%i (y=%f) to line nearest_line_b=%i (y=%f). nearest_adv=%lf average_adv=%lf\n",
+                            "joining line insert_space=%i a=%i (y=%f) to line b=%i (y=%f). nearest_adv=%lf average_adv=%lf\n",
                             insert_space,
                             a,
                             span_char_last(span_a)->y,
-                            nearest_line_b,
+                            b,
                             span_char_first(span_b)->y,
                             nearest_adv,
                             average_adv
@@ -1148,26 +1305,38 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             free(nearest_line);
             //nearest_line->spans = NULL;
             //nearest_line->spans_num = 0;
-            lines[nearest_line_b] = NULL;
+            fprintf(stderr, "%s:%i: setting line[b=%i] to NULL\n", __FILE__, __LINE__, b);
+            lines[b] = NULL;
 
             num_joins += 1;
 
-            if (nearest_line_b > a) {
+            if (b > a) {
                 /* We haven't yet tried appending any spans to nearest_line, so
                 the new extended line_a needs checking again. */
                 a -= 1;
             }
+            fprintf(stderr, "%s:%i: new line is:\n    %s\n", __FILE__, __LINE__, line_string2(line_a));
         }
     }
 
-    if (0) fprintf(stderr, "Have made %i joins out of %i spans\n", num_joins, lines_num);
+    if (1) fprintf(stderr, "Have made %i joins out of %i spans\n", num_joins, lines_num);
 
     /* Remove empty lines left behind after we appended pairs of lines. */
     int from;
     int to;
     for (from=0, to=0; from<lines_num; ++from) {
+            fprintf(stderr, "%s:%i: final line from=%i: %s\n",
+                    __FILE__, __LINE__,
+                    from,
+                    lines[from] ? line_string(lines[from]) : "NULL"
+                    );
         if (lines[from]) {
             lines[to] = lines[from];
+            /*fprintf(stderr, "%s:%i: final line to=%i: %s\n",
+                    __FILE__, __LINE__,
+                    to,
+                    line_string(lines[to])
+                    );*/
             to += 1;
         }
     }
@@ -1344,7 +1513,7 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
                 continue;
             }
             line_t* line_b = para_line_first(para_b);
-            if (!lines_are_compatible(line_a, line_b, angle_a)) {
+            if (!lines_are_compatible(line_a, line_b, angle_a, 0)) {
                 continue;
             }
 
@@ -1437,7 +1606,7 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
     *o_paras = paras;
     *o_paras_num = paras_num;
     ret = 0;
-    if (0) fprintf(stderr, "Have made %i joins out of %i paras\n", num_joins, paras_num);
+    if (1) fprintf(stderr, "Have made %i joins out of %i paras\n", num_joins, paras_num);
 
     end:
 
@@ -1840,10 +2009,15 @@ static int read_spans_gs(const char* path, document_t *document)
             }
 
             span_t* span = page_span_append(page);
-            if (s_read_matrix4(xml_tag_attributes_find(&tag, "bbox"), &span->ctm)) goto end;
+            /* we ignore the span's bbox.
+                if (s_read_matrix4(xml_tag_attributes_find(&tag, "bbox"), &span->ctm)) goto end;
+            */
+            bzero(&span->ctm, sizeof(span->ctm));
             float font_size;
             if (xml_tag_attributes_find_float(&tag, "size", &font_size)) goto end;
             span->trm.a = font_size;
+            span->trm.b = 0;
+            span->trm.c = 0;
             span->trm.d = font_size;
             char* f = xml_tag_attributes_find(&tag, "font");
             char* ff = strchr(f, '+');
@@ -1854,6 +2028,11 @@ static int read_spans_gs(const char* path, document_t *document)
             span->font_italic = strstr(span->font_name, "-Oblique") ? 1 : 0;
             span->wmode = 0;
 
+            fprintf(stderr, "%s:%i: new span, font_size=%f font_name=%s\n",
+                    __FILE__, __LINE__,
+                    font_size,
+                    span->font_name
+                    );
             for(;;) {
                 if (pparse_next(in, &tag)) goto end;
                 if (!strcmp(tag.name, "/span")) {
@@ -1898,7 +2077,10 @@ static int read_spans_gs(const char* path, document_t *document)
                         goto end;
                     }
                 }
-                fprintf(stderr, "have read x=%f y=%f c=%c\n", char_->x, char_->y, char_->ucs);
+                fprintf(stderr, "%s:%i: have read x=%f y=%f c=%c\n",
+                        __FILE__, __LINE__,
+                        char_->x, char_->y, char_->ucs
+                        );
 
                 if (page_span_end_clean(page)) goto end;
                 span = page->spans[page->spans_num-1];
