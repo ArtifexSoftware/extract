@@ -101,6 +101,9 @@ clean-all:
 	rm -r build test 
 
 
+web:
+	rsync -ai test/*.docx *.pdf julian@casper.ghostscript.com:public_html/extract/
+
 # Dynamic dependencies.
 #
 -include $(dep)
