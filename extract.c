@@ -847,8 +847,13 @@ const char* span_string(span_t* span)
             span->chars_num
             );
     string_cat(&ret, buffer);
-    string_catc(&ret, '"');
     int i;
+    for (i=0; i<span->chars_num; ++i) {
+        snprintf(buffer, sizeof(buffer), " i=%i {x=%f adv=%f}", i, span->chars[i].x, span->chars[i].adv);
+        string_cat(&ret, buffer);
+    }
+    string_cat(&ret, ": ");
+    string_catc(&ret, '"');
     for (i=0; i<span->chars_num; ++i) {
         string_catc(&ret, span->chars[i].ucs);
     }
@@ -1758,7 +1763,7 @@ static int page_span_end_clean( page_t* page)
     assert(page->spans_num);
     span_t* span = page->spans[page->spans_num-1];
     assert(span->chars_num);
-    char_t* char_ = &span->chars[span->chars_num - 1];
+    char_t* char_ = &span->chars[span->chars_num];
     if (span->chars_num == 1) {
         return 0;
     }
@@ -1776,33 +1781,72 @@ static int page_span_end_clean( page_t* page)
     }
     dir = transform_vector(dir, span->trm);
 
-    float x = char_[-1].x + char_[-1].adv * dir.x;
-    float y = char_[-1].y + char_[-1].adv * dir.y;
+    float x = char_[-2].x + char_[-2].adv * dir.x;
+    float y = char_[-2].y + char_[-2].adv * dir.y;
 
-    float err_x = (char_->x - x) / font_size;
-    float err_y = (char_->y - y) / font_size;
-    if (0) fprintf(stderr, "ucs=%c pos=(%f, %f) char_=(%f, %f) err=(%f, %f) adv=%f\n",
-            char_->ucs,
-            x, y,
-            char_->x, char_->y,
-            err_x, err_y,
-            char_->adv
-            );
-
-    if (1
+    float err_x = (char_[-1].x - x) / font_size;
+    float err_y = (char_[-1].y - y) / font_size;
+    if (0
             && span->chars_num >= 2
-            && span->chars[span->chars_num-2].ucs == ' '
-            && err_x < -span->chars[span->chars_num-2].adv / 2
-            && err_x > -span->chars[span->chars_num-2].adv
+            && char_[-2].ucs == ' '
+            && char_[-1].ucs == 'y'
             ) {
-        /* This character overlaps with previous space
-        character. We discard previous space character - these
-        sometimes seem to appear in the middle of words for some
-        reason. */
-        if (1) fprintf(stderr, "removing space\n");
-        span->chars[span->chars_num-2] = span->chars[span->chars_num-1];
-        span->chars_num -= 1;
-        return 0;
+         if (0) fprintf(stderr, "%s:%i: *** ucs=%c pos=(%f, %f) char_=(%f, %f) err=(%f, %f) adv=%f\n",
+                __FILE__, __LINE__,
+                char_[-1].ucs,
+                x, y,
+                char_[-1].x, char_[-1].y,
+                err_x, err_y,
+                char_[-1].adv
+                );
+        fprintf(stderr, "%s:%i: *** span is: %s\n",
+                __FILE__, __LINE__,
+                span_string(span)
+                );
+        fprintf(stderr, "%s:%i: x=%f char_->x=%f err_x=%f. char_->x-char_[-1].x=%f char_->adv=%f\n",
+                __FILE__, __LINE__,
+                x,
+                char_[-1].x,
+                err_x,
+                char_[-1].x-char_[-2].x,
+                char_[-1].adv
+                );
+    }
+    
+    if (span->chars_num >= 2 && span->chars[span->chars_num-2].ucs == ' ') {
+        int remove_penultimate_space = 0;
+        if (err_x < -span->chars[span->chars_num-2].adv / 2
+                && err_x > -span->chars[span->chars_num-2].adv
+                ) {
+            remove_penultimate_space = 1;
+        }
+        if ((char_[-1].x - char_[-2].x) / font_size < char_[-1].adv / 10) {
+            fprintf(stderr, "%s:%i: removing penultimate space because space very narrow:"
+                    "char_[-1].x-char_[-2].x=%f font_size=%f char_[-1].adv=%f\n",
+                    __FILE__, __LINE__,
+                    char_[-1].x-char_[-2].x,
+                    font_size,
+                    char_[-1].adv
+                    );
+            remove_penultimate_space = 1;
+        }
+        if (remove_penultimate_space) {
+            /* This character overlaps with previous space
+            character. We discard previous space character - these
+            sometimes seem to appear in the middle of words for some
+            reason. */
+            if (1) fprintf(stderr, "%s:%i: removing space before final char in: %s\n",
+                    __FILE__, __LINE__,
+                    span_string(span)
+                    );
+            span->chars[span->chars_num-2] = span->chars[span->chars_num-1];
+            span->chars_num -= 1;
+            if (1) fprintf(stderr, "%s:%i: span is now:                         %s\n",
+                    __FILE__, __LINE__,
+                    span_string(span)
+                    );
+            return 0;
+        }
     }
     else if (fabs(err_x) > 0.01 || fabs(err_y) > 0.01) {
         /* This character doesn't seem to be a continuation of
@@ -1810,19 +1854,12 @@ static int page_span_end_clean( page_t* page)
         splits text incorrectly, but this is corrected later when
         we join spans into lines. */
         if (1) {
-            fprintf(stderr, "Splitting into new span. err=(%f, %f) pos=(%f, %f): ",
+            fprintf(stderr, "%s:%i: Splitting last char into new span. err=(%f, %f) pos=(%f, %f): %s\n",
+                    __FILE__, __LINE__,
                     err_x, err_y,
-                    x, y
+                    x, y,
+                    span_string(span)
                     );
-            #if 1
-            if (1) {
-                int i;
-                for (i=0; i<span->chars_num; ++i) {
-                    fprintf(stderr, "%c", span->chars[i].ucs);
-                }
-            }
-            #endif
-            fprintf(stderr, "\n");
         }
         span_t* span2 = page_span_append(page);
         if (!span2) goto end;
@@ -1832,10 +1869,7 @@ static int page_span_end_clean( page_t* page)
         span2->chars_num = 1;
         span2->chars = malloc(sizeof(char_t) * span2->chars_num);
         if (!span2->chars) goto end;
-        span2->chars[0] = *char_;
-
-        char_ = &span2->chars[0];
-
+        span2->chars[0] = char_[-1];
         span->chars_num -= 1;
         return 0;
     }
@@ -2028,7 +2062,7 @@ static int read_spans_gs(const char* path, document_t *document)
             span->font_italic = strstr(span->font_name, "-Oblique") ? 1 : 0;
             span->wmode = 0;
 
-            fprintf(stderr, "%s:%i: new span, font_size=%f font_name=%s\n",
+            if (0) fprintf(stderr, "%s:%i: new span, font_size=%f font_name=%s\n",
                     __FILE__, __LINE__,
                     font_size,
                     span->font_name
@@ -2048,7 +2082,7 @@ static int read_spans_gs(const char* path, document_t *document)
                 matrix_t    bbox;
                 if (s_read_matrix4(xml_tag_attributes_find(&tag, "bbox"), &bbox)) goto end;
                 char_->x = bbox.a;
-                char_->y = bbox.b;
+                char_->y = -bbox.b;
                 char_->adv = (bbox.c - bbox.a) / font_size;
                 const char* c = xml_tag_attributes_find(&tag, "c");
                 if (!c) goto end;
@@ -2077,7 +2111,7 @@ static int read_spans_gs(const char* path, document_t *document)
                         goto end;
                     }
                 }
-                fprintf(stderr, "%s:%i: have read x=%f y=%f c=%c\n",
+                if (0) fprintf(stderr, "%s:%i: have read x=%f y=%f c=%c\n",
                         __FILE__, __LINE__,
                         char_->x, char_->y, char_->ucs
                         );
@@ -2085,6 +2119,7 @@ static int read_spans_gs(const char* path, document_t *document)
                 if (page_span_end_clean(page)) goto end;
                 span = page->spans[page->spans_num-1];
             }
+            fprintf(stderr, "have made span: %s\n", span_string2(span));
             xml_tag_free(&tag);
         }
         if (0) fprintf(stderr, "page=%i page->num_spans=%i\n", document->pages_num, page->spans_num);
