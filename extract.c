@@ -708,8 +708,7 @@ static int docx_create(string_t* content, const char* path_out, const char* path
     if (systemf("rm -r '%s' 2>/dev/null", path_tempdir) < 0) goto end;
 
     if (mkdir(path_tempdir, 0777)) {
-        printf("%s:%i: Failed to create directory: %s\n",
-                path_tempdir);
+        debugf("Failed to create directory: %s\n", path_tempdir);
         goto end;
     }
 
@@ -1198,7 +1197,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             if (fabs(angle_a_b - angle_a) * 180/pi <= angle_tolerance_deg) {
                 /* Find distance between end of line_a and beginning of line_b. */
                 double adv = spans_adv(span_a, span_char_last(span_a), span_char_first(span_b));
-                debugf("nearest_adv=%lf. angle_a_b=%lf adv=%lf\n",
+                if (0) debugf("nearest_adv=%lf. angle_a_b=%lf adv=%lf\n",
                         nearest_adv,
                         angle_a_b,
                         adv
@@ -1839,7 +1838,10 @@ static int page_span_end_clean( page_t* page)
         splits text incorrectly, but this is corrected later when
         we join spans into lines. */
         if (1) {
-            debugf("Splitting last char into new span. err=(%f, %f) pos=(%f, %f): %s\n",
+            debugf("Splitting last char into new span. font_size=%f dir.x=%f x=%f err=(%f, %f) pos=(%f, %f): %s\n",
+                    font_size,
+                    dir.x,
+                    x,
                     err_x, err_y,
                     x, y,
                     span_string(span)
@@ -2066,7 +2068,9 @@ static int read_spans_gs(const char* path, document_t *document)
                 if (s_read_matrix4(xml_tag_attributes_find(&tag, "bbox"), &bbox)) goto end;
                 char_->x = bbox.a;
                 char_->y = -bbox.b;
-                char_->adv = (bbox.c - bbox.a) / font_size;
+                //char_->adv = (bbox.c - bbox.a) / font_size;
+                if (xml_tag_attributes_find_float(&tag, "adv", &char_->adv)) goto end;
+                char_->adv /= font_size;
                 const char* c = xml_tag_attributes_find(&tag, "c");
                 if (!c) goto end;
                 if (strlen(c) == 1) {
