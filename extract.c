@@ -26,6 +26,23 @@ set.
 #include <sys/stat.h>
 
 
+static void debugf(const char* file, int line, const char* fn, int ln, const char* format, ...)
+{
+    va_list va;
+    if (ln) {
+        fprintf(stderr, "%s:%i:%s: ", file, line, fn);
+    }
+    va_start(va, format);
+    vfprintf(stderr, format, va);
+    va_end(va);
+    if (ln && format[strlen(format)-1] != '\n') {
+        fprintf(stderr, "\n");
+    }
+}
+
+#define debugf(format, ...) (debugf)(__FILE__, __LINE__, __FUNCTION__, 1 /*ln*/, format, ##__VA_ARGS__)
+#define debugfx(format, ...) 
+
 /* Use this in preference to strdup() so that Memento works. */
 static char* local_strdup(const char* text)
 {
@@ -283,7 +300,7 @@ static FILE* pparse_init(const char* path, const char* first_line)
 
     in = fopen(path, "r");
     if (!in) {
-        fprintf(stderr, "%s:%i: error: Could not open filename=%s\n",
+        printf("%s:%i: error: Could not open filename=%s\n",
                 __FILE__, __LINE__, path);
         goto end;
     }
@@ -295,12 +312,12 @@ static FILE* pparse_init(const char* path, const char* first_line)
         
         ssize_t n = fread(buffer, first_line_len, 1 /*nmemb*/, in);
         if (n != 1) {
-            fprintf(stderr, "%s:%i: error: fread() failed. n=%zi. path='%s'\n", __FILE__, __LINE__, n, path);
+            printf("%s:%i: error: fread() failed. n=%zi. path='%s'\n", __FILE__, __LINE__, n, path);
             goto end;
         }
         buffer[first_line_len] = 0;
         if (strcmp(first_line, buffer)) {
-            fprintf(stderr, "Unrecognised prefix in path=%s: %s\n", path, buffer);
+            printf("Unrecognised prefix in path=%s: %s\n", path, buffer);
             errno = ESRCH;
             goto end;
         }
@@ -309,7 +326,7 @@ static FILE* pparse_init(const char* path, const char* first_line)
     {
         int c = getc(in);
         if (c != '<') {
-            fprintf(stderr, "Expected '<' but found c=%i\n", c);
+            printf("Expected '<' but found c=%i\n", c);
             goto end;
         }
     }
@@ -431,7 +448,7 @@ static int pparse_next(FILE* in, xml_tag_t* out)
     }
 
     if (0) {
-        fprintf(stderr, "text: ");
+        debugf("text: ");
         for (const char* c = out->text.chars; *c; ++c) {
             if (*c == '\n') fputs("\\n", stderr);
             else putc(*c, stderr);
@@ -442,7 +459,7 @@ static int pparse_next(FILE* in, xml_tag_t* out)
     ret = 0;
 
     if (0) {
-        fprintf(stderr, "returning tag:\n");
+        debugf("returning tag:\n");
         xml_tag_show(out, stderr);
     }
 
@@ -488,7 +505,7 @@ point_t transform_vector(point_t p, matrix_t m)
 static int s_read_matrix(const char* text, matrix_t* matrix)
 {
     if (!text) {
-        fprintf(stderr, "text is NULL in s_read_matrix()\n");
+        debugf("text is NULL in s_read_matrix()\n");
         errno = EINVAL;
         return -1;
     }
@@ -510,7 +527,7 @@ zero. */
 static int s_read_matrix4(const char* text, matrix_t* matrix)
 {
     if (!text) {
-        fprintf(stderr, "text is NULL in s_read_matrix4()\n");
+        debugf("text is NULL in s_read_matrix4()\n");
         errno = EINVAL;
         return -1;
     }
@@ -642,7 +659,7 @@ static int systemf(const char* format, ...)
     int e = local_vasprintf(&command, format, va);
     va_end(va);
     if (e < 0) return e;
-    fprintf(stderr, "running: %s\n", command);
+    printf("running: %s\n", command);
     e = system(command);
     free(command);
     return e;
@@ -682,7 +699,7 @@ static int docx_create(string_t* content, const char* path_out, const char* path
     int e;
 
     if (strchr(path_out, '\'')) {
-        fprintf(stderr, "path_out contains single-quote character: %s\n", path_out);
+        printf("path_out contains single-quote character: %s\n", path_out);
         errno = EINVAL;
         goto end;
     }
@@ -691,27 +708,27 @@ static int docx_create(string_t* content, const char* path_out, const char* path
     if (systemf("rm -r '%s' 2>/dev/null", path_tempdir) < 0) goto end;
 
     if (mkdir(path_tempdir, 0777)) {
-        fprintf(stderr, "%s:%i: Failed to create directory: %s\n",
-                __FILE__, __LINE__, path_tempdir);
+        printf("%s:%i: Failed to create directory: %s\n",
+                path_tempdir);
         goto end;
     }
 
-    if (0) fprintf(stderr, "Unzipping template document '%s' to tempdir: %s\n", path_template, path_tempdir);
+    if (0) debugf("Unzipping template document '%s' to tempdir: %s\n", path_template, path_tempdir);
     e = systemf("unzip -q -d %s %s", path_tempdir, path_template);
     if (e) {
-        fprintf(stderr, "%s:%i: Failed to unzip %s into %s\n",
-                __FILE__, __LINE__, path_template, path_tempdir);
+        debugf("Failed to unzip %s into %s\n",
+                path_template, path_tempdir);
         if (e > 0) errno = EIO;
         goto end;
     }
 
     if (local_asprintf(&word_document_xml, "%s/word/document.xml", path_tempdir) < 0) goto end;
 
-    if (0) fprintf(stderr, "Reading tempdir's word/document.xml object\n");
+    debugf("Reading tempdir's word/document.xml object\n");
     f = fopen(word_document_xml, "r");
     if (!f) {
-        fprintf(stderr, "%s:%i: Failed to open docx object: %s\n",
-                __FILE__, __LINE__, word_document_xml);
+        debugf("Failed to open docx object: %s\n",
+                word_document_xml);
         goto end;
     }
     original = read_all(f);
@@ -722,18 +739,17 @@ static int docx_create(string_t* content, const char* path_out, const char* path
     const char* original_marker = "<w:body>";
     const char* original_pos = strstr(original, original_marker);
     if (!original_pos) {
-        fprintf(stderr, "%s:%i: error: could not find '%s' in docx object: %s\n",
-                __FILE__, __LINE__, original_marker, word_document_xml);
+        debugf("error: could not find '%s' in docx object: %s\n",
+                original_marker, word_document_xml);
         errno = ESRCH;
         goto end;
     }
     original_pos += strlen(original_marker);
 
-    if (0) fprintf(stderr, "Writing tempdir's word/document.xml file\n");
+    if (0) printf("Writing tempdir's word/document.xml file\n");
     f = fopen(word_document_xml, "w");
     if (!f) {
-        fprintf(stderr, "%s:%i: error: Failed to open .docx for writing: %s",
-                __FILE__, __LINE__, word_document_xml);
+        debugf("error: Failed to open .docx for writing: %s", word_document_xml);
         goto end;
     }
     if (0
@@ -742,8 +758,7 @@ static int docx_create(string_t* content, const char* path_out, const char* path
             || fwrite(original_pos, strlen(original_pos), 1 /*nmemb*/, f) == 0
             || fclose(f) < 0
             ) {
-        fprintf(stderr, "%s:%i: error: Failed to write to: %s",
-                __FILE__, __LINE__, word_document_xml);
+        debugf("error: Failed to write to: %s", word_document_xml);
         goto end;
     }
     f = NULL;
@@ -753,8 +768,8 @@ static int docx_create(string_t* content, const char* path_out, const char* path
     if (!path_out_leaf) path_out_leaf = path_out;
     e = systemf("cd %s && zip -q -r ../%s .", path_tempdir, path_out_leaf);
     if (e) {
-        fprintf(stderr, "%s:%i: error: Zip command failed to convert '%s' directory into output file: %s",
-                __FILE__, __LINE__, path_tempdir, path_out);
+        debugf("Zip command failed to convert '%s' directory into output file: %s",
+                path_tempdir, path_out);
         if (e > 0) errno = EIO;
         goto end;
     }
@@ -762,8 +777,7 @@ static int docx_create(string_t* content, const char* path_out, const char* path
     if (!preserve_dir) {
         e = systemf("rm -r '%s'", path_tempdir);
         if (e) {
-            fprintf(stderr, "%s:%i: error: Failed to delete tempdir: %s",
-                    __FILE__, __LINE__, path_tempdir);
+            debugf("error: Failed to delete tempdir: %s", path_tempdir);
             if (e > 0) errno = EIO;
             goto end;
         }
@@ -1058,9 +1072,9 @@ static int lines_are_compatible(line_t* a, line_t* b, double angle_a, int verbos
             sizeof(matrix_t)
             )) {
         if (verbose) {
-            fprintf(stderr, "%s:%i: ctm's differ: \n",
+            debugf("ctm's differ: \n",
                     __FILE__, __LINE__);
-            fprintf(stderr, "    %f %f %f %f %f %f\n",
+            debugf("    %f %f %f %f %f %f\n",
                     line_span_first(a)->ctm.a,
                     line_span_first(a)->ctm.b,
                     line_span_first(a)->ctm.c,
@@ -1068,7 +1082,7 @@ static int lines_are_compatible(line_t* a, line_t* b, double angle_a, int verbos
                     line_span_first(a)->ctm.e,
                     line_span_first(a)->ctm.f
                     );
-            fprintf(stderr, "    %f %f %f %f %f %f\n",
+            debugf("    %f %f %f %f %f %f\n",
                     line_span_first(b)->ctm.a,
                     line_span_first(b)->ctm.b,
                     line_span_first(b)->ctm.c,
@@ -1081,8 +1095,7 @@ static int lines_are_compatible(line_t* a, line_t* b, double angle_a, int verbos
     }
     double angle_b = span_angle(line_span_first(b));
     if (angle_b != angle_a) {
-        if (verbose) fprintf(stderr, "%s:%i: angles differ\n",
-                __FILE__, __LINE__);
+        debugf("%s:%i: angles differ\n");
         return 0;
     }
     return 1;
@@ -1130,11 +1143,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
         if (!lines[a]->spans)   goto end;
         lines[a]->spans_num = 1;
         lines[a]->spans[0] = spans[a];
-        fprintf(stderr, "%s:%i: initial line a=%i: %s\n",
-                __FILE__, __LINE__,
-                a,
-                line_string(lines[a])
-                );
+        debugfx("initial line a=%i: %s\n", a, line_string(lines[a]));
     }
 
     /* For each line, look for nearest aligned line, and append if found. */
@@ -1146,12 +1155,8 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             continue;
         }
 
-        int verbose = (a==77);
-        if (verbose) fprintf(stderr, "%s:%i: a=%i: %s\n",
-                __FILE__, __LINE__,
-                a,
-                line_string(line_a)
-                );
+        int verbose = 0;
+        debugfx("a=%i: %s\n", a, line_string(line_a));
         line_t* nearest_line = NULL;
         int nearest_line_b = -1;
         double nearest_adv = 0;
@@ -1164,14 +1169,9 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
 
             line_t* line_b = lines[b];
             if (!line_b) {
-                if (verbose) fprintf(stderr, "%s:%i: b=%i: !line_b\n",
-                    __FILE__, __LINE__,
-                    b
-                    );
                 continue;
             }
-            if (verbose) fprintf(stderr, "%s:%i: a=%i b=%i: nearest_line_b=%i nearest_adv=%lf: %s\n",
-                    __FILE__, __LINE__,
+            if (verbose) debugf("a=%i b=%i: nearest_line_b=%i nearest_adv=%lf: %s\n",
                     a,
                     b,
                     nearest_line_b,
@@ -1179,8 +1179,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                     line_string(line_b)
                     );
             if (!lines_are_compatible(line_a, line_b, angle_a, verbose)) {
-                if (verbose) fprintf(stderr, "%s:%i: not compatible\n",
-                        __FILE__, __LINE__);
+                if (verbose) debugf("not compatible\n");
                 continue;
             }
 
@@ -1199,8 +1198,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             if (fabs(angle_a_b - angle_a) * 180/pi <= angle_tolerance_deg) {
                 /* Find distance between end of line_a and beginning of line_b. */
                 double adv = spans_adv(span_a, span_char_last(span_a), span_char_first(span_b));
-                fprintf(stderr, "%s:%i: nearest_adv=%lf. angle_a_b=%lf adv=%lf\n",
-                        __FILE__, __LINE__,
+                debugf("nearest_adv=%lf. angle_a_b=%lf adv=%lf\n",
                         nearest_adv,
                         angle_a_b,
                         adv
@@ -1212,8 +1210,8 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                 }
             }
             else {
-                if (verbose) fprintf(stderr, "%s:%i: angle beyond tolerance: span_a last=(%f,%f) span_b first=(%f,%f) angle_a_b=%lg angle_a=%lg span_a.trm{a=%f b=%f}\n",
-                        __FILE__, __LINE__,
+                if (verbose) debugf(
+                        "angle beyond tolerance: span_a last=(%f,%f) span_b first=(%f,%f) angle_a_b=%lg angle_a=%lg span_a.trm{a=%f b=%f}\n",
                         span_char_last(span_a)->x,
                         span_char_last(span_a)->y,
                         span_char_first(span_b)->x,
@@ -1230,9 +1228,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             /* line_a and nearest_line are aligned so we can move line_b's spans on
             to the end of line_a. */
             b = nearest_line_b;
-            fprintf(stderr, "%s:%i: found nearest line. a=%i b=%i\n",
-                    __FILE__, __LINE__,
-                    a, b);
+            debugf("found nearest line. a=%i b=%i\n", a, b);
             span_t* span_b = line_span_first(nearest_line);
 
             if (1
@@ -1252,7 +1248,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                 int insert_space = (nearest_adv > 0.25 * average_adv);
                 if (insert_space) {
                     /* Append space to span_a before concatenation. */
-                    if (1) fprintf(stderr, "(inserted space) nearest_adv=%lf average_adv=%lf\n",
+                    if (1) debugf("(inserted space) nearest_adv=%lf average_adv=%lf\n",
                             nearest_adv,
                             average_adv
                             );
@@ -1266,12 +1262,12 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                     item->adv = nearest_adv;
                 }
 
-                fprintf(stderr, "%s:%i: Joining spans a=%i b=%i:\n", __FILE__, __LINE__, a, b);
-                fprintf(stderr, "    %s\n", span_string(span_a));
-                fprintf(stderr, "    %s\n", span_string(span_b));
+                debugf("Joining spans a=%i b=%i:\n", a, b);
+                debugf("    %s\n", span_string2(span_a));
+                debugf("    %s\n", span_string2(span_b));
                 if (0) {
                     /* Show details about what we're joining. */
-                    fprintf(stderr,
+                    debugf(
                             "joining line insert_space=%i a=%i (y=%f) to line b=%i (y=%f). nearest_adv=%lf average_adv=%lf\n",
                             insert_space,
                             a,
@@ -1281,11 +1277,11 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                             nearest_adv,
                             average_adv
                             );
-                    fprintf(stderr, "a: ");
+                    debugf("a: ");
                     span_dump(span_a, stderr);
-                    fprintf(stderr, "\nb: ");
+                    debugf("\nb: ");
                     span_dump(span_b, stderr);
-                    fprintf(stderr, "\n");
+                    debugf("\n");
                 }
             }
 
@@ -1310,7 +1306,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             free(nearest_line);
             //nearest_line->spans = NULL;
             //nearest_line->spans_num = 0;
-            fprintf(stderr, "%s:%i: setting line[b=%i] to NULL\n", __FILE__, __LINE__, b);
+            debugf("setting line[b=%i] to NULL\n", b);
             lines[b] = NULL;
 
             num_joins += 1;
@@ -1320,25 +1316,23 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                 the new extended line_a needs checking again. */
                 a -= 1;
             }
-            fprintf(stderr, "%s:%i: new line is:\n    %s\n", __FILE__, __LINE__, line_string2(line_a));
+            debugf("new line is:\n    %s\n", line_string2(line_a));
         }
     }
 
-    if (1) fprintf(stderr, "Have made %i joins out of %i spans\n", num_joins, lines_num);
+    if (1) debugf("Have made %i joins out of %i spans\n", num_joins, lines_num);
 
     /* Remove empty lines left behind after we appended pairs of lines. */
     int from;
     int to;
     for (from=0, to=0; from<lines_num; ++from) {
-            fprintf(stderr, "%s:%i: final line from=%i: %s\n",
-                    __FILE__, __LINE__,
+            debugf("final line from=%i: %s\n",
                     from,
                     lines[from] ? line_string(lines[from]) : "NULL"
                     );
         if (lines[from]) {
             lines[to] = lines[from];
-            /*fprintf(stderr, "%s:%i: final line to=%i: %s\n",
-                    __FILE__, __LINE__,
+            /*debugf("final line to=%i: %s\n",
                     to,
                     line_string(lines[to])
                     );*/
@@ -1540,7 +1534,8 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
         if (nearest_para) {
             line_t* line_b = para_line_first(nearest_para);
             double line_b_size = line_font_size_max(para_line_first(nearest_para));
-            if (0) fprintf(stderr, "joing paragraphs. a=(%lf,%lf) b=(%lf,%lf) nearest_para_distance=%lf line_b_size=%lf\n",
+            if (0) debugf(
+                    "joing paragraphs. a=(%lf,%lf) b=(%lf,%lf) nearest_para_distance=%lf line_b_size=%lf\n",
                     line_item_last(line_a)->x,
                     line_item_last(line_a)->y,
                     line_item_first(line_b)->x,
@@ -1578,7 +1573,7 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
                 //nearest_para->lines_num = 0;
 
                 num_joins += 1;
-                if (0) fprintf(stderr, "have joined para a=%i to snearest_para_b=%i\n", a, nearest_para_b);
+                if (0) debugf("have joined para a=%i to snearest_para_b=%i\n", a, nearest_para_b);
 
                 if (nearest_para_b > a) {
                     /* We haven't yet tried appending any paras to
@@ -1599,7 +1594,7 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
             to += 1;
         }
     }
-    if (0) fprintf(stderr, "paras_num=%i => %i\n", paras_num, to);
+    if (0) debugf("paras_num=%i => %i\n", paras_num, to);
     paras_num = to;
     para_t** p = realloc(paras, sizeof(para_t*) * paras_num);
     assert(p); /* Should always succeed because we're not increasing allocation size. */
@@ -1611,7 +1606,7 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
     *o_paras = paras;
     *o_paras_num = paras_num;
     ret = 0;
-    if (1) fprintf(stderr, "Have made %i joins out of %i paras\n", num_joins, paras_num);
+    if (1) debugf("Have made %i joins out of %i paras\n", num_joins, paras_num);
 
     end:
 
@@ -1791,20 +1786,17 @@ static int page_span_end_clean( page_t* page)
             && char_[-2].ucs == ' '
             && char_[-1].ucs == 'y'
             ) {
-         if (0) fprintf(stderr, "%s:%i: *** ucs=%c pos=(%f, %f) char_=(%f, %f) err=(%f, %f) adv=%f\n",
-                __FILE__, __LINE__,
+         if (0) debugf("*** ucs=%c pos=(%f, %f) char_=(%f, %f) err=(%f, %f) adv=%f\n",
                 char_[-1].ucs,
                 x, y,
                 char_[-1].x, char_[-1].y,
                 err_x, err_y,
                 char_[-1].adv
                 );
-        fprintf(stderr, "%s:%i: *** span is: %s\n",
-                __FILE__, __LINE__,
+        debugf("*** span is: %s\n",
                 span_string(span)
                 );
-        fprintf(stderr, "%s:%i: x=%f char_->x=%f err_x=%f. char_->x-char_[-1].x=%f char_->adv=%f\n",
-                __FILE__, __LINE__,
+        debugf("x=%f char_->x=%f err_x=%f. char_->x-char_[-1].x=%f char_->adv=%f\n",
                 x,
                 char_[-1].x,
                 err_x,
@@ -1821,9 +1813,8 @@ static int page_span_end_clean( page_t* page)
             remove_penultimate_space = 1;
         }
         if ((char_[-1].x - char_[-2].x) / font_size < char_[-1].adv / 10) {
-            fprintf(stderr, "%s:%i: removing penultimate space because space very narrow:"
+            debugf("removing penultimate space because space very narrow:"
                     "char_[-1].x-char_[-2].x=%f font_size=%f char_[-1].adv=%f\n",
-                    __FILE__, __LINE__,
                     char_[-1].x-char_[-2].x,
                     font_size,
                     char_[-1].adv
@@ -1835,16 +1826,10 @@ static int page_span_end_clean( page_t* page)
             character. We discard previous space character - these
             sometimes seem to appear in the middle of words for some
             reason. */
-            if (1) fprintf(stderr, "%s:%i: removing space before final char in: %s\n",
-                    __FILE__, __LINE__,
-                    span_string(span)
-                    );
+            debugf("removing space before final char in: %s", span_string(span));
             span->chars[span->chars_num-2] = span->chars[span->chars_num-1];
             span->chars_num -= 1;
-            if (1) fprintf(stderr, "%s:%i: span is now:                         %s\n",
-                    __FILE__, __LINE__,
-                    span_string(span)
-                    );
+            debugf("span is now:                         %s", span_string(span));
             return 0;
         }
     }
@@ -1854,8 +1839,7 @@ static int page_span_end_clean( page_t* page)
         splits text incorrectly, but this is corrected later when
         we join spans into lines. */
         if (1) {
-            fprintf(stderr, "%s:%i: Splitting last char into new span. err=(%f, %f) pos=(%f, %f): %s\n",
-                    __FILE__, __LINE__,
+            debugf("Splitting last char into new span. err=(%f, %f) pos=(%f, %f): %s\n",
                     err_x, err_y,
                     x, y,
                     span_string(span)
@@ -1891,7 +1875,7 @@ static int read_spans_raw(const char* path, document_t *document)
 
     in = pparse_init(path, "<?xml version=\"1.0\"?>\n");
     if (!in) {
-        fprintf(stderr, "Failed to open: %s\n", path);
+        debugf("Failed to open: %s\n", path);
         goto end;
     }
     /* Data read from <path> is expected to be XML looking like:
@@ -1924,11 +1908,11 @@ static int read_spans_raw(const char* path, document_t *document)
         if (e == 1) break; /* EOF. */
         if (e) goto end;
         if (strcmp(tag.name, "page")) {
-            fprintf(stderr, "Expected <page> but tag.name='%s'\n", tag.name);
+            debugf("Expected <page> but tag.name='%s'\n", tag.name);
             errno = ESRCH;
             goto end;
         }
-        if (0) fprintf(stderr, "loading spans for page %i...\n", document->pages_num);
+        if (0) debugf("loading spans for page %i...\n", document->pages_num);
         page_t* page = document_page_append(document);
         if (!page) goto end;
 
@@ -1938,7 +1922,7 @@ static int read_spans_raw(const char* path, document_t *document)
                 break;
             }
             if (strcmp(tag.name, "span")) {
-                fprintf(stderr, "Expected <span> but tag.name='%s'\n", tag.name);
+                debugf("Expected <span> but tag.name='%s'\n", tag.name);
                 errno = ESRCH;
                 goto end;
             }
@@ -1964,7 +1948,7 @@ static int read_spans_raw(const char* path, document_t *document)
                 }
                 if (strcmp(tag.name, "span_item")) {
                     errno = ESRCH;
-                    fprintf(stderr, "Expected <span_item> but tag.name='%s'\n", tag.name);
+                    debugf("Expected <span_item> but tag.name='%s'\n", tag.name);
                     goto end;
                 }
                 if (span_append_c(span, 0 /*c*/)) goto end;
@@ -1980,7 +1964,7 @@ static int read_spans_raw(const char* path, document_t *document)
             }
             xml_tag_free(&tag);
         }
-        if (0) fprintf(stderr, "page=%i page->num_spans=%i\n", document->pages_num, page->spans_num);
+        if (0) debugf("page=%i page->num_spans=%i\n", document->pages_num, page->spans_num);
     }
 
     ret = 0;
@@ -1993,7 +1977,7 @@ static int read_spans_raw(const char* path, document_t *document)
     }
 
     if (ret) {
-        fprintf(stderr, "read_spans1() returning error\n");
+        debugf("read_spans1() returning error\n");
         document_free(document);
     }
 
@@ -2014,7 +1998,7 @@ static int read_spans_gs(const char* path, document_t *document)
 
     in = pparse_init(path, NULL);
     if (!in) {
-        fprintf(stderr, "Failed to open: %s\n", path);
+        debugf("Failed to open: %s\n", path);
         goto end;
     }
 
@@ -2023,11 +2007,11 @@ static int read_spans_gs(const char* path, document_t *document)
         if (e == 1) break; /* EOF. */
         if (e) goto end;
         if (strcmp(tag.name, "page")) {
-            fprintf(stderr, "Expected <page> but tag.name='%s'\n", tag.name);
+            debugf("Expected <page> but tag.name='%s'\n", tag.name);
             errno = ESRCH;
             goto end;
         }
-        if (0) fprintf(stderr, "loading spans for page %i...\n", document->pages_num);
+        if (0) debugf("loading spans for page %i...\n", document->pages_num);
         page_t* page = document_page_append(document);
         if (!page) goto end;
 
@@ -2037,7 +2021,7 @@ static int read_spans_gs(const char* path, document_t *document)
                 break;
             }
             if (strcmp(tag.name, "span")) {
-                fprintf(stderr, "Expected <span> but tag.name='%s'\n", tag.name);
+                debugf("Expected <span> but tag.name='%s'\n", tag.name);
                 errno = ESRCH;
                 goto end;
             }
@@ -2062,8 +2046,7 @@ static int read_spans_gs(const char* path, document_t *document)
             span->font_italic = strstr(span->font_name, "-Oblique") ? 1 : 0;
             span->wmode = 0;
 
-            if (0) fprintf(stderr, "%s:%i: new span, font_size=%f font_name=%s\n",
-                    __FILE__, __LINE__,
+            if (0) debugf("new span, font_size=%f font_name=%s\n",
                     font_size,
                     span->font_name
                     );
@@ -2073,7 +2056,7 @@ static int read_spans_gs(const char* path, document_t *document)
                     break;
                 }
                 if (strcmp(tag.name, "char")) {
-                    fprintf(stderr, "Expected <char> but tag.name='%s'\n", tag.name);
+                    debugf("Expected <char> but tag.name='%s'\n", tag.name);
                     errno = ESRCH;
                     goto end;
                 }
@@ -2106,23 +2089,25 @@ static int read_spans_gs(const char* path, document_t *document)
                 }
                 else {
                     if (sscanf(c, "&#x%x;", &char_->ucs) != 1) {
-                        fprintf(stderr, "Failed to read hex value in c='%s'\n", c);
+                        debugf("Failed to read hex value in c='%s'\n", c);
                         errno = EINVAL;
                         goto end;
                     }
                 }
-                if (0) fprintf(stderr, "%s:%i: have read x=%f y=%f c=%c\n",
-                        __FILE__, __LINE__,
+                if (0) debugf("have read x=%f y=%f c=%c\n",
                         char_->x, char_->y, char_->ucs
                         );
 
                 if (page_span_end_clean(page)) goto end;
                 span = page->spans[page->spans_num-1];
             }
-            fprintf(stderr, "have made span: %s\n", span_string2(span));
+            debugf("have made span: %s", span_string2(span));
+            if (span->chars_num == 2 && span->chars[0].ucs == 'y' && span->chars[1].ucs == 'a') {
+                debugf("span is: %s", span_string(span));
+            }
             xml_tag_free(&tag);
         }
-        if (0) fprintf(stderr, "page=%i page->num_spans=%i\n", document->pages_num, page->spans_num);
+        if (0) debugf("page=%i page->num_spans=%i\n", document->pages_num, page->spans_num);
     }
 
     ret = 0;
@@ -2135,7 +2120,7 @@ static int read_spans_gs(const char* path, document_t *document)
     }
 
     if (ret) {
-        fprintf(stderr, "read_spans1() returning error\n");
+        debugf("read_spans1() returning error\n");
         document_free(document);
     }
 
@@ -2153,7 +2138,7 @@ static int read_spans_trace(const char* path, document_t* document)
 
     in = pparse_init(path, "<?xml version=\"1.0\"?>\n");
     if (!in) {
-        fprintf(stderr, "Failed to open: %s\n", path);
+        debugf("Failed to open: %s\n", path);
         goto end;
     }
     xml_tag_t   tag;
@@ -2161,12 +2146,12 @@ static int read_spans_trace(const char* path, document_t* document)
 
     int e = pparse_next(in, &tag);
     if (e) {
-        fprintf(stderr, "Failed to read <document...> at start\n");
+        debugf("Failed to read <document...> at start\n");
         goto end;
     }
         
     if (strcmp(tag.name, "document")) {
-        fprintf(stderr, "expected '<document...>' but tag.name='%s'\n", tag.name);
+        debugf("expected '<document...>' but tag.name='%s'\n", tag.name);
         errno = ESRCH;
         goto end;
     }
@@ -2179,7 +2164,7 @@ static int read_spans_trace(const char* path, document_t* document)
             break;
         }
         if (strcmp(tag.name, "page")) {
-            fprintf(stderr, "Expected <page> but tag.name='%s'\n", tag.name);
+            debugf("Expected <page> but tag.name='%s'\n", tag.name);
             errno = ESRCH;
             goto end;
         }
@@ -2201,7 +2186,7 @@ static int read_spans_trace(const char* path, document_t* document)
                     break;
                 }
                 if (strcmp(tag.name, "span")) {
-                    fprintf(stderr, "Expected <span...> after <fill_text>, but tag.name='%s'\n", tag.name);
+                    debugf("Expected <span...> after <fill_text>, but tag.name='%s'\n", tag.name);
                     errno = ESRCH;
                     goto end;
                 }
@@ -2228,7 +2213,7 @@ static int read_spans_trace(const char* path, document_t* document)
                     }
                     if (strcmp(tag.name, "g")) {
                         errno = ESRCH;
-                        fprintf(stderr, "Expected <g> but tag.name='%s'\n", tag.name);
+                        debugf("Expected <g> but tag.name='%s'\n", tag.name);
                         goto end;
                     }
                     if (span_append_c(span, 0 /*c*/)) goto end;
@@ -2244,7 +2229,7 @@ static int read_spans_trace(const char* path, document_t* document)
                 }
             }
         }
-        if (0) fprintf(stderr, "page=%i page->num_spans=%i\n", document->pages_num, page->spans_num);
+        if (0) debugf("page=%i page->num_spans=%i\n", document->pages_num, page->spans_num);
     }
 
     ret = 0;
@@ -2257,7 +2242,7 @@ static int read_spans_trace(const char* path, document_t* document)
     }
 
     if (ret) {
-        fprintf(stderr, "read_spans1() returning error\n");
+        debugf("read_spans1() returning error\n");
         document_free(document);
     }
 
@@ -2283,28 +2268,28 @@ static int paras_to_content(document_t* document, string_t* content)
         int p;
         for (p=0; p<page->paras_num; ++p) {
             para_t* para = page->paras[p];
-            if (0) fprintf(stderr, "\n[para] ");
+            if (0) debugf("\n[para] ");
             if (docx_paragraph_start(content)) goto end;
 
             int l;
             for (l=0; l<para->lines_num; ++l) {
                 line_t* line = para->lines[l];
-                if (0) fprintf(stderr, " [line] ");
+                if (0) debugf(" [line] ");
                 int s;
                 for (s=0; s<line->spans_num; ++s) {
                     span_t* span = line->spans[s];
                     if (0) {
-                        fprintf(stderr, " [span ");
+                        debugf(" [span ");
                         if (!font_name || strcmp(span->font_name, font_name)) {
-                            fprintf(stderr, "%s", span->font_name);
+                            debugf("%s", span->font_name);
                         }
                         if (span->font_bold != font_bold || span->font_italic != font_italic) {
-                            if (0) fprintf(stderr, " %c%c",
+                            if (0) debugf(" %c%c",
                                     span->font_bold ? 'b':'-',
                                     span->font_italic ? 'i' : '-'
                                     );
                         }
-                        fprintf(stderr, "]");
+                        debugf("]");
                     }
                     if (!font_name
                             || strcmp(span->font_name, font_name)
@@ -2314,14 +2299,14 @@ static int paras_to_content(document_t* document, string_t* content)
                             ) {
                         if (font_name) {
                             if (docx_run_finish(content)) goto end;
-                            if (0) fprintf(stderr, " [font %s:%lf:%c%c] ",
+                            if (0) debugf(" [font %s:%lf:%c%c] ",
                                     span->font_name,
                                     fz_matrix_expansion(span->trm),
                                     span->font_bold ? 'b' : '-',
                                     span->font_italic ? 'i' : '-'
                                     );
                         }
-                        if (0) fprintf(stderr, " [%s %c%c] ",
+                        if (0) debugf(" [%s %c%c] ",
                                 span->font_name,
                                 span->font_bold ? 'b':'-',
                                 span->font_italic ? 'i' : '-'
@@ -2336,8 +2321,8 @@ static int paras_to_content(document_t* document, string_t* content)
                     int si;
                     for (si=0; si<span->chars_num; ++si) {
                         char_t* char_ = &span->chars[si];
-                        if (0) fprintf(stderr, "%c", char_->ucs);
-                        if (0) fprintf(stderr, "[char_] %c (%f, %f)\n",
+                        if (0) debugf("%c", char_->ucs);
+                        if (0) debugf("[char_] %c (%f, %f)\n",
                                 char_->ucs,
                                 char_->x,
                                 char_->y
@@ -2385,7 +2370,7 @@ static int paras_to_content(document_t* document, string_t* content)
                     if (docx_char_truncate_if(content, '-')) goto end;
                 }
             }
-            if (0) fprintf(stderr, "\n");
+            if (0) debugf("\n");
             if (font_name) {
                 if (docx_run_finish(content)) goto end;
                 font_name = NULL;
@@ -2414,7 +2399,7 @@ static int document_to_docx_content(document_t* document, string_t* content)
     is a list of lines that are at the same angle and close together. */
     int p;
     for (p=0; p<document->pages_num; ++p) {
-        if (0) fprintf(stderr, "==[page %i]:\n", p);
+        if (0) debugf("==[page %i]:\n", p);
         page_t* page = document->pages[p];
 
         if (make_lines(page->spans, page->spans_num, &page->lines, &page->lines_num)) goto end;
@@ -2444,7 +2429,7 @@ int main(int argc, char** argv)
 {
     (void) str_cat;
     (void) compare_tags;
-
+    
     const char* docx_out_path       = NULL;
     const char* input_path          = NULL;
     const char* docx_template_path  = NULL;
@@ -2525,54 +2510,54 @@ int main(int argc, char** argv)
     document_init(&document);
 
     if (!method) {
-        fprintf(stderr, "Must specify -m <method>\n");
+        printf("Must specify -m <method>\n");
         errno = ESRCH;
         goto end;
     }
     else if (!strcmp(method, "trace")) {
         if (read_spans_trace(input_path, &document)) {
-            fprintf(stderr, "Failed to read 'trace' output from: %s\n", input_path);
+            printf("Failed to read 'trace' output from: %s\n", input_path);
             goto end;
         }
         if (document_to_docx_content(&document, &content)) {
-            fprintf(stderr, "Failed to create docx content errno=%i: %s\n", errno, strerror(errno));
+            printf("Failed to create docx content errno=%i: %s\n", errno, strerror(errno));
             goto end;
         }
     }
     else if (!strcmp(method, "raw")) {
         if (read_spans_raw(input_path, &document)) {
-            fprintf(stderr, "Failed to read 'raw' output from: %s\n", input_path);
+            printf("Failed to read 'raw' output from: %s\n", input_path);
             goto end;
         }
         if (document_to_docx_content(&document, &content)) {
-            fprintf(stderr, "Failed to create docx content errno=%i: %s\n", errno, strerror(errno));
+            printf("Failed to create docx content errno=%i: %s\n", errno, strerror(errno));
             return 1;
         }
     }
     else if (!strcmp(method, "gs")) {
         if (read_spans_gs(input_path, &document)) {
-            fprintf(stderr, "Failed to read 'raw' output from: %s\n", input_path);
+            printf("Failed to read 'raw' output from: %s\n", input_path);
             goto end;
         }
         if (document_to_docx_content(&document, &content)) {
-            fprintf(stderr, "Failed to create docx content errno=%i: %s\n", errno, strerror(errno));
+            printf("Failed to create docx content errno=%i: %s\n", errno, strerror(errno));
             return 1;
         }
     }
     else {
-        fprintf(stderr, "Unrecognised method '%s'\n", method);
+        printf("Unrecognised method '%s'\n", method);
         errno = ESRCH;
         goto end;
     }
 
     if (content_path) {
-        fprintf(stderr, "Writing content to: %s\n", content_path);
+        printf("Writing content to: %s\n", content_path);
         FILE* f = fopen(content_path, "w");
         assert(f);
         fwrite(content.chars, content.chars_num, 1 /*nmemb*/, f);
         fclose(f);
     }
-    fprintf(stderr, "Creating .docx file: %s\n", docx_out_path);
+    printf("Creating .docx file: %s\n", docx_out_path);
     e = docx_create(&content, docx_out_path, docx_template_path, preserve_dir);
 
     end:
@@ -2581,10 +2566,10 @@ int main(int argc, char** argv)
     document_free(&document);
 
     if (e) {
-        fprintf(stderr, "Failed, errno: %s\n", strerror(errno));
+        printf("Failed, errno: %s\n", strerror(errno));
     }
     else {
-        fprintf(stderr, "Finished.\n");
+        printf("Finished.\n");
     }
 
     return e;
