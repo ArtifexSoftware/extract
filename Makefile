@@ -48,6 +48,8 @@ dep = $(obj:.o=.d)
 
 # Test rules.
 #
+# We assume that mutool and gs are available at hard-coded paths.
+#
 test: test-mu test-gs
 
 test-mu: Python2.pdf-test-mu zlib.3.pdf-test-mu
