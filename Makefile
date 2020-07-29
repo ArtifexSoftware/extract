@@ -68,7 +68,7 @@ test-gs: zlib.3.pdf-test-gs Python2.pdf-test-gs
 	@echo
 	@echo == Testing $<
 	mkdir -p test
-	@echo == Generating intermediate with mutool.
+	@echo == Generating intermediate with gs.
 	../ghostpdl/debug-bin/gs -sDEVICE=txtwrite -dTextFormat=0 -o test/$<.gs.intermediate.xml $<
 	@echo == Generating output.
 	./$(exe) -c test/$<.gs.content.xml -m gs -i test/$<.gs.intermediate.xml -o test/$<.gs.docx -p 1 -t template.docx
