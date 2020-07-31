@@ -177,6 +177,7 @@ static char* xml_tag_attributes_find(xml_tag_t* tag, const char* name)
             return ret;
         }
     }
+    outf("Failed to find attribute '%s'",name);
     return NULL;
 }
 
@@ -1792,8 +1793,8 @@ static int page_span_end_clean( page_t* page)
     return ret;
 }
 
-/* Reads from 'raw' device output into document_t. */
-static int read_spans_raw(const char* path, document_t *document)
+/* Reads from intermediate format in file <path> into document_t. */
+static int read_spans_raw(const char* path, document_t* document, reverse_y)
 {
     int ret = -1;
 
@@ -1803,7 +1804,7 @@ static int read_spans_raw(const char* path, document_t *document)
     xml_tag_t   tag;
     xml_tag_init(&tag);
 
-    in = pparse_init(path, "<?xml version=\"1.0\"?>\n");
+    in = pparse_init(path, NULL);
     if (!in) {
         outf("Failed to open: %s", path);
         goto end;
@@ -1812,8 +1813,8 @@ static int read_spans_raw(const char* path, document_t *document)
 
     <page>
         <span>
-            <span_item ...>
-            <span_item ...>
+            <char ...>
+            <char ...>
             ...
         </span>
         <span>
@@ -1827,22 +1828,29 @@ static int read_spans_raw(const char* path, document_t *document)
     ...
 
     We convert this into a list of page_t's, each containing a list of
-    span_t's, each containing a list of span_element_t's.
+    span_t's, each containing a list of char_t's.
 
-    While doing this, we do some within-span processing:
-        We remove spurious spaces.
-        We split spans in two where there seem to be large gaps.
+    While doing this, we do some within-span processing by calling
+    page_span_end_clean():
+        Remove spurious spaces.
+        Split spans in two where there seem to be large gaps between glyphs.
     */
     for(;;) {
         int e = pparse_next(in, &tag);
         if (e == 1) break; /* EOF. */
         if (e) goto end;
+        if (!strcmp(tag.name, "?xml")) {
+            /* We simply skip this if we find it. As of 2020-07-31, mutool adds
+            this header to mupdf raw output, but gs txtwrite does not include
+            it. */
+            continue;
+        }
         if (strcmp(tag.name, "page")) {
             outf("Expected <page> but tag.name='%s'", tag.name);
             errno = ESRCH;
             goto end;
         }
-        outfx("loading spans for page %i...", document->pages_num);
+        outf("loading spans for page %i...", document->pages_num);
         page_t* page = document_page_append(document);
         if (!page) goto end;
 
@@ -1863,22 +1871,35 @@ static int read_spans_raw(const char* path, document_t *document)
             s_read_matrix(xml_tag_attributes_find(&tag, "ctm"), &span->ctm);
             s_read_matrix(xml_tag_attributes_find(&tag, "trm"), &span->trm);
             char* f = xml_tag_attributes_find(&tag, "font_name");
+            if (!f) {
+                outf("Failed to find attribute 'font_name'");
+                goto end;
+            }
             char* ff = strchr(f, '+');
             if (ff)  f = ff + 1;
             span->font_name = local_strdup(f);
-            if (!span->font_name) goto end;
+            if (!span->font_name) {
+                outf("Attribute 'font_name' is bad: %s", f);
+                goto end;
+            }
             span->font_bold = strstr(span->font_name, "-Bold") ? 1 : 0;
             span->font_italic = strstr(span->font_name, "-Oblique") ? 1 : 0;
-            if (xml_tag_attributes_find_int(&tag, "wmode", &span->wmode)) goto end;
+            if (xml_tag_attributes_find_int(&tag, "wmode", &span->wmode)) {
+                outf("Failed to find attribute 'wmode'");
+                goto end;
+            }
 
             for(;;) {
-                if (pparse_next(in, &tag)) goto end;
+                if (pparse_next(in, &tag)) {
+                    outf("Failed to find <char or </span");
+                    goto end;
+                }
                 if (!strcmp(tag.name, "/span")) {
                     break;
                 }
-                if (strcmp(tag.name, "span_item")) {
+                if (strcmp(tag.name, "char")) {
                     errno = ESRCH;
-                    outf("Expected <span_item> but tag.name='%s'", tag.name);
+                    outf("Expected <char> but tag.name='%s'", tag.name);
                     goto end;
                 }
                 if (span_append_c(span, 0 /*c*/)) goto end;
@@ -1886,9 +1907,14 @@ static int read_spans_raw(const char* path, document_t *document)
                 if (xml_tag_attributes_find_float(&tag, "x", &char_->x)) goto end;
                 if (xml_tag_attributes_find_float(&tag, "y", &char_->y)) goto end;
                 if (xml_tag_attributes_find_float(&tag, "adv", &char_->adv)) goto end;
-                if (xml_tag_attributes_find_int(&tag, "gid", &char_->gid)) goto end;
+                //if (xml_tag_attributes_find_int(&tag, "gid", &char_->gid)) goto end;
                 if (xml_tag_attributes_find_int(&tag, "ucs", &char_->ucs)) goto end;
 
+                if (reverse_y) {
+                    /* 2020-07-31: ghostscript y values increase we go down the
+                    page, but we expect mupdf behaviour where they decrease. */
+                    char_->y *= -1;
+                }
                 if (page_span_end_clean(page)) goto end;
                 span = page->spans[page->spans_num-1];
             }
@@ -1907,147 +1933,7 @@ static int read_spans_raw(const char* path, document_t *document)
     }
 
     if (ret) {
-        outf("read_spans1() returning error");
-        document_free(document);
-    }
-
-    return ret;
-}
-
-
-/* Reads from 'raw' device output into document_t. */
-static int read_spans_gs(const char* path, document_t *document)
-{
-    int ret = -1;
-
-    FILE* in = NULL;
-    document_init(document);
-
-    xml_tag_t   tag;
-    xml_tag_init(&tag);
-
-    in = pparse_init(path, NULL);
-    if (!in) {
-        outf("Failed to open: %s", path);
-        goto end;
-    }
-
-    for(;;) {
-        int e = pparse_next(in, &tag);
-        if (e == 1) break; /* EOF. */
-        if (e) goto end;
-        if (strcmp(tag.name, "page")) {
-            outf("Expected <page> but tag.name='%s'", tag.name);
-            errno = ESRCH;
-            goto end;
-        }
-        outfx("loading spans for page %i...", document->pages_num);
-        page_t* page = document_page_append(document);
-        if (!page) goto end;
-
-        for(;;) {
-            if (pparse_next(in, &tag)) goto end;
-            if (!strcmp(tag.name, "/page")) {
-                break;
-            }
-            if (strcmp(tag.name, "span")) {
-                outf("Expected <span> but tag.name='%s'", tag.name);
-                errno = ESRCH;
-                goto end;
-            }
-
-            span_t* span = page_span_append(page);
-            /* we ignore the span's bbox.
-                if (s_read_matrix4(xml_tag_attributes_find(&tag, "bbox"), &span->ctm)) goto end;
-            */
-            bzero(&span->ctm, sizeof(span->ctm));
-            float font_size;
-            if (xml_tag_attributes_find_float(&tag, "size", &font_size)) goto end;
-            span->trm.a = font_size;
-            span->trm.b = 0;
-            span->trm.c = 0;
-            span->trm.d = font_size;
-            char* f = xml_tag_attributes_find(&tag, "font");
-            char* ff = strchr(f, '+');
-            if (ff)  f = ff + 1;
-            span->font_name = local_strdup(f);
-            if (!span->font_name) goto end;
-            span->font_bold = strstr(span->font_name, "-Bold") ? 1 : 0;
-            span->font_italic = strstr(span->font_name, "-Oblique") ? 1 : 0;
-            span->wmode = 0;
-
-            outfx("new span, font_size=%f font_name=%s",
-                    font_size,
-                    span->font_name
-                    );
-            for(;;) {
-                if (pparse_next(in, &tag)) goto end;
-                if (!strcmp(tag.name, "/span")) {
-                    break;
-                }
-                if (strcmp(tag.name, "char")) {
-                    outf("Expected <char> but tag.name='%s'", tag.name);
-                    errno = ESRCH;
-                    goto end;
-                }
-                if (span_append_c(span, 0 /*c*/)) goto end;
-                char_t* char_ = &span->chars[ span->chars_num-1];
-                matrix_t    bbox;
-                if (s_read_matrix4(xml_tag_attributes_find(&tag, "bbox"), &bbox)) goto end;
-                char_->x = bbox.a;
-                char_->y = -bbox.b;
-                //char_->adv = (bbox.c - bbox.a) / font_size;
-                if (xml_tag_attributes_find_float(&tag, "adv", &char_->adv)) goto end;
-                char_->adv /= font_size;
-                const char* c = xml_tag_attributes_find(&tag, "c");
-                if (!c) goto end;
-                if (strlen(c) == 1) {
-                    char_->ucs = c[0];
-                }
-                else if (!strcmp(c, "&quot;")) {
-                    char_->ucs = '"';
-                }
-                else if (!strcmp(c, "&amp;")) {
-                    char_->ucs = '&';
-                }
-                else if (!strcmp(c, "&lt;")) {
-                    char_->ucs = '<';
-                }
-                else if (!strcmp(c, "&gt;")) {
-                    char_->ucs = '>';
-                }
-                else if (!strcmp(c, "&apos;")) {
-                    char_->ucs = '\'';
-                }
-                else {
-                    if (sscanf(c, "&#x%x;", &char_->ucs) != 1) {
-                        outf("Failed to read hex value in c='%s'", c);
-                        errno = EINVAL;
-                        goto end;
-                    }
-                }
-                outfx("have read x=%f y=%f c=%c", char_->x, char_->y, char_->ucs);
-
-                if (page_span_end_clean(page)) goto end;
-                span = page->spans[page->spans_num-1];
-            }
-            outfx("have made span: %s", span_string2(span));
-            xml_tag_free(&tag);
-        }
-        outfx("page=%i page->num_spans=%i", document->pages_num, page->spans_num);
-    }
-
-    ret = 0;
-
-    end:
-    xml_tag_free(&tag);
-    if (in) {
-        fclose(in);
-        in = NULL;
-    }
-
-    if (ret) {
-        outf("read_spans1() returning error");
+        outf("read_spans_raw() returning error");
         document_free(document);
     }
 
@@ -2420,18 +2306,10 @@ int main(int argc, char** argv)
             goto end;
         }
     }
-    else if (!strcmp(method, "raw")) {
-        if (read_spans_raw(input_path, &document)) {
-            outf("Failed to read 'raw' output from: %s", input_path);
-            goto end;
-        }
-        if (document_to_docx_content(&document, &content)) {
-            outf("Failed to create docx content errno=%i: %s", errno, strerror(errno));
-            return 1;
-        }
-    }
-    else if (!strcmp(method, "gs")) {
-        if (read_spans_gs(input_path, &document)) {
+    else if (!strcmp(method, "raw") || !strcmp(method, "gs")) {
+        int reverse_y = 0;
+        if (!strcmp(method, "gs")) reverse_y = 1;
+        if (read_spans_raw(input_path, &document, reverse_y)) {
             outf("Failed to read 'raw' output from: %s", input_path);
             goto end;
         }
