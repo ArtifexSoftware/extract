@@ -63,12 +63,10 @@ test-mu: Python2.pdf-test-mu zlib.3.pdf-test-mu
 	@echo == Generating output.
 	./$(exe) -c test/$<.mu-raw.content.xml -m raw -i test/$<.mu-raw.intermediate.xml -o test/$<.mu-raw.docx -p 1 -t template.docx
 	@echo == Comparing output with reference output.
-	diff -u $<.mu-raw.content.ref.xml test/$<.mu-raw.content.xml
+	diff -u test/$<.mu-raw.content.xml $<.mu-raw.content.ref.xml
 	@echo == Test succeeded.
 
-test-gs: zlib.3.pdf-test-gs
-# We don't test Python2.pdf-test-gs because gs-txtwrite doesn't yet output info
-# about non-horizontal text.
+test-gs: Python2.pdf-test-gs zlib.3.pdf-test-gs
 
 %.pdf-test-gs: %.pdf $(exe)
 	@echo
@@ -79,7 +77,7 @@ test-gs: zlib.3.pdf-test-gs
 	@echo == Generating output.
 	./$(exe) -c test/$<.gs.content.xml -m gs -i test/$<.gs.intermediate.xml -o test/$<.gs.docx -p 1 -t template.docx
 	@echo == Comparing output with reference output.
-	diff -u $<.gs.content.ref.xml test/$<.gs.content.xml
+	diff -u test/$<.gs.content.xml $<.gs.content.ref.xml
 	@echo == Test succeeded.
 
 

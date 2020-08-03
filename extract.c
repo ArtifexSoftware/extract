@@ -464,6 +464,20 @@ typedef struct
     float f;
 } matrix_t;
 
+static const char* matrix_string(const matrix_t* matrix)
+{
+    static char ret[64];
+    snprintf(ret, sizeof(ret), "{%f %f %f %f %f %f}",
+            matrix->a,
+            matrix->b,
+            matrix->c,
+            matrix->d,
+            matrix->e,
+            matrix->f
+            );
+    return ret;
+}
+
 float fz_matrix_expansion(matrix_t m)
 {
     return sqrtf(fabsf(m.a * m.d - m.b * m.c));
@@ -560,12 +574,20 @@ static int docx_run_start(string_t* content, const char* font_name, double font_
     if (!e) e = string_cat(content, "\"/>");
     if (!e && bold) e = string_cat(content, "<w:b/>");
     if (!e && italic) e = string_cat(content, "<w:i/>");
-    if (!e) {
-        char    font_size_text[32];
-        snprintf(font_size_text, sizeof(font_size_text), "%.1f", font_size * 2);
-        e = string_cat(content, font_size_text);
+    {
+        char   font_size_text[32];
+
+        if (!e) e = string_cat(content, "<w:sz w:val=\"");
+        snprintf(font_size_text, sizeof(font_size_text), "%f", font_size * 2);
+        string_cat(content, font_size_text);
+        string_cat(content, "\"/>");
+
+        if (!e) e = string_cat(content, "<w:szCs w:val=\"");
+        snprintf(font_size_text, sizeof(font_size_text), "%f", font_size * 1.5);
+        string_cat(content, font_size_text);
+        string_cat(content, "\"/>");
     }
-    if (!e) e = string_cat(content, "\"/></w:rPr><w:t xml:space=\"preserve\">");
+    if (!e) e = string_cat(content, "</w:rPr><w:t xml:space=\"preserve\">");
     assert(!e);
     return e;
 
@@ -589,8 +611,12 @@ static int docx_paragraph_empty(string_t* content)
 {
     int e = -1;
     if (docx_paragraph_start(content)) goto end;
+    /* It seems like our choice of font size here doesn't make any difference
+    to the ammount of vertical space, unless we include a non-space
+    character. Presumably something to do with the styles in the template
+    document. */
     if (docx_run_start(content, "OpenSans", 10, 0 /*font_bold*/, 0 /*font_italic*/)) goto end;
-
+    //docx_char_append_string(content, "&#160;");   /* &#160; is non-break space. */
     if (docx_run_finish(content)) goto end;
     if (docx_paragraph_finish(content)) goto end;
     e = 0;
@@ -984,6 +1010,21 @@ typedef struct
     line_t**    lines;
     int         lines_num;
 } para_t;
+
+static const char* para_string(para_t* para)
+{
+    static string_t ret = {0};
+    string_free(&ret);
+    string_cat(&ret, "para: ");
+    if (para->lines_num) {
+        string_cat(&ret, line_string2(para->lines[0]));
+        if (para->lines_num > 1) {
+            string_cat(&ret, "..");
+            string_cat(&ret, line_string2(para->lines[para->lines_num-1]));
+        }
+    }
+    return ret.chars;
+}
 
 /* Returns first line in paragraph. */
 static line_t* para_line_first(const para_t* para)
@@ -1478,7 +1519,7 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
         line_t* line_a = para_line_last(para_a);
         double angle_a = line_angle(line_a);
 
-        /* Look for nearest run that could be appended to run_a. */
+        /* Look for nearest para_t that could be appended to para_a. */
         int b;
         for (b=0; b<paras_num; ++b) {
             para_t* para_b = paras[b];
@@ -1511,16 +1552,22 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
             line_t* line_b = para_line_first(nearest_para);
             (void) line_b; /* Only used in outfx(). */
             double line_b_size = line_font_size_max(para_line_first(nearest_para));
-            outfx(
-                    "joing paragraphs. a=(%lf,%lf) b=(%lf,%lf) nearest_para_distance=%lf line_b_size=%lf",
-                    line_item_last(line_a)->x,
-                    line_item_last(line_a)->y,
-                    line_item_first(line_b)->x,
-                    line_item_first(line_b)->y,
-                    nearest_para_distance,
-                    line_b_size
-                    );
             if (nearest_para_distance < 1.5 * line_b_size) {
+                if (0) {
+                    outf(
+                            "joing paragraphs. a=(%lf,%lf) b=(%lf,%lf) nearest_para_distance=%lf line_b_size=%lf",
+                            line_item_last(line_a)->x,
+                            line_item_last(line_a)->y,
+                            line_item_first(line_b)->x,
+                            line_item_first(line_b)->y,
+                            nearest_para_distance,
+                            line_b_size
+                            );
+                    outf("    %s", para_string(para_a));
+                    outf("    %s", para_string(nearest_para));
+                    outf("para_a ctm=%s", matrix_string(&para_a->lines[0]->spans[0]->ctm));
+                    outf("para_a trm=%s", matrix_string(&para_a->lines[0]->spans[0]->trm));
+                }
                 /* Join these two para_t's. */
                 span_t* a_span = line_span_last(line_a);
                 if (span_char_last(a_span)->ucs == '-') {
@@ -2089,7 +2136,7 @@ static int read_spans_trace(const char* path, document_t* document)
 
 /* Writes paragraphs from document_t into docx content. On return
 *content points to zero-terminated content, allocated by realloc(). */
-static int paras_to_content(document_t* document, string_t* content)
+static int paras_to_content(document_t* document, string_t* content, int spacing)
 {
     int ret = -1;
 
@@ -2106,16 +2153,21 @@ static int paras_to_content(document_t* document, string_t* content)
         int p;
         for (p=0; p<page->paras_num; ++p) {
             para_t* para = page->paras[p];
-            if (ctm_prev
+            if (spacing
+                    && ctm_prev
                     && para->lines_num
                     && para->lines[0]->spans_num
+                    && memcmp(ctm_prev, &para->lines[0]->spans[0]->ctm, sizeof(*ctm_prev))
                     ) {
-                if (memcmp(ctm_prev, &para->lines[0]->spans[0]->ctm, sizeof(*ctm_prev))) {
-                    if (docx_paragraph_empty(content)) goto end;
-                }
+                /* Extra vertical space between paragraphs that were at
+                different angles in the original document. */
+                if (docx_paragraph_empty(content)) goto end;
             }
 
-            if (docx_paragraph_empty(content)) goto end;
+            if (spacing) {
+                /* Extra vertical space between paragraphs. */
+                if (docx_paragraph_empty(content)) goto end;
+            }
             if (docx_paragraph_start(content)) goto end;
 
             int l;
@@ -2193,67 +2245,6 @@ static int paras_to_content(document_t* document, string_t* content)
                 font_name = NULL;
             }
             if (docx_paragraph_finish(content)) goto end;
-            
-            #if 0
-            if (docx_paragraph_start(content)) goto end;
-            if (docx_run_start(content, "OpenSans", 10, 0 /*font_bold*/, 0 /*font_italic*/)) goto end;
-            
-            if (docx_run_finish(content)) goto end;
-            if (docx_paragraph_finish(content)) goto end;
-            string_cat(content,
-                    "<w:p>"
-                    "<w:pPr>"
-                    "<w:pStyle w:val=\"HorizontalLine\"/>"
-                    "<w:suppressLineNumbers/>"
-                    "<w:pBdr>"
-                    "<w:bottom w:val=\"double\" w:sz=\"2\" w:space=\"0\" w:color=\"808080\"/>"
-                    "</w:pBdr>"
-                    "<w:bidi w:val=\"0\"/>"
-                    "<w:spacing w:before=\"0\" w:after=\"283\"/>"
-                    "<w:jc w:val=\"left\"/>"
-                    "<w:rPr>"
-                    "</w:rPr>"
-                    "</w:pPr>"
-                    "<w:r>"
-                    "<w:rPr>"
-                    "</w:rPr>"
-                    "</w:r>"
-                    "</w:p>"
-                    );
-            string_cat(content,
-                    "<w:p>"
-                    "<w:pPr>"
-                    "<w:pStyle w:val=\"HorizontalLine\"/>"
-                    "<w:rPr>"
-                    "</w:rPr>"
-                    "</w:pPr>"
-                    "<w:r>"
-                    "<w:rPr>"
-                    "</w:rPr>"
-                    "</w:r>"
-                    "</w:p>"
-                    );
-            
-            ""
-            "<w:p>"
-            "<w:pPr>"
-            "<w:pStyle w:val="HorizontalLine"/>"
-            "<w:suppressLineNumbers/>"
-            "<w:pBdr>"
-            "<w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>"
-            "</w:pBdr>"
-            "<w:bidi w:val="0"/>"
-            "<w:spacing w:before="0" w:after="283"/>"
-            "<w:jc w:val="left"/>"
-            "<w:rPr>"
-            "</w:rPr>"
-            "</w:pPr>"
-            "<w:r>"
-            "<w:rPr>"
-            "</w:rPr>"
-            "</w:r>"
-            "</w:p>
-            #endif
         }
     }
     ret = 0;
@@ -2268,7 +2259,11 @@ static int paras_to_content(document_t* document, string_t* content)
 
 /* Reads from intermediate data and converts into docx content. On return
 *content points to zero-terminated content, allocated by realloc(). */
-static int document_to_docx_content(document_t* document, string_t* content)
+static int document_to_docx_content(
+        document_t* document,
+        string_t* content,
+        int spacing
+        )
 {
     int ret = -1;
 
@@ -2284,7 +2279,7 @@ static int document_to_docx_content(document_t* document, string_t* content)
         if (make_paras(page->lines, page->lines_num, &page->paras, &page->paras_num)) goto end;
     }
 
-    if (paras_to_content(document, content)) goto end;
+    if (paras_to_content(document, content, spacing)) goto end;
 
     ret = 0;
 
@@ -2315,6 +2310,7 @@ int main(int argc, char** argv)
     const char* content_path        = NULL;
     int         preserve_dir        = 0;
     const char* method              = NULL;
+    int         spacing             = 1;
 
     for (int i=1; i<argc; ++i) {
         const char* arg = argv[i];
@@ -2348,6 +2344,10 @@ int main(int argc, char** argv)
                     "        Output .docx file.\n"
                     "    -p 0|1\n"
                     "        If 1, we preserve uncompressed <docx-path>.lib/ directory.\n"
+                    "    -s 0|1\n"
+                    "        If 1, we insert extra vertical space between paragraphs and extra\n"
+                    "        vertical space between paragrpahs that had different ctm matrices in\n"
+                    "        the original document.\n"
                     "    -t <docx-template>\n"
                     "        Name of docx file to use as template.\n"
                     );
@@ -2366,6 +2366,9 @@ int main(int argc, char** argv)
         }
         else if (!strcmp(arg, "-p")) {
             preserve_dir = atoi(argv[++i]);
+        }
+        else if (!strcmp(arg, "-s")) {
+            spacing = atoi(argv[++i]);
         }
         else if (!strcmp(arg, "-t")) {
             docx_template_path = argv[++i];
@@ -2398,10 +2401,6 @@ int main(int argc, char** argv)
             outf("Failed to read 'trace' output from: %s", input_path);
             goto end;
         }
-        if (document_to_docx_content(&document, &content)) {
-            outf("Failed to create docx content errno=%i: %s", errno, strerror(errno));
-            goto end;
-        }
     }
     else if (!strcmp(method, "raw") || !strcmp(method, "gs")) {
         /* Mupdf/Ghostscript use different coordinate systems:
@@ -2417,15 +2416,18 @@ int main(int argc, char** argv)
             outf("Failed to read 'raw' output from: %s", input_path);
             goto end;
         }
-        if (document_to_docx_content(&document, &content)) {
-            outf("Failed to create docx content errno=%i: %s", errno, strerror(errno));
-            return 1;
-        }
     }
     else {
         outf("Unrecognised method '%s'", method);
         errno = ESRCH;
         goto end;
+    }
+    
+    if (document.pages_num) {
+        if (document_to_docx_content(&document, &content, spacing)) {
+            outf("Failed to create docx content errno=%i: %s", errno, strerror(errno));
+            goto end;
+        }
     }
 
     if (content_path) {
