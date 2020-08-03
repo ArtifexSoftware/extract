@@ -26,6 +26,7 @@ set.
 #include <sys/stat.h>
 
 
+/* Simple printf-style debug output. */
 static void outf(const char* file, int line, const char* fn, int ln, const char* format, ...)
 {
     va_list va;
@@ -35,8 +36,11 @@ static void outf(const char* file, int line, const char* fn, int ln, const char*
     va_start(va, format);
     vfprintf(stderr, format, va);
     va_end(va);
-    if (ln && format[strlen(format)-1] != '\n') {
-        fprintf(stderr, "\n");
+    if (ln) {
+        size_t len = strlen(format);
+        if (len == 0 || format[len-1] != '\n') {
+            fprintf(stderr, "\n");
+        }
     }
 }
 
@@ -495,7 +499,10 @@ static int s_read_matrix(const char* text, matrix_t* matrix)
             &matrix->e,
             &matrix->f
             );
-    assert(n == 6);
+    if (n != 6) {
+        errno = EINVAL;
+        return -1;
+    }
     return 0;
 }
 
@@ -515,7 +522,10 @@ static int s_read_matrix4(const char* text, matrix_t* matrix)
             &matrix->c,
             &matrix->d
             );
-    assert(n == 4);
+    if (n != 4) {
+        errno = EINVAL;
+        return -1;
+    }
     matrix->e = 0;
     matrix->f = 0;
     return 0;
@@ -573,6 +583,19 @@ static int docx_char_append_string(string_t* content, char* text)
 static int docx_char_append_char(string_t* content, char c)
 {
     return string_catc(content, c);
+}
+
+static int docx_paragraph_empty(string_t* content)
+{
+    int e = -1;
+    if (docx_paragraph_start(content)) goto end;
+    if (docx_run_start(content, "OpenSans", 10, 0 /*font_bold*/, 0 /*font_italic*/)) goto end;
+
+    if (docx_run_finish(content)) goto end;
+    if (docx_paragraph_finish(content)) goto end;
+    e = 0;
+    end:
+    return e;
 }
 
 /* Removes last <len> chars. */
@@ -1329,8 +1352,8 @@ static double line_font_size_max(line_t* line)
 
 
 
-/* Find distance between line_a and line_b. */
-/*
+/* Find distance between parallel lines line_a and line_b, both at <angle>.
+
         _-R
      _-
     A------------_P
@@ -1339,13 +1362,14 @@ static double line_font_size_max(line_t* line)
        \_-
         Q
 
+A is (ax, ay)
+B is (bx, by)
+APB and PAR are both <angle>.
+
 AR and QBP are parallel, and are the lines of text a and b
 respectively.
 
-AQB is a right angle.
-APB and PAR are both angle_a.
-
-We need to find AQ.
+AQB is a right angle. We need to find AQ.
 */
 static double line_distance(double ax, double ay, double bx, double by, double angle)
 {
@@ -1794,7 +1818,7 @@ static int page_span_end_clean( page_t* page)
 }
 
 /* Reads from intermediate format in file <path> into document_t. */
-static int read_spans_raw(const char* path, document_t* document, reverse_y)
+static int read_spans_raw(const char* path, document_t* document, int reverse_y)
 {
     int ret = -1;
 
@@ -1868,8 +1892,8 @@ static int read_spans_raw(const char* path, document_t* document, reverse_y)
             span_t* span = page_span_append(page);
             if (!span) goto end;
 
-            s_read_matrix(xml_tag_attributes_find(&tag, "ctm"), &span->ctm);
-            s_read_matrix(xml_tag_attributes_find(&tag, "trm"), &span->trm);
+            if (s_read_matrix(xml_tag_attributes_find(&tag, "ctm"), &span->ctm)) goto end;
+            if (s_read_matrix(xml_tag_attributes_find(&tag, "trm"), &span->trm)) goto end;
             char* f = xml_tag_attributes_find(&tag, "font_name");
             if (!f) {
                 outf("Failed to find attribute 'font_name'");
@@ -1991,7 +2015,7 @@ static int read_spans_trace(const char* path, document_t* document)
             }
             if (strcmp(tag.name, "fill_text")) continue;
             matrix_t   ctm;
-            s_read_matrix(xml_tag_attributes_find(&tag, "transform"), &ctm);
+            if (s_read_matrix(xml_tag_attributes_find(&tag, "transform"), &ctm)) goto end;
 
             for(;;) {
                 if (pparse_next(in, &tag)) goto end;
@@ -2009,7 +2033,7 @@ static int read_spans_trace(const char* path, document_t* document)
                 /* trace-device appears to only write first four members of
                 fz_text_span::trm, on the assumption that .e and .f are zero,
                 so we use s_read_matrix4() here. */
-                s_read_matrix4(xml_tag_attributes_find(&tag, "trm"), &span->trm);
+                if (s_read_matrix4(xml_tag_attributes_find(&tag, "trm"), &span->trm)) goto end;
                 char* f = xml_tag_attributes_find(&tag, "font");
                 char* ff = strchr(f, '+');
                 if (ff)  f = ff + 1;
@@ -2078,9 +2102,20 @@ static int paras_to_content(document_t* document, string_t* content)
         float       font_size = 0;
         int         font_bold = 0;
         int         font_italic = 0;
+        matrix_t*   ctm_prev = NULL;
         int p;
         for (p=0; p<page->paras_num; ++p) {
             para_t* para = page->paras[p];
+            if (ctm_prev
+                    && para->lines_num
+                    && para->lines[0]->spans_num
+                    ) {
+                if (memcmp(ctm_prev, &para->lines[0]->spans[0]->ctm, sizeof(*ctm_prev))) {
+                    if (docx_paragraph_empty(content)) goto end;
+                }
+            }
+
+            if (docx_paragraph_empty(content)) goto end;
             if (docx_paragraph_start(content)) goto end;
 
             int l;
@@ -2089,6 +2124,7 @@ static int paras_to_content(document_t* document, string_t* content)
                 int s;
                 for (s=0; s<line->spans_num; ++s) {
                     span_t* span = line->spans[s];
+                    ctm_prev = &span->ctm;
                     if (!font_name
                             || strcmp(span->font_name, font_name)
                             || fz_matrix_expansion(span->trm) != font_size
@@ -2157,6 +2193,67 @@ static int paras_to_content(document_t* document, string_t* content)
                 font_name = NULL;
             }
             if (docx_paragraph_finish(content)) goto end;
+            
+            #if 0
+            if (docx_paragraph_start(content)) goto end;
+            if (docx_run_start(content, "OpenSans", 10, 0 /*font_bold*/, 0 /*font_italic*/)) goto end;
+            
+            if (docx_run_finish(content)) goto end;
+            if (docx_paragraph_finish(content)) goto end;
+            string_cat(content,
+                    "<w:p>"
+                    "<w:pPr>"
+                    "<w:pStyle w:val=\"HorizontalLine\"/>"
+                    "<w:suppressLineNumbers/>"
+                    "<w:pBdr>"
+                    "<w:bottom w:val=\"double\" w:sz=\"2\" w:space=\"0\" w:color=\"808080\"/>"
+                    "</w:pBdr>"
+                    "<w:bidi w:val=\"0\"/>"
+                    "<w:spacing w:before=\"0\" w:after=\"283\"/>"
+                    "<w:jc w:val=\"left\"/>"
+                    "<w:rPr>"
+                    "</w:rPr>"
+                    "</w:pPr>"
+                    "<w:r>"
+                    "<w:rPr>"
+                    "</w:rPr>"
+                    "</w:r>"
+                    "</w:p>"
+                    );
+            string_cat(content,
+                    "<w:p>"
+                    "<w:pPr>"
+                    "<w:pStyle w:val=\"HorizontalLine\"/>"
+                    "<w:rPr>"
+                    "</w:rPr>"
+                    "</w:pPr>"
+                    "<w:r>"
+                    "<w:rPr>"
+                    "</w:rPr>"
+                    "</w:r>"
+                    "</w:p>"
+                    );
+            
+            ""
+            "<w:p>"
+            "<w:pPr>"
+            "<w:pStyle w:val="HorizontalLine"/>"
+            "<w:suppressLineNumbers/>"
+            "<w:pBdr>"
+            "<w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>"
+            "</w:pBdr>"
+            "<w:bidi w:val="0"/>"
+            "<w:spacing w:before="0" w:after="283"/>"
+            "<w:jc w:val="left"/>"
+            "<w:rPr>"
+            "</w:rPr>"
+            "</w:pPr>"
+            "<w:r>"
+            "<w:rPr>"
+            "</w:rPr>"
+            "</w:r>"
+            "</w:p>
+            #endif
         }
     }
     ret = 0;
@@ -2307,6 +2404,13 @@ int main(int argc, char** argv)
         }
     }
     else if (!strcmp(method, "raw") || !strcmp(method, "gs")) {
+        /* Mupdf/Ghostscript use different coordinate systems:
+            Mupdf: (0,0) is top-left, with y increasing downwards.
+            Gs: (0,0) is bottom left with y increasing upwards.
+        
+        So we need to reverse the y coordinates in one of these; we default to
+        Mupdf's system, so need to reverse y coordinates if intermediate data
+        is from gs: */
         int reverse_y = 0;
         if (!strcmp(method, "gs")) reverse_y = 1;
         if (read_spans_raw(input_path, &document, reverse_y)) {
