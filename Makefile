@@ -66,7 +66,7 @@ test-mu: Python2.pdf-test-mu zlib.3.pdf-test-mu
 	diff -u test/$<.mu-raw.content.xml $<.mu-raw.content.ref.xml
 	@echo == Test succeeded.
 
-test-gs: Python2.pdf-test-gs zlib.3.pdf-test-gs
+test-gs: zlib.3.pdf-test-gs #Python2.pdf-test-gs
 
 %.pdf-test-gs: %.pdf $(exe)
 	@echo

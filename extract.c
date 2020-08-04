@@ -478,6 +478,39 @@ static const char* matrix_string(const matrix_t* matrix)
     return ret;
 }
 
+/* Returns +1, 0 or -1 depending on sign of x. */
+static int sign(float x)
+{
+    if (x < 0)  return -1;
+    if (x > 0)  return +1;
+    return 0;
+}
+
+/* Returns zero if *lhs and *rhs are equal, otherwise +/- 1. */
+static int matrix_cmp(const matrix_t* lhs, const matrix_t* rhs)
+{
+    int ret;
+    ret = sign(lhs->a - rhs->a);    if (ret) return ret;
+    ret = sign(lhs->b - rhs->b);    if (ret) return ret;
+    ret = sign(lhs->c - rhs->c);    if (ret) return ret;
+    ret = sign(lhs->d - rhs->d);    if (ret) return ret;
+    ret = sign(lhs->e - rhs->e);    if (ret) return ret;
+    ret = sign(lhs->f - rhs->f);    if (ret) return ret;
+    return 0;
+}
+
+/* Returns zero if first four members of *lhs and *rhs are equal, otherwise
++/-1. */
+static int matrix_cmp4(const matrix_t* lhs, const matrix_t* rhs)
+{
+    int ret;
+    ret = sign(lhs->a - rhs->a);    if (ret) return ret;
+    ret = sign(lhs->b - rhs->b);    if (ret) return ret;
+    ret = sign(lhs->c - rhs->c);    if (ret) return ret;
+    ret = sign(lhs->d - rhs->d);    if (ret) return ret;
+    return 0;
+}
+
 float fz_matrix_expansion(matrix_t m)
 {
     return sqrtf(fabsf(m.a * m.d - m.b * m.c));
@@ -576,6 +609,7 @@ static int docx_run_start(string_t* content, const char* font_name, double font_
     if (!e && italic) e = string_cat(content, "<w:i/>");
     {
         char   font_size_text[32];
+        if (0) font_size = 10;
 
         if (!e) e = string_cat(content, "<w:sz w:val=\"");
         snprintf(font_size_text, sizeof(font_size_text), "%f", font_size * 2);
@@ -1092,11 +1126,7 @@ static int lines_are_compatible(line_t* a, line_t* b, double angle_a, int verbos
     if (a == b) return 0;
     if (!a->spans || !b->spans) return 0;
     if (line_span_first(a)->wmode != line_span_first(b)->wmode)   return 0;
-    if (memcmp(
-            &line_span_first(a)->ctm,
-            &line_span_first(b)->ctm,
-            sizeof(matrix_t)
-            )) {
+    if (matrix_cmp4(&line_span_first(a)->ctm, &line_span_first(b)->ctm)) {
         if (verbose) {
             outf("ctm's differ:");
             outf("    %f %f %f %f %f %f",
@@ -1340,7 +1370,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
         }
     }
 
-    outfx("Have made %i joins out of %i spans", num_joins, lines_num);
+    outf("Have made %i joins out of %i spans", num_joins, lines_num);
 
     /* Remove empty lines left behind after we appended pairs of lines. */
     int from;
@@ -1439,8 +1469,10 @@ static int paras_cmp(const void* a, const void* b)
     span_t* a_span = line_span_first(a_line);
     span_t* b_span = line_span_first(b_line);
 
-    /* If ctm matrices differ, always return this diff first. */
-    int d = memcmp(&a_span->ctm, &b_span->ctm, sizeof(a_span->ctm));
+    /* If ctm matrices differ, always return this diff first. Note that we
+    ignore .e and .f, because if data is from gs .e and .f are non-zero and
+    vary for each span, and this messes up what we're trying to do. */
+    int d = matrix_cmp4(&a_span->ctm, &b_span->ctm);
     if (d)  return d;
 
     double a_angle = line_angle(a_line);
@@ -1630,7 +1662,7 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
     *o_paras = paras;
     *o_paras_num = paras_num;
     ret = 0;
-    outfx("Have made %i joins out of %i paras", num_joins, paras_num);
+    outf("Have made %i joins out of %i paras", num_joins, paras_num);
 
     end:
 
@@ -1787,7 +1819,7 @@ static int page_span_end_clean( page_t* page)
         return 0;
     }
 
-    float font_size = fz_matrix_expansion(span->trm);
+    float font_size = fz_matrix_expansion(span->trm);// * fz_matrix_expansion(span->ctm);
 
     point_t dir;
     if (span->wmode) {
@@ -1839,12 +1871,15 @@ static int page_span_end_clean( page_t* page)
         previous characters, so split into two spans. This often
         splits text incorrectly, but this is corrected later when
         we join spans into lines. */
-        outfx("Splitting last char into new span. font_size=%f dir.x=%f x=%f err=(%f, %f) pos=(%f, %f): %s",
+        outf("Splitting last char into new span. font_size=%f dir.x=%f x=%f y=%f char[-1]=(%f, %f) err=(%f, %f): %s",
                 font_size,
                 dir.x,
                 x,
-                err_x, err_y,
-                x, y,
+                y,
+                char_[-1].x,
+                char_[-1].y,
+                err_x,
+                err_y,
                 span_string(span)
                 );
         span_t* span2 = page_span_append(page);
@@ -2157,7 +2192,7 @@ static int paras_to_content(document_t* document, string_t* content, int spacing
                     && ctm_prev
                     && para->lines_num
                     && para->lines[0]->spans_num
-                    && memcmp(ctm_prev, &para->lines[0]->spans[0]->ctm, sizeof(*ctm_prev))
+                    && matrix_cmp4(ctm_prev, &para->lines[0]->spans[0]->ctm)
                     ) {
                 /* Extra vertical space between paragraphs that were at
                 different angles in the original document. */
