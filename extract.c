@@ -479,7 +479,7 @@ static const char* matrix_string(const matrix_t* matrix)
 }
 
 /* Returns +1, 0 or -1 depending on sign of x. */
-static int sign(float x)
+static int sign(double x)
 {
     if (x < 0)  return -1;
     if (x > 0)  return +1;
@@ -1470,8 +1470,8 @@ static int paras_cmp(const void* a, const void* b)
     span_t* b_span = line_span_first(b_line);
 
     /* If ctm matrices differ, always return this diff first. Note that we
-    ignore .e and .f, because if data is from gs .e and .f are non-zero and
-    vary for each span, and this messes up what we're trying to do. */
+    ignore .e and .f because if data is from ghostscript then .e and .f vary
+    for each span, and we don't care about these differences. */
     int d = matrix_cmp4(&a_span->ctm, &b_span->ctm);
     if (d)  return d;
 
@@ -1871,7 +1871,7 @@ static int page_span_end_clean( page_t* page)
         previous characters, so split into two spans. This often
         splits text incorrectly, but this is corrected later when
         we join spans into lines. */
-        outf("Splitting last char into new span. font_size=%f dir.x=%f x=%f y=%f char[-1]=(%f, %f) err=(%f, %f): %s",
+        outfx("Splitting last char into new span. font_size=%f dir.x=%f x=%f y=%f char[-1]=(%f, %f) err=(%f, %f): %s",
                 font_size,
                 dir.x,
                 x,
