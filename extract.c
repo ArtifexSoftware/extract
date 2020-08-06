@@ -1082,7 +1082,7 @@ static line_t* para_line_last(const para_t* para)
 static double span_angle(span_t* span)
 {
     /* Assume ctm is a rotation matix. */
-    float ret = atan2f(-span->ctm.b, span->ctm.a);
+    float ret = atan2f(-span->ctm.c, span->ctm.a);
     outfx("ctm.a=%f ctm.b=%f ret=%f", span->ctm.a, span->ctm.b, ret);
     return ret;
     /* Not sure whether this is right. Inclined text seems to be done by
@@ -1220,14 +1220,24 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
         }
 
         int verbose = 0;
-        if (a < 1) verbose = 1;
+        //if (a < 1) verbose = 1;
+        outfx("looking at line_a=%s", line_string2(line_a));
+        if (strstr(line_string(line_a), "forgot")) {
+            outf("setting verbose for: %s", line_string2(line_a));
+            verbose = 1;
+        }
         line_t* nearest_line = NULL;
         int nearest_line_b = -1;
         double nearest_adv = 0;
 
         span_t* span_a = line_span_last(line_a);
         double angle_a = span_angle(span_a);
-        if (verbose) outf("a=%i angle_a=%lf ctm=%s: %s", a, angle_a, matrix_string(&span_a->ctm), line_string(line_a));
+        if (verbose) outf("a=%i angle_a=%lf ctm=%s: %s",
+                a,
+                angle_a * 180/3.1415926,
+                matrix_string(&span_a->ctm),
+                line_string2(line_a)
+                );
 
         int b;
         for (b=0; b<lines_num; ++b) {
@@ -1239,15 +1249,19 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             if (b == a) {
                 continue;
             }
-            if (verbose) outf("a=%i b=%i: nearest_line_b=%i nearest_adv=%lf: %s",
-                    a,
-                    b,
-                    nearest_line_b,
-                    nearest_adv,
-                    line_string(line_b)
-                    );
-            if (!lines_are_compatible(line_a, line_b, angle_a, verbose)) {
-                if (verbose) outf("not compatible");
+            if (verbose) {
+                outf("");
+                outf("a=%i b=%i: nearest_line_b=%i nearest_adv=%lf",
+                        a,
+                        b,
+                        nearest_line_b,
+                        nearest_adv
+                        );
+                outf("    line_a=%s", line_string2(line_a));
+                outf("    line_b=%s", line_string2(line_b));
+            }
+            if (!lines_are_compatible(line_a, line_b, angle_a, 0*verbose)) {
+                if (verbose) outfx("not compatible");
                 continue;
             }
 
@@ -1258,16 +1272,21 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             span_b. This detects whether the lines are lined up with each other
             (as opposed to being at the same angle but in different lines). */
             span_t* span_b = line_span_first(line_b);
+            float dx = span_char_first(span_b)->x - span_char_last(span_a)->x;
+            float dy = span_char_first(span_b)->y - span_char_last(span_a)->y;
             double angle_a_b = atan2(
-                    -(span_char_first(span_b)->y - span_char_last(span_a)->y),
-                    span_char_first(span_b)->x - span_char_last(span_a)->x
+                    -dy,
+                    dx
                     );
             if (verbose) {
-                outf("alast=(%f %f) bfirst=(%f %f): angle_a_b=%lf",
+                outf("delta=(%f %f) alast=(%f %f) bfirst=(%f %f): angle_a=%lf angle_a_b=%lf",
+                        dx,
+                        dy,
                         span_char_last(span_a)->x,
                         span_char_last(span_a)->y,
                         span_char_first(span_b)->x,
                         span_char_first(span_b)->y,
+                        angle_a * 180 / pi,
                         angle_a_b * 180 / pi
                         );
             }
@@ -1518,7 +1537,7 @@ static int paras_cmp(const void* a, const void* b)
     double ay = line_item_first(a_line)->y;
     double bx = line_item_first(b_line)->x;
     double by = line_item_first(b_line)->y;
-    double distance = line_distance(ax, ay, bx, by, angle);
+    double distance = line_distance(ax, -ay, bx, -by, angle);
     if (distance > 0)   return -1;
     if (distance < 0)   return +1;
     return 0;
@@ -1582,6 +1601,12 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
 
         line_t* line_a = para_line_last(para_a);
         double angle_a = line_angle(line_a);
+        
+        int verbose = 0;
+        if (strstr(line_string2(line_a), "He had ")) {
+            outf("setting verbose");
+            verbose = 1;
+        }
 
         /* Look for nearest para_t that could be appended to para_a. */
         int b;
@@ -1602,9 +1627,23 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
             double bx = line_item_first(line_b)->x;
             double by = line_item_first(line_b)->y;
             double distance = line_distance(ax, ay, bx, by, angle_a);
-
+            if (verbose) {
+                outf("angle_a=%lf a=(%lf %lf) b=(%lf %lf) delta=(%lf %lf) distance=%lf:",
+                        angle_a * 180 / 3.1415926,
+                        ax, ay,
+                        bx, by,
+                        bx - ax,
+                        -(by - ay),
+                        distance
+                        );
+                outf("    line_a=%s", line_string2(line_a));
+                outf("    line_b=%s", line_string2(line_b));
+            }
             if (distance > 0) {
                 if (nearest_para_distance == -1 || distance < nearest_para_distance) {
+                    outf("updating nearest. distance=%lf:", distance);
+                    outf("    line_a=%s", line_string2(line_a));
+                    outf("    line_b=%s", line_string2(line_b));
                     nearest_para_distance = distance;
                     nearest_para_b = b;
                     nearest_para = para_b;
@@ -1617,7 +1656,7 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
             (void) line_b; /* Only used in outfx(). */
             double line_b_size = line_font_size_max(para_line_first(nearest_para));
             if (nearest_para_distance < 1.5 * line_b_size) {
-                if (0) {
+                if (1) {
                     outf(
                             "joing paragraphs. a=(%lf,%lf) b=(%lf,%lf) nearest_para_distance=%lf line_b_size=%lf",
                             line_item_last(line_a)->x,
@@ -1669,6 +1708,10 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
                     again. */
                     a -= 1;
                 }
+            }
+            else {
+                outf("Not joining paragraphs. nearest_para_distance=%lf line_b_size=%lf",
+                        nearest_para_distance, line_b_size);
             }
         }
     }
