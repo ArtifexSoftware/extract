@@ -1500,26 +1500,6 @@ static double line_distance(double ax, double ay, double bx, double by, double a
     double dy = by - ay;
     
     return dx * sin(angle) + dy * cos(angle);
-    
-    double angle1 = atan2(-dy, dx); /* angle BAP */
-    double angle2 = angle + angle1; /* angle BAR = ABQ */
-    double distance1 = sqrt(dx*dx + dy*dy); /* AB */
-    double distance = distance1 * sin(angle2); /* AQ */
-    if (verbose) {
-        outf("delta=(%lf %lf) angle=%lf angle1=%lf angle2=%lf distance1=%lf distance=%lf",
-                dx, dy,
-                angle * 180/pi,
-                angle1 * 180/pi,
-                angle2 * 180/pi,
-                distance1,
-                distance
-                );
-    }
-    if (angle == 0) {
-        /* Sanity check if AR and QBP are horizontal. */
-        assert(fabs(distance - (ay - by)) < 0.1);
-    }
-    return distance;
 }
 
 /* A comparison function for use with qsort(), for sorting paragraphs within a
