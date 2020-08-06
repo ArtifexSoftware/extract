@@ -859,6 +859,8 @@ without using mupdf's stext device. */
 
 typedef struct
 {
+    float       pre_x;
+    float       pre_y;
     float       x;
     float       y;
     int         gid;
@@ -909,8 +911,9 @@ const char* span_string(span_t* span)
     string_free(&ret);
     char buffer[200];
     snprintf(buffer, sizeof(buffer),
-            "span %p: (%c:%f,%f)..(%c:%f,%f) font=%s:(%f,%f) wmode=%i chars_num=%i: ",
+            "span %p: chars_num=%i (%c:%f,%f)..(%c:%f,%f) font=%s:(%f,%f) wmode=%i chars_num=%i: ",
             span,
+            span->chars_num,
             c0, x0, y0,
             c1, x1, y1,
             span->font_name,
@@ -1078,16 +1081,20 @@ static line_t* para_line_last(const para_t* para)
 
 static double span_angle(span_t* span)
 {
+    /* Assume ctm is a rotation matix. */
+    float ret = atan2f(-span->ctm.b, span->ctm.a);
+    outfx("ctm.a=%f ctm.b=%f ret=%f", span->ctm.a, span->ctm.b, ret);
+    return ret;
     /* Not sure whether this is right. Inclined text seems to be done by
     setting the ctm matrix, so not really sure what trm matrix does. This code
     assumes that it also inclines text, but maybe it only rotates individual
     glyphs? */
-    if (span->wmode == 0) {
+    /*if (span->wmode == 0) {
         return atan2(span->trm.b, span->trm.a);
     }
     else {
         return atan2(span->trm.d, span->trm.c);
-    }
+    }*/
 }
 
 /* Returns angle of <line>. */
@@ -1200,6 +1207,8 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
         lines[a]->spans[0] = spans[a];
         outfx("initial line a=%i: %s", a, line_string(lines[a]));
     }
+    
+    int num_compatible = 0;
 
     /* For each line, look for nearest aligned line, and append if found. */
     int num_joins = 0;
@@ -1211,19 +1220,23 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
         }
 
         int verbose = 0;
-        outfx("a=%i: %s", a, line_string(line_a));
+        if (a < 1) verbose = 1;
         line_t* nearest_line = NULL;
         int nearest_line_b = -1;
         double nearest_adv = 0;
 
         span_t* span_a = line_span_last(line_a);
         double angle_a = span_angle(span_a);
+        if (verbose) outf("a=%i angle_a=%lf ctm=%s: %s", a, angle_a, matrix_string(&span_a->ctm), line_string(line_a));
 
         int b;
         for (b=0; b<lines_num; ++b) {
 
             line_t* line_b = lines[b];
             if (!line_b) {
+                continue;
+            }
+            if (b == a) {
                 continue;
             }
             if (verbose) outf("a=%i b=%i: nearest_line_b=%i nearest_adv=%lf: %s",
@@ -1238,17 +1251,28 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                 continue;
             }
 
+            num_compatible += 1;
+            const double    pi = 3.14159265;
+
             /* Find angle between last glyph of span_a and first glyph of
             span_b. This detects whether the lines are lined up with each other
             (as opposed to being at the same angle but in different lines). */
             span_t* span_b = line_span_first(line_b);
             double angle_a_b = atan2(
-                    span_char_first(span_b)->y - span_char_last(span_a)->y,
+                    -(span_char_first(span_b)->y - span_char_last(span_a)->y),
                     span_char_first(span_b)->x - span_char_last(span_a)->x
                     );
+            if (verbose) {
+                outf("alast=(%f %f) bfirst=(%f %f): angle_a_b=%lf",
+                        span_char_last(span_a)->x,
+                        span_char_last(span_a)->y,
+                        span_char_first(span_b)->x,
+                        span_char_first(span_b)->y,
+                        angle_a_b * 180 / pi
+                        );
+            }
             /* Might want to relax this when we test on non-horizontal lines.
             */
-            const double    pi = 3.14159265;
             const double    angle_tolerance_deg = 1;
             if (fabs(angle_a_b - angle_a) * 180/pi <= angle_tolerance_deg) {
                 /* Find distance between end of line_a and beginning of line_b. */
@@ -1303,7 +1327,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                 int insert_space = (nearest_adv > 0.25 * average_adv);
                 if (insert_space) {
                     /* Append space to span_a before concatenation. */
-                    outfx("(inserted space) nearest_adv=%lf average_adv=%lf",
+                    outf("(inserted space) nearest_adv=%lf average_adv=%lf",
                             nearest_adv,
                             average_adv
                             );
@@ -1341,6 +1365,10 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             space could result in an empty line_t, which could break various
             assumptions elsewhere. */
 
+            outfx("Joining spans a=%i b=%i:", a, b);
+            outfx("    %s", span_string2(span_a));
+            outfx("    %s", span_string2(span_b));
+
             span_t** s = realloc(
                     line_a->spans,
                     sizeof(span_t*) * (line_a->spans_num + nearest_line->spans_num)
@@ -1370,8 +1398,6 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
         }
     }
 
-    outf("Have made %i joins out of %i spans", num_joins, lines_num);
-
     /* Remove empty lines left behind after we appended pairs of lines. */
     int from;
     int to;
@@ -1393,6 +1419,12 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
     *o_lines = lines;
     *o_lines_num = lines_num;
     ret = 0;
+
+    outf("Turned %i spans into %i lines. num_compatible=%i",
+            spans_num,
+            lines_num,
+            num_compatible
+            );
 
     end:
     if (ret) {
@@ -1662,7 +1694,11 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
     *o_paras = paras;
     *o_paras_num = paras_num;
     ret = 0;
-    outf("Have made %i joins out of %i paras", num_joins, paras_num);
+    outf("Turned %i lines into %i paras",
+            lines_num,
+            paras_num
+            );
+
 
     end:
 
@@ -1832,11 +1868,11 @@ static int page_span_end_clean( page_t* page)
     }
     dir = transform_vector(dir, span->trm);
 
-    float x = char_[-2].x + char_[-2].adv * dir.x;
-    float y = char_[-2].y + char_[-2].adv * dir.y;
+    float x = char_[-2].pre_x + char_[-2].adv * dir.x;
+    float y = char_[-2].pre_y + char_[-2].adv * dir.y;
 
-    float err_x = (char_[-1].x - x) / font_size;
-    float err_y = (char_[-1].y - y) / font_size;
+    float err_x = (char_[-1].pre_x - x) / font_size;
+    float err_y = (char_[-1].pre_y - y) / font_size;
     
     if (span->chars_num >= 2 && span->chars[span->chars_num-2].ucs == ' ') {
         int remove_penultimate_space = 0;
@@ -1845,10 +1881,10 @@ static int page_span_end_clean( page_t* page)
                 ) {
             remove_penultimate_space = 1;
         }
-        if ((char_[-1].x - char_[-2].x) / font_size < char_[-1].adv / 10) {
+        if ((char_[-1].pre_x - char_[-2].pre_x) / font_size < char_[-1].adv / 10) {
             outfx("removing penultimate space because space very narrow:"
-                    "char_[-1].x-char_[-2].x=%f font_size=%f char_[-1].adv=%f",
-                    char_[-1].x-char_[-2].x,
+                    "char_[-1].pre_x-char_[-2].pre_x=%f font_size=%f char_[-1].adv=%f",
+                    char_[-1].pre_x-char_[-2].pre_x,
                     font_size,
                     char_[-1].adv
                     );
@@ -1871,13 +1907,13 @@ static int page_span_end_clean( page_t* page)
         previous characters, so split into two spans. This often
         splits text incorrectly, but this is corrected later when
         we join spans into lines. */
-        outfx("Splitting last char into new span. font_size=%f dir.x=%f x=%f y=%f char[-1]=(%f, %f) err=(%f, %f): %s",
+        outfx("Splitting last char into new span. font_size=%f dir.x=%f pre_x=%f pre_y=%f char[-1]=(%f, %f) err=(%f, %f): %s",
                 font_size,
                 dir.x,
-                x,
-                y,
-                char_[-1].x,
-                char_[-1].y,
+                pre_x,
+                pre_y,
+                char_[-1].pre_x,
+                char_[-1].pre_y,
                 err_x,
                 err_y,
                 span_string(span)
@@ -2010,11 +2046,17 @@ static int read_spans_raw(const char* path, document_t* document, int reverse_y)
                 }
                 if (span_append_c(span, 0 /*c*/)) goto end;
                 char_t* char_ = &span->chars[ span->chars_num-1];
-                if (xml_tag_attributes_find_float(&tag, "x", &char_->x)) goto end;
-                if (xml_tag_attributes_find_float(&tag, "y", &char_->y)) goto end;
+                if (xml_tag_attributes_find_float(&tag, "x", &char_->pre_x)) goto end;
+                if (xml_tag_attributes_find_float(&tag, "y", &char_->pre_y)) goto end;
+                char_->x = span->ctm.e + span->ctm.a * char_->pre_x + span->ctm.b * char_->pre_y;
+                char_->y = span->ctm.f + span->ctm.c * char_->pre_x + span->ctm.d * char_->pre_y;
                 if (xml_tag_attributes_find_float(&tag, "adv", &char_->adv)) goto end;
                 //if (xml_tag_attributes_find_int(&tag, "gid", &char_->gid)) goto end;
                 if (xml_tag_attributes_find_int(&tag, "ucs", &char_->ucs)) goto end;
+
+                /* This breaks zlib.3.pdf.gs..*/
+                //char_->y += span->ctm.f;
+                outfx("(%f %f) => (%f %f)", char_->pre_x, char_->pre_y, char_->x, char_->y);
 
                 if (reverse_y) {
                     /* 2020-07-31: ghostscript y values increase we go down the
@@ -2047,7 +2089,8 @@ static int read_spans_raw(const char* path, document_t* document, int reverse_y)
 }
 
 
-/* Reads from mupdf's trace-device into document_t. */
+/* == Obsolete==
+Reads from mupdf's trace-device into document_t. */
 static int read_spans_trace(const char* path, document_t* document)
 {
     int ret = -1;
