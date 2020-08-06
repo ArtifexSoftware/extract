@@ -1222,7 +1222,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
         int verbose = 0;
         //if (a < 1) verbose = 1;
         outfx("looking at line_a=%s", line_string2(line_a));
-        if (strstr(line_string(line_a), "forgot")) {
+        if (strstr(line_string(line_a), "ucatan")) {
             outf("setting verbose for: %s", line_string2(line_a));
             verbose = 1;
         }
@@ -1296,7 +1296,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             if (fabs(angle_a_b - angle_a) * 180/pi <= angle_tolerance_deg) {
                 /* Find distance between end of line_a and beginning of line_b. */
                 double adv = spans_adv(span_a, span_char_last(span_a), span_char_first(span_b));
-                outfx("nearest_adv=%lf. angle_a_b=%lf adv=%lf",
+                if (verbose) outf("nearest_adv=%lf. angle_a_b=%lf adv=%lf",
                         nearest_adv,
                         angle_a_b,
                         adv
@@ -1326,7 +1326,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             /* line_a and nearest_line are aligned so we can move line_b's spans on
             to the end of line_a. */
             b = nearest_line_b;
-            outfx("found nearest line. a=%i b=%i", a, b);
+            if (verbose) outf("found nearest line. a=%i b=%i", a, b);
             span_t* span_b = line_span_first(nearest_line);
 
             if (1
@@ -1493,14 +1493,28 @@ respectively.
 
 AQB is a right angle. We need to find AQ.
 */
-static double line_distance(double ax, double ay, double bx, double by, double angle)
+static double line_distance(double ax, double ay, double bx, double by, double angle, int verbose)
 {
+    double pi = 3.1415926;
     double dx = bx - ax;
     double dy = by - ay;
+    
+    return dx * sin(angle) + dy * cos(angle);
+    
     double angle1 = atan2(-dy, dx); /* angle BAP */
     double angle2 = angle + angle1; /* angle BAR = ABQ */
     double distance1 = sqrt(dx*dx + dy*dy); /* AB */
     double distance = distance1 * sin(angle2); /* AQ */
+    if (verbose) {
+        outf("delta=(%lf %lf) angle=%lf angle1=%lf angle2=%lf distance1=%lf distance=%lf",
+                dx, dy,
+                angle * 180/pi,
+                angle1 * 180/pi,
+                angle2 * 180/pi,
+                distance1,
+                distance
+                );
+    }
     if (angle == 0) {
         /* Sanity check if AR and QBP are horizontal. */
         assert(fabs(distance - (ay - by)) < 0.1);
@@ -1537,7 +1551,7 @@ static int paras_cmp(const void* a, const void* b)
     double ay = line_item_first(a_line)->y;
     double bx = line_item_first(b_line)->x;
     double by = line_item_first(b_line)->y;
-    double distance = line_distance(ax, -ay, bx, -by, angle);
+    double distance = line_distance(ax, ay, bx, by, angle, 0);
     if (distance > 0)   return -1;
     if (distance < 0)   return +1;
     return 0;
@@ -1603,7 +1617,7 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
         double angle_a = line_angle(line_a);
         
         int verbose = 0;
-        if (strstr(line_string2(line_a), "He had ")) {
+        if (strstr(line_string2(line_a), "ucatan")) {
             outf("setting verbose");
             verbose = 1;
         }
@@ -1626,14 +1640,14 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
             double ay = line_item_last(line_a)->y;
             double bx = line_item_first(line_b)->x;
             double by = line_item_first(line_b)->y;
-            double distance = line_distance(ax, ay, bx, by, angle_a);
+            double distance = line_distance(ax, ay, bx, by, angle_a, verbose);
             if (verbose) {
                 outf("angle_a=%lf a=(%lf %lf) b=(%lf %lf) delta=(%lf %lf) distance=%lf:",
                         angle_a * 180 / 3.1415926,
                         ax, ay,
                         bx, by,
                         bx - ax,
-                        -(by - ay),
+                        by - ay,
                         distance
                         );
                 outf("    line_a=%s", line_string2(line_a));
