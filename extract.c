@@ -888,6 +888,7 @@ typedef struct span_t
     int         wmode;
     char_t*     chars;
     int         chars_num;
+    int         gs;
 } span_t;
 
 /* Returns static string containing info about span_t. */
@@ -1350,6 +1351,8 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                             nearest_adv,
                             average_adv
                             );
+                    outf("    a: %s", span_string(span_a));
+                    outf("    b: %s", span_string(span_b));
                     char_t* p = realloc(span_a->chars, (span_a->chars_num + 1) * sizeof(char_t));
                     if (!p) goto end;
                     span_a->chars = p;
@@ -1817,6 +1820,7 @@ static span_t* page_span_append(page_t* page)
     span->font_name = NULL;
     span->chars = NULL;
     span->chars_num = 0;
+    span->gs = 0;
     span_t** s = realloc(page->spans, sizeof(*s) * (page->spans_num + 1));
     if (!s) {
         free(span);
@@ -1892,7 +1896,10 @@ static int page_span_end_clean( page_t* page)
         return 0;
     }
 
-    float font_size = fz_matrix_expansion(span->trm);// * fz_matrix_expansion(span->ctm);
+    float font_size = fz_matrix_expansion(span->trm) * fz_matrix_expansion(span->ctm);
+    if (span->gs) {
+        font_size *= 1000;
+    }
 
     point_t dir;
     if (span->wmode) {
@@ -1944,11 +1951,9 @@ static int page_span_end_clean( page_t* page)
         previous characters, so split into two spans. This often
         splits text incorrectly, but this is corrected later when
         we join spans into lines. */
-        outfx("Splitting last char into new span. font_size=%f dir.x=%f pre_x=%f pre_y=%f char[-1]=(%f, %f) err=(%f, %f): %s",
+        outf("Splitting last char into new span. font_size=%f dir.x=%f char[-1].pre=(%f, %f) err=(%f, %f): %s",
                 font_size,
                 dir.x,
-                pre_x,
-                pre_y,
                 char_[-1].pre_x,
                 char_[-1].pre_y,
                 err_x,
@@ -1973,7 +1978,7 @@ static int page_span_end_clean( page_t* page)
 }
 
 /* Reads from intermediate format in file <path> into document_t. */
-static int read_spans_raw(const char* path, document_t* document, int reverse_y)
+static int read_spans_raw(const char* path, document_t* document, int gs)
 {
     int ret = -1;
 
@@ -2046,6 +2051,8 @@ static int read_spans_raw(const char* path, document_t* document, int reverse_y)
 
             span_t* span = page_span_append(page);
             if (!span) goto end;
+            
+            span->gs = gs;
 
             if (s_read_matrix(xml_tag_attributes_find(&tag, "ctm"), &span->ctm)) goto end;
             if (s_read_matrix(xml_tag_attributes_find(&tag, "trm"), &span->trm)) goto end;
@@ -2085,21 +2092,45 @@ static int read_spans_raw(const char* path, document_t* document, int reverse_y)
                 char_t* char_ = &span->chars[ span->chars_num-1];
                 if (xml_tag_attributes_find_float(&tag, "x", &char_->pre_x)) goto end;
                 if (xml_tag_attributes_find_float(&tag, "y", &char_->pre_y)) goto end;
-                char_->x = span->ctm.e + span->ctm.a * char_->pre_x + span->ctm.b * char_->pre_y;
-                char_->y = span->ctm.f + span->ctm.c * char_->pre_x + span->ctm.d * char_->pre_y;
+
+                if (gs) {
+                    /* 2020-07-31: ghostscript y values increase we go down the
+                    page, but we expect mupdf behaviour where they decrease. */
+                    char_->pre_x -= span->ctm.e;
+                    char_->pre_x *= 1000;
+                    char_->pre_y -= span->ctm.f;
+                    char_->pre_y *= -1000;
+                }
+                
+                char_->x = span->ctm.a * char_->pre_x + span->ctm.b * char_->pre_y;
+                char_->y = span->ctm.c * char_->pre_x + span->ctm.d * char_->pre_y;
+                
+                if (gs) {
+                    char_->x *= 100 * span->trm.a;
+                    char_->y *= 100 * span->trm.a;
+                }
+                
                 if (xml_tag_attributes_find_float(&tag, "adv", &char_->adv)) goto end;
+                if (gs) {
+                    char_->adv *= 1000;
+                }
+                
                 //if (xml_tag_attributes_find_int(&tag, "gid", &char_->gid)) goto end;
                 if (xml_tag_attributes_find_int(&tag, "ucs", &char_->ucs)) goto end;
 
                 /* This breaks zlib.3.pdf.gs..*/
                 //char_->y += span->ctm.f;
-                outfx("(%f %f) => (%f %f)", char_->pre_x, char_->pre_y, char_->x, char_->y);
-
-                if (reverse_y) {
-                    /* 2020-07-31: ghostscript y values increase we go down the
-                    page, but we expect mupdf behaviour where they decrease. */
-                    char_->y *= -1;
-                }
+                char    trm[64];
+                snprintf(trm, sizeof(trm), "%s", matrix_string(&span->trm));
+                outf("ctm=%s trm=%s ctm*trm=%f (%f %f) => (%f %f)",
+                        matrix_string(&span->ctm),
+                        trm,
+                        span->ctm.a * span->trm.a,
+                        char_->pre_x, char_->pre_y, char_->x, char_->y);
+                
+                char_->x += span->ctm.e;
+                char_->y += span->ctm.f;
+                
                 if (page_span_end_clean(page)) goto end;
                 span = page->spans[page->spans_num-1];
             }
@@ -2525,9 +2556,9 @@ int main(int argc, char** argv)
         So we need to reverse the y coordinates in one of these; we default to
         Mupdf's system, so need to reverse y coordinates if intermediate data
         is from gs: */
-        int reverse_y = 0;
-        if (!strcmp(method, "gs")) reverse_y = 1;
-        if (read_spans_raw(input_path, &document, reverse_y)) {
+        int gs = 0;
+        if (!strcmp(method, "gs")) gs = 1;
+        if (read_spans_raw(input_path, &document, gs)) {
             outf("Failed to read 'raw' output from: %s", input_path);
             goto end;
         }
