@@ -2335,7 +2335,10 @@ static int paras_to_content(document_t* document, string_t* content, int spacing
                         font_name = span->font_name;
                         font_bold = span->font_bold;
                         font_italic = span->font_italic;
-                        font_size = fz_matrix_expansion(span->trm);
+                        font_size = fz_matrix_expansion(span->trm) * fz_matrix_expansion(span->ctm);
+                        if (span->gs) {
+                            font_size *= 1000;
+                        }
                         if (docx_run_start(content, font_name, font_size, font_bold, font_italic)) goto end;
                     }
 
