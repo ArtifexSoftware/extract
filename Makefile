@@ -7,6 +7,7 @@
 
 # Build flags.
 #
+build = debug
 flags_link      = -W -Wall -lm
 flags_compile   = -W -Wall -MMD -MP
 
@@ -75,11 +76,13 @@ test-gs: zlib.3.pdf-test-gs Python2.pdf-test-gs
 	@echo == Generating intermediate with gs.
 	../ghostpdl/debug-bin/gs -sDEVICE=txtwrite -dTextFormat=4 -o test/$<.gs.intermediate.xml $<
 	@echo == Generating output.
-	./$(exe) -c test/$<.gs.content.xml -m gs -i test/$<.gs.intermediate.xml -o test/$<.gs.docx -p 1 -t template.docx
+	./$(exe) -c test/$<.gs.content.xml -m raw -i test/$<.gs.intermediate.xml -o test/$<.gs.docx -p 1 -t template.docx
 	@echo == Comparing output with reference output.
 	#diff -u test/$<.gs.content.xml $<.gs.content.ref.xml
 	@echo == Test succeeded.
 
+%.pdf-test2-mu: %.pdf $(exe)
+	./$(exe) -m raw -i test/$<.mu-raw.intermediate2.xml -o test/$<.mu-raw2.docx -p 1 -t template.docx
 
 # Build rules.
 #

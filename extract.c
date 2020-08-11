@@ -600,6 +600,7 @@ static int docx_run_start(string_t* content, const char* font_name, double font_
         int bold, int italic)
 {
     int e = 0;
+    font_size = 10;
     if (!e) e = string_cat(content, "\n<w:r><w:rPr><w:rFonts w:ascii=\"");
     if (!e) e = string_cat(content, font_name);
     if (!e) e = string_cat(content, "\" w:hAnsi=\"");
@@ -1221,9 +1222,9 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
         }
 
         int verbose = 0;
-        //if (a < 1) verbose = 1;
+        if (a < 1) verbose = 1;
         outfx("looking at line_a=%s", line_string2(line_a));
-        if (strstr(line_string(line_a), "ucatan")) {
+        if (0 && strstr(line_string(line_a), "ucatan")) {
             outf("setting verbose for: %s", line_string2(line_a));
             verbose = 1;
         }
@@ -1896,7 +1897,7 @@ static int page_span_end_clean( page_t* page)
         return 0;
     }
 
-    float font_size = fz_matrix_expansion(span->trm) * fz_matrix_expansion(span->ctm);
+    float font_size = fz_matrix_expansion(span->trm)  * fz_matrix_expansion(span->ctm);
     if (span->gs) {
         font_size *= 1000;
     }
@@ -1926,7 +1927,7 @@ static int page_span_end_clean( page_t* page)
             remove_penultimate_space = 1;
         }
         if ((char_[-1].pre_x - char_[-2].pre_x) / font_size < char_[-1].adv / 10) {
-            outfx("removing penultimate space because space very narrow:"
+            outf("removing penultimate space because space very narrow:"
                     "char_[-1].pre_x-char_[-2].pre_x=%f font_size=%f char_[-1].adv=%f",
                     char_[-1].pre_x-char_[-2].pre_x,
                     font_size,
@@ -1939,10 +1940,10 @@ static int page_span_end_clean( page_t* page)
             character. We discard previous space character - these
             sometimes seem to appear in the middle of words for some
             reason. */
-            outfx("removing space before final char in: %s", span_string(span));
+            outf("removing space before final char in: %s", span_string(span));
             span->chars[span->chars_num-2] = span->chars[span->chars_num-1];
             span->chars_num -= 1;
-            outfx("span is now:                         %s", span_string(span));
+            outf("span is now:                         %s", span_string(span));
             return 0;
         }
     }
@@ -2075,6 +2076,8 @@ static int read_spans_raw(const char* path, document_t* document, int gs)
                 goto end;
             }
 
+            float   offset_x = 0;
+            float   offset_y = 0;
             for(;;) {
                 if (pparse_next(in, &tag)) {
                     outf("Failed to find <char or </span");
@@ -2092,6 +2095,30 @@ static int read_spans_raw(const char* path, document_t* document, int gs)
                 char_t* char_ = &span->chars[ span->chars_num-1];
                 if (xml_tag_attributes_find_float(&tag, "x", &char_->pre_x)) goto end;
                 if (xml_tag_attributes_find_float(&tag, "y", &char_->pre_y)) goto end;
+                
+                if (span->chars_num == 1) {
+                    /* First char of span. Transform things so that each span
+                    has first char at (0, 0) to make sure we can handle blocks
+                    where spans use different (e, f) origins - this checks that
+                    we are not reliant on mupdf's behaviour where uses the same
+                    (e, f) origin for entire of chunks of text. */
+                    if (char_->pre_y != 0) {
+                        /* */
+                        offset_x = char_->pre_x;
+                        offset_y = char_->pre_y;
+                        float e = span->ctm.e + span->ctm.a * char_->pre_x + span->ctm.b * char_->pre_y;
+                        float f = span->ctm.f + span->ctm.c * char_->pre_x + span->ctm.d * char_->pre_y;
+                        outf("changing ctm.{e,f} from (%f, %f) to (%f, %f)",
+                                span->ctm.e,
+                                span->ctm.f,
+                                e, f
+                                );
+                        span->ctm.e = e;
+                        span->ctm.f = f;
+                    }
+                }
+                char_->pre_x -= offset_x;
+                char_->pre_y -= offset_y;
 
                 if (gs) {
                     /* 2020-07-31: ghostscript y values increase we go down the
