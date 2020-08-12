@@ -2091,34 +2091,47 @@ static int read_spans_raw(const char* path, document_t* document, int gs)
                     outf("Expected <char> but tag.name='%s'", tag.name);
                     goto end;
                 }
+                
+                float char_pre_x;
+                float char_pre_y;
+                if (xml_tag_attributes_find_float(&tag, "x", &char_pre_x)) goto end;
+                if (xml_tag_attributes_find_float(&tag, "y", &char_pre_y)) goto end;
+                
+                if (0 && char_pre_y - offset_y != 0) {
+                    outf("char_pre_y=%f offset_y=%f", char_pre_y, offset_y);
+                    offset_x = char_pre_x;
+                    offset_y = char_pre_y;
+                    float e = span->ctm.e + span->ctm.a * char_pre_x + span->ctm.b * char_pre_y;
+                    float f = span->ctm.f + span->ctm.c * char_pre_x + span->ctm.d * char_pre_y;
+                    outf("changing ctm.{e,f} from (%f, %f) to (%f, %f)",
+                            span->ctm.e,
+                            span->ctm.f,
+                            e, f
+                            );
+                    if (span->chars_num > 0) {
+                        /* Create new span. */
+                        span_t* span0 = span;
+                        span = page_span_append(page);
+                        if (!span) goto end;
+                        *span = *span0;
+                        span->chars = NULL;
+                        span->chars_num = 0;
+                        span->font_name = local_strdup(span0->font_name);
+                        if (!span->font_name) goto end;
+                    }
+                    span->ctm.e = e;
+                    span->ctm.f = f;
+                    outf("char_pre_y=%f offset_y=%f", char_pre_y, offset_y);
+                }
+                
                 if (span_append_c(span, 0 /*c*/)) goto end;
                 char_t* char_ = &span->chars[ span->chars_num-1];
-                if (xml_tag_attributes_find_float(&tag, "x", &char_->pre_x)) goto end;
-                if (xml_tag_attributes_find_float(&tag, "y", &char_->pre_y)) goto end;
-                
-                if (span->chars_num == 1) {
-                    /* First char of span. Transform things so that each span
-                    has first char at (0, 0) to make sure we can handle blocks
-                    where spans use different (e, f) origins - this checks that
-                    we are not reliant on mupdf's behaviour where uses the same
-                    (e, f) origin for entire of chunks of text. */
-                    if (char_->pre_y != 0) {
-                        /* */
-                        offset_x = char_->pre_x;
-                        offset_y = char_->pre_y;
-                        float e = span->ctm.e + span->ctm.a * char_->pre_x + span->ctm.b * char_->pre_y;
-                        float f = span->ctm.f + span->ctm.c * char_->pre_x + span->ctm.d * char_->pre_y;
-                        outf("changing ctm.{e,f} from (%f, %f) to (%f, %f)",
-                                span->ctm.e,
-                                span->ctm.f,
-                                e, f
-                                );
-                        span->ctm.e = e;
-                        span->ctm.f = f;
-                    }
+                char_->pre_x = char_pre_x - offset_x;
+                char_->pre_y = char_pre_y - offset_y;
+                if (char_->pre_y) {
+                    outf("char_->pre=(%f %f)", char_->pre_x, char_->pre_y);
                 }
-                char_->pre_x -= offset_x;
-                char_->pre_y -= offset_y;
+                //assert(fabs(char_->pre_y) < 0.1);
 
                 if (gs) {
                     /* 2020-07-31: ghostscript y values increase we go down the
