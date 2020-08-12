@@ -1004,9 +1004,14 @@ static const char* line_string(line_t* line)
 static const char* line_string2(line_t* line)
 {
     static string_t ret = {0};
-    char    buffer[32];
+    char    buffer[256];
     string_free(&ret);
-    snprintf(buffer, sizeof(buffer), "line %p y=%f spans_num=%i:", line, line->spans[0]->chars[0].y, line->spans_num);
+    snprintf(buffer, sizeof(buffer), "line %p x=%f y=%f spans_num=%i:",
+            line,
+            line->spans[0]->chars[0].x,
+            line->spans[0]->chars[0].y,
+            line->spans_num
+            );
     string_cat(&ret, buffer);
     int i;
     for (i=0; i<line->spans_num; ++i) {
@@ -1978,6 +1983,8 @@ static int page_span_end_clean( page_t* page)
     return ret;
 }
 
+static int g_span_autosplit = 0;
+
 /* Reads from intermediate format in file <path> into document_t. */
 static int read_spans_raw(const char* path, document_t* document, int gs)
 {
@@ -2097,13 +2104,16 @@ static int read_spans_raw(const char* path, document_t* document, int gs)
                 if (xml_tag_attributes_find_float(&tag, "x", &char_pre_x)) goto end;
                 if (xml_tag_attributes_find_float(&tag, "y", &char_pre_y)) goto end;
                 
-                if (0 && char_pre_y - offset_y != 0) {
-                    outf("char_pre_y=%f offset_y=%f", char_pre_y, offset_y);
-                    offset_x = char_pre_x;
-                    offset_y = char_pre_y;
+                float x = span->ctm.a * char_pre_x + span->ctm.b * char_pre_y + span->ctm.e;
+                float y = span->ctm.c * char_pre_x + span->ctm.d * char_pre_y + span->ctm.f;
+                
+                if (g_span_autosplit && char_pre_y - offset_y != 0) {
+                    outf("g_span_autosplit: char_pre_y=%f offset_y=%f", char_pre_y, offset_y);
                     float e = span->ctm.e + span->ctm.a * char_pre_x + span->ctm.b * char_pre_y;
                     float f = span->ctm.f + span->ctm.c * char_pre_x + span->ctm.d * char_pre_y;
-                    outf("changing ctm.{e,f} from (%f, %f) to (%f, %f)",
+                    offset_x = char_pre_x;
+                    offset_y = char_pre_y;
+                    outf("g_span_autosplit: changing ctm.{e,f} from (%f, %f) to (%f, %f)",
                             span->ctm.e,
                             span->ctm.f,
                             e, f
@@ -2121,7 +2131,7 @@ static int read_spans_raw(const char* path, document_t* document, int gs)
                     }
                     span->ctm.e = e;
                     span->ctm.f = f;
-                    outf("char_pre_y=%f offset_y=%f", char_pre_y, offset_y);
+                    outf("g_span_autosplit: char_pre_y=%f offset_y=%f", char_pre_y, offset_y);
                 }
                 
                 if (span_append_c(span, 0 /*c*/)) goto end;
@@ -2129,7 +2139,7 @@ static int read_spans_raw(const char* path, document_t* document, int gs)
                 char_->pre_x = char_pre_x - offset_x;
                 char_->pre_y = char_pre_y - offset_y;
                 if (char_->pre_y) {
-                    outf("char_->pre=(%f %f)", char_->pre_x, char_->pre_y);
+                    outfx("char_->pre=(%f %f)", char_->pre_x, char_->pre_y);
                 }
                 //assert(fabs(char_->pre_y) < 0.1);
 
@@ -2162,14 +2172,19 @@ static int read_spans_raw(const char* path, document_t* document, int gs)
                 //char_->y += span->ctm.f;
                 char    trm[64];
                 snprintf(trm, sizeof(trm), "%s", matrix_string(&span->trm));
-                outf("ctm=%s trm=%s ctm*trm=%f (%f %f) => (%f %f)",
+                char_->x += span->ctm.e;
+                char_->y += span->ctm.f;
+                
+                outf("ctm=%s trm=%s ctm*trm=%f pre=(%f %f) => xy=(%f %f)",
                         matrix_string(&span->ctm),
                         trm,
                         span->ctm.a * span->trm.a,
-                        char_->pre_x, char_->pre_y, char_->x, char_->y);
+                        char_->pre_x, char_->pre_y,
+                        char_->x, char_->y
+                        );
                 
-                char_->x += span->ctm.e;
-                char_->y += span->ctm.f;
+                //outf("xy:        (%f %f)", x, y);
+                //outf("char_->xy: (%f %f)", char_->x, char_->y);
                 
                 if (page_span_end_clean(page)) goto end;
                 span = page->spans[page->spans_num-1];
@@ -2561,6 +2576,9 @@ int main(int argc, char** argv)
         }
         else if (!strcmp(arg, "-t")) {
             docx_template_path = argv[++i];
+        }
+        else if (!strcmp(arg, "--autosplit")) {
+            g_span_autosplit = atoi(argv[++i]);
         }
         else {
             outf("Unrecognised arg: '%s'", arg);
