@@ -2104,13 +2104,13 @@ static int read_spans_raw(const char* path, document_t* document, int gs)
                 if (xml_tag_attributes_find_float(&tag, "x", &char_pre_x)) goto end;
                 if (xml_tag_attributes_find_float(&tag, "y", &char_pre_y)) goto end;
                 
-                float x = span->ctm.a * char_pre_x + span->ctm.b * char_pre_y + span->ctm.e;
-                float y = span->ctm.c * char_pre_x + span->ctm.d * char_pre_y + span->ctm.f;
+                float x = span->ctm.a * (char_pre_x-offset_x) + span->ctm.b * (char_pre_y-offset_y) + span->ctm.e;
+                float y = span->ctm.c * (char_pre_x-offset_x) + span->ctm.d * (char_pre_y-offset_y) + span->ctm.f;
                 
                 if (g_span_autosplit && char_pre_y - offset_y != 0) {
                     outf("g_span_autosplit: char_pre_y=%f offset_y=%f", char_pre_y, offset_y);
-                    float e = span->ctm.e + span->ctm.a * char_pre_x + span->ctm.b * char_pre_y;
-                    float f = span->ctm.f + span->ctm.c * char_pre_x + span->ctm.d * char_pre_y;
+                    float e = span->ctm.e + span->ctm.a * (char_pre_x-offset_x) + span->ctm.b * (char_pre_y-offset_y);
+                    float f = span->ctm.f + span->ctm.c * (char_pre_x-offset_x) + span->ctm.d * (char_pre_y-offset_y);
                     offset_x = char_pre_x;
                     offset_y = char_pre_y;
                     outf("g_span_autosplit: changing ctm.{e,f} from (%f, %f) to (%f, %f)",
@@ -2175,12 +2175,13 @@ static int read_spans_raw(const char* path, document_t* document, int gs)
                 char_->x += span->ctm.e;
                 char_->y += span->ctm.f;
                 
-                outf("ctm=%s trm=%s ctm*trm=%f pre=(%f %f) => xy=(%f %f)",
+                outf("ctm=%s trm=%s ctm*trm=%f pre=(%f %f) => xy=(%f %f) [orig xy=(%f %f)]",
                         matrix_string(&span->ctm),
                         trm,
                         span->ctm.a * span->trm.a,
                         char_->pre_x, char_->pre_y,
-                        char_->x, char_->y
+                        char_->x, char_->y,
+                        x, y
                         );
                 
                 //outf("xy:        (%f %f)", x, y);
