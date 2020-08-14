@@ -1244,13 +1244,8 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
         }
 
         int verbose = 0;
-        if (a < 1) verbose = 1;
-        //if (a == 5) verbose = 1;
+        if (0 && a < 1) verbose = 1;
         outfx("looking at line_a=%s", line_string2(line_a));
-        if (0 && strstr(line_string(line_a), "ucatan")) {
-            outf("setting verbose for: %s", line_string2(line_a));
-            verbose = 1;
-        }
         line_t* nearest_line = NULL;
         int nearest_line_b = -1;
         double nearest_adv = 0;
@@ -1266,7 +1261,6 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
 
         int b;
         for (b=0; b<lines_num; ++b) {
-            verbose = (a==5 && b==8);
             line_t* line_b = lines[b];
             if (!line_b) {
                 continue;
@@ -1351,7 +1345,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             /* line_a and nearest_line are aligned so we can move line_b's spans on
             to the end of line_a. */
             b = nearest_line_b;
-            if (1 || verbose) outf("found nearest line. a=%i b=%i", a, b);
+            if (verbose) outf("found nearest line. a=%i b=%i", a, b);
             span_t* span_b = line_span_first(nearest_line);
 
             if (1
@@ -1374,7 +1368,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                 int insert_space = (nearest_adv > 0.25 * average_adv);
                 if (insert_space) {
                     /* Append space to span_a before concatenation. */
-                    outf("*** (inserted space) nearest_adv=%lf average_adv=%lf",
+                    outf("(inserted space) nearest_adv=%lf average_adv=%lf",
                             nearest_adv,
                             average_adv
                             );
@@ -1390,7 +1384,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                     item->adv = nearest_adv;
                 }
 
-                outf("*** Joining spans a=%i b=%i:", a, b);
+                outf("Joining spans a=%i b=%i:", a, b);
                 outf("    %s", span_string2(span_a));
                 outf("    %s", span_string2(span_b));
                 if (0) {
@@ -1414,7 +1408,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             space could result in an empty line_t, which could break various
             assumptions elsewhere. */
 
-            outf("*** Joining spans a=%i b=%i:", a, b);
+            outf("Joining spans a=%i b=%i:", a, b);
             outf("    %s", span_string2(span_a));
             outf("    %s", span_string2(span_b));
 
@@ -1443,7 +1437,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                 the new extended line_a needs checking again. */
                 a -= 1;
             }
-            outfx("*** new line is:\n    %s", line_string2(line_a));
+            outfx("new line is:\n    %s", line_string2(line_a));
         }
     }
 
@@ -1923,9 +1917,9 @@ static int page_span_end_clean( page_t* page)
         return 0;
     }
 
-    float font_size = fz_matrix_expansion(span->trm) * fz_matrix_expansion(span->ctm);
-    if (span->gs) {
-        font_size *= 1000;
+    float font_size = fz_matrix_expansion(span->trm);
+    if (!span->gs) {
+        font_size *= fz_matrix_expansion(span->ctm);
     }
 
     point_t dir;
@@ -2169,32 +2163,35 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
                 if (char_->pre_y) {
                     outfx("char_->pre=(%f %f)", char_->pre_x, char_->pre_y);
                 }
-                //assert(fabs(char_->pre_y) < 0.1);
 
                 if (gs) {
                     /* 2020-07-31: ghostscript y values increase we go down the
                     page, but we expect mupdf behaviour where they decrease. */
+                    char_->pre_y *= -1;
+                    /*
                     char_->pre_x -= span->ctm.e;
                     char_->pre_x *= 1000;
                     char_->pre_y -= span->ctm.f;
-                    char_->pre_y *= -1000;
+                    char_->pre_y *= -1000;*/
                 }
                 
                 char_->x = span->ctm.a * char_->pre_x + span->ctm.b * char_->pre_y;
                 char_->y = span->ctm.c * char_->pre_x + span->ctm.d * char_->pre_y;
+
                 if (debugscale) {
                     //char_->x *= fz_matrix_expansion(span->trm);
                     //char_->y *= fz_matrix_expansion(span->trm);
                 }
                 
                 if (gs) {
-                    char_->x *= 100 * span->trm.a;
-                    char_->y *= 100 * span->trm.a;
+                    /*char_->x *= 100 * span->trm.a;
+                    char_->y *= 100 * span->trm.a;*/
                 }
                 
                 if (xml_tag_attributes_find_float(&tag, "adv", &char_->adv)) goto end;
                 if (gs) {
-                    char_->adv *= 1000;
+                    //char_->adv *= 1000;
+                    //char_->adv *= fz_matrix_expansion(span->trm);
                 }
                 if (debugscale) {
                     char_->adv *= debugscale;
@@ -2203,8 +2200,6 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
                 //if (xml_tag_attributes_find_int(&tag, "gid", &char_->gid)) goto end;
                 if (xml_tag_attributes_find_int(&tag, "ucs", &char_->ucs)) goto end;
 
-                /* This breaks zlib.3.pdf.gs..*/
-                //char_->y += span->ctm.f;
                 char    trm[64];
                 snprintf(trm, sizeof(trm), "%s", matrix_string(&span->trm));
                 char_->x += span->ctm.e;
@@ -2218,9 +2213,6 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
                         char_->x, char_->y,
                         x, y
                         );
-                
-                //outf("xy:        (%f %f)", x, y);
-                //outf("char_->xy: (%f %f)", char_->x, char_->y);
                 
                 if (page_span_end_clean(page)) goto end;
                 span = page->spans[page->spans_num-1];
@@ -2427,8 +2419,10 @@ static int paras_to_content(document_t* document, string_t* content, int spacing
                         font_bold = span->font_bold;
                         font_italic = span->font_italic;
                         font_size = fz_matrix_expansion(span->trm) * fz_matrix_expansion(span->ctm);
+                        /* Round font_size to nearest 0.01. */
+                        font_size = (int) (font_size * 100 + 0.5) / 100.0;
                         if (span->gs) {
-                            font_size *= 1000;
+                            //font_size *= 1000;
                         }
                         if (docx_run_start(content, font_name, font_size, font_bold, font_italic)) goto end;
                     }

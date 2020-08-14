@@ -76,9 +76,9 @@ test-gs: zlib.3.pdf-test-gs Python2.pdf-test-gs
 	@echo == Generating intermediate with gs.
 	../ghostpdl/debug-bin/gs -sDEVICE=txtwrite -dTextFormat=4 -o test/$<.gs.intermediate.xml $<
 	@echo == Generating output.
-	./$(exe) -c test/$<.gs.content.xml -m raw -i test/$<.gs.intermediate.xml -o test/$<.gs.docx -p 1 -t template.docx
+	./$(exe) -c test/$<.gs.content.xml -m gs -i test/$<.gs.intermediate.xml -o test/$<.gs.docx -p 1 -t template.docx
 	@echo == Comparing output with reference output.
-	#diff -u test/$<.gs.content.xml $<.gs.content.ref.xml
+	diff -u test/$<.gs.content.xml $<.gs.content.ref.xml
 	@echo == Test succeeded.
 
 %.pdf-test2-mu: %.pdf $(exe)
