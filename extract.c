@@ -281,14 +281,17 @@ static int compare_tags(const xml_tag_t* lhs, const xml_tag_t* rhs)
 
 
 
-/* pparse_*(): simple XML 'pull' parser.
+/* xml_pparse_*(): simple XML 'pull' parser.
 
-pparse_init() merely consumes the initial '<'; thereafter pparse_next() always
-consumes the next '<' before returning the previous tag.
+xml_pparse_init() merely consumes the initial '<'. Thereafter xml_pparse_next()
+consumes the next '<' before returning the previous tag. */
 
-Opens specified file, verifies that prefix is as expected. Returns NULL if
-error. */
-static FILE* pparse_init(const char* path, const char* first_line)
+/* Opens specified file.
+
+If first_line is not NULL, we check that it matches the first line in the file.
+
+Returns NULL with errno set if error. */
+static FILE* xml_pparse_init(const char* path, const char* first_line)
 {
     FILE* in = NULL;
     char* buffer = NULL;
@@ -338,10 +341,14 @@ static FILE* pparse_init(const char* path, const char* first_line)
     return in;
 }
 
-/* Returns 0 with *out containing next tag; or -1 with errno set if error; or
-+1 with errno=ESRCH if EOF. *out is initially passed to xml_tag_free(), so *out
-must have been initialised, e.g. by by xml_tag_init(). */
-static int pparse_next(FILE* in, xml_tag_t* out)
+/* Returns the next XML tag.
+
+Returns 0 with *out containing next tag; or -1 with errno set if error; or +1
+with errno=ESRCH if EOF.
+
+*out is initially passed to xml_tag_free(), so *out must have been initialised,
+e.g. by by xml_tag_init(). */
+static int xml_pparse_next(FILE* in, xml_tag_t* out)
 {
     int ret = -1;
     xml_tag_free(out);
@@ -497,7 +504,7 @@ static const char* matrix_string(const matrix_t* matrix)
 }
 
 /* Returns +1, 0 or -1 depending on sign of x. */
-static int sign(double x)
+static int s_sign(double x)
 {
     if (x < 0)  return -1;
     if (x > 0)  return +1;
@@ -508,12 +515,12 @@ static int sign(double x)
 static int matrix_cmp(const matrix_t* lhs, const matrix_t* rhs)
 {
     int ret;
-    ret = sign(lhs->a - rhs->a);    if (ret) return ret;
-    ret = sign(lhs->b - rhs->b);    if (ret) return ret;
-    ret = sign(lhs->c - rhs->c);    if (ret) return ret;
-    ret = sign(lhs->d - rhs->d);    if (ret) return ret;
-    ret = sign(lhs->e - rhs->e);    if (ret) return ret;
-    ret = sign(lhs->f - rhs->f);    if (ret) return ret;
+    ret = s_sign(lhs->a - rhs->a);  if (ret) return ret;
+    ret = s_sign(lhs->b - rhs->b);  if (ret) return ret;
+    ret = s_sign(lhs->c - rhs->c);  if (ret) return ret;
+    ret = s_sign(lhs->d - rhs->d);  if (ret) return ret;
+    ret = s_sign(lhs->e - rhs->e);  if (ret) return ret;
+    ret = s_sign(lhs->f - rhs->f);  if (ret) return ret;
     return 0;
 }
 
@@ -522,14 +529,14 @@ static int matrix_cmp(const matrix_t* lhs, const matrix_t* rhs)
 static int matrix_cmp4(const matrix_t* lhs, const matrix_t* rhs)
 {
     int ret;
-    ret = sign(lhs->a - rhs->a);    if (ret) return ret;
-    ret = sign(lhs->b - rhs->b);    if (ret) return ret;
-    ret = sign(lhs->c - rhs->c);    if (ret) return ret;
-    ret = sign(lhs->d - rhs->d);    if (ret) return ret;
+    ret = s_sign(lhs->a - rhs->a);  if (ret) return ret;
+    ret = s_sign(lhs->b - rhs->b);  if (ret) return ret;
+    ret = s_sign(lhs->c - rhs->c);  if (ret) return ret;
+    ret = s_sign(lhs->d - rhs->d);  if (ret) return ret;
     return 0;
 }
 
-float fz_matrix_expansion(matrix_t m)
+float matrix_expansion(matrix_t m)
 {
     return sqrtf(fabsf(m.a * m.d - m.b * m.c));
 }
@@ -540,18 +547,18 @@ typedef struct
     float y;
 } point_t;
 
-point_t transform_vector(point_t p, matrix_t m)
+point_t multiply_matrix_point(matrix_t m, point_t p)
 {
     float x = p.x;
-    p.x = x * m.a + p.y * m.c;
-    p.y = x * m.b + p.y * m.d;
+    p.x = m.a * x + m.c * p.y;
+    p.y = m.b * x + m.d * p.y;
     return p;
 }
 
-static int s_read_matrix(const char* text, matrix_t* matrix)
+static int s_matrix_read(const char* text, matrix_t* matrix)
 {
     if (!text) {
-        outf("text is NULL in s_read_matrix()");
+        outf("text is NULL in s_matrix_read()");
         errno = EINVAL;
         return -1;
     }
@@ -571,12 +578,12 @@ static int s_read_matrix(const char* text, matrix_t* matrix)
     return 0;
 }
 
-/* Like s_read_matrix() but only expects four values, and sets .e and .g to
+/* Like s_matrix_read() but only expects four values, and sets .e and .g to
 zero. */
-static int s_read_matrix4(const char* text, matrix_t* matrix)
+static int s_matrix_read4(const char* text, matrix_t* matrix)
 {
     if (!text) {
-        outf("text is NULL in s_read_matrix4()");
+        outf("text is NULL in s_matrix_read4()");
         errno = EINVAL;
         return -1;
     }
@@ -598,9 +605,9 @@ static int s_read_matrix4(const char* text, matrix_t* matrix)
 
 
 
-/* These docx_*() functions generate docx content. Caller must call things
-in a sensible order - e.g. don't call docx_paragraph_start() twice without
-intervening call to docx_paragraph_finish(). */
+/* These docx_*() functions generate docx content. Caller must call things in a
+sensible order to create valid content - e.g. don't call docx_paragraph_start()
+twice without intervening call to docx_paragraph_finish(). */
 
 static int docx_paragraph_start(string_t* content)
 {
@@ -900,7 +907,7 @@ typedef struct span_t
     matrix_t    ctm;
     matrix_t    trm;
     char*       font_name;
-    // font size is fz_matrix_expansion(trm).
+    // font size is matrix_expansion(trm).
     int         font_bold;
     int         font_italic;
     int         wmode;
@@ -1134,7 +1141,7 @@ double span_adv_total(span_t* span)
     double dy = span_char_last(span)->y - span_char_first(span)->y;
     /* We add on the advance of the last item; this avoids us returning zero if
     there's only one item. */
-    double adv = span_char_last(span)->adv * fz_matrix_expansion(span->trm);
+    double adv = span_char_last(span)->adv * matrix_expansion(span->trm);
     return sqrt(dx*dx + dy*dy) + adv;
 }
 
@@ -1144,7 +1151,7 @@ static double spans_adv(span_t* a_span, char_t* a, char_t* b)
     double delta_x = b->x - a->x;
     double delta_y = b->y - a->y;
     double s = sqrt( delta_x*delta_x + delta_y*delta_y);
-    double a_size = a->adv * fz_matrix_expansion(a_span->trm);
+    double a_size = a->adv * matrix_expansion(a_span->trm);
     s -= a_size;
     return s;
 }
@@ -1362,7 +1369,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                         );
 
                 if (debugscale) {
-                    average_adv *= sqrt(fz_matrix_expansion(span_a->trm) * fz_matrix_expansion(span_b->trm));
+                    average_adv *= sqrt(matrix_expansion(span_a->trm) * matrix_expansion(span_b->trm));
                 }
                 int insert_space = (nearest_adv > 0.25 * average_adv);
                 if (insert_space) {
@@ -1492,7 +1499,7 @@ static double line_font_size_max(line_t* line)
     int i;
     for (i=0; i<line->spans_num; ++i) {
         span_t* span = line->spans[i];
-        int size = fz_matrix_expansion(span->trm);
+        int size = matrix_expansion(span->trm);
         if (size > size_max) {
             size_max = size;
         }
@@ -1918,9 +1925,9 @@ static int page_span_end_clean( page_t* page)
         return 0;
     }
 
-    float font_size = fz_matrix_expansion(span->trm);
+    float font_size = matrix_expansion(span->trm);
     if (!span->gs) {
-        font_size *= fz_matrix_expansion(span->ctm);
+        font_size *= matrix_expansion(span->ctm);
     }
 
     point_t dir;
@@ -1932,7 +1939,7 @@ static int page_span_end_clean( page_t* page)
         dir.x = 1;
         dir.y = 0;
     }
-    dir = transform_vector(dir, span->trm);
+    dir = multiply_matrix_point(span->trm, dir);
 
     float x = char_[-2].pre_x + char_[-2].adv * dir.x;
     float y = char_[-2].pre_y + char_[-2].adv * dir.y;
@@ -2017,7 +2024,7 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
     xml_tag_t   tag;
     xml_tag_init(&tag);
 
-    in = pparse_init(path, NULL);
+    in = xml_pparse_init(path, NULL);
     if (!in) {
         outf("Failed to open: %s", path);
         goto end;
@@ -2049,7 +2056,7 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
         Split spans in two where there seem to be large gaps between glyphs.
     */
     for(;;) {
-        int e = pparse_next(in, &tag);
+        int e = xml_pparse_next(in, &tag);
         if (e == 1) break; /* EOF. */
         if (e) goto end;
         if (!strcmp(tag.name, "?xml")) {
@@ -2068,7 +2075,7 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
         if (!page) goto end;
 
         for(;;) {
-            if (pparse_next(in, &tag)) goto end;
+            if (xml_pparse_next(in, &tag)) goto end;
             if (!strcmp(tag.name, "/page")) {
                 num_spans += page->spans_num;
                 break;
@@ -2085,8 +2092,8 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
             
             span->gs = gs;
 
-            if (s_read_matrix(xml_tag_attributes_find(&tag, "ctm"), &span->ctm)) goto end;
-            if (s_read_matrix(xml_tag_attributes_find(&tag, "trm"), &span->trm)) goto end;
+            if (s_matrix_read(xml_tag_attributes_find(&tag, "ctm"), &span->ctm)) goto end;
+            if (s_matrix_read(xml_tag_attributes_find(&tag, "trm"), &span->trm)) goto end;
             
             if (debugscale) {
                 matrix_scale(&span->ctm, debugscale);
@@ -2114,7 +2121,7 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
             float   offset_x = 0;
             float   offset_y = 0;
             for(;;) {
-                if (pparse_next(in, &tag)) {
+                if (xml_pparse_next(in, &tag)) {
                     outf("Failed to find <char or </span");
                     goto end;
                 }
@@ -2183,8 +2190,8 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
                 char_->y = span->ctm.c * char_->pre_x + span->ctm.d * char_->pre_y;
 
                 if (debugscale) {
-                    //char_->x *= fz_matrix_expansion(span->trm);
-                    //char_->y *= fz_matrix_expansion(span->trm);
+                    //char_->x *= matrix_expansion(span->trm);
+                    //char_->y *= matrix_expansion(span->trm);
                 }
                 
                 if (gs) {
@@ -2195,7 +2202,7 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
                 if (xml_tag_attributes_find_float(&tag, "adv", &char_->adv)) goto end;
                 if (gs) {
                     //char_->adv *= 1000;
-                    //char_->adv *= fz_matrix_expansion(span->trm);
+                    //char_->adv *= matrix_expansion(span->trm);
                 }
                 if (debugscale) {
                     char_->adv *= debugscale;
@@ -2263,7 +2270,7 @@ static int read_spans_trace(const char* path, document_t* document)
 
     document_init(document);
 
-    in = pparse_init(path, "<?xml version=\"1.0\"?>\n");
+    in = xml_pparse_init(path, "<?xml version=\"1.0\"?>\n");
     if (!in) {
         outf("Failed to open: %s", path);
         goto end;
@@ -2271,7 +2278,7 @@ static int read_spans_trace(const char* path, document_t* document)
     xml_tag_t   tag;
     xml_tag_init(&tag);
 
-    int e = pparse_next(in, &tag);
+    int e = xml_pparse_next(in, &tag);
     if (e) {
         outf("Failed to read <document...> at start");
         goto end;
@@ -2284,7 +2291,7 @@ static int read_spans_trace(const char* path, document_t* document)
     }
 
     for(;;) {
-        int e = pparse_next(in, &tag);
+        int e = xml_pparse_next(in, &tag);
         if (e == 1) break; /* EOF. */
         if (e) goto end;
         if (!strcmp(tag.name, "/document")) {
@@ -2299,16 +2306,16 @@ static int read_spans_trace(const char* path, document_t* document)
         if (!page) goto end;
 
         for(;;) {
-            if (pparse_next(in, &tag)) goto end;
+            if (xml_pparse_next(in, &tag)) goto end;
             if (!strcmp(tag.name, "/page")) {
                 break;
             }
             if (strcmp(tag.name, "fill_text")) continue;
             matrix_t   ctm;
-            if (s_read_matrix(xml_tag_attributes_find(&tag, "transform"), &ctm)) goto end;
+            if (s_matrix_read(xml_tag_attributes_find(&tag, "transform"), &ctm)) goto end;
 
             for(;;) {
-                if (pparse_next(in, &tag)) goto end;
+                if (xml_pparse_next(in, &tag)) goto end;
                 if (!strcmp(tag.name, "/fill_text")) {
                     break;
                 }
@@ -2322,8 +2329,8 @@ static int read_spans_trace(const char* path, document_t* document)
                 span->ctm = ctm;
                 /* trace-device appears to only write first four members of
                 fz_text_span::trm, on the assumption that .e and .f are zero,
-                so we use s_read_matrix4() here. */
-                if (s_read_matrix4(xml_tag_attributes_find(&tag, "trm"), &span->trm)) goto end;
+                so we use s_matrix_read4() here. */
+                if (s_matrix_read4(xml_tag_attributes_find(&tag, "trm"), &span->trm)) goto end;
                 char* f = xml_tag_attributes_find(&tag, "font");
                 char* ff = strchr(f, '+');
                 if (ff)  f = ff + 1;
@@ -2334,7 +2341,7 @@ static int read_spans_trace(const char* path, document_t* document)
                 if (xml_tag_attributes_find_int(&tag, "wmode", &span->wmode)) goto end;
 
                 for(;;) {
-                    if (pparse_next(in, &tag)) goto end;
+                    if (xml_pparse_next(in, &tag)) goto end;
                     if (!strcmp(tag.name, "/span")) {
                         break;
                     }
@@ -2422,7 +2429,7 @@ static int paras_to_content(document_t* document, string_t* content, int spacing
                     ctm_prev = &span->ctm;
                     if (!font_name
                             || strcmp(span->font_name, font_name)
-                            || fz_matrix_expansion(span->trm) != font_size
+                            || matrix_expansion(span->trm) != font_size
                             || span->font_bold != font_bold
                             || span->font_italic != font_italic
                             ) {
@@ -2432,7 +2439,7 @@ static int paras_to_content(document_t* document, string_t* content, int spacing
                         font_name = span->font_name;
                         font_bold = span->font_bold;
                         font_italic = span->font_italic;
-                        font_size = fz_matrix_expansion(span->trm) * fz_matrix_expansion(span->ctm);
+                        font_size = matrix_expansion(span->trm) * matrix_expansion(span->ctm);
                         /* Round font_size to nearest 0.01. */
                         font_size = (int) (font_size * 100 + 0.5) / 100.0;
                         if (span->gs) {
