@@ -94,10 +94,10 @@ static int local_asprintf(char** out, const char* format, ...)
 }
 
 
-/* These str_*() functions realloc buffer as required. */
+/* These str_*() functions realloc buffer as required. All return 0 or -1 with
+errno set. */
 
-/* Appends first <s_len> chars of string <s> to *p, which is assumed to have
-been allocated with malloc/realloc. Returns 0, or +1 if realloc() failed. */
+/* Appends first <s_len> chars of string <s> to *p. */
 static int str_catl(char** p, const char* s, int s_len)
 {
     int p_len = (*p) ? strlen(*p) : 0;
@@ -109,17 +109,13 @@ static int str_catl(char** p, const char* s, int s_len)
     return 0;
 }
 
-/* Appends a char to a zero-terminated string which is assumed to have been
-allocated with malloc/realloc. Returns 0, or -1 with errno set if realloc()
-failed. */
+/* Appends a char.  */
 static int str_catc(char** p, char c)
 {
     return str_catl(p, &c, 1);
 }
 
-/* Appends a char to a zero-terminated string which is assumed to have been
-allocated with malloc/realloc. Returns 0, or -1 with errno set if realloc()
-failed. */
+/* Appends a string. */
 static int str_cat(char** p, const char* s)
 {
     return str_catl(p, s, strlen(s));
@@ -135,13 +131,13 @@ typedef struct
     int     chars_num;  /* Length of string pointed to by .chars. */
 } string_t;
 
-void string_init(string_t* string)
+static void string_init(string_t* string)
 {
     string->chars = NULL;
     string->chars_num = 0;
 }
 
-void string_free(string_t* string)
+static void string_free(string_t* string)
 {
     free(string->chars);
     string_init(string);
@@ -936,7 +932,7 @@ typedef struct span_t
     int         wmode;
     char_t*     chars;
     int         chars_num;
-    int         gs;
+    int         gs; /* 1 if from ghostscript. */
 } span_t;
 
 /* Returns static string containing info about span_t. */
@@ -1219,7 +1215,8 @@ static int lines_are_compatible(line_t* a, line_t* b, float angle_a, int verbose
 }
 
 
-/* Creates representation of span_t's that consists of a list of line_t's.
+/* Creates representation of span_t's that consists of a list of line_t's, with
+each line_t containins pointers to a list of span_t's.
 
 We only join spans that are at the same angle and are aligned.
 
@@ -1236,7 +1233,13 @@ On exit:
     Otherwise we return -1 with errno set. *o_lines and *o_lines_num are
     undefined.
 */
-static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_lines_num, float debugscale)
+static int make_lines(
+        span_t** spans,
+        int spans_num,
+        line_t*** o_lines,
+        int* o_lines_num,
+        float debugscale
+        )
 {
     int ret = -1;
 
@@ -1628,10 +1631,11 @@ static int make_paragraphs(
     paragraphs = malloc(sizeof(*paragraphs) * paragraphs_num);
     if (!paragraphs) goto end;
     int a;
-    /* Ensure we can clean up after error. */
+    /* Ensure we can clean up after error when setting up. */
     for (a=0; a<paragraphs_num; ++a) {
         paragraphs[a] = NULL;
     }
+    /* Set up initial paragraphs. */
     for (a=0; a<paragraphs_num; ++a) {
         paragraphs[a] = malloc(sizeof(paragraph_t));
         if (!paragraphs[a]) goto end;
@@ -1732,7 +1736,8 @@ static int make_paragraphs(
                 /* Join these two paragraph_t's. */
                 span_t* a_span = line_span_last(line_a);
                 if (span_char_last(a_span)->ucs == '-') {
-                    /* remove trailing '-' at end of prev line. */
+                    /* remove trailing '-' at end of prev line. char_t doesn't
+                    contain any malloc-heap pointers so this doesn't leak. */
                     a_span->chars_num -= 1;
                 }
                 else {
@@ -1790,7 +1795,8 @@ static int make_paragraphs(
     assert(p); /* Should always succeed because we're not increasing allocation size. */
     paragraphs = p;
 
-    /* Sort paragraphs. */
+    /* Sort paragraphs so they appear in correct order, using paragraphs_cmp().
+    */
     qsort(paragraphs, paragraphs_num, sizeof(paragraph_t*), paragraphs_cmp);
 
     *o_paragraphs = paragraphs;
@@ -1815,17 +1821,17 @@ static int make_paragraphs(
 }
 
 
-
+/* A page. */
 typedef struct
 {
     span_t**        spans;
     int             spans_num;
 
-    /*  lines->... eventually points to items in .spans. */
+    /* .lines[] eventually points to items in .spans. */
     line_t**        lines;
     int             lines_num;
 
-    /*  pras->... eventually points to items in .lines. */
+    /* .paragraphs[] eventually points to items in .lines. */
     paragraph_t**   paragraphs;
     int             paragraphs_num;
 } page_t;
@@ -1874,7 +1880,8 @@ static void page_free(page_t* page)
     free(page->paragraphs);
 }
 
-/* Appends new span_ to a page_t; returns NULL with errno set on error. */
+/* Appends new empty span_ to a page_t; returns NULL with errno set on error.
+*/
 static span_t* page_span_append(page_t* page)
 {
     span_t* span = malloc(sizeof(*span));
@@ -1905,7 +1912,8 @@ static void document_init(document_t* document)
     document->pages_num = 0;
 }
 
-/* Appends new page_t to a document_t; returns NULL with errno set on error. */
+/* Appends new empty page_t to a document_t; returns NULL with errno set on
+error. */
 static page_t* document_page_append(document_t* document)
 {
     page_t* page = malloc(sizeof(page_t));
@@ -1953,7 +1961,10 @@ static int page_span_end_clean( page_t* page)
     assert(page->spans_num);
     span_t* span = page->spans[page->spans_num-1];
     assert(span->chars_num);
+
+    /* Last two char_t's are char_[-2] and char_[-1]. */
     char_t* char_ = &span->chars[span->chars_num];
+
     if (span->chars_num == 1) {
         return 0;
     }
@@ -2043,8 +2054,17 @@ static int page_span_end_clean( page_t* page)
 
 autosplit:
     If true, we split spans when y coordinate changes.
+debugscale:
+    If not zero, scale ctm by debugscale and trm by 1/debugscale; intended for
+    use with ghostscript output, but this doesn't work yet.
 */
-static int read_spans_raw(const char* path, document_t* document, int gs, int autosplit, float debugscale)
+static int read_spans_raw(
+        const char* path,
+        document_t* document,
+        int gs,
+        int autosplit,
+        float debugscale
+        )
 {
     int ret = -1;
 
@@ -2119,7 +2139,6 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
                 goto end;
             }
 
-            //num_spans += 1;
             span_t* span = page_span_append(page);
             if (!span) goto end;
             
@@ -2212,11 +2231,6 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
                     /* 2020-07-31: ghostscript y values increase we go down the
                     page, but we expect mupdf behaviour where they decrease. */
                     char_->pre_y *= -1;
-                    /*
-                    char_->pre_x -= span->ctm.e;
-                    char_->pre_x *= 1000;
-                    char_->pre_y -= span->ctm.f;
-                    char_->pre_y *= -1000;*/
                 }
                 
                 char_->x = span->ctm.a * char_->pre_x + span->ctm.b * char_->pre_y;
@@ -2227,21 +2241,11 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
                     //char_->y *= matrix_expansion(span->trm);
                 }
                 
-                if (gs) {
-                    /*char_->x *= 100 * span->trm.a;
-                    char_->y *= 100 * span->trm.a;*/
-                }
-                
                 if (xml_tag_attributes_find_float(&tag, "adv", &char_->adv)) goto end;
-                if (gs) {
-                    //char_->adv *= 1000;
-                    //char_->adv *= matrix_expansion(span->trm);
-                }
                 if (debugscale) {
                     char_->adv *= debugscale;
                 }
                 
-                //if (xml_tag_attributes_find_int(&tag, "gid", &char_->gid)) goto end;
                 if (xml_tag_attributes_find_int(&tag, "ucs", &char_->ucs)) goto end;
 
                 char    trm[64];
@@ -2294,131 +2298,10 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
 }
 
 
-/* == Obsolete==
-Reads from mupdf's trace-device into document_t. */
-static int read_spans_trace(const char* path, document_t* document)
-{
-    int ret = -1;
-    FILE* in = NULL;
+/* Writes paragraphs from document_t into docx content. On return *content
+points to zero-terminated content, allocated by realloc().
 
-    document_init(document);
-
-    in = xml_pparse_init(path, "<?xml version=\"1.0\"?>\n");
-    if (!in) {
-        outf("Failed to open: %s", path);
-        goto end;
-    }
-    xml_tag_t   tag;
-    xml_tag_init(&tag);
-
-    int e = xml_pparse_next(in, &tag);
-    if (e) {
-        outf("Failed to read <document...> at start");
-        goto end;
-    }
-        
-    if (strcmp(tag.name, "document")) {
-        outf("expected '<document...>' but tag.name='%s'", tag.name);
-        errno = ESRCH;
-        goto end;
-    }
-
-    for(;;) {
-        int e = xml_pparse_next(in, &tag);
-        if (e == 1) break; /* EOF. */
-        if (e) goto end;
-        if (!strcmp(tag.name, "/document")) {
-            break;
-        }
-        if (strcmp(tag.name, "page")) {
-            outf("Expected <page> but tag.name='%s'", tag.name);
-            errno = ESRCH;
-            goto end;
-        }
-        page_t* page = document_page_append(document);
-        if (!page) goto end;
-
-        for(;;) {
-            if (xml_pparse_next(in, &tag)) goto end;
-            if (!strcmp(tag.name, "/page")) {
-                break;
-            }
-            if (strcmp(tag.name, "fill_text")) continue;
-            matrix_t   ctm;
-            if (s_matrix_read(xml_tag_attributes_find(&tag, "transform"), &ctm)) goto end;
-
-            for(;;) {
-                if (xml_pparse_next(in, &tag)) goto end;
-                if (!strcmp(tag.name, "/fill_text")) {
-                    break;
-                }
-                if (strcmp(tag.name, "span")) {
-                    outf("Expected <span...> after <fill_text>, but tag.name='%s'", tag.name);
-                    errno = ESRCH;
-                    goto end;
-                }
-                span_t* span = page_span_append(page);
-                if (!span) goto end;
-                span->ctm = ctm;
-                /* trace-device appears to only write first four members of
-                fz_text_span::trm, on the assumption that .e and .f are zero,
-                so we use s_matrix_read4() here. */
-                if (s_matrix_read4(xml_tag_attributes_find(&tag, "trm"), &span->trm)) goto end;
-                char* f = xml_tag_attributes_find(&tag, "font");
-                char* ff = strchr(f, '+');
-                if (ff)  f = ff + 1;
-                span->font_name = local_strdup(f);
-                if (!span->font_name) goto end;
-                span->font_bold = strstr(span->font_name, "-Bold") ? 1 : 0;
-                span->font_italic = strstr(span->font_name, "-Oblique") ? 1 : 0;
-                if (xml_tag_attributes_find_int(&tag, "wmode", &span->wmode)) goto end;
-
-                for(;;) {
-                    if (xml_pparse_next(in, &tag)) goto end;
-                    if (!strcmp(tag.name, "/span")) {
-                        break;
-                    }
-                    if (strcmp(tag.name, "g")) {
-                        errno = ESRCH;
-                        outf("Expected <g> but tag.name='%s'", tag.name);
-                        goto end;
-                    }
-                    if (span_append_c(span, 0 /*c*/)) goto end;
-                    char_t* char_ = &span->chars[ span->chars_num-1];
-                    char_->x    = atof(xml_tag_attributes_find(&tag, "x"));
-                    char_->y    = atof(xml_tag_attributes_find(&tag, "y"));
-                    char_->gid  = 0;
-                    if (xml_tag_attributes_find_int(&tag, "ucs", &char_->ucs)) goto end;
-                    if (xml_tag_attributes_find_float(&tag, "adv", &char_->adv)) goto end;
-
-                    if (page_span_end_clean(page)) goto end;
-                    span = page->spans[page->spans_num-1];
-                }
-            }
-        }
-        outfx("page=%i page->num_spans=%i", document->pages_num, page->spans_num);
-    }
-
-    ret = 0;
-
-    end:
-    xml_tag_free(&tag);
-    if (in) {
-        fclose(in);
-        in = NULL;
-    }
-
-    if (ret) {
-        outf("read_spans1() returning error");
-        document_free(document);
-    }
-
-    return ret;
-}
-
-
-/* Writes paragraphs from document_t into docx content. On return
-*content points to zero-terminated content, allocated by realloc(). */
+spacing: if true, we insert extra vertical space between paragraphs. */
 static int paragraphs_to_content(document_t* document, string_t* content, int spacing)
 {
     int ret = -1;
@@ -2475,9 +2358,6 @@ static int paragraphs_to_content(document_t* document, string_t* content, int sp
                         font_size = matrix_expansion(span->trm) * matrix_expansion(span->ctm);
                         /* Round font_size to nearest 0.01. */
                         font_size = (int) (font_size * 100 + 0.5) / 100.0;
-                        if (span->gs) {
-                            //font_size *= 1000;
-                        }
                         if (docx_run_start(content, font_name, font_size, font_bold, font_italic)) goto end;
                     }
 
@@ -2563,9 +2443,21 @@ static int document_to_docx_content(
     for (p=0; p<document->pages_num; ++p) {
         page_t* page = document->pages[p];
         outf("processing page %i: num_spans=%i", p, page->spans_num);
-        if (make_lines(page->spans, page->spans_num, &page->lines, &page->lines_num, debugscale)) goto end;
 
-        if (make_paragraphs(page->lines, page->lines_num, &page->paragraphs, &page->paragraphs_num)) goto end;
+        if (make_lines(
+                page->spans,
+                page->spans_num,
+                &page->lines,
+                &page->lines_num,
+                debugscale
+                )) goto end;
+
+        if (make_paragraphs(
+                page->lines,
+                page->lines_num,
+                &page->paragraphs,
+                &page->paragraphs_num
+                )) goto end;
     }
 
     if (paragraphs_to_content(document, content, spacing)) goto end;
@@ -2620,30 +2512,31 @@ int main(int argc, char** argv)
                     "\n"
                     "Args:\n"
                     "    --autosplit\n"
-                    "        Split spans when y coordinate changes. This stresses our handling\n"
-                    "        of spans when input is from mupdf.\n"
+                    "        Initially split spans when y coordinate changes. This stresses our\n"
+                    "        handling of spans when input is from mupdf.\n"
+                    "    -i <input-path>\n"
+                    "        Name of XML file containing intermediate text spans.\n"
+                    "    -m <method>\n"
+                    "        Information about intermediate text-span information:\n"
+                    "            raw\n"
+                    "                <input-path> is from mupdf 'raw' device.\n"
+                    "            gs\n"
+                    "                <input-path> is from gs 'txtwrite' device.\n"
+                    "        [This is a hack to get things working with gs; ultimately we need\n"
+                    "        make gs txtwrite output information that we can treat in same way\n"
+                    "        as from mupdf raw.]\n"
+                    "    -o <docx-path>\n"
+                    "        Output .docx file.\n"
                     "    --o-content <path>\n"
                     "        If specified, we write raw .docx content to <path>; this is the\n"
                     "        text that we embed inside the template word/document.xml file\n"
                     "        when generating the .docx.\n"
-                    "    -m <method>\n"
-                    "        How to extract information from pdf document:\n"
-                    "            raw\n"
-                    "                <input-path> is from 'raw' device; use native conversion.\n"
-                    "            trace\n"
-                    "                <input-path> is from 'trace' device; use native conversion.\n"
-                    "            gs\n"
-                    "                <input-path> is from gs 'txtwrite' device; use native conversion.\n"
-                    "    -i <input-path>\n"
-                    "        Name of XML file containing low-level text spans.\n"
-                    "    -o <docx-path>\n"
-                    "        Output .docx file.\n"
                     "    -p 0|1\n"
                     "        If 1, we preserve uncompressed <docx-path>.lib/ directory.\n"
                     "    -s 0|1\n"
                     "        If 1, we insert extra vertical space between paragraphs and extra\n"
-                    "        vertical space between paragraphs that had different ctm matrices in\n"
-                    "        the original document.\n"
+                    "        vertical space between paragraphs that had different ctm matrices\n"
+                    "        in the original document.\n"
                     "    -t <docx-template>\n"
                     "        Name of docx file to use as template.\n"
                     );
@@ -2697,12 +2590,6 @@ int main(int argc, char** argv)
         outf("Must specify -m <method>");
         errno = ESRCH;
         goto end;
-    }
-    else if (!strcmp(method, "trace")) {
-        if (read_spans_trace(input_path, &document)) {
-            outf("Failed to read 'trace' output from: %s", input_path);
-            goto end;
-        }
     }
     else if (!strcmp(method, "raw") || !strcmp(method, "gs")) {
         /* Mupdf/Ghostscript use different coordinate systems:
