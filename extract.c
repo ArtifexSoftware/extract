@@ -464,6 +464,24 @@ typedef struct
     float f;
 } matrix_t;
 
+static void matrix_scale(matrix_t* matrix, float scale)
+{
+    matrix->a *= scale;
+    matrix->b *= scale;
+    matrix->c *= scale;
+    matrix->d *= scale;
+    matrix->e *= scale;
+    matrix->f *= scale;
+}
+
+static void matrix_scale4(matrix_t* matrix, float scale)
+{
+    matrix->a *= scale;
+    matrix->b *= scale;
+    matrix->c *= scale;
+    matrix->d *= scale;
+}
+
 static const char* matrix_string(const matrix_t* matrix)
 {
     static char ret[64];
@@ -600,7 +618,6 @@ static int docx_run_start(string_t* content, const char* font_name, double font_
         int bold, int italic)
 {
     int e = 0;
-    font_size = 10;
     if (!e) e = string_cat(content, "\n<w:r><w:rPr><w:rFonts w:ascii=\"");
     if (!e) e = string_cat(content, font_name);
     if (!e) e = string_cat(content, "\" w:hAnsi=\"");
@@ -990,7 +1007,7 @@ static const char* line_string(line_t* line)
     static string_t ret = {0};
     char    buffer[32];
     string_free(&ret);
-    snprintf(buffer, sizeof(buffer), "line %p spans_num=%i:", line, line->spans_num);
+    snprintf(buffer, sizeof(buffer), "line spans_num=%i:", line->spans_num);
     string_cat(&ret, buffer);
     int i;
     for (i=0; i<line->spans_num; ++i) {
@@ -1006,8 +1023,7 @@ static const char* line_string2(line_t* line)
     static string_t ret = {0};
     char    buffer[256];
     string_free(&ret);
-    snprintf(buffer, sizeof(buffer), "line %p x=%f y=%f spans_num=%i:",
-            line,
+    snprintf(buffer, sizeof(buffer), "line x=%f y=%f spans_num=%i:",
             line->spans[0]->chars[0].x,
             line->spans[0]->chars[0].y,
             line->spans_num
@@ -1170,6 +1186,7 @@ static int lines_are_compatible(line_t* a, line_t* b, double angle_a, int verbos
     return 1;
 }
 
+
 /* Creates representation of span_t's that consists of a list of line_t's.
 
 We only join spans that are at the same angle and are aligned.
@@ -1187,7 +1204,7 @@ On exit:
     Otherwise we return -1 with errno set. *o_lines and *o_lines_num are
     undefined.
 */
-static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_lines_num)
+static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_lines_num, float debugscale)
 {
     int ret = -1;
 
@@ -1228,6 +1245,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
 
         int verbose = 0;
         if (a < 1) verbose = 1;
+        //if (a == 5) verbose = 1;
         outfx("looking at line_a=%s", line_string2(line_a));
         if (0 && strstr(line_string(line_a), "ucatan")) {
             outf("setting verbose for: %s", line_string2(line_a));
@@ -1248,7 +1266,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
 
         int b;
         for (b=0; b<lines_num; ++b) {
-
+            verbose = (a==5 && b==8);
             line_t* line_b = lines[b];
             if (!line_b) {
                 continue;
@@ -1268,7 +1286,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                 outf("    line_b=%s", line_string2(line_b));
             }
             if (!lines_are_compatible(line_a, line_b, angle_a, 0*verbose)) {
-                if (verbose) outfx("not compatible");
+                if (verbose) outf("not compatible");
                 continue;
             }
 
@@ -1333,7 +1351,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             /* line_a and nearest_line are aligned so we can move line_b's spans on
             to the end of line_a. */
             b = nearest_line_b;
-            if (verbose) outf("found nearest line. a=%i b=%i", a, b);
+            if (1 || verbose) outf("found nearest line. a=%i b=%i", a, b);
             span_t* span_b = line_span_first(nearest_line);
 
             if (1
@@ -1350,10 +1368,13 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                         (span_a->chars_num + span_b->chars_num)
                         );
 
+                if (debugscale) {
+                    average_adv *= sqrt(fz_matrix_expansion(span_a->trm) * fz_matrix_expansion(span_b->trm));
+                }
                 int insert_space = (nearest_adv > 0.25 * average_adv);
                 if (insert_space) {
                     /* Append space to span_a before concatenation. */
-                    outf("(inserted space) nearest_adv=%lf average_adv=%lf",
+                    outf("*** (inserted space) nearest_adv=%lf average_adv=%lf",
                             nearest_adv,
                             average_adv
                             );
@@ -1369,9 +1390,9 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                     item->adv = nearest_adv;
                 }
 
-                outfx("Joining spans a=%i b=%i:", a, b);
-                outfx("    %s", span_string2(span_a));
-                outfx("    %s", span_string2(span_b));
+                outf("*** Joining spans a=%i b=%i:", a, b);
+                outf("    %s", span_string2(span_a));
+                outf("    %s", span_string2(span_b));
                 if (0) {
                     /* Show details about what we're joining. */
                     outf(
@@ -1393,9 +1414,9 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             space could result in an empty line_t, which could break various
             assumptions elsewhere. */
 
-            outfx("Joining spans a=%i b=%i:", a, b);
-            outfx("    %s", span_string2(span_a));
-            outfx("    %s", span_string2(span_b));
+            outf("*** Joining spans a=%i b=%i:", a, b);
+            outf("    %s", span_string2(span_a));
+            outf("    %s", span_string2(span_b));
 
             span_t** s = realloc(
                     line_a->spans,
@@ -1422,7 +1443,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                 the new extended line_a needs checking again. */
                 a -= 1;
             }
-            outfx("new line is:\n    %s", line_string2(line_a));
+            outfx("*** new line is:\n    %s", line_string2(line_a));
         }
     }
 
@@ -1902,7 +1923,7 @@ static int page_span_end_clean( page_t* page)
         return 0;
     }
 
-    float font_size = fz_matrix_expansion(span->trm)  * fz_matrix_expansion(span->ctm);
+    float font_size = fz_matrix_expansion(span->trm) * fz_matrix_expansion(span->ctm);
     if (span->gs) {
         font_size *= 1000;
     }
@@ -1964,7 +1985,7 @@ static int page_span_end_clean( page_t* page)
                 char_[-1].pre_y,
                 err_x,
                 err_y,
-                span_string(span)
+                span_string2(span)
                 );
         span_t* span2 = page_span_append(page);
         if (!span2) goto end;
@@ -1983,10 +2004,12 @@ static int page_span_end_clean( page_t* page)
     return ret;
 }
 
-static int g_span_autosplit = 0;
+/* Reads from intermediate format in file <path> into document_t.
 
-/* Reads from intermediate format in file <path> into document_t. */
-static int read_spans_raw(const char* path, document_t* document, int gs)
+autosplit:
+    If true, we split spans when y coordinate changes.
+*/
+static int read_spans_raw(const char* path, document_t* document, int gs, int autosplit, float debugscale)
 {
     int ret = -1;
 
@@ -2064,6 +2087,11 @@ static int read_spans_raw(const char* path, document_t* document, int gs)
 
             if (s_read_matrix(xml_tag_attributes_find(&tag, "ctm"), &span->ctm)) goto end;
             if (s_read_matrix(xml_tag_attributes_find(&tag, "trm"), &span->trm)) goto end;
+            
+            if (debugscale) {
+                matrix_scale(&span->ctm, debugscale);
+                matrix_scale4(&span->trm, 1/debugscale);
+            }
             char* f = xml_tag_attributes_find(&tag, "font_name");
             if (!f) {
                 outf("Failed to find attribute 'font_name'");
@@ -2107,13 +2135,13 @@ static int read_spans_raw(const char* path, document_t* document, int gs)
                 float x = span->ctm.a * (char_pre_x-offset_x) + span->ctm.b * (char_pre_y-offset_y) + span->ctm.e;
                 float y = span->ctm.c * (char_pre_x-offset_x) + span->ctm.d * (char_pre_y-offset_y) + span->ctm.f;
                 
-                if (g_span_autosplit && char_pre_y - offset_y != 0) {
-                    outf("g_span_autosplit: char_pre_y=%f offset_y=%f", char_pre_y, offset_y);
+                if (autosplit && char_pre_y - offset_y != 0) {
+                    outf("autosplit: char_pre_y=%f offset_y=%f", char_pre_y, offset_y);
                     float e = span->ctm.e + span->ctm.a * (char_pre_x-offset_x) + span->ctm.b * (char_pre_y-offset_y);
                     float f = span->ctm.f + span->ctm.c * (char_pre_x-offset_x) + span->ctm.d * (char_pre_y-offset_y);
                     offset_x = char_pre_x;
                     offset_y = char_pre_y;
-                    outf("g_span_autosplit: changing ctm.{e,f} from (%f, %f) to (%f, %f)",
+                    outf("autosplit: changing ctm.{e,f} from (%f, %f) to (%f, %f)",
                             span->ctm.e,
                             span->ctm.f,
                             e, f
@@ -2131,7 +2159,7 @@ static int read_spans_raw(const char* path, document_t* document, int gs)
                     }
                     span->ctm.e = e;
                     span->ctm.f = f;
-                    outf("g_span_autosplit: char_pre_y=%f offset_y=%f", char_pre_y, offset_y);
+                    outf("autosplit: char_pre_y=%f offset_y=%f", char_pre_y, offset_y);
                 }
                 
                 if (span_append_c(span, 0 /*c*/)) goto end;
@@ -2154,6 +2182,10 @@ static int read_spans_raw(const char* path, document_t* document, int gs)
                 
                 char_->x = span->ctm.a * char_->pre_x + span->ctm.b * char_->pre_y;
                 char_->y = span->ctm.c * char_->pre_x + span->ctm.d * char_->pre_y;
+                if (debugscale) {
+                    //char_->x *= fz_matrix_expansion(span->trm);
+                    //char_->y *= fz_matrix_expansion(span->trm);
+                }
                 
                 if (gs) {
                     char_->x *= 100 * span->trm.a;
@@ -2163,6 +2195,9 @@ static int read_spans_raw(const char* path, document_t* document, int gs)
                 if (xml_tag_attributes_find_float(&tag, "adv", &char_->adv)) goto end;
                 if (gs) {
                     char_->adv *= 1000;
+                }
+                if (debugscale) {
+                    char_->adv *= debugscale;
                 }
                 
                 //if (xml_tag_attributes_find_int(&tag, "gid", &char_->gid)) goto end;
@@ -2175,7 +2210,7 @@ static int read_spans_raw(const char* path, document_t* document, int gs)
                 char_->x += span->ctm.e;
                 char_->y += span->ctm.f;
                 
-                outf("ctm=%s trm=%s ctm*trm=%f pre=(%f %f) => xy=(%f %f) [orig xy=(%f %f)]",
+                outfx("ctm=%s trm=%s ctm*trm=%f pre=(%f %f) => xy=(%f %f) [orig xy=(%f %f)]",
                         matrix_string(&span->ctm),
                         trm,
                         span->ctm.a * span->trm.a,
@@ -2467,7 +2502,8 @@ static int paras_to_content(document_t* document, string_t* content, int spacing
 static int document_to_docx_content(
         document_t* document,
         string_t* content,
-        int spacing
+        int spacing,
+        float debugscale
         )
 {
     int ret = -1;
@@ -2479,7 +2515,7 @@ static int document_to_docx_content(
     for (p=0; p<document->pages_num; ++p) {
         page_t* page = document->pages[p];
 
-        if (make_lines(page->spans, page->spans_num, &page->lines, &page->lines_num)) goto end;
+        if (make_lines(page->spans, page->spans_num, &page->lines, &page->lines_num, debugscale)) goto end;
 
         if (make_paras(page->lines, page->lines_num, &page->paras, &page->paras_num)) goto end;
     }
@@ -2516,6 +2552,8 @@ int main(int argc, char** argv)
     int         preserve_dir        = 0;
     const char* method              = NULL;
     int         spacing             = 1;
+    int         autosplit           = 0;
+    float       debugscale          = 0;
 
     for (int i=1; i<argc; ++i) {
         const char* arg = argv[i];
@@ -2531,6 +2569,9 @@ int main(int argc, char** argv)
                     "    We also requires a template .docx file\n"
                     "\n"
                     "Args:\n"
+                    "    --autosplit\n"
+                    "        Split spans when y coordinate changes. This stresses our handling\n"
+                    "        of spans when input is from mupdf.\n"
                     "    -c <path>\n"
                     "        If specified, we write raw .docx content to <path>; this is the\n"
                     "        text that we embed inside the template word/document.xml file\n"
@@ -2557,6 +2598,9 @@ int main(int argc, char** argv)
                     "        Name of docx file to use as template.\n"
                     );
         }
+        else if (!strcmp(arg, "--autosplit")) {
+            autosplit = atoi(argv[++i]);
+        }
         else if (!strcmp(arg, "-c")) {
             content_path = argv[++i];
         }
@@ -2578,8 +2622,8 @@ int main(int argc, char** argv)
         else if (!strcmp(arg, "-t")) {
             docx_template_path = argv[++i];
         }
-        else if (!strcmp(arg, "--autosplit")) {
-            g_span_autosplit = atoi(argv[++i]);
+        else if (!strcmp(arg, "--scale")) {
+            debugscale = atof(argv[++i]);
         }
         else {
             outf("Unrecognised arg: '%s'", arg);
@@ -2620,7 +2664,7 @@ int main(int argc, char** argv)
         is from gs: */
         int gs = 0;
         if (!strcmp(method, "gs")) gs = 1;
-        if (read_spans_raw(input_path, &document, gs)) {
+        if (read_spans_raw(input_path, &document, gs, autosplit, debugscale)) {
             outf("Failed to read 'raw' output from: %s", input_path);
             goto end;
         }
@@ -2632,7 +2676,7 @@ int main(int argc, char** argv)
     }
     
     if (document.pages_num) {
-        if (document_to_docx_content(&document, &content, spacing)) {
+        if (document_to_docx_content(&document, &content, spacing, debugscale)) {
             outf("Failed to create docx content errno=%i: %s", errno, strerror(errno));
             goto end;
         }
