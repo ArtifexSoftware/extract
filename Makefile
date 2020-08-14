@@ -85,11 +85,12 @@ test-gs: zlib.3.pdf-test-gs Python2.pdf-test-gs
 	./$(exe) -m raw -i test/$<.mu-raw.intermediate2.xml -o test/$<.mu-raw2.docx -p 1 -t template.docx
 
 %.pdf-test4-mu: %.pdf $(exe)
-	./$(exe) -m raw -i test/$<.mu-raw.intermediate4.xml -o test/$<.mu-raw4.docx -p 1 -t template.docx 2>&1 | tee test/$<.mu-raw4.out
+	./$(exe) -m raw -i test/$<.mu-raw.intermediate4.xml --scale 0.0 -c test/$<.mu-raw4.content.xml -o test/$<.mu-raw4.docx -p 1 -t template.docx 2>&1 | tee test/$<.mu-raw4.out
 %.pdf-test4as-mu: %.pdf $(exe)
-	./$(exe) -m raw -i test/$<.mu-raw.intermediate4.xml -o test/$<.mu-raw4as.docx -p 1 -t template.docx --autosplit 1 2>&1 | tee test/$<.mu-raw4as.out
+	./$(exe) -m raw -i test/$<.mu-raw.intermediate4.xml --scale 1.0 -c test/$<.mu-raw4as.content.xml -o test/$<.mu-raw4as.docx -p 1 -t template.docx --autosplit 0 2>&1 | tee test/$<.mu-raw4as.out
 
-test-as: Python2.pdf-test4-mu Python2.pdf-test4as-mu 
+test-as: Python2.pdf-test4-mu Python2.pdf-test4as-mu
+	diff -u test/Python2.pdf.mu-raw4.content.xml test/Python2.pdf.mu-raw4as.content.xml
 
 # Build rules.
 #
