@@ -930,8 +930,7 @@ const char* span_string(span_t* span)
     string_free(&ret);
     char buffer[200];
     snprintf(buffer, sizeof(buffer),
-            "span %p: chars_num=%i (%c:%f,%f)..(%c:%f,%f) font=%s:(%f,%f) wmode=%i chars_num=%i: ",
-            span,
+            "span chars_num=%i (%c:%f,%f)..(%c:%f,%f) font=%s:(%f,%f) wmode=%i chars_num=%i: ",
             span->chars_num,
             c0, x0, y0,
             c1, x1, y1,
@@ -1368,12 +1367,14 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                 int insert_space = (nearest_adv > 0.25 * average_adv);
                 if (insert_space) {
                     /* Append space to span_a before concatenation. */
-                    outf("(inserted space) nearest_adv=%lf average_adv=%lf",
-                            nearest_adv,
-                            average_adv
-                            );
-                    outf("    a: %s", span_string(span_a));
-                    outf("    b: %s", span_string(span_b));
+                    if (verbose) {
+                        outf("(inserted space) nearest_adv=%lf average_adv=%lf",
+                                nearest_adv,
+                                average_adv
+                                );
+                        outf("    a: %s", span_string(span_a));
+                        outf("    b: %s", span_string(span_b));
+                    }
                     char_t* p = realloc(span_a->chars, (span_a->chars_num + 1) * sizeof(char_t));
                     if (!p) goto end;
                     span_a->chars = p;
@@ -1384,9 +1385,11 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                     item->adv = nearest_adv;
                 }
 
-                outf("Joining spans a=%i b=%i:", a, b);
-                outf("    %s", span_string2(span_a));
-                outf("    %s", span_string2(span_b));
+                if (verbose) {
+                    outf("Joining spans a=%i b=%i:", a, b);
+                    outf("    %s", span_string2(span_a));
+                    outf("    %s", span_string2(span_b));
+                }
                 if (0) {
                     /* Show details about what we're joining. */
                     outf(
@@ -1408,10 +1411,11 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             space could result in an empty line_t, which could break various
             assumptions elsewhere. */
 
-            outf("Joining spans a=%i b=%i:", a, b);
-            outf("    %s", span_string2(span_a));
-            outf("    %s", span_string2(span_b));
-
+            if (verbose) {
+                outf("Joining spans a=%i b=%i:", a, b);
+                outf("    %s", span_string2(span_a));
+                outf("    %s", span_string2(span_b));
+            }
             span_t** s = realloc(
                     line_a->spans,
                     sizeof(span_t*) * (line_a->spans_num + nearest_line->spans_num)
@@ -1517,9 +1521,8 @@ respectively.
 
 AQB is a right angle. We need to find AQ.
 */
-static double line_distance(double ax, double ay, double bx, double by, double angle, int verbose)
+static double line_distance(double ax, double ay, double bx, double by, double angle)
 {
-    double pi = 3.1415926;
     double dx = bx - ax;
     double dy = by - ay;
     
@@ -1555,7 +1558,7 @@ static int paras_cmp(const void* a, const void* b)
     double ay = line_item_first(a_line)->y;
     double bx = line_item_first(b_line)->x;
     double by = line_item_first(b_line)->y;
-    double distance = line_distance(ax, ay, bx, by, angle, 0);
+    double distance = line_distance(ax, ay, bx, by, angle);
     if (distance > 0)   return -1;
     if (distance < 0)   return +1;
     return 0;
@@ -1621,10 +1624,6 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
         double angle_a = line_angle(line_a);
         
         int verbose = 0;
-        if (strstr(line_string2(line_a), "ucatan")) {
-            outf("setting verbose");
-            verbose = 1;
-        }
 
         /* Look for nearest para_t that could be appended to para_a. */
         int b;
@@ -1644,7 +1643,7 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
             double ay = line_item_last(line_a)->y;
             double bx = line_item_first(line_b)->x;
             double by = line_item_first(line_b)->y;
-            double distance = line_distance(ax, ay, bx, by, angle_a, verbose);
+            double distance = line_distance(ax, ay, bx, by, angle_a);
             if (verbose) {
                 outf("angle_a=%lf a=(%lf %lf) b=(%lf %lf) delta=(%lf %lf) distance=%lf:",
                         angle_a * 180 / 3.1415926,
@@ -1659,9 +1658,11 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
             }
             if (distance > 0) {
                 if (nearest_para_distance == -1 || distance < nearest_para_distance) {
-                    outf("updating nearest. distance=%lf:", distance);
-                    outf("    line_a=%s", line_string2(line_a));
-                    outf("    line_b=%s", line_string2(line_b));
+                    if (verbose) {
+                        outf("updating nearest. distance=%lf:", distance);
+                        outf("    line_a=%s", line_string2(line_a));
+                        outf("    line_b=%s", line_string2(line_b));
+                    }
                     nearest_para_distance = distance;
                     nearest_para_b = b;
                     nearest_para = para_b;
@@ -1674,7 +1675,7 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
             (void) line_b; /* Only used in outfx(). */
             double line_b_size = line_font_size_max(para_line_first(nearest_para));
             if (nearest_para_distance < 1.5 * line_b_size) {
-                if (1) {
+                if (verbose) {
                     outf(
                             "joing paragraphs. a=(%lf,%lf) b=(%lf,%lf) nearest_para_distance=%lf line_b_size=%lf",
                             line_item_last(line_a)->x,
@@ -1728,7 +1729,7 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
                 }
             }
             else {
-                outf("Not joining paragraphs. nearest_para_distance=%lf line_b_size=%lf",
+                outfx("Not joining paragraphs. nearest_para_distance=%lf line_b_size=%lf",
                         nearest_para_distance, line_b_size);
             }
         }
@@ -1947,7 +1948,7 @@ static int page_span_end_clean( page_t* page)
             remove_penultimate_space = 1;
         }
         if ((char_[-1].pre_x - char_[-2].pre_x) / font_size < char_[-1].adv / 10) {
-            outf("removing penultimate space because space very narrow:"
+            outfx("removing penultimate space because space very narrow:"
                     "char_[-1].pre_x-char_[-2].pre_x=%f font_size=%f char_[-1].adv=%f",
                     char_[-1].pre_x-char_[-2].pre_x,
                     font_size,
@@ -1960,10 +1961,10 @@ static int page_span_end_clean( page_t* page)
             character. We discard previous space character - these
             sometimes seem to appear in the middle of words for some
             reason. */
-            outf("removing space before final char in: %s", span_string(span));
+            outfx("removing space before final char in: %s", span_string(span));
             span->chars[span->chars_num-2] = span->chars[span->chars_num-1];
             span->chars_num -= 1;
-            outf("span is now:                         %s", span_string(span));
+            outfx("span is now:                         %s", span_string(span));
             return 0;
         }
     }
@@ -1972,7 +1973,7 @@ static int page_span_end_clean( page_t* page)
         previous characters, so split into two spans. This often
         splits text incorrectly, but this is corrected later when
         we join spans into lines. */
-        outf("Splitting last char into new span. font_size=%f dir.x=%f char[-1].pre=(%f, %f) err=(%f, %f): %s",
+        outfx("Splitting last char into new span. font_size=%f dir.x=%f char[-1].pre=(%f, %f) err=(%f, %f): %s",
                 font_size,
                 dir.x,
                 char_[-1].pre_x,
@@ -2009,6 +2010,9 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
 
     FILE* in = NULL;
     document_init(document);
+    int num_spans = 0;
+    int num_spans_split = 0;    /* Num extra spns from page_span_end_clean(). */
+    int num_spans_autosplit = 0; /* Num extra spans from autosplit=1. */
 
     xml_tag_t   tag;
     xml_tag_init(&tag);
@@ -2059,13 +2063,14 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
             errno = ESRCH;
             goto end;
         }
-        outf("loading spans for page %i...", document->pages_num);
+        outfx("loading spans for page %i...", document->pages_num);
         page_t* page = document_page_append(document);
         if (!page) goto end;
 
         for(;;) {
             if (pparse_next(in, &tag)) goto end;
             if (!strcmp(tag.name, "/page")) {
+                num_spans += page->spans_num;
                 break;
             }
             if (strcmp(tag.name, "span")) {
@@ -2074,6 +2079,7 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
                 goto end;
             }
 
+            //num_spans += 1;
             span_t* span = page_span_append(page);
             if (!span) goto end;
             
@@ -2126,22 +2132,20 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
                 if (xml_tag_attributes_find_float(&tag, "x", &char_pre_x)) goto end;
                 if (xml_tag_attributes_find_float(&tag, "y", &char_pre_y)) goto end;
                 
-                float x = span->ctm.a * (char_pre_x-offset_x) + span->ctm.b * (char_pre_y-offset_y) + span->ctm.e;
-                float y = span->ctm.c * (char_pre_x-offset_x) + span->ctm.d * (char_pre_y-offset_y) + span->ctm.f;
-                
                 if (autosplit && char_pre_y - offset_y != 0) {
-                    outf("autosplit: char_pre_y=%f offset_y=%f", char_pre_y, offset_y);
+                    outfx("autosplit: char_pre_y=%f offset_y=%f", char_pre_y, offset_y);
                     float e = span->ctm.e + span->ctm.a * (char_pre_x-offset_x) + span->ctm.b * (char_pre_y-offset_y);
                     float f = span->ctm.f + span->ctm.c * (char_pre_x-offset_x) + span->ctm.d * (char_pre_y-offset_y);
                     offset_x = char_pre_x;
                     offset_y = char_pre_y;
-                    outf("autosplit: changing ctm.{e,f} from (%f, %f) to (%f, %f)",
+                    outfx("autosplit: changing ctm.{e,f} from (%f, %f) to (%f, %f)",
                             span->ctm.e,
                             span->ctm.f,
                             e, f
                             );
                     if (span->chars_num > 0) {
                         /* Create new span. */
+                        num_spans_autosplit += 1;
                         span_t* span0 = span;
                         span = page_span_append(page);
                         if (!span) goto end;
@@ -2153,7 +2157,7 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
                     }
                     span->ctm.e = e;
                     span->ctm.f = f;
-                    outf("autosplit: char_pre_y=%f offset_y=%f", char_pre_y, offset_y);
+                    outfx("autosplit: char_pre_y=%f offset_y=%f", char_pre_y, offset_y);
                 }
                 
                 if (span_append_c(span, 0 /*c*/)) goto end;
@@ -2214,13 +2218,23 @@ static int read_spans_raw(const char* path, document_t* document, int gs, int au
                         x, y
                         );
                 
+                int page_spans_num_old = page->spans_num;
                 if (page_span_end_clean(page)) goto end;
                 span = page->spans[page->spans_num-1];
+                if (page->spans_num != page_spans_num_old) {
+                    num_spans_split += 1;
+                }
             }
             xml_tag_free(&tag);
         }
-        outfx("page=%i page->num_spans=%i", document->pages_num, page->spans_num);
+        outf("page=%i page->num_spans=%i", document->pages_num, page->spans_num);
     }
+    
+    outf("num_spans=%i num_spans_split=%i num_spans_autosplit=%i",
+            num_spans,
+            num_spans_split,
+            num_spans_autosplit
+            );
 
     ret = 0;
 
@@ -2508,7 +2522,7 @@ static int document_to_docx_content(
     int p;
     for (p=0; p<document->pages_num; ++p) {
         page_t* page = document->pages[p];
-
+        outf("processing page %i: num_spans=%i", p, page->spans_num);
         if (make_lines(page->spans, page->spans_num, &page->lines, &page->lines_num, debugscale)) goto end;
 
         if (make_paras(page->lines, page->lines_num, &page->paras, &page->paras_num)) goto end;
@@ -2538,6 +2552,8 @@ int main(int argc, char** argv)
     (void) str_cat;
     (void) compare_tags;
     (void) line_string2;
+    (void) matrix_cmp;
+    (void) line_string;
     
     const char* docx_out_path       = NULL;
     const char* input_path          = NULL;
@@ -2566,7 +2582,7 @@ int main(int argc, char** argv)
                     "    --autosplit\n"
                     "        Split spans when y coordinate changes. This stresses our handling\n"
                     "        of spans when input is from mupdf.\n"
-                    "    -c <path>\n"
+                    "    --o-content <path>\n"
                     "        If specified, we write raw .docx content to <path>; this is the\n"
                     "        text that we embed inside the template word/document.xml file\n"
                     "        when generating the .docx.\n"
@@ -2595,7 +2611,7 @@ int main(int argc, char** argv)
         else if (!strcmp(arg, "--autosplit")) {
             autosplit = atoi(argv[++i]);
         }
-        else if (!strcmp(arg, "-c")) {
+        else if (!strcmp(arg, "--o-content")) {
             content_path = argv[++i];
         }
         else if (!strcmp(arg, "-m")) {

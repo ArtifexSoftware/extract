@@ -51,9 +51,10 @@ dep = $(obj:.o=.d)
 #
 # We assume that mutool and gs are available at hard-coded paths.
 #
-test: test-mu test-gs
+test: test-mu test-gs test-mu-as
 
 test-mu: Python2.pdf-test-mu zlib.3.pdf-test-mu
+test-mu-as: Python2.pdf-test-mu-as zlib.3.pdf-test-mu-as
 
 %.pdf-test-mu: %.pdf $(exe)
 	@echo
@@ -62,12 +63,25 @@ test-mu: Python2.pdf-test-mu zlib.3.pdf-test-mu
 	@echo == Generating intermediate with mutool.
 	../mupdf/build/debug/mutool draw -F raw -o test/$<.mu-raw.intermediate.xml $<
 	@echo == Generating output.
-	./$(exe) -c test/$<.mu-raw.content.xml -m raw -i test/$<.mu-raw.intermediate.xml -o test/$<.mu-raw.docx -p 1 -t template.docx
+	./$(exe) -m raw -i test/$<.mu-raw.intermediate.xml --o-content test/$<.mu-raw.content.xml -o test/$<.mu-raw.docx -p 1 -t template.docx
 	@echo == Comparing output with reference output.
 	diff -u test/$<.mu-raw.content.xml $<.mu-raw.content.ref.xml
 	@echo == Test succeeded.
 
-test-gs: zlib.3.pdf-test-gs Python2.pdf-test-gs
+# Run extract.exe with --autosplit, to stress joining of spans.
+%.pdf-test-mu-as: %.pdf $(exe)
+	@echo
+	@echo === Testing $<
+	mkdir -p test
+	@echo == Generating intermediate with mutool.
+	../mupdf/build/debug/mutool draw -F raw -o test/$<.mu-raw.intermediate.xml $<
+	@echo == Generating output.
+	./$(exe) -m raw --autosplit 1 -i test/$<.mu-raw.intermediate.xml --o-content test/$<.mu-raw.as.content.xml -o test/$<.mu-raw.as.docx -p 1 -t template.docx
+	@echo == Comparing output with reference output.
+	diff -u test/$<.mu-raw.as.content.xml $<.mu-raw.content.ref.xml
+	@echo == Test succeeded.
+
+test-gs: zlib.3.pdf-test-gs #Python2.pdf-test-gs
 
 %.pdf-test-gs: %.pdf $(exe)
 	@echo
@@ -76,7 +90,7 @@ test-gs: zlib.3.pdf-test-gs Python2.pdf-test-gs
 	@echo == Generating intermediate with gs.
 	../ghostpdl/debug-bin/gs -sDEVICE=txtwrite -dTextFormat=4 -o test/$<.gs.intermediate.xml $<
 	@echo == Generating output.
-	./$(exe) -c test/$<.gs.content.xml -m gs -i test/$<.gs.intermediate.xml -o test/$<.gs.docx -p 1 -t template.docx
+	./$(exe) -m gs -i test/$<.gs.intermediate.xml --o-content test/$<.gs.content.xml -o test/$<.gs.docx -p 1 -t template.docx
 	@echo == Comparing output with reference output.
 	diff -u test/$<.gs.content.xml $<.gs.content.ref.xml
 	@echo == Test succeeded.
