@@ -545,7 +545,7 @@ static const char* matrix_string(const matrix_t* matrix)
 }
 
 /* Returns +1, 0 or -1 depending on sign of x. */
-static int s_sign(double x)
+static int s_sign(float x)
 {
     if (x < 0)  return -1;
     if (x > 0)  return +1;
@@ -662,8 +662,13 @@ static int docx_paragraph_finish(string_t* content)
 
 /* Starts a new run. Caller must ensure that docx_run_finish() was called to
 terminate any previous run. */
-static int docx_run_start(string_t* content, const char* font_name, double font_size,
-        int bold, int italic)
+static int docx_run_start(
+        string_t* content,
+        const char* font_name,
+        float font_size,
+        int bold,
+        int italic
+        )
 {
     int e = 0;
     if (!e) e = string_cat(content, "\n<w:r><w:rPr><w:rFonts w:ascii=\"");
@@ -776,7 +781,12 @@ Returns 0 on success or -1 with errno set.
 
 We use the 'zip' and 'unzip' commands.
 */
-static int docx_create(string_t* content, const char* path_out, const char* path_template, int preserve_dir)
+static int docx_create(
+        string_t* content,
+        const char* path_template,
+        const char* path_out,
+        int preserve_dir
+        )
 {
     assert(path_out);
     assert(path_template);
@@ -1124,7 +1134,7 @@ static line_t* paragraph_line_last(const paragraph_t* paragraph)
 
 
 
-static double span_angle(span_t* span)
+static float span_angle(span_t* span)
 {
     /* Assume ctm is a rotation matix. */
     float ret = atan2f(-span->ctm.c, span->ctm.a);
@@ -1143,7 +1153,7 @@ static double span_angle(span_t* span)
 }
 
 /* Returns angle of <line>. */
-static double line_angle(line_t* line)
+static float line_angle(line_t* line)
 {
     /* All spans in a line must have same angle, so just use the first span. */
     assert(line->spans_num > 0);
@@ -1151,29 +1161,29 @@ static double line_angle(line_t* line)
 }
 
 /* Returns total width of span. */
-double span_adv_total(span_t* span)
+float span_adv_total(span_t* span)
 {
-    double dx = span_char_last(span)->x - span_char_first(span)->x;
-    double dy = span_char_last(span)->y - span_char_first(span)->y;
+    float dx = span_char_last(span)->x - span_char_first(span)->x;
+    float dy = span_char_last(span)->y - span_char_first(span)->y;
     /* We add on the advance of the last item; this avoids us returning zero if
     there's only one item. */
-    double adv = span_char_last(span)->adv * matrix_expansion(span->trm);
+    float adv = span_char_last(span)->adv * matrix_expansion(span->trm);
     return sqrt(dx*dx + dy*dy) + adv;
 }
 
 /* Returns distance between end of <a> and beginning of <b>. */
-static double spans_adv(span_t* a_span, char_t* a, char_t* b)
+static float spans_adv(span_t* a_span, char_t* a, char_t* b)
 {
-    double delta_x = b->x - a->x;
-    double delta_y = b->y - a->y;
-    double s = sqrt( delta_x*delta_x + delta_y*delta_y);
-    double a_size = a->adv * matrix_expansion(a_span->trm);
+    float delta_x = b->x - a->x;
+    float delta_y = b->y - a->y;
+    float s = sqrt( delta_x*delta_x + delta_y*delta_y);
+    float a_size = a->adv * matrix_expansion(a_span->trm);
     s -= a_size;
     return s;
 }
 
 /* Returns 1 if lines have same wmode and are at the same angle, else 0. */
-static int lines_are_compatible(line_t* a, line_t* b, double angle_a, int verbose)
+static int lines_are_compatible(line_t* a, line_t* b, float angle_a, int verbose)
 {
     if (a == b) return 0;
     if (!a->spans || !b->spans) return 0;
@@ -1200,7 +1210,7 @@ static int lines_are_compatible(line_t* a, line_t* b, double angle_a, int verbos
         }
         return 0;
     }
-    double angle_b = span_angle(line_span_first(b));
+    float angle_b = span_angle(line_span_first(b));
     if (angle_b != angle_a) {
         outfx("%s:%i: angles differ");
         return 0;
@@ -1270,10 +1280,10 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
         outfx("looking at line_a=%s", line_string2(line_a));
         line_t* nearest_line = NULL;
         int nearest_line_b = -1;
-        double nearest_adv = 0;
+        float nearest_adv = 0;
 
         span_t* span_a = line_span_last(line_a);
-        double angle_a = span_angle(span_a);
+        float angle_a = span_angle(span_a);
         if (verbose) outf("a=%i angle_a=%lf ctm=%s: %s",
                 a,
                 angle_a * 180/3.1415926,
@@ -1307,7 +1317,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             }
 
             num_compatible += 1;
-            const double    pi = 3.14159265;
+            const float pi = 3.14159265;
 
             /* Find angle between last glyph of span_a and first glyph of
             span_b. This detects whether the lines are lined up with each other
@@ -1315,10 +1325,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             span_t* span_b = line_span_first(line_b);
             float dx = span_char_first(span_b)->x - span_char_last(span_a)->x;
             float dy = span_char_first(span_b)->y - span_char_last(span_a)->y;
-            double angle_a_b = atan2(
-                    -dy,
-                    dx
-                    );
+            float angle_a_b = atan2(-dy, dx);
             if (verbose) {
                 outf("delta=(%f %f) alast=(%f %f) bfirst=(%f %f): angle_a=%lf angle_a_b=%lf",
                         dx,
@@ -1333,10 +1340,10 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
             }
             /* Might want to relax this when we test on non-horizontal lines.
             */
-            const double    angle_tolerance_deg = 1;
+            const float angle_tolerance_deg = 1;
             if (fabs(angle_a_b - angle_a) * 180/pi <= angle_tolerance_deg) {
                 /* Find distance between end of line_a and beginning of line_b. */
-                double adv = spans_adv(span_a, span_char_last(span_a), span_char_first(span_b));
+                float adv = spans_adv(span_a, span_char_last(span_a), span_char_first(span_b));
                 if (verbose) outf("nearest_adv=%lf. angle_a_b=%lf adv=%lf",
                         nearest_adv,
                         angle_a_b,
@@ -1378,7 +1385,7 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
                 lines we are considering joining, so that we can decide whether
                 the distance between them is large enough to merit joining with
                 a space character). */
-                double average_adv = (
+                float average_adv = (
                         (span_adv_total(span_a) + span_adv_total(span_b))
                         /
                         (span_a->chars_num + span_b->chars_num)
@@ -1509,9 +1516,9 @@ static int make_lines(span_t** spans, int spans_num, line_t*** o_lines, int* o_l
 
 
 /* Returns max font size of all span_t's in a line_t. */
-static double line_font_size_max(line_t* line)
+static float line_font_size_max(line_t* line)
 {
-    double  size_max = 0;
+    float   size_max = 0;
     int i;
     for (i=0; i<line->spans_num; ++i) {
         span_t* span = line->spans[i];
@@ -1544,10 +1551,10 @@ respectively.
 
 AQB is a right angle. We need to find AQ.
 */
-static double line_distance(double ax, double ay, double bx, double by, double angle)
+static float line_distance(float ax, float ay, float bx, float by, float angle)
 {
-    double dx = bx - ax;
-    double dy = by - ay;
+    float dx = bx - ax;
+    float dy = by - ay;
     
     return dx * sin(angle) + dy * cos(angle);
 }
@@ -1570,18 +1577,18 @@ static int paragraphs_cmp(const void* a, const void* b)
     int d = matrix_cmp4(&a_span->ctm, &b_span->ctm);
     if (d)  return d;
 
-    double a_angle = line_angle(a_line);
-    double b_angle = line_angle(b_line);
+    float a_angle = line_angle(a_line);
+    float b_angle = line_angle(b_line);
     if (fabs(a_angle - b_angle) > 3.14/2) {
         /* Give up if more than 90 deg. */
         return 0;
     }
-    double angle = (a_angle + b_angle) / 2;
-    double ax = line_item_first(a_line)->x;
-    double ay = line_item_first(a_line)->y;
-    double bx = line_item_first(b_line)->x;
-    double by = line_item_first(b_line)->y;
-    double distance = line_distance(ax, ay, bx, by, angle);
+    float angle = (a_angle + b_angle) / 2;
+    float ax = line_item_first(a_line)->x;
+    float ay = line_item_first(a_line)->y;
+    float bx = line_item_first(b_line)->x;
+    float by = line_item_first(b_line)->y;
+    float distance = line_distance(ax, ay, bx, by, angle);
     if (distance > 0)   return -1;
     if (distance < 0)   return +1;
     return 0;
@@ -1647,11 +1654,11 @@ static int make_paragraphs(
 
         paragraph_t* nearest_paragraph = NULL;
         int nearest_paragraph_b = -1;
-        double nearest_paragraph_distance = -1;
+        float nearest_paragraph_distance = -1;
         assert(paragraph_a->lines_num > 0);
 
         line_t* line_a = paragraph_line_last(paragraph_a);
-        double angle_a = line_angle(line_a);
+        float angle_a = line_angle(line_a);
         
         int verbose = 0;
 
@@ -1670,11 +1677,11 @@ static int make_paragraphs(
                 continue;
             }
 
-            double ax = line_item_last(line_a)->x;
-            double ay = line_item_last(line_a)->y;
-            double bx = line_item_first(line_b)->x;
-            double by = line_item_first(line_b)->y;
-            double distance = line_distance(ax, ay, bx, by, angle_a);
+            float ax = line_item_last(line_a)->x;
+            float ay = line_item_last(line_a)->y;
+            float bx = line_item_first(line_b)->x;
+            float by = line_item_first(line_b)->y;
+            float distance = line_distance(ax, ay, bx, by, angle_a);
             if (verbose) {
                 outf("angle_a=%lf a=(%lf %lf) b=(%lf %lf) delta=(%lf %lf) distance=%lf:",
                         angle_a * 180 / 3.1415926,
@@ -1705,7 +1712,7 @@ static int make_paragraphs(
         if (nearest_paragraph) {
             line_t* line_b = paragraph_line_first(nearest_paragraph);
             (void) line_b; /* Only used in outfx(). */
-            double line_b_size = line_font_size_max(paragraph_line_first(nearest_paragraph));
+            float line_b_size = line_font_size_max(paragraph_line_first(nearest_paragraph));
             if (nearest_paragraph_distance < 1.5 * line_b_size) {
                 if (verbose) {
                     outf(
@@ -2733,7 +2740,7 @@ int main(int argc, char** argv)
         fclose(f);
     }
     outf("Creating .docx file: %s", docx_out_path);
-    e = docx_create(&content, docx_out_path, docx_template_path, preserve_dir);
+    e = docx_create(&content, docx_template_path, docx_out_path, preserve_dir);
 
     end:
 
