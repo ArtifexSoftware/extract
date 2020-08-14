@@ -975,6 +975,7 @@ const char* span_string(span_t* span)
     return ret.chars;
 }
 
+/* Returns static string containing brief info about span_t. */
 const char* span_string2(span_t* span)
 {
     static string_t ret = {0};
@@ -988,7 +989,7 @@ const char* span_string2(span_t* span)
     return ret.chars;
 }
 
-/* Appends new char_t with .ucs=c and all other fields zeroed. */
+/* Appends new char_t a span_t with .ucs=c and all other fields zeroed. */
 static int span_append_c(span_t* span, int c)
 {
     char_t* items = realloc(span->chars, sizeof(*items) * (span->chars_num + 1));
@@ -1059,12 +1060,14 @@ static const char* line_string2(line_t* line)
 /* Returns first span in a line. */
 static span_t* line_span_last(line_t* line)
 {
+    assert(line->spans_num > 0);
     return line->spans[line->spans_num - 1];
 }
 
 /* Returns list span in a line. */
 static span_t* line_span_first(line_t* line)
 {
+    assert(line->spans_num > 0);
     return line->spans[0];
 }
 
@@ -1088,35 +1091,35 @@ typedef struct
 {
     line_t**    lines;
     int         lines_num;
-} para_t;
+} paragraph_t;
 
-static const char* para_string(para_t* para)
+static const char* paragraph_string(paragraph_t* paragraph)
 {
     static string_t ret = {0};
     string_free(&ret);
-    string_cat(&ret, "para: ");
-    if (para->lines_num) {
-        string_cat(&ret, line_string2(para->lines[0]));
-        if (para->lines_num > 1) {
+    string_cat(&ret, "paragraph: ");
+    if (paragraph->lines_num) {
+        string_cat(&ret, line_string2(paragraph->lines[0]));
+        if (paragraph->lines_num > 1) {
             string_cat(&ret, "..");
-            string_cat(&ret, line_string2(para->lines[para->lines_num-1]));
+            string_cat(&ret, line_string2(paragraph->lines[paragraph->lines_num-1]));
         }
     }
     return ret.chars;
 }
 
 /* Returns first line in paragraph. */
-static line_t* para_line_first(const para_t* para)
+static line_t* paragraph_line_first(const paragraph_t* paragraph)
 {
-    assert(para->lines_num);
-    return para->lines[0];
+    assert(paragraph->lines_num);
+    return paragraph->lines[0];
 }
 
 /* Returns last line in paragraph. */
-static line_t* para_line_last(const para_t* para)
+static line_t* paragraph_line_last(const paragraph_t* paragraph)
 {
-    assert(para->lines_num);
-    return para->lines[ para->lines_num-1];
+    assert(paragraph->lines_num);
+    return paragraph->lines[ paragraph->lines_num-1];
 }
 
 
@@ -1551,12 +1554,12 @@ static double line_distance(double ax, double ay, double bx, double by, double a
 
 /* A comparison function for use with qsort(), for sorting paragraphs within a
 page. */
-static int paras_cmp(const void* a, const void* b)
+static int paragraphs_cmp(const void* a, const void* b)
 {
-    para_t* const* a_para = a;
-    para_t* const* b_para = b;
-    line_t* a_line = para_line_first(*a_para);
-    line_t* b_line = para_line_first(*b_para);
+    paragraph_t* const* a_paragraph = a;
+    paragraph_t* const* b_paragraph = b;
+    line_t* a_line = paragraph_line_first(*a_paragraph);
+    line_t* b_line = paragraph_line_first(*b_paragraph);
 
     span_t* a_span = line_span_first(a_line);
     span_t* b_span = line_span_first(b_line);
@@ -1584,77 +1587,85 @@ static int paras_cmp(const void* a, const void* b)
     return 0;
 }
 
-/* Creates a representation of line_t's that consists of a list of para_t's.
+/* Creates a representation of line_t's that consists of a list of
+paragraph_t's.
 
 We only join lines that are at the same angle and are adjacent.
 
 On entry:
-    Original value of *o_paras and *o_paras_num are ignored.
+    Original value of *o_paragraphs and *o_paragraphs_num are ignored.
 
     <lines> points to array of <lines_num> line_t*'s, each pointing to a
     line_t.
 
 On exit:
-    On sucess, returns zero, *o_paras points to array of *o_paras_num
-    para_t*'s, each pointing to a para_t. In the array, para_t's with same
-    angle are sorted.
+    On sucess, returns zero, *o_paragraphs points to array of *o_paragraphs_num
+    paragraph_t*'s, each pointing to a paragraph_t. In the array, paragraph_t's
+    with same angle are sorted.
 
-    On failure, returns -1 with errno set. *o_paras and *o_paras_num are
-    undefined.
+    On failure, returns -1 with errno set. *o_paragraphs and *o_paragraphs_num
+    are undefined.
 */
-static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_paras_num)
+static int make_paragraphs(
+        line_t** lines,
+        int lines_num,
+        paragraph_t*** o_paragraphs,
+        int* o_paragraphs_num
+        )
 {
     int ret = -1;
-    para_t** paras = NULL;
+    paragraph_t** paragraphs = NULL;
 
-    /* Start off with a para_t for each line_t. */
-    int paras_num = lines_num;
-    paras = malloc(sizeof(*paras) * paras_num);
-    if (!paras) goto end;
+    /* Start off with a paragraph_t for each line_t. */
+    int paragraphs_num = lines_num;
+    paragraphs = malloc(sizeof(*paragraphs) * paragraphs_num);
+    if (!paragraphs) goto end;
     int a;
     /* Ensure we can clean up after error. */
-    for (a=0; a<paras_num; ++a) {
-        paras[a] = NULL;
+    for (a=0; a<paragraphs_num; ++a) {
+        paragraphs[a] = NULL;
     }
-    for (a=0; a<paras_num; ++a) {
-        paras[a] = malloc(sizeof(para_t));
-        if (!paras[a]) goto end;
-        paras[a]->lines_num = 0;
-        paras[a]->lines = malloc(sizeof(line_t*) * 1);
-        if (!paras[a]->lines) goto end;
-        paras[a]->lines_num = 1;
-        paras[a]->lines[0] = lines[a];
+    for (a=0; a<paragraphs_num; ++a) {
+        paragraphs[a] = malloc(sizeof(paragraph_t));
+        if (!paragraphs[a]) goto end;
+        paragraphs[a]->lines_num = 0;
+        paragraphs[a]->lines = malloc(sizeof(line_t*) * 1);
+        if (!paragraphs[a]->lines) goto end;
+        paragraphs[a]->lines_num = 1;
+        paragraphs[a]->lines[0] = lines[a];
     }
 
     int num_joins = 0;
-    for (a=0; a<paras_num; ++a) {
+    for (a=0; a<paragraphs_num; ++a) {
 
-        para_t* para_a = paras[a];
-        if (!para_a) {
-            /* This para is empty - already been appended to a different para. */
+        paragraph_t* paragraph_a = paragraphs[a];
+        if (!paragraph_a) {
+            /* This paragraph is empty - already been appended to a different
+            paragraph. */
             continue;
         }
 
-        para_t* nearest_para = NULL;
-        int nearest_para_b = -1;
-        double nearest_para_distance = -1;
-        assert(para_a->lines_num > 0);
+        paragraph_t* nearest_paragraph = NULL;
+        int nearest_paragraph_b = -1;
+        double nearest_paragraph_distance = -1;
+        assert(paragraph_a->lines_num > 0);
 
-        line_t* line_a = para_line_last(para_a);
+        line_t* line_a = paragraph_line_last(paragraph_a);
         double angle_a = line_angle(line_a);
         
         int verbose = 0;
 
-        /* Look for nearest para_t that could be appended to para_a. */
+        /* Look for nearest paragraph_t that could be appended to paragraph_a.
+        */
         int b;
-        for (b=0; b<paras_num; ++b) {
-            para_t* para_b = paras[b];
-            if (!para_b) {
-                /* This para is empty - already been appended to a different
-                para. */
+        for (b=0; b<paragraphs_num; ++b) {
+            paragraph_t* paragraph_b = paragraphs[b];
+            if (!paragraph_b) {
+                /* This paragraph is empty - already been appended to a different
+                paragraph. */
                 continue;
             }
-            line_t* line_b = para_line_first(para_b);
+            line_t* line_b = paragraph_line_first(paragraph_b);
             if (!lines_are_compatible(line_a, line_b, angle_a, 0)) {
                 continue;
             }
@@ -1677,40 +1688,41 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
                 outf("    line_b=%s", line_string2(line_b));
             }
             if (distance > 0) {
-                if (nearest_para_distance == -1 || distance < nearest_para_distance) {
+                if (nearest_paragraph_distance == -1
+                        || distance < nearest_paragraph_distance) {
                     if (verbose) {
                         outf("updating nearest. distance=%lf:", distance);
                         outf("    line_a=%s", line_string2(line_a));
                         outf("    line_b=%s", line_string2(line_b));
                     }
-                    nearest_para_distance = distance;
-                    nearest_para_b = b;
-                    nearest_para = para_b;
+                    nearest_paragraph_distance = distance;
+                    nearest_paragraph_b = b;
+                    nearest_paragraph = paragraph_b;
                 }
             }
         }
 
-        if (nearest_para) {
-            line_t* line_b = para_line_first(nearest_para);
+        if (nearest_paragraph) {
+            line_t* line_b = paragraph_line_first(nearest_paragraph);
             (void) line_b; /* Only used in outfx(). */
-            double line_b_size = line_font_size_max(para_line_first(nearest_para));
-            if (nearest_para_distance < 1.5 * line_b_size) {
+            double line_b_size = line_font_size_max(paragraph_line_first(nearest_paragraph));
+            if (nearest_paragraph_distance < 1.5 * line_b_size) {
                 if (verbose) {
                     outf(
-                            "joing paragraphs. a=(%lf,%lf) b=(%lf,%lf) nearest_para_distance=%lf line_b_size=%lf",
+                            "joing paragraphs. a=(%lf,%lf) b=(%lf,%lf) nearest_paragraph_distance=%lf line_b_size=%lf",
                             line_item_last(line_a)->x,
                             line_item_last(line_a)->y,
                             line_item_first(line_b)->x,
                             line_item_first(line_b)->y,
-                            nearest_para_distance,
+                            nearest_paragraph_distance,
                             line_b_size
                             );
-                    outf("    %s", para_string(para_a));
-                    outf("    %s", para_string(nearest_para));
-                    outf("para_a ctm=%s", matrix_string(&para_a->lines[0]->spans[0]->ctm));
-                    outf("para_a trm=%s", matrix_string(&para_a->lines[0]->spans[0]->trm));
+                    outf("    %s", paragraph_string(paragraph_a));
+                    outf("    %s", paragraph_string(nearest_paragraph));
+                    outf("paragraph_a ctm=%s", matrix_string(&paragraph_a->lines[0]->spans[0]->ctm));
+                    outf("paragraph_a trm=%s", matrix_string(&paragraph_a->lines[0]->spans[0]->trm));
                 }
-                /* Join these two para_t's. */
+                /* Join these two paragraph_t's. */
                 span_t* a_span = line_span_last(line_a);
                 if (span_char_last(a_span)->ucs == '-') {
                     /* remove trailing '-' at end of prev line. */
@@ -1721,36 +1733,37 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
                     if (span_append_c(line_span_last(line_a), ' ')) goto end;
                 }
 
-                int a_lines_num_new = para_a->lines_num + nearest_para->lines_num;
-                line_t** l = realloc(para_a->lines, sizeof(line_t*) * a_lines_num_new);
+                int a_lines_num_new = paragraph_a->lines_num + nearest_paragraph->lines_num;
+                line_t** l = realloc(paragraph_a->lines, sizeof(line_t*) * a_lines_num_new);
                 if (!l) goto end;
-                para_a->lines = l;
+                paragraph_a->lines = l;
                 int i;
-                for (i=0; i<nearest_para->lines_num; ++i) {
-                    para_a->lines[para_a->lines_num + i] = nearest_para->lines[i];
+                for (i=0; i<nearest_paragraph->lines_num; ++i) {
+                    paragraph_a->lines[paragraph_a->lines_num + i] = nearest_paragraph->lines[i];
                 }
-                para_a->lines_num = a_lines_num_new;
+                paragraph_a->lines_num = a_lines_num_new;
 
-                /* Ensure that we skip nearest_para in future. */
-                free(nearest_para->lines);
-                free(nearest_para);
-                paras[nearest_para_b] = NULL;
-                //nearest_para->lines = NULL;
-                //nearest_para->lines_num = 0;
+                /* Ensure that we skip nearest_paragraph in future. */
+                free(nearest_paragraph->lines);
+                free(nearest_paragraph);
+                paragraphs[nearest_paragraph_b] = NULL;
 
                 num_joins += 1;
-                outfx("have joined para a=%i to snearest_para_b=%i", a, nearest_para_b);
+                outfx("have joined paragraph a=%i to snearest_paragraph_b=%i",
+                        a,
+                        nearest_paragraph_b
+                        );
 
-                if (nearest_para_b > a) {
-                    /* We haven't yet tried appending any paras to
-                    nearest_para_b, so the new extended para_a needs checking
-                    again. */
+                if (nearest_paragraph_b > a) {
+                    /* We haven't yet tried appending any paragraphs to
+                    nearest_paragraph_b, so the new extended paragraph_a needs
+                    checking again. */
                     a -= 1;
                 }
             }
             else {
-                outfx("Not joining paragraphs. nearest_para_distance=%lf line_b_size=%lf",
-                        nearest_para_distance, line_b_size);
+                outfx("Not joining paragraphs. nearest_paragraph_distance=%lf line_b_size=%lf",
+                        nearest_paragraph_distance, line_b_size);
             }
         }
     }
@@ -1758,38 +1771,38 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
     /* Remove empty paragraphs. */
     int from;
     int to;
-    for (from=0, to=0; from<paras_num; ++from) {
-        if (paras[from]) {
-            paras[to] = paras[from];
+    for (from=0, to=0; from<paragraphs_num; ++from) {
+        if (paragraphs[from]) {
+            paragraphs[to] = paragraphs[from];
             to += 1;
         }
     }
-    outfx("paras_num=%i => %i", paras_num, to);
-    paras_num = to;
-    para_t** p = realloc(paras, sizeof(para_t*) * paras_num);
+    outfx("paragraphs_num=%i => %i", paragraphs_num, to);
+    paragraphs_num = to;
+    paragraph_t** p = realloc(paragraphs, sizeof(paragraph_t*) * paragraphs_num);
     assert(p); /* Should always succeed because we're not increasing allocation size. */
-    paras = p;
+    paragraphs = p;
 
     /* Sort paragraphs. */
-    qsort(paras, paras_num, sizeof(para_t*), paras_cmp);
+    qsort(paragraphs, paragraphs_num, sizeof(paragraph_t*), paragraphs_cmp);
 
-    *o_paras = paras;
-    *o_paras_num = paras_num;
+    *o_paragraphs = paragraphs;
+    *o_paragraphs_num = paragraphs_num;
     ret = 0;
-    outf("Turned %i lines into %i paras",
+    outf("Turned %i lines into %i paragraphs",
             lines_num,
-            paras_num
+            paragraphs_num
             );
 
 
     end:
 
     if (ret) {
-        for (a=0; a<paras_num; ++a) {
-            if (paras[a])   free(paras[a]->lines);
-            free(paras[a]);
+        for (a=0; a<paragraphs_num; ++a) {
+            if (paragraphs[a])   free(paragraphs[a]->lines);
+            free(paragraphs[a]);
         }
-        free(paras);
+        free(paragraphs);
     }
     return ret;
 }
@@ -1798,16 +1811,16 @@ static int make_paras(line_t** lines, int lines_num, para_t*** o_paras, int* o_p
 
 typedef struct
 {
-    span_t**    spans;
-    int         spans_num;
+    span_t**        spans;
+    int             spans_num;
 
     /*  lines->... eventually points to items in .spans. */
-    line_t**    lines;
-    int         lines_num;
+    line_t**        lines;
+    int             lines_num;
 
     /*  pras->... eventually points to items in .lines. */
-    para_t**    paras;
-    int         paras_num;
+    paragraph_t**   paragraphs;
+    int             paragraphs_num;
 } page_t;
 
 static void page_init(page_t* page)
@@ -1816,8 +1829,8 @@ static void page_init(page_t* page)
     page->spans_num = 0;
     page->lines = NULL;
     page->lines_num = 0;
-    page->paras = NULL;
-    page->paras_num = 0;
+    page->paragraphs = NULL;
+    page->paragraphs_num = 0;
 }
 
 static void page_free(page_t* page)
@@ -1846,12 +1859,12 @@ static void page_free(page_t* page)
     free(page->lines);
 
     int p;
-    for (p=0; p<page->paras_num; ++p) {
-        para_t* para = page->paras[p];
-        if (para) free(para->lines);
-        free(para);
+    for (p=0; p<page->paragraphs_num; ++p) {
+        paragraph_t* paragraph = page->paragraphs[p];
+        if (paragraph) free(paragraph->lines);
+        free(paragraph);
     }
-    free(page->paras);
+    free(page->paragraphs);
 }
 
 /* Appends new span_ to a page_t; returns NULL with errno set on error. */
@@ -1894,8 +1907,8 @@ static page_t* document_page_append(document_t* document)
     page->spans_num = 0;
     page->lines = NULL;
     page->lines_num = 0;
-    page->paras = NULL;
-    page->paras_num = 0;
+    page->paragraphs = NULL;
+    page->paragraphs_num = 0;
     page_t** pages = realloc(document->pages, sizeof(page_t*) * (document->pages_num + 1));
     if (!pages) {
         free(page);
@@ -2399,7 +2412,7 @@ static int read_spans_trace(const char* path, document_t* document)
 
 /* Writes paragraphs from document_t into docx content. On return
 *content points to zero-terminated content, allocated by realloc(). */
-static int paras_to_content(document_t* document, string_t* content, int spacing)
+static int paragraphs_to_content(document_t* document, string_t* content, int spacing)
 {
     int ret = -1;
 
@@ -2414,13 +2427,13 @@ static int paras_to_content(document_t* document, string_t* content, int spacing
         int         font_italic = 0;
         matrix_t*   ctm_prev = NULL;
         int p;
-        for (p=0; p<page->paras_num; ++p) {
-            para_t* para = page->paras[p];
+        for (p=0; p<page->paragraphs_num; ++p) {
+            paragraph_t* paragraph = page->paragraphs[p];
             if (spacing
                     && ctm_prev
-                    && para->lines_num
-                    && para->lines[0]->spans_num
-                    && matrix_cmp4(ctm_prev, &para->lines[0]->spans[0]->ctm)
+                    && paragraph->lines_num
+                    && paragraph->lines[0]->spans_num
+                    && matrix_cmp4(ctm_prev, &paragraph->lines[0]->spans[0]->ctm)
                     ) {
                 /* Extra vertical space between paragraphs that were at
                 different angles in the original document. */
@@ -2434,8 +2447,8 @@ static int paras_to_content(document_t* document, string_t* content, int spacing
             if (docx_paragraph_start(content)) goto end;
 
             int l;
-            for (l=0; l<para->lines_num; ++l) {
-                line_t* line = para->lines[l];
+            for (l=0; l<paragraph->lines_num; ++l) {
+                line_t* line = paragraph->lines[l];
                 int s;
                 for (s=0; s<line->spans_num; ++s) {
                     span_t* span = line->spans[s];
@@ -2545,10 +2558,10 @@ static int document_to_docx_content(
         outf("processing page %i: num_spans=%i", p, page->spans_num);
         if (make_lines(page->spans, page->spans_num, &page->lines, &page->lines_num, debugscale)) goto end;
 
-        if (make_paras(page->lines, page->lines_num, &page->paras, &page->paras_num)) goto end;
+        if (make_paragraphs(page->lines, page->lines_num, &page->paragraphs, &page->paragraphs_num)) goto end;
     }
 
-    if (paras_to_content(document, content, spacing)) goto end;
+    if (paragraphs_to_content(document, content, spacing)) goto end;
 
     ret = 0;
 
@@ -2622,7 +2635,7 @@ int main(int argc, char** argv)
                     "        If 1, we preserve uncompressed <docx-path>.lib/ directory.\n"
                     "    -s 0|1\n"
                     "        If 1, we insert extra vertical space between paragraphs and extra\n"
-                    "        vertical space between paragrpahs that had different ctm matrices in\n"
+                    "        vertical space between paragraphs that had different ctm matrices in\n"
                     "        the original document.\n"
                     "    -t <docx-template>\n"
                     "        Name of docx file to use as template.\n"
