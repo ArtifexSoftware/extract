@@ -47,7 +47,8 @@ static void outf(const char* file, int line, const char* fn, int ln, const char*
 #define outf(format, ...) (outf)(__FILE__, __LINE__, __FUNCTION__, 1 /*ln*/, format, ##__VA_ARGS__)
 #define outfx(format, ...)
 
-/* Use this in preference to strdup() so that Memento works. */
+/* These local_*() functions should be used to ensure that Memento works. */
+
 static char* local_strdup(const char* text)
 {
     size_t l = strlen(text) + 1;
@@ -57,6 +58,43 @@ static char* local_strdup(const char* text)
     return ret;
 }
 
+
+static int local_vasprintf(char** out, const char* format, va_list va0)
+{
+    va_list va;
+
+    /* Find required length. */
+    va_copy(va, va0);
+    int len = vsnprintf(NULL, 0, format, va);
+    va_end(va);
+    assert(len >= 0);
+    len += 1; /* For terminating 0. */
+
+    /* Repeat call of vnsprintf() with required buffer. */
+    char* buffer = malloc(len);
+    if (!buffer) {
+        return -1;
+    }
+    va_copy(va, va0);
+    int len2 = vsnprintf(buffer, len, format, va);
+    va_end(va);
+    assert(len2 + 1 == len);
+    *out = buffer;
+    return len2;
+}
+
+
+static int local_asprintf(char** out, const char* format, ...)
+{
+    va_list va;
+    va_start(va, format);
+    int ret = local_vasprintf(out, format, va);
+    va_end(va);
+    return ret;
+}
+
+
+/* These str_*() functions realloc buffer as required. */
 
 /* Appends first <s_len> chars of string <s> to *p, which is assumed to have
 been allocated with malloc/realloc. Returns 0, or +1 if realloc() failed. */
@@ -87,11 +125,14 @@ static int str_cat(char** p, const char* s)
     return str_catl(p, s, strlen(s));
 }
 
-/* std::string in C. */
+
+/* A simple string struct that reallocs as required. Differs from str_*()
+functions above in that it stores the current length of the string, so doesn't
+need to repeatedly call strlen(). */
 typedef struct
 {
-    char*   chars;  /* NULL or zero-terminated. */
-    int     chars_num; /* Length of string pointed to by .chars. */
+    char*   chars;      /* NULL or zero-terminated. */
+    int     chars_num;  /* Length of string pointed to by .chars. */
 } string_t;
 
 void string_init(string_t* string)
@@ -248,7 +289,7 @@ static void xml_tag_free(xml_tag_t* tag)
 }
 
 /* Like strcmp() but also handles NULL. */
-static int strcmp_null(const char* a, const char* b)
+static int xml_strcmp_null(const char* a, const char* b)
 {
     if (!a && !b) return 0;
     if (!a) return -1;
@@ -258,10 +299,10 @@ static int strcmp_null(const char* a, const char* b)
 
 /* Compares tag name, then attributes; returns -1, 0 or +1. Does not compare
 xml_tag_t::text members. */
-static int compare_tags(const xml_tag_t* lhs, const xml_tag_t* rhs)
+static int xml_compare_tags(const xml_tag_t* lhs, const xml_tag_t* rhs)
 {
     int d;
-    d = strcmp_null(lhs->name, rhs->name);
+    d = xml_strcmp_null(lhs->name, rhs->name);
     if (d)  return d;
     for(int i=0;; ++i) {
         if (i >= lhs->attributes_num || i >= rhs->attributes_num) {
@@ -269,9 +310,9 @@ static int compare_tags(const xml_tag_t* lhs, const xml_tag_t* rhs)
         }
         const xml_attribute_t* lhs_attribute = &lhs->attributes[i];
         const xml_attribute_t* rhs_attribute = &rhs->attributes[i];
-        d = strcmp_null(lhs_attribute->name, rhs_attribute->name);
+        d = xml_strcmp_null(lhs_attribute->name, rhs_attribute->name);
         if (d)  return d;
-        d = strcmp_null(lhs_attribute->value, rhs_attribute->value);
+        d = xml_strcmp_null(lhs_attribute->value, rhs_attribute->value);
         if (d)  return d;
     }
     if (lhs->attributes_num > rhs->attributes_num) return +1;
@@ -666,6 +707,7 @@ static int docx_char_append_char(string_t* content, char c)
     return string_catc(content, c);
 }
 
+/* Append an empty paragraph. */
 static int docx_paragraph_empty(string_t* content)
 {
     int e = -1;
@@ -701,40 +743,6 @@ static int docx_char_truncate_if(string_t* content, char c)
     return 0;
 }
 
-
-
-static int local_vasprintf(char** out, const char* format, va_list va0)
-{
-    va_list va;
-
-    /* Find required length. */
-    va_copy(va, va0);
-    int len = vsnprintf(NULL, 0, format, va);
-    va_end(va);
-    assert(len >= 0);
-    len += 1; /* For terminating 0. */
-
-    /* Repeat call of vnsprintf() with required buffer. */
-    char* buffer = malloc(len);
-    if (!buffer) {
-        return -1;
-    }
-    va_copy(va, va0);
-    int len2 = vsnprintf(buffer, len, format, va);
-    va_end(va);
-    assert(len2 + 1 == len);
-    *out = buffer;
-    return len2;
-}
-
-static int local_asprintf(char** out, const char* format, ...)
-{
-    va_list va;
-    va_start(va, format);
-    int ret = local_vasprintf(out, format, va);
-    va_end(va);
-    return ret;
-}
 
 static int systemf(const char* format, ...)
 {
@@ -846,7 +854,7 @@ static int docx_create(string_t* content, const char* path_out, const char* path
     }
     f = NULL;
 
-    outf("Zipping tempdir to create create %s", path_out);
+    outf("Zipping tempdir to create %s", path_out);
     const char* path_out_leaf = strrchr(path_out, '/');
     if (!path_out_leaf) path_out_leaf = path_out;
     e = systemf("cd %s && zip -q -r ../%s .", path_tempdir, path_out_leaf);
@@ -858,6 +866,9 @@ static int docx_create(string_t* content, const char* path_out, const char* path
     }
 
     if (!preserve_dir) {
+        if (strchr(path_tempdir, '\'') || strstr(path_tempdir, "..")) {
+            outf("Refusing to delete path_tempdir=%s because not safe for shell");
+        }
         e = systemf("rm -r '%s'", path_tempdir);
         if (e) {
             outf("error: Failed to delete tempdir: %s", path_tempdir);
@@ -895,6 +906,8 @@ typedef struct
 
 static void char_init(char_t* item)
 {
+    item->pre_x = 0;
+    item->pre_y = 0;
     item->x = 0;
     item->y = 0;
     item->gid = 0;
@@ -907,7 +920,7 @@ typedef struct span_t
     matrix_t    ctm;
     matrix_t    trm;
     char*       font_name;
-    // font size is matrix_expansion(trm).
+    /* font size is matrix_expansion(trm). */
     int         font_bold;
     int         font_italic;
     int         wmode;
@@ -2557,7 +2570,7 @@ int main(int argc, char** argv)
 {
     /* Avoid warnings about unused fns that are useful when developing. */
     (void) str_cat;
-    (void) compare_tags;
+    (void) xml_compare_tags;
     (void) line_string2;
     (void) matrix_cmp;
     (void) line_string;
