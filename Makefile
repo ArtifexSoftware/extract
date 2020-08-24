@@ -68,7 +68,8 @@ test-mu-as: Python2.pdf-test-mu-as zlib.3.pdf-test-mu-as
 	diff -u test/$<.mu-raw.content.xml $<.mu-raw.content.ref.xml
 	@echo == Test succeeded.
 
-# Run extract.exe with --autosplit, to stress joining of spans.
+# Run extract.exe with --autosplit, to stress joining of spans. Compare with
+# the default .ref file.
 %.pdf-test-mu-as: %.pdf $(exe)
 	@echo
 	@echo === Testing $<
