@@ -2298,6 +2298,14 @@ static int read_spans_raw(
 }
 
 
+static float matrices_to_font_size(matrix_t* ctm, matrix_t* trm)
+{
+    float font_size = matrix_expansion(*trm) * matrix_expansion(*ctm);
+    /* Round font_size to nearest 0.01. */
+    font_size = (int) (font_size * 100 + 0.5) / 100.0;
+    return font_size;
+}
+
 /* Writes paragraphs from document_t into docx content. On return *content
 points to zero-terminated content, allocated by realloc().
 
@@ -2343,11 +2351,12 @@ static int paragraphs_to_content(document_t* document, string_t* content, int sp
                 for (s=0; s<line->spans_num; ++s) {
                     span_t* span = line->spans[s];
                     ctm_prev = &span->ctm;
+                    float font_size_new = matrices_to_font_size(&span->ctm, &span->trm);
                     if (!font_name
                             || strcmp(span->font_name, font_name)
-                            || matrix_expansion(span->trm) != font_size
                             || span->font_bold != font_bold
                             || span->font_italic != font_italic
+                            || font_size_new != font_size
                             ) {
                         if (font_name) {
                             if (docx_run_finish(content)) goto end;
@@ -2355,9 +2364,7 @@ static int paragraphs_to_content(document_t* document, string_t* content, int sp
                         font_name = span->font_name;
                         font_bold = span->font_bold;
                         font_italic = span->font_italic;
-                        font_size = matrix_expansion(span->trm) * matrix_expansion(span->ctm);
-                        /* Round font_size to nearest 0.01. */
-                        font_size = (int) (font_size * 100 + 0.5) / 100.0;
+                        font_size = font_size_new;
                         if (docx_run_start(content, font_name, font_size, font_bold, font_italic)) goto end;
                     }
 
