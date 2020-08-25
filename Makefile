@@ -130,6 +130,8 @@ clean-all:
 	rm -r build test 
 
 
+# Copy generated files to website.
+#
 web:
 	rsync -ai test/*.docx *.pdf julian@casper.ghostscript.com:public_html/extract/
 
