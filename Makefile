@@ -63,7 +63,7 @@ test-mu-as: Python2.pdf-test-mu-as zlib.3.pdf-test-mu-as
 	@echo === Testing $<
 	mkdir -p test
 	@echo == Generating intermediate with mutool.
-	../mupdf/build/debug/mutool draw -F raw -o test/$<.mu-raw.intermediate.xml $<
+	../mupdf/build/debug/mutool draw -F xmltext -o test/$<.mu-raw.intermediate.xml $<
 	@echo == Generating output.
 	./$(exe) -m raw -i test/$<.mu-raw.intermediate.xml --o-content test/$<.mu-raw.content.xml -o test/$<.mu-raw.docx -p 1 -t template.docx
 	@echo == Comparing output with reference output.
@@ -77,7 +77,7 @@ test-mu-as: Python2.pdf-test-mu-as zlib.3.pdf-test-mu-as
 	@echo === Testing $<
 	mkdir -p test
 	@echo == Generating intermediate with mutool.
-	../mupdf/build/debug/mutool draw -F raw -o test/$<.mu-raw.intermediate.xml $<
+	../mupdf/build/debug/mutool draw -F xmltext -o test/$<.mu-raw.intermediate.xml $<
 	@echo == Generating output.
 	./$(exe) -m raw --autosplit 1 -i test/$<.mu-raw.intermediate.xml --o-content test/$<.mu-raw.as.content.xml -o test/$<.mu-raw.as.docx -p 1 -t template.docx
 	@echo == Comparing output with reference output.
