@@ -3,6 +3,7 @@
 
 #include <assert.h>
 #include <errno.h>
+#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -39,7 +40,8 @@ static int str_cat(char** p, const char* s)
 
 char* extract_xml_tag_attributes_find(extract_xml_tag_t* tag, const char* name)
 {
-    for (int i=0; i<tag->attributes_num; ++i) {
+    int i;
+    for (i=0; i<tag->attributes_num; ++i) {
         if (!strcmp(tag->attributes[i].name, name)) {
             char* ret = tag->attributes[i].value;
             return ret;
@@ -53,8 +55,8 @@ char* extract_xml_tag_attributes_find(extract_xml_tag_t* tag, const char* name)
 use atof() and don't check for non-numeric attribute value. */
 int extract_xml_tag_attributes_find_float(
         extract_xml_tag_t*  tag,
-        const char* name,
-        float*      o_out
+        const char*         name,
+        float*              o_out
         )
 {
     const char* value = extract_xml_tag_attributes_find(tag, name);
@@ -68,20 +70,88 @@ int extract_xml_tag_attributes_find_float(
 
 int extract_xml_tag_attributes_find_int(
         extract_xml_tag_t*  tag,
-        const char* name,
-        int*        o_out
+        const char*         name,
+        int*                o_out
         )
 {
-    const char* value = extract_xml_tag_attributes_find(tag, name);
-    if (!value) {
+    const char* text = extract_xml_tag_attributes_find(tag, name);
+    return extract_xml_str_to_int(text, o_out);
+}
+
+int extract_xml_tag_attributes_find_uint(
+        extract_xml_tag_t*  tag,
+        const char*         name,
+        unsigned*           o_out
+        )
+{
+    const char* text = extract_xml_tag_attributes_find(tag, name);
+    return extract_xml_str_to_uint(text, o_out);
+}
+
+int extract_xml_str_to_int(const char* text, int* o_out)
+{
+    char* endptr;
+    long x = strtol(text, &endptr, 10 /*base*/);
+    if (!text) {
         errno = ESRCH;
         return -1;
     }
-    *o_out = atoi(value);
+    if (text[0] == 0) {
+        errno = EINVAL;
+        return -1;
+    }
+    errno = 0;
+    x = strtol(text, &endptr, 10 /*base*/);
+    if (errno) {
+        return -1;
+    }
+    if (*endptr) {
+        errno = EINVAL;
+        return -1;
+    }
+    if (x > INT_MAX || x < INT_MIN) {
+        errno = ERANGE;
+        return -1;
+    }
+    *o_out = x;
     return 0;
 }
 
-static int extract_xml_tag_attributes_append(extract_xml_tag_t* tag, char* name, char* value)
+int extract_xml_str_to_uint(const char* text, unsigned* o_out)
+{
+    char* endptr;
+    unsigned long x = strtoul(text, &endptr, 10 /*base*/);
+    if (!text) {
+        errno = ESRCH;
+        return -1;
+    }
+    if (text[0] == 0) {
+        errno = EINVAL;
+        return -1;
+    }
+    errno = 0;
+    x = strtoul(text, &endptr, 10 /*base*/);
+    if (errno) {
+        return -1;
+    }
+    if (*endptr) {
+        errno = EINVAL;
+        return -1;
+    }
+    if (x > UINT_MAX) {
+        errno = ERANGE;
+        return -1;
+    }
+    *o_out = x;
+    return 0;
+}
+
+
+static int extract_xml_tag_attributes_append(
+        extract_xml_tag_t*  tag,
+        char*               name,
+        char*               value
+        )
 {
     extract_xml_attribute_t* a = realloc(
             tag->attributes,

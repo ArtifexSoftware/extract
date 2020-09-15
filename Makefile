@@ -50,6 +50,11 @@ exe_buffer_test_src = src/buffer.c src/buffer-test.c src/outf.c
 exe_buffer_test_obj = $(patsubst src/%.c, src/build/%.c-$(build).o, $(exe_buffer_test_src))
 exe_buffer_test_dep = $(exe_buffer_test_obj:.o=.d)
 
+exe_misc_test = src/build/misc-test-$(build).exe
+exe_misc_test_src = src/misc-test.c src/xml.c src/outf.c src/astring.c src/buffer.c
+exe_misc_test_obj = $(patsubst src/%.c, src/build/%.c-$(build).o, $(exe_misc_test_src))
+exe_misc_test_dep = $(exe_buffer_test_obj:.o=.d)
+
 
 # Locations of mutool and gs - we assume these are available at hard-coded
 # paths.
@@ -66,7 +71,13 @@ test_targets_mu             = $(patsubst test/%, test/generated/%.mu.intermediat
 test_targets_mu_autosplit   = $(patsubst test/%, test/generated/%.mu.intermediate.xml.autosplit.content.xml.diff,   $(test_files))
 test_targets_gs             = $(patsubst test/%, test/generated/%.gs.intermediate.xml.content.xml.diff,             $(test_files))
 
-test: $(test_targets_mu) $(test_targets_mu_autosplit) $(test_targets_gs)
+test: test-misc test-buffer test-extract
+
+test-extract: test-extract-mu test-extract-mu-as test-extract-gs
+
+test-extract-mu:    $(test_targets_mu)
+test-extract-mu-as: $(test_targets_mu_autosplit)
+test-extract-gs:    $(test_targets_gs)
 
 test/generated/%.pdf.mu.intermediate.xml: test/%.pdf
 	@echo
@@ -99,16 +110,23 @@ test/generated/%.intermediate.xml.autosplit.content.xml.diff: test/generated/%.i
 	diff -u $^ >$@
 
 test-buffer: $(exe_buffer_test)
+	@echo Running test-buffer
 	./$<
 
+test-misc: $(exe_misc_test)
+	@echo Running test-misc
+	./$<
 
 # Rule for executables.
 #
 exe: $(exe)
 $(exe): $(exe_obj)
-	cc $(flags_link) -o $@ $^ -lz
+	cc $(flags_link) -o $@ $^ -lz -lm
 
 $(exe_buffer_test): $(exe_buffer_test_obj)
+	cc $(flags_link) -o $@ $^
+
+$(exe_misc_test): $(exe_misc_test_obj)
 	cc $(flags_link) -o $@ $^
 
 # Compile rules. We always include src/build/docx_template.c as a prerequisite

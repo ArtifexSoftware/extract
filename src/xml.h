@@ -54,8 +54,8 @@ int extract_xml_pparse_next(extract_buffer_t* buffer, extract_xml_tag_t* out);
 Returns 0 with *out containing next tag; or -1 with errno set if error; or +1
 with errno=ESRCH if EOF.
 
-*out is initially passed to extract_xml_tag_free(), so *out must have been initialised,
-e.g. by by extract_xml_tag_init(). */
+*out is initially passed to extract_xml_tag_free(), so *out must have been
+initialised, e.g. by by extract_xml_tag_init(). */
 
 
 char* extract_xml_tag_attributes_find(extract_xml_tag_t* tag, const char* name);
@@ -69,13 +69,23 @@ int extract_xml_tag_attributes_find_float(
 /* Finds float value of specified attribute, returning error if not found. We
 use atof() and don't check for non-numeric attribute value. */
 
+int extract_xml_str_to_int(const char* text, int* o_out);
+
+int extract_xml_str_to_uint(const char* text, unsigned* o_out);
 
 int extract_xml_tag_attributes_find_int(
         extract_xml_tag_t*  tag,
         const char*         name,
         int*                o_out
         );
-/* Finds int value of specified attribute, returning error if not found. We
-use atof() and don't check for non-numeric attribute value. */
+/* Finds int value of specified attribute, returning error if not found. */
+
+int extract_xml_tag_attributes_find_uint(
+        extract_xml_tag_t*  tag,
+        const char*         name,
+        unsigned*           o_out
+        );
+/* Finds unsigned int value of specified attribute, returning error if not
+found. */
 
 #endif

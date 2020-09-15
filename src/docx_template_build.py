@@ -86,7 +86,7 @@ def main():
         raise Exception(f'Cannot use path_out={path_out!r} because unsafe for shell commands.')
     path_temp = f'{path_in}.dir'
     os.system(f'rm -r "{path_temp}" 2>/dev/null')
-    system(f'unzip -d {path_temp} {path_in}')
+    system(f'unzip -q -d {path_temp} {path_in}')
     
     out_c1 = io.StringIO()
     out_c1.write(f'/* THIS IS AUTO-GENERATED CODE, DO NOT EDIT. */\n')

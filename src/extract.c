@@ -1639,7 +1639,7 @@ int extract_intermediate_to_document(
 
                 if (extract_xml_tag_attributes_find_float(&tag, "adv", &char_->adv)) goto end;
 
-                if (extract_xml_tag_attributes_find_int(&tag, "ucs", &char_->ucs)) goto end;
+                if (extract_xml_tag_attributes_find_uint(&tag, "ucs", &char_->ucs)) goto end;
 
                 char    trm[64];
                 snprintf(trm, sizeof(trm), "%s", matrix_string(&span->trm));
