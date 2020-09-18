@@ -121,31 +121,37 @@ test-misc: $(exe_misc_test)
 #
 exe: $(exe)
 $(exe): $(exe_obj)
-	cc $(flags_link) -o $@ $^ -lz -lm
+	$(CC) $(flags_link) -o $@ $^ -lz -lm
 
 $(exe_buffer_test): $(exe_buffer_test_obj)
-	cc $(flags_link) -o $@ $^
+	$(CC) $(flags_link) -o $@ $^
 
 $(exe_misc_test): $(exe_misc_test_obj)
-	cc $(flags_link) -o $@ $^
+	$(CC) $(flags_link) -o $@ $^
 
 # Compile rules. We always include src/build/docx_template.c as a prerequisite
 # in case code #includes docx_template.h.
 #
 src/build/%.c-$(build).o: src/%.c src/build/docx_template.c
 	@mkdir -p src/build
-	cc -c $(flags_compile) -o $@ $<
+	$(CC) -c $(flags_compile) -o $@ $<
 
 src/build/%.c-$(build).o: src/build/%.c
 	@mkdir -p src/build
-	cc -c $(flags_compile) -o $@ $<
+	$(CC) -c $(flags_compile) -o $@ $<
 
 # Rule for machine-generated source code, src/build/docx_template.c. Also
 # generates src/build/docx_template.h.
 #
+# If python is not available, the generated files are available as
+# src/docx_template.c_git so one could uncomment the 'cp' commands in the rule
+# below.
+#
 src/build/docx_template.c: .ALWAYS
 	@echo Building $@
 	@mkdir -p src/build
+        #cp -p src/docx_template.c_git src/build/docx_template.c
+        #cp -p src/docx_template.h_git src/build/docx_template.h
 	./src/docx_template_build.py -i src/template.docx -o src/build/docx_template
 .ALWAYS:
 
@@ -161,12 +167,6 @@ tags: .ALWAYS
 .PHONY: clean
 clean:
 	-rm -r src/build test/generated
-
-
-# Copy generated files to website.
-#
-web:
-	rsync -ai test/generated/*.docx test/*.pdf julian@casper.ghostscript.com:public_html/extract/
 
 
 # Dynamic dependencies.

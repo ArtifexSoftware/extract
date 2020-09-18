@@ -151,7 +151,7 @@ static int s_simple_cache(void* handle, void** o_cache, size_t* o_numbytes)
 }
 
 int extract_buffer_open_simple(
-        char*                   data,
+        const char*             data,
         size_t                  numbytes,
         void*                   handle,
         extract_buffer_fn_close fn_close,
@@ -160,7 +160,10 @@ int extract_buffer_open_simple(
 {
     extract_buffer_t* buffer = malloc(sizeof(*buffer));
     if (!buffer) return -1;
-    buffer->cache.cache = data;
+    
+    /* We need cast away the const here. data[] will be written-to if caller
+    uses us as a write buffer. */
+    buffer->cache.cache = (void*) data;
     buffer->cache.numbytes = numbytes;
     buffer->cache.pos = 0;
     buffer->handle = handle;

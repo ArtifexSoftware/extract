@@ -160,7 +160,7 @@ o_buffer:
 
 
 int extract_buffer_open_simple(
-        char*                   data,
+        const char*             data,
         size_t                  numbytes,
         void*                   handle,
         extract_buffer_fn_close fn_close,
@@ -172,7 +172,8 @@ The data is not copied so data..+data_length must exist for the lifetime of the
 returned extract_buffer_t.
 
 data:
-    Start of memory region.
+    Start of memory region. Note that if the extract_buffer_t is used as a
+    write buffer then data[] can be written-to, despite the 'const'.
 bytes:
     Size of memory region.
 handle:
