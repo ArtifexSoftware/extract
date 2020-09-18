@@ -4,7 +4,7 @@ twice without intervening call to docx_paragraph_finish(). */
 
 #include "../include/extract.h"
 
-#include "build/docx_template.h"
+#include "docx_template.h"
 
 #include "astring.h"
 #include "docx.h"

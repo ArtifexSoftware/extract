@@ -103,7 +103,7 @@ def main():
     out_c3.write(f'    int e = -1;\n')
     
     for dirpath, dirnames, filenames in os.walk(path_temp):
-        for filename in filenames:
+        for filename in sorted(filenames):
             #name = filename[len(path_temp)+1:]
             path = os.path.join(dirpath, filename)
             name = path[ len(path_temp)+1: ]
@@ -151,7 +151,7 @@ def main():
     out.write(f'\n')
     out.write(f'/* THIS IS AUTO-GENERATED CODE, DO NOT EDIT. */\n')
     out.write(f'\n')
-    out.write(f'#include "../zip.h"\n')
+    out.write(f'#include "zip.h"\n')
     out.write(f'\n')
     out.write(f'extern char extract_docx_word_document_xml[];\n')
     out.write(f'extern int  extract_docx_word_document_xml_length;\n')

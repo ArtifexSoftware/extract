@@ -3,7 +3,7 @@
 
 /* THIS IS AUTO-GENERATED CODE, DO NOT EDIT. */
 
-#include "../zip.h"
+#include "zip.h"
 
 extern char extract_docx_word_document_xml[];
 extern int  extract_docx_word_document_xml_length;

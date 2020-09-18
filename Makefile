@@ -41,8 +41,8 @@ endif
 # Build files.
 #
 exe = src/build/extract-$(build).exe
-exe_src = src/extract-exe.c src/extract.c src/astring.c src/docx.c src/outf.c src/xml.c src/zip.c src/buffer.c
-exe_obj = $(patsubst src/%.c, src/build/%.c-$(build).o, $(exe_src)) src/build/docx_template.c-$(build).o
+exe_src = src/extract-exe.c src/extract.c src/astring.c src/docx.c src/outf.c src/xml.c src/zip.c src/buffer.c src/docx_template.c
+exe_obj = $(patsubst src/%.c, src/build/%.c-$(build).o, $(exe_src))
 exe_dep = $(exe_obj:.o=.d)
 
 exe_buffer_test = src/build/buffer-test-$(build).exe
@@ -129,33 +129,21 @@ $(exe_buffer_test): $(exe_buffer_test_obj)
 $(exe_misc_test): $(exe_misc_test_obj)
 	$(CC) $(flags_link) -o $@ $^
 
-# Compile rules. We always include src/build/docx_template.c as a prerequisite
-# in case code #includes docx_template.h.
+# Compile rules. We always include src/docx_template.c as a prerequisite in
+# case code #includes docx_template.h.
 #
-src/build/%.c-$(build).o: src/%.c src/build/docx_template.c
+src/build/%.c-$(build).o: src/%.c src/docx_template.c
 	@mkdir -p src/build
 	$(CC) -c $(flags_compile) -o $@ $<
 
-src/build/%.c-$(build).o: src/build/%.c
-	@mkdir -p src/build
-	$(CC) -c $(flags_compile) -o $@ $<
-
-# Rule for machine-generated source code, src/build/docx_template.c. Also
-# generates src/build/docx_template.h. And we copy the generated files to
-# the checked-in paths also.
+# Rule for machine-generated source code, src/docx_template.c. Also generates
+# src/docx_template.h.
 #
-# If python is not available, the generated files are available as
-# src/docx_template.c_git so one could do:
+# These files are also in git to allow builds if python is not available.
 #
-#   cp -p src/docx_template.c_git src/build/docx_template.c
-#   cp -p src/docx_template.h_git src/build/docx_template.h
-#
-src/build/docx_template.c: .ALWAYS
+src/docx_template.c: .ALWAYS
 	@echo Building $@
-	@mkdir -p src/build
-	./src/docx_template_build.py -i src/template.docx -o src/build/docx_template
-	cp -p src/build/docx_template.c src/docx_template.c_git
-	cp -p src/build/docx_template.h src/docx_template.h_git
+	./src/docx_template_build.py -i src/template.docx -o src/docx_template
 .ALWAYS:
 
 
