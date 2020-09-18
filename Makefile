@@ -141,18 +141,21 @@ src/build/%.c-$(build).o: src/build/%.c
 	$(CC) -c $(flags_compile) -o $@ $<
 
 # Rule for machine-generated source code, src/build/docx_template.c. Also
-# generates src/build/docx_template.h.
+# generates src/build/docx_template.h. And we copy the generated files to
+# the checked-in paths also.
 #
 # If python is not available, the generated files are available as
-# src/docx_template.c_git so one could uncomment the 'cp' commands in the rule
-# below.
+# src/docx_template.c_git so one could do:
+#
+#   cp -p src/docx_template.c_git src/build/docx_template.c
+#   cp -p src/docx_template.h_git src/build/docx_template.h
 #
 src/build/docx_template.c: .ALWAYS
 	@echo Building $@
 	@mkdir -p src/build
-        #cp -p src/docx_template.c_git src/build/docx_template.c
-        #cp -p src/docx_template.h_git src/build/docx_template.h
 	./src/docx_template_build.py -i src/template.docx -o src/build/docx_template
+	cp -p src/build/docx_template.c src/docx_template.c_git
+	cp -p src/build/docx_template.h src/docx_template.h_git
 .ALWAYS:
 
 
