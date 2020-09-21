@@ -113,6 +113,22 @@ int extract_docx_char_append_string(extract_astring_t* content, char* text)
     return extract_astring_cat(content, text);
 }
 
+int extract_docx_char_append_stringf(extract_astring_t* content, char* format, ...)
+{
+    char* buffer;
+    int e;
+    va_list va;
+    va_start(va, format);
+    e = vasprintf(&buffer, format, va);
+    va_end(va);
+    if (e < 0) return e;
+    /*outf_level_set(1);
+    outf("format='%s' buffer is: %s", format, buffer);*/
+    e = extract_astring_cat(content, buffer);
+    free(buffer);
+    return e;
+}
+
 int extract_docx_char_append_char(extract_astring_t* content, char c)
 {
     return extract_astring_catc(content, c);
@@ -229,12 +245,21 @@ o_out:
         goto end;
     }
     original_pos += strlen(original_marker);
+    
+    const char* original_marker_end = "</w:body>";
+    const char* original_pos_end = strstr(original, original_marker_end);
+    if (!original_pos_end) {
+        outf("error: could not find '%s' in docx content",
+                original_marker_end);
+        errno = ESRCH;
+        goto end;
+    }
 
     extract_astring_t   out;
     extract_astring_init(&out);
     if (extract_astring_catl(&out, original, original_pos - original)) goto end;
     if (extract_astring_catl(&out, content, content_length)) goto end;
-    if (extract_astring_cat(&out, original_pos)) goto end;
+    if (extract_astring_cat(&out, original_pos_end)) goto end;
     
     *o_out = out.chars;
     out.chars = NULL;
@@ -351,7 +376,7 @@ int extract_docx_content_to_docx_template(
     outf("Zipping tempdir to create %s", path_out);
     const char* path_out_leaf = strrchr(path_out, '/');
     if (!path_out_leaf) path_out_leaf = path_out;
-    e = systemf("cd %s && zip -q -r ../%s .", path_tempdir, path_out_leaf);
+    e = systemf("cd %s && zip -q -r -D ../%s .", path_tempdir, path_out_leaf);
     if (e) {
         outf("Zip command failed to convert '%s' directory into output file: %s",
                 path_tempdir, path_out);

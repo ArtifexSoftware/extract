@@ -2,6 +2,8 @@
 
 #include "../include/extract.h"
 
+#include "outf.h"
+
 #include <assert.h>
 #include <errno.h>
 #include <stdio.h>
@@ -46,6 +48,7 @@ int main(int argc, char** argv)
     const char* content_path        = NULL;
     int         preserve_dir        = 0;
     int         spacing             = 1;
+    int         rotation            = 1;
     int         autosplit           = 0;
 
     extract_document_t* document = NULL;
@@ -70,6 +73,8 @@ int main(int argc, char** argv)
                     "    --autosplit 0|1\n"
                     "        If 1, we initially split spans when y coordinate changes. This\n"
                     "        stresses our handling of spans when input is from mupdf.\n"
+                    "    -d <level>\n"
+                    "        Set verbose level.\n"
                     "    -i <intermediate-path>\n"
                     "        Path of XML file containing intermediate text spans.\n"
                     "    -o <docx-path>\n"
@@ -81,6 +86,9 @@ int main(int argc, char** argv)
                     "    -p 0|1\n"
                     "        If 1 and -t <docx-template> is specified, we preserve the\n"
                     "        uncompressed <docx-path>.lib/ directory.\n"
+                    "    -r 0|1\n"
+                    "       If 1, we we output rotated text inside a rotated drawing. Otherwise\n"
+                    "       output text is always horizontal.\n"
                     "    -s 0|1\n"
                     "        If 1, we insert extra vertical space between paragraphs and extra\n"
                     "        vertical space between paragraphs that had different ctm matrices\n"
@@ -97,8 +105,10 @@ int main(int argc, char** argv)
         else if (!strcmp(arg, "--autosplit")) {
             if (arg_next_int(argv, argc, &i, &autosplit)) goto end;
         }
-        else if (!strcmp(arg, "--o-content")) {
-            if (arg_next_string(argv, argc, &i, &content_path)) goto end;
+        else if (!strcmp(arg, "-d")) {
+            int level;
+            if (arg_next_int(argv, argc, &i, &level)) goto end;
+            outf_level_set(level);
         }
         else if (!strcmp(arg, "-i")) {
             if (arg_next_string(argv, argc, &i, &input_path)) goto end;
@@ -106,8 +116,14 @@ int main(int argc, char** argv)
         else if (!strcmp(arg, "-o")) {
             if (arg_next_string(argv, argc, &i, &docx_out_path)) goto end;
         }
+        else if (!strcmp(arg, "--o-content")) {
+            if (arg_next_string(argv, argc, &i, &content_path)) goto end;
+        }
         else if (!strcmp(arg, "-p")) {
             if (arg_next_int(argv, argc, &i, &preserve_dir)) goto end;
+        }
+        else if (!strcmp(arg, "-r")) {
+            if (arg_next_int(argv, argc, &i, &rotation)) goto end;
         }
         else if (!strcmp(arg, "-s")) {
             if (arg_next_int(argv, argc, &i, &spacing)) goto end;
@@ -145,7 +161,7 @@ int main(int argc, char** argv)
         goto end;
     }
     
-    if (extract_document_to_docx_content(document, spacing, &content, &content_length)) {
+    if (extract_document_to_docx_content(document, spacing, rotation, &content, &content_length)) {
         printf("Failed to create docx content.\n");
         goto end;
     }

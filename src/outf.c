@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
-static int s_level = 0;
+static int s_level = 1;
 
 void outf_level_set(int level)
 {
@@ -12,6 +12,7 @@ void outf_level_set(int level)
 }
 
 void (outf)(
+        int level,
         const char* file, int line,
         const char* fn,
         int ln,
@@ -19,6 +20,9 @@ void (outf)(
         ...
         )
 {
+    if (level >= s_level) {
+        return;
+    }
     va_list va;
     if (s_level <= 0) {
         return;

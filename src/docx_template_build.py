@@ -54,9 +54,33 @@ def write_if_diff(text, path):
     if text != old:
         write(text, path)
 
-def path_unsafe(path):
-    if '"' in path or "'" in path or '..' in path or ' ' in path:
+def check_path_safe(path):
+    '''
+    Raises exception unless path consists only of characters and sequences that
+    are known to be safe for shell commands.
+    '''
+    if '..' in path:
+        raise Exception(f'Path is unsafe because contains "..": {path!r}')
+    for c in path:
+        if not c.isalnum() and c not in '/._-':
+            #print(f'unsafe character {c} in: {path}') 
+            raise Exception(f'Path is unsafe because contains "{c}": {path!r}')
+
+def path_safe(path):
+    '''
+    Returns True if path is safe else False.
+    '''
+    try:
+        check_path_safe(path)
+    except Exception:
+        return False
+    else:
         return True
+
+assert not path_safe('foo;rm -rf *')
+assert not path_safe('..')
+assert path_safe('foo/bar.x')
+
 
 def main():
     path_in = None
@@ -80,10 +104,8 @@ def main():
     if not path_in:
         raise Exception('Need to specify -o <out-path>')
     
-    if path_unsafe(path_in):
-        raise Exception(f'Cannot use path_in={path_in!r} because unsafe for shell commands.')
-    if path_unsafe(path_out):
-        raise Exception(f'Cannot use path_out={path_out!r} because unsafe for shell commands.')
+    check_path_safe(path_in)
+    check_path_safe(path_out)
     path_temp = f'{path_in}.dir'
     os.system(f'rm -r "{path_temp}" 2>/dev/null')
     system(f'unzip -q -d {path_temp} {path_in}')
@@ -103,13 +125,31 @@ def main():
     out_c3.write(f'    int e = -1;\n')
     
     for dirpath, dirnames, filenames in os.walk(path_temp):
+        
+        if 0:
+            # Write code to create directory item in zip. This isn't recognised by zipinfo, and doesn't
+            # make Word like the file.
+            #
+            name = dirpath[ len(path_temp)+1: ]
+            if name:
+                if not name.endswith('/'):
+                    name += '/'
+                    out_c3.write(f'        if (extract_zip_write_file(zip, NULL, 0, "{name}")) goto end;\n')
+        
         for filename in sorted(filenames):
             #name = filename[len(path_temp)+1:]
             path = os.path.join(dirpath, filename)
             name = path[ len(path_temp)+1: ]
             text = read(os.path.join(dirpath, filename))
             text = text.replace('"', '\\"')
-            text = text.replace('\n', '\\n"\n                "')
+            
+            # Need to convert newlines to cr-nl to make output identical to
+            # when we use zip/unzip on template .docx file. Have tried to use
+            # binary read instead but this requires decoding and with latin-1
+            # ends up changing other bytes in the content. I.e. reading file as
+            # text not binary seems to be the right thing.
+            #
+            text = text.replace('\n', '\\r\\n"\n                "')
             text = f'"{text}"'
             
             if name == 'word/document.xml':

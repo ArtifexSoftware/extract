@@ -61,6 +61,7 @@ Returns with document containing lines and paragraphs.
 int extract_document_to_docx_content(
         extract_document_t* document,
         int                 spacing,
+        int                 rotation,
         char**              o_content,
         size_t*             o_content_length
         );
@@ -70,6 +71,9 @@ document:
     Should contain paragraphs e.g. from extract_document_join().
 spacing:
     If non-zero, we add extra vertical space between paragraphs.
+rotation:
+    If non-zero we output rotated text inside a rotated drawing. Otherwise
+    output text is always horizontal.
 o_content:
     Out param: set to point to zero-terminated text in buffer from malloc().
 o_content_length:

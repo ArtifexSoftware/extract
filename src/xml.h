@@ -69,9 +69,20 @@ int extract_xml_tag_attributes_find_float(
 /* Finds float value of specified attribute, returning error if not found. We
 use atof() and don't check for non-numeric attribute value. */
 
+/* Next few functions write to out-param and return zero on success, else
+return -1 with errno set.
+
+An error is returned if value is out of range or there is any trailing text. */
+
+int extract_xml_str_to_llint(const char* text, long long* o_out);
+
+int extract_xml_str_to_ullint(const char* text, unsigned long long* o_out);
+
 int extract_xml_str_to_int(const char* text, int* o_out);
 
 int extract_xml_str_to_uint(const char* text, unsigned* o_out);
+
+int extract_xml_str_to_size(const char* text, size_t* o_out);
 
 int extract_xml_tag_attributes_find_int(
         extract_xml_tag_t*  tag,
@@ -84,6 +95,14 @@ int extract_xml_tag_attributes_find_uint(
         extract_xml_tag_t*  tag,
         const char*         name,
         unsigned*           o_out
+        );
+/* Finds unsigned int value of specified attribute, returning error if not
+found. */
+
+int extract_xml_tag_attributes_find_size(
+        extract_xml_tag_t*  tag,
+        const char*         name,
+        size_t*             o_out
         );
 /* Finds unsigned int value of specified attribute, returning error if not
 found. */

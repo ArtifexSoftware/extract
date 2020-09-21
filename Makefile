@@ -1,9 +1,14 @@
 # Example commands:
+#
 #   make
-#   make test
-#   make build=debug-opt
-#   make build=opt test
+#   make tests
+#       runs all tests.
+#
+#   make build=debug-opt ...
+#       set build flags.
+#
 #   make test-buffer
+#       run buffer unit tests.
 #
 
 
@@ -33,29 +38,6 @@ else
 endif
 
 
-ifeq ($(build),memento)
-    exe_src += src/memento.c
-endif
-
-
-# Build files.
-#
-exe = src/build/extract-$(build).exe
-exe_src = src/extract-exe.c src/extract.c src/astring.c src/docx.c src/outf.c src/xml.c src/zip.c src/buffer.c src/docx_template.c
-exe_obj = $(patsubst src/%.c, src/build/%.c-$(build).o, $(exe_src))
-exe_dep = $(exe_obj:.o=.d)
-
-exe_buffer_test = src/build/buffer-test-$(build).exe
-exe_buffer_test_src = src/buffer.c src/buffer-test.c src/outf.c
-exe_buffer_test_obj = $(patsubst src/%.c, src/build/%.c-$(build).o, $(exe_buffer_test_src))
-exe_buffer_test_dep = $(exe_buffer_test_obj:.o=.d)
-
-exe_misc_test = src/build/misc-test-$(build).exe
-exe_misc_test_src = src/misc-test.c src/xml.c src/outf.c src/astring.c src/buffer.c
-exe_misc_test_obj = $(patsubst src/%.c, src/build/%.c-$(build).o, $(exe_misc_test_src))
-exe_misc_test_dep = $(exe_buffer_test_obj:.o=.d)
-
-
 # Locations of mutool and gs - we assume these are available at hard-coded
 # paths.
 #
@@ -63,74 +45,132 @@ gs      = ../ghostpdl/debug-bin/gs
 mutool  = ../mupdf/build/debug/mutool
 
 
-# Test targets and rules.
+# Default target - run all tests.
 #
-test_files = test/Python2.pdf test/zlib.3.pdf
+tests-all: test-buffer test-misc tests
 
-test_targets_mu             = $(patsubst test/%, test/generated/%.mu.intermediate.xml.content.xml.diff,             $(test_files))
-test_targets_mu_autosplit   = $(patsubst test/%, test/generated/%.mu.intermediate.xml.autosplit.content.xml.diff,   $(test_files))
-test_targets_gs             = $(patsubst test/%, test/generated/%.gs.intermediate.xml.content.xml.diff,             $(test_files))
 
-test: test-misc test-buffer test-extract
+# Define the main test targets.
+#
+tests := test/Python2.pdf test/zlib.3.pdf
+tests := $(patsubst test/%, test/generated/%, $(tests))
+tests := \
+        $(patsubst %, %.intermediate-mu.xml, $(tests)) \
+        $(patsubst %, %.intermediate-gs.xml, $(tests)) \
 
-test-extract: test-extract-mu test-extract-mu-as test-extract-gs
+tests := \
+        $(patsubst %, %.content.xml,            $(tests)) \
+        $(patsubst %, %.content-rotate.xml,     $(tests)) \
+        $(patsubst %, %.content-autosplit.xml,  $(tests)) \
 
-test-extract-mu:    $(test_targets_mu)
-test-extract-mu-as: $(test_targets_mu_autosplit)
-test-extract-gs:    $(test_targets_gs)
+tests := $(patsubst %, %.diff, $(tests))
 
-test/generated/%.pdf.mu.intermediate.xml: test/%.pdf
+tests: $(tests)
+
+
+# Main executable.
+#
+exe = src/build/extract-$(build).exe
+exe_src = \
+        src/astring.c \
+        src/buffer.c \
+        src/docx.c \
+        src/docx_template.c \
+        src/extract-exe.c \
+        src/extract.c \
+        src/outf.c \
+        src/xml.c src/zip.c \
+
+ifeq ($(build),memento)
+    exe_src += src/memento.c
+endif
+exe_obj = $(patsubst src/%.c, src/build/%.c-$(build).o, $(exe_src))
+exe_dep = $(exe_obj:.o=.d)
+exe: $(exe)
+$(exe): $(exe_obj)
+	$(CC) $(flags_link) -o $@ $^ -lz -lm
+
+
+# Define rules that make the various intermediate targets required by $(tests).
+#
+test/generated/%.pdf.intermediate-mu.xml: test/%.pdf
 	@echo
 	@echo Generating intermediate file for $< with mutool.
 	@mkdir -p test/generated
 	$(mutool) draw -F xmltext -o $@ $<
 
-test/generated/%.pdf.gs.intermediate.xml: test/%.pdf
+test/generated/%.pdf.intermediate-gs.xml: test/%.pdf
 	@echo
 	@echo Generating intermediate file for $< with gs.
 	@mkdir -p test/generated
 	$(gs) -sDEVICE=txtwrite -dTextFormat=4 -o $@ $<
 
-test/generated/%.intermediate.xml.content.xml: test/generated/%.intermediate.xml $(exe)
+%.content.xml: % $(exe)
 	@echo
 	@echo Generating content with extract.exe
-	./$(exe) -i $< --o-content $@ -o $<.docx
+	./$(exe) -r 0 -i $< --o-content $@ -o $@.docx
 
-test/generated/%.intermediate.xml.autosplit.content.xml: test/generated/%.intermediate.xml $(exe)
+%.content-rotate.xml: % $(exe) Makefile
 	@echo
-	@echo Generating content with extract.exe autosplit
-	./$(exe) -i $< --autosplit 1 --o-content $@ -o $<.docx
+	@echo Generating content with rotation with extract.exe
+	./$(exe) -r 1 -s 0 -i $< --o-content $@ -o $@.docx
 
-test/generated/%.intermediate.xml.content.xml.diff: test/generated/%.intermediate.xml.content.xml test/%.content.ref.xml
-	@echo Diffing content with reference output.
-	diff -u $^ >$@
+%.content-autosplit.xml: % $(exe)
+	@echo
+	@echo Generating content with autosplit with extract.exe
+	./$(exe) -r 0 -i $< --autosplit 1 --o-content $@ -o $@.docx
 
-test/generated/%.intermediate.xml.autosplit.content.xml.diff: test/generated/%.intermediate.xml.autosplit.content.xml test/%.content.ref.xml
-	@echo Diffing content with reference output.
-	diff -u $^ >$@
+test/generated/%.diff: test/generated/% test/%.ref
+	@echo Comparing content with reference content.
+	-diff -u $^ >$@
 
+
+# Buffer unit test.
+#
+exe_buffer_test = src/build/buffer-test-$(build).exe
+exe_buffer_test_src = src/buffer.c src/buffer-test.c src/outf.c
+exe_buffer_test_obj = $(patsubst src/%.c, src/build/%.c-$(build).o, $(exe_buffer_test_src))
+exe_buffer_test_dep = $(exe_buffer_test_obj:.o=.d)
+$(exe_buffer_test): $(exe_buffer_test_obj)
+	$(CC) $(flags_link) -o $@ $^
 test-buffer: $(exe_buffer_test)
 	@echo Running test-buffer
 	./$<
 
+
+# Misc unit test.
+#
+exe_misc_test = src/build/misc-test-$(build).exe
+exe_misc_test_src = src/misc-test.c src/xml.c src/outf.c src/astring.c src/buffer.c
+exe_misc_test_obj = $(patsubst src/%.c, src/build/%.c-$(build).o, $(exe_misc_test_src))
+exe_misc_test_dep = $(exe_buffer_test_obj:.o=.d)
+$(exe_misc_test): $(exe_misc_test_obj)
+	$(CC) $(flags_link) -o $@ $^
 test-misc: $(exe_misc_test)
 	@echo Running test-misc
 	./$<
 
-# Rule for executables.
+
+# Zip analyse. For dev use only.
 #
-exe: $(exe)
-$(exe): $(exe_obj)
-	$(CC) $(flags_link) -o $@ $^ -lz -lm
-
-$(exe_buffer_test): $(exe_buffer_test_obj)
+exe_ziptest = src/build/ziptest-$(build).exe
+exe_ziptest_src = src/zip-test.c src/outf.c
+exe_ziptest_obj = $(patsubst src/%.c, src/build/%.c-$(build).o, $(exe_ziptest_src))
+exe_ziptest_dep = $(exe_ziptest_obj:.o=.d)
+$(exe_ziptest): $(exe_ziptest_obj)
 	$(CC) $(flags_link) -o $@ $^
+ziptest: $(exe_ziptest)
+	@echo Running ziptest
+	#./$< test/generated/Python2.pdf.intermediate-mu.xml.content-rotate.xml.docx
+	#./$< test/generated/Python2.pdf.intermediate-mu.xml.content-rotate.xml.docx.dir.docx
+	./$< test/generated/Python2.pdf.intermediate-mu.xml.content-rotate.xml.docx 2>a
+	./$< test/generated/Python2.pdf.intermediate-mu.xml.content-rotate.xml.docx.dir.docx 2>b
+	#od -a test/generated/Python2.pdf.intermediate-mu.xml.content-rotate.xml.docx >aa
+	#od -a test/generated/Python2.pdf.intermediate-mu.xml.content-rotate.xml.docx.dir.docx >bb
 
-$(exe_misc_test): $(exe_misc_test_obj)
-	$(CC) $(flags_link) -o $@ $^
 
-# Compile rules. We always include src/docx_template.c as a prerequisite in
-# case code #includes docx_template.h.
+# Compile rule. We always include src/docx_template.c as a prerequisite in case
+# code #includes docx_template.h.
 #
 src/build/%.c-$(build).o: src/%.c src/docx_template.c
 	@mkdir -p src/build
@@ -141,13 +181,18 @@ src/build/%.c-$(build).o: src/%.c src/docx_template.c
 #
 # These files are also in git to allow builds if python is not available.
 #
-src/docx_template.c: .ALWAYS
+src/docx_template.c: src/docx_template_build.py .ALWAYS
 	@echo Building $@
 	./src/docx_template_build.py -i src/template.docx -o src/docx_template
 .ALWAYS:
+.PHONY: .ALWAYS
+
+# Tell make to preserve all intermediate files.
+#
+.SECONDARY:
 
 
-# Rule for tags
+# Rule for tags.
 #
 tags: .ALWAYS
 	ectags -R --extra=+fq --c-kinds=+px .
@@ -158,10 +203,13 @@ tags: .ALWAYS
 .PHONY: clean
 clean:
 	-rm -r src/build test/generated
+.PHONY: clean
 
 
-# Dynamic dependencies.
+# Include dynamic dependencies.
 #
-# Use $(sort ...) to remove duplicates
-dep = $(sort $(exe_dep) $(exe_buffer_test_dep))
+# We use $(sort ...) to remove duplicates
+#
+dep = $(sort $(exe_dep) $(exe_buffer_test_dep) $(exe_misc_test_dep) $(exe_ziptest_dep))
+
 -include $(dep)

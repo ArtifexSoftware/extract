@@ -18,11 +18,6 @@
 #include <string.h>
 
 
-#define outf(format, ...) \
-        (outf)(__FILE__, __LINE__, __FUNCTION__, 1 /*ln*/, format, ##__VA_ARGS__)
-
-#define outfx(format, ...)
-
 static const float g_pi = 3.14159265;
 
 
@@ -87,6 +82,12 @@ static const char* matrix_string(const matrix_t* matrix)
             );
     return ret;
 }
+
+typedef struct
+{
+    float x;
+    float y;
+} point_t;
 
 
 /* A single char in a span.
@@ -234,6 +235,21 @@ static char_t* span_char_last(span_t* span)
     return &span->chars[span->chars_num-1];
 }
 
+/*
+static void span_extend_point(span_t* span, point_t* point)
+{
+    float x = span_char_last(span)->pre_x;
+    x += span_char_last(span)->adv * matrix_expansion(span->trm);
+    if (x > point->x) {
+        point->x = x;
+    }
+    float y = span_char_first(span)->pre_y;
+    if (y > point->y) {
+        point->y = y;
+    };
+}
+*/
+
 static float span_angle(span_t* span)
 {
     /* Assume ctm is a rotation matix. */
@@ -361,6 +377,12 @@ static float line_angle(line_t* line)
     return span_angle(line->spans[0]);
 }
 
+/*
+static void line_extend_point(line_t* line, point_t* point)
+{
+    span_extend_point(line_span_last(line), point);
+}
+*/
 
 /* Array of pointers to lines that are aligned and adjacent to each other so as
 to form a paragraph. */
@@ -402,7 +424,16 @@ static line_t* paragraph_line_last(const paragraph_t* paragraph)
     return paragraph->lines[ paragraph->lines_num-1];
 }
 
-
+/*
+static void paragraph_extend_point(const paragraph_t* paragraph, point_t* point)
+{
+    int i;
+    for (i=0; i<paragraph->lines_num; ++i) {
+        line_t* line = paragraph->lines[i];
+        line_extend_point(line, point);
+    }
+}
+*/
 /* A page. Contains different representations of the same list of spans.
 */
 typedef struct
@@ -584,11 +615,6 @@ static int matrix_cmp4(
     return 0;
 }
 
-typedef struct
-{
-    float x;
-    float y;
-} point_t;
 
 static point_t multiply_matrix_point(matrix_t m, point_t p)
 {
@@ -597,6 +623,12 @@ static point_t multiply_matrix_point(matrix_t m, point_t p)
     p.y = m.b * x + m.d * p.y;
     return p;
 }
+
+typedef struct
+{
+    point_t min;
+    point_t max;
+} rectangle_t;
 
 static int s_matrix_read(const char* text, matrix_t* matrix)
 {
@@ -1248,6 +1280,10 @@ static int make_paragraphs(
                 else {
                     /* Insert space before joining adjacent lines. */
                     if (span_append_c(line_span_last(line_a), ' ')) goto end;
+                    char_t* c_prev = &a_span->chars[ a_span->chars_num-2];
+                    char_t* c = &a_span->chars[ a_span->chars_num-1];
+                    c->x = c_prev->x + c_prev->adv * a_span->ctm.a;
+                    c->y = c_prev->y + c_prev->adv * a_span->ctm.c;
                 }
 
                 int a_lines_num_new = paragraph_a->lines_num + nearest_paragraph->lines_num;
@@ -1534,6 +1570,82 @@ int extract_intermediate_to_document(
                 num_spans += page->spans_num;
                 break;
             }
+            if (!strcmp(tag.name, "image")) {
+                /* For now we simply skip images. */
+                const char* type = extract_xml_tag_attributes_find(&tag, "type");
+                if (!type) {
+                    errno = EINVAL;
+                    goto end;
+                }
+                if (!strcmp(type, "pixmap")) {
+                    int w;
+                    int h;
+                    if (extract_xml_tag_attributes_find_int(&tag, "w", &w)) goto end;
+                    if (extract_xml_tag_attributes_find_int(&tag, "h", &h)) goto end;
+                    int y;
+                    for (y=0; y<h; ++y) {
+                        if (extract_xml_pparse_next(buffer, &tag)) goto end;
+                        if (strcmp(tag.name, "line")) {
+                            outf("Expected <line> but tag.name='%s'", tag.name);
+                            errno = ESRCH;
+                            goto end;
+                        }
+                        int yy;
+                        if (extract_xml_tag_attributes_find_int(&tag, "y", &yy)) goto end;
+                        if (yy != y) {
+                            outf("Expected <line y=%i> but found <line y=%i>", y, yy);
+                            errno = ESRCH;
+                            goto end;
+                        }
+                        if (extract_xml_pparse_next(buffer, &tag)) goto end;
+                        if (strcmp(tag.name, "/line")) {
+                            outf("Expected </line> but tag.name='%s'", tag.name);
+                            errno = ESRCH;
+                            goto end;
+                        }
+                    }
+                }
+                else {
+                    /* Compressed. */
+                    size_t  datasize;
+                    size_t  i;
+                    const char* c = tag.text.chars;
+                    if (extract_xml_tag_attributes_find_size(&tag, "datasize", &datasize)) goto end;
+                    
+                    for (i=0; i<datasize; ++i) {
+                        int byte = 0;
+                        int cc;
+                        if (*c == ' ' || *c == '\n') continue;
+                        
+                        cc = *c;
+                        if (cc >= '0' && cc <= '9') byte += cc-'0';
+                        else if (cc >= 'a' && cc <= 'f') byte += 10 + cc - 'a';
+                        else goto compressed_error;
+                        byte *= 16;
+                        
+                        ++c;
+                        cc = *c;
+                        if (cc >= '0' && cc <= '9') byte += cc-'0';
+                        else if (cc >= 'a' && cc <= 'f') byte += 10 + cc - 'a';
+                        else goto compressed_error;
+                        
+                        ++c;
+                        continue;
+                        
+                        compressed_error:
+                        outf("Unrecognised hex character '%x' at offset %lli in image data", cc, (long long) (c-tag.text.chars));
+                        errno = EINVAL;
+                        goto end;
+                    }
+                }
+                if (extract_xml_pparse_next(buffer, &tag)) goto end;
+                if (strcmp(tag.name, "/image")) {
+                    outf("Expected </image> but tag.name='%s'", tag.name);
+                    errno = ESRCH;
+                    goto end;
+                }
+                continue;
+            }
             if (strcmp(tag.name, "span")) {
                 outf("Expected <span> but tag.name='%s'", tag.name);
                 errno = ESRCH;
@@ -1643,8 +1755,8 @@ int extract_intermediate_to_document(
 
                 char    trm[64];
                 snprintf(trm, sizeof(trm), "%s", matrix_string(&span->trm));
-               char_->x += span->ctm.e;
-               char_->y += span->ctm.f;
+                char_->x += span->ctm.e;
+                char_->y += span->ctm.f;
 
                 outfx(
                         "ctm=%s trm=%s ctm*trm=%f pre=(%f %f) =>"
@@ -1705,41 +1817,153 @@ static float matrices_to_font_size(matrix_t* ctm, matrix_t* trm)
     return font_size;
 }
 
-/* Writes paragraphs from extract_document_t into docx content. On return *content
-points to zero-terminated content, allocated by realloc().
+typedef struct
+{
+    const char* font_name;
+    float       font_size;
+    int         font_bold;
+    int         font_italic;
+    matrix_t*   ctm_prev;
+} content_state_t;
 
-spacing: if true, we insert extra vertical space between paragraphs. */
-int extract_document_to_docx_content(
+
+static int extract_document_to_docx_content_paragraph(
+        content_state_t*    state,
+        paragraph_t*        paragraph,
+        extract_astring_t*  content
+        )
+{
+    int e = -1;
+    if (extract_docx_paragraph_start(content)) goto end;
+
+    int l;
+    for (l=0; l<paragraph->lines_num; ++l) {
+        line_t* line = paragraph->lines[l];
+        int s;
+        for (s=0; s<line->spans_num; ++s) {
+            span_t* span = line->spans[s];
+            state->ctm_prev = &span->ctm;
+            float font_size_new = matrices_to_font_size(
+                    &span->ctm, &span->trm
+                    );
+            if (!state->font_name
+                    || strcmp(span->font_name, state->font_name)
+                    || span->font_bold != state->font_bold
+                    || span->font_italic != state->font_italic
+                    || font_size_new != state->font_size
+                    ) {
+                if (state->font_name) {
+                    if (extract_docx_run_finish(content)) goto end;
+                }
+                state->font_name = span->font_name;
+                state->font_bold = span->font_bold;
+                state->font_italic = span->font_italic;
+                state->font_size = font_size_new;
+                if (extract_docx_run_start(
+                        content,
+                        state->font_name,
+                        state->font_size,
+                        state->font_bold,
+                        state->font_italic
+                        )) goto end;
+            }
+
+            int si;
+            for (si=0; si<span->chars_num; ++si) {
+                char_t* char_ = &span->chars[si];
+                int c = char_->ucs;
+
+                if (0) {}
+
+                /* Escape XML special characters. */
+                else if (c == '<')  extract_docx_char_append_string(content, "&lt;");
+                else if (c == '>')  extract_docx_char_append_string(content, "&gt;");
+                else if (c == '&')  extract_docx_char_append_string(content, "&amp;");
+                else if (c == '"')  extract_docx_char_append_string(content, "&quot;");
+                else if (c == '\'') extract_docx_char_append_string(content, "&apos;");
+
+                /* Expand ligatures. */
+                else if (c == 0xFB00) {
+                    if (extract_docx_char_append_string(content, "ff")) goto end;
+                }
+                else if (c == 0xFB01) {
+                    if (extract_docx_char_append_string(content, "fi")) goto end;
+                }
+                else if (c == 0xFB02) {
+                    if (extract_docx_char_append_string(content, "fl")) goto end;
+                }
+                else if (c == 0xFB03) {
+                    if (extract_docx_char_append_string(content, "ffi")) goto end;
+                }
+                else if (c == 0xFB04) {
+                    if (extract_docx_char_append_string(content, "ffl")) goto end;
+                }
+
+                /* Output ASCII verbatim. */
+                else if (c >= 32 && c <= 127) {
+                    if (extract_docx_char_append_char(content, c)) goto end;
+                }
+
+                /* Escape all other characters. */
+                else {
+                    char    buffer[32];
+                    snprintf(buffer, sizeof(buffer), "&#x%x;", c);
+                    if (extract_docx_char_append_string(content, buffer)) goto end;
+                }
+            }
+            /* Remove any trailing '-' at end of line. */
+            if (extract_docx_char_truncate_if(content, '-')) goto end;
+        }
+    }
+    if (state->font_name) {
+        if (extract_docx_run_finish(content)) goto end;
+        state->font_name = NULL;
+    }
+    if (extract_docx_paragraph_finish(content)) goto end;
+    
+    e = 0;
+    
+    end:
+    return e;
+}
+
+
+static int extract_document_to_docx_content_rotation(
         extract_document_t* document,
         int                 spacing,
         char**              o_content,
         size_t*             o_content_length
         )
+/* Puts rotated text into <w:drawing> items so that they appear rotated. */
 {
     int ret = -1;
     
-    extract_astring_t    content;
+    extract_astring_t   content;
     extract_astring_init(&content);
+    
+    int text_box_id = 0;
 
     /* Write paragraphs into <content>. */
     int p;
     for (p=0; p<document->pages_num; ++p) {
         page_t* page = document->pages[p];
 
-        const char* font_name = NULL;
-        float       font_size = 0;
-        int         font_bold = 0;
-        int         font_italic = 0;
-        matrix_t*   ctm_prev = NULL;
+        content_state_t state;
+        state.font_name = NULL;
+        state.font_size = 0;
+        state.font_bold = 0;
+        state.font_italic = 0;
+        state.ctm_prev = NULL;
         int p;
         for (p=0; p<page->paragraphs_num; ++p) {
             paragraph_t* paragraph = page->paragraphs[p];
+            
             if (spacing
-                    && ctm_prev
+                    && state.ctm_prev
                     && paragraph->lines_num
                     && paragraph->lines[0]->spans_num
                     && matrix_cmp4(
-                            ctm_prev,
+                            state.ctm_prev,
                             &paragraph->lines[0]->spans[0]->ctm
                             )
                     ) {
@@ -1752,92 +1976,256 @@ int extract_document_to_docx_content(
                 /* Extra vertical space between paragraphs. */
                 if (extract_docx_paragraph_empty(&content)) goto end;
             }
-            if (extract_docx_paragraph_start(&content)) goto end;
-
-            int l;
-            for (l=0; l<paragraph->lines_num; ++l) {
-                line_t* line = paragraph->lines[l];
-                int s;
-                for (s=0; s<line->spans_num; ++s) {
-                    span_t* span = line->spans[s];
-                    ctm_prev = &span->ctm;
-                    float font_size_new = matrices_to_font_size(
-                            &span->ctm, &span->trm
-                            );
-                    if (!font_name
-                            || strcmp(span->font_name, font_name)
-                            || span->font_bold != font_bold
-                            || span->font_italic != font_italic
-                            || font_size_new != font_size
-                            ) {
-                        if (font_name) {
-                            if (extract_docx_run_finish(&content)) goto end;
-                        }
-                        font_name = span->font_name;
-                        font_bold = span->font_bold;
-                        font_italic = span->font_italic;
-                        font_size = font_size_new;
-                        if (extract_docx_run_start(
-                                &content,
-                                font_name,
-                                font_size,
-                                font_bold,
-                                font_italic
-                                )) goto end;
+            
+            const matrix_t* ctm = &paragraph->lines[0]->spans[0]->ctm;
+            float rotate = atan2(ctm->b, ctm->a);
+            
+            if (rotate) {
+            
+                outf0("rotate=%.2frad=%.1fdeg ctm: ef=(%f %f) abcd=(%f %f %f %f)",
+                        rotate, rotate * 180 / g_pi,
+                        ctm->e,
+                        ctm->f,
+                        ctm->a,
+                        ctm->b,
+                        ctm->c,
+                        ctm->d
+                        );
+                
+                /* Find extent of paragraphs with this same rotation. extent
+                will contain max width and max height of paragraphs, in units
+                before application of ctm, i.e. before rotation. */
+                point_t extent = {0, 0};
+                int p0 = p;
+                int p1;
+                
+                {
+                    /* We assume that first span is at origin of text
+                    block. This assumes left-to-right text. */
+                    point_t origin = {
+                            paragraph->lines[0]->spans[0]->chars[0].x,
+                            paragraph->lines[0]->spans[0]->chars[0].y
+                            };
+                    matrix_t ctm_inverse = {1, 0, 0, 1, 0, 0};
+                    float ctm_det = ctm->a*ctm->d - ctm->b*ctm->c;
+                    if (ctm_det != 0) {
+                        ctm_inverse.a = +ctm->d / ctm_det;
+                        ctm_inverse.b = -ctm->b / ctm_det;
+                        ctm_inverse.c = -ctm->c / ctm_det;
+                        ctm_inverse.d = +ctm->a / ctm_det;
                     }
+                    else {
+                        outf0("cannot invert ctm=(%f %f %f %f)",
+                                ctm->a, ctm->b, ctm->c, ctm->d);
+                    }
+                    float rotate0 = rotate;
+                    const matrix_t* ctm0 = ctm;
 
-                    int si;
-                    for (si=0; si<span->chars_num; ++si) {
-                        char_t* char_ = &span->chars[si];
-                        int c = char_->ucs;
-
-                        if (0) {}
-
-                        /* Escape XML special characters. */
-                        else if (c == '<')  extract_docx_char_append_string(&content, "&lt;");
-                        else if (c == '>')  extract_docx_char_append_string(&content, "&gt;");
-                        else if (c == '&')  extract_docx_char_append_string(&content, "&amp;");
-                        else if (c == '"')  extract_docx_char_append_string(&content, "&quot;");
-                        else if (c == '\'') extract_docx_char_append_string(&content, "&apos;");
-
-                        /* Expand ligatures. */
-                        else if (c == 0xFB00) {
-                            if (extract_docx_char_append_string(&content, "ff")) goto end;
-                        }
-                        else if (c == 0xFB01) {
-                            if (extract_docx_char_append_string(&content, "fi")) goto end;
-                        }
-                        else if (c == 0xFB02) {
-                            if (extract_docx_char_append_string(&content, "fl")) goto end;
-                        }
-                        else if (c == 0xFB03) {
-                            if (extract_docx_char_append_string(&content, "ffi")) goto end;
-                        }
-                        else if (c == 0xFB04) {
-                            if (extract_docx_char_append_string(&content, "ffl")) goto end;
+                    for (p=p0; p<page->paragraphs_num; ++p) {
+                        paragraph = page->paragraphs[p];
+                        ctm = &paragraph->lines[0]->spans[0]->ctm;
+                        rotate = atan2(ctm->b, ctm->a);
+                        if (rotate != rotate0) {
+                            break;
                         }
 
-                        /* Output ASCII verbatim. */
-                        else if (c >= 32 && c <= 127) {
-                            if (extract_docx_char_append_char(&content, c)) goto end;
-                        }
+                        /* Update <extent>. */
+                        {
+                            int l;
+                            for (l=0; l<paragraph->lines_num; ++l) {
+                                line_t* line = paragraph->lines[l];
+                                span_t* span = line_span_last(line);
+                                char_t* char_ = span_char_last(span);
+                                float adv = char_->adv * matrix_expansion(span->trm);
+                                float x = char_->x + adv * cos(rotate);
+                                float y = char_->y + adv * sin(rotate);
 
-                        /* Escape all other characters. */
-                        else {
-                            char    buffer[32];
-                            snprintf(buffer, sizeof(buffer), "&#x%x;", c);
-                            if (extract_docx_char_append_string(&content, buffer)) goto end;
+                                float dx = x - origin.x;
+                                float dy = y - origin.y;
+
+                                /* Position relative to origin and before box rotation. */
+                                float xx = ctm_inverse.a * dx + ctm_inverse.b * dy;
+                                float yy = ctm_inverse.c * dx + ctm_inverse.d * dy;
+                                yy = -yy;
+                                if (xx > extent.x) extent.x = xx;
+                                if (yy > extent.y) extent.y = yy;
+                                outf0("rotate=%f p=%i: origin=(%f %f) xy=(%f %f) dxy=(%f %f) xxyy=(%f %f) span: %s",
+                                        rotate, p, origin.x, origin.y, x, y, dx, dy, xx, yy, span_string(span));
+                            }
                         }
                     }
-                    /* Remove any trailing '-' at end of line. */
-                    if (extract_docx_char_truncate_if(&content, '-')) goto end;
+                    p1 = p;
+                    rotate = rotate0;
+                    ctm = ctm0;
+                    outf0("rotate=%f p0=%i p1=%i. extent is: (%f %f)",
+                            rotate, p0, p1, extent.x, extent.y);
                 }
+                
+                /* Paragraphs p0..p1-1 have same rotation. We output them into
+                a single rotated text box. */
+                
+                /* We need unique id for text box. */
+                text_box_id += 1;
+                
+                /* Angles are in units of 1/60,000 degree. */
+                int rot = rotate * 180 / g_pi * 60000;
+                if (0) outf("rotate: %f rad, %f deg. rot=%i", rotate, rotate*180/g_pi, rot);
+                
+                /* <wp:anchor distT=\.. etc are in EMU - 1/360,000 of a cm.
+                relativeHeight is z-ordering. (wp:positionV:wp:posOffset,
+                wp:positionV:wp:posOffset) is position of origin of box in EMU.
+
+                The box rotates about its centre but we want to rotate about
+                the origin (top-left). So we correct the position of box by
+                subtracting the vector that the top-left moves when rotated by
+                angle <rotate> about the middle. */
+                int point_to_emu = 12700;   /* https://en.wikipedia.org/wiki/Office_Open_XML_file_formats#DrawingML */
+                int x = ctm->e * point_to_emu;
+                int y = ctm->f * point_to_emu;
+                int w = extent.x * point_to_emu; //3228975;
+                int h = extent.y * point_to_emu; //2286000;
+                
+                h *= 2;
+                /* We can't predict how much space Word will actually require
+                for the rotated text, so make the box have the original width
+                but allow text to take extra vertical space. There doesn't seem
+                to be a way to make the text box auto-grow to contain the text.
+                */
+                
+                int dx = w/2 * (1-cos(rotate)) + h/2 * sin(rotate);
+                int dy = h/2 * (cos(rotate)-1) + w/2 * sin(rotate);
+                outf("ctm->e,f=%f,%f rotate=%f => x,y=%ik %ik dx,dy=%ik %ik",
+                        ctm->e,
+                        ctm->f,
+                        rotate * 180/g_pi,
+                        x/1000,
+                        y/1000,
+                        dx/1000,
+                        dy/1000
+                        );
+                x -= dx;
+                y -= -dy;
+                outf("x,y=%ik,%ik = %i,%i", x/1000, y/1000, x, y);
+                extract_docx_char_append_string(&content, "\n");
+                extract_docx_char_append_string(&content, "\n");
+                extract_docx_char_append_string(&content, "<w:p>\n");
+                extract_docx_char_append_string(&content, "  <w:r>\n");
+                extract_docx_char_append_string(&content, "    <mc:AlternateContent>\n");
+                extract_docx_char_append_string(&content, "      <mc:Choice Requires=\"wps\">\n");
+                extract_docx_char_append_string(&content, "        <w:drawing>\n");
+                extract_docx_char_append_string(&content, "          <wp:anchor distT=\"0\" distB=\"0\" distL=\"0\" distR=\"0\" simplePos=\"0\" relativeHeight=\"0\" behindDoc=\"0\" locked=\"0\" layoutInCell=\"1\" allowOverlap=\"1\" wp14:anchorId=\"53A210D1\" wp14:editId=\"2B7E8016\">\n");
+                extract_docx_char_append_string(&content, "            <wp:simplePos x=\"0\" y=\"0\"/>\n");
+                extract_docx_char_append_string(&content, "            <wp:positionH relativeFrom=\"page\">\n");
+                extract_docx_char_append_stringf(&content,"              <wp:posOffset>%i</wp:posOffset>\n", x);
+                extract_docx_char_append_string(&content, "            </wp:positionH>\n");
+                extract_docx_char_append_string(&content, "            <wp:positionV relativeFrom=\"page\">\n");
+                extract_docx_char_append_stringf(&content,"              <wp:posOffset>%i</wp:posOffset>\n", y);
+                extract_docx_char_append_string(&content, "            </wp:positionV>\n");
+                extract_docx_char_append_stringf(&content,"            <wp:extent cx=\"%i\" cy=\"%i\"/>\n", w, h);
+                extract_docx_char_append_string(&content, "            <wp:effectExtent l=\"381000\" t=\"723900\" r=\"371475\" b=\"723900\"/>\n");
+                extract_docx_char_append_string(&content, "            <wp:wrapNone/>\n");
+                extract_docx_char_append_stringf(&content,"            <wp:docPr id=\"%i\" name=\"Text Box %i\"/>\n", text_box_id, text_box_id);
+                extract_docx_char_append_string(&content, "            <wp:cNvGraphicFramePr/>\n");
+                extract_docx_char_append_string(&content, "            <a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\">\n");
+                extract_docx_char_append_string(&content, "              <a:graphicData uri=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\">\n");
+                extract_docx_char_append_string(&content, "                <wps:wsp>\n");
+                extract_docx_char_append_string(&content, "                  <wps:cNvSpPr txBox=\"1\"/>\n");
+                extract_docx_char_append_string(&content, "                  <wps:spPr>\n");
+                extract_docx_char_append_stringf(&content,"                    <a:xfrm rot=\"%i\">\n", rot);
+                extract_docx_char_append_string(&content, "                      <a:off x=\"0\" y=\"0\"/>\n");
+                extract_docx_char_append_string(&content, "                      <a:ext cx=\"3228975\" cy=\"2286000\"/>\n");
+                extract_docx_char_append_string(&content, "                    </a:xfrm>\n");
+                extract_docx_char_append_string(&content, "                    <a:prstGeom prst=\"rect\">\n");
+                extract_docx_char_append_string(&content, "                      <a:avLst/>\n");
+                extract_docx_char_append_string(&content, "                    </a:prstGeom>\n");
+                
+                /* Give box a solid background. */
+                if (0) {
+                    extract_docx_char_append_string(&content, "                    <a:solidFill>\n");
+                    extract_docx_char_append_string(&content, "                      <a:schemeClr val=\"lt1\"/>\n");
+                    extract_docx_char_append_string(&content, "                    </a:solidFill>\n");
+                    }
+                
+                /* Draw line around box. */
+                if (0) {
+                    extract_docx_char_append_string(&content, "                    <a:ln w=\"175\">\n");
+                    extract_docx_char_append_string(&content, "                      <a:solidFill>\n");
+                    extract_docx_char_append_string(&content, "                        <a:prstClr val=\"black\"/>\n");
+                    extract_docx_char_append_string(&content, "                      </a:solidFill>\n");
+                    extract_docx_char_append_string(&content, "                    </a:ln>\n");
+                }
+                
+                extract_docx_char_append_string(&content, "                  </wps:spPr>\n");
+                extract_docx_char_append_string(&content, "                  <wps:txbx>\n");
+                extract_docx_char_append_string(&content, "                    <w:txbxContent>");
+                
+                if (0) {
+                    /* Output inline text describing the rotation. */
+                    extract_docx_char_append_stringf(&content, "<w:p>\n"
+                            "<w:r><w:rPr><w:rFonts w:ascii=\"OpenSans\" w:hAnsi=\"OpenSans\"/><w:sz w:val=\"20.000000\"/><w:szCs w:val=\"15.000000\"/></w:rPr><w:t xml:space=\"preserve\">*** rotate: %f rad, %f deg. rot=%i</w:t></w:r>\n"
+                            "</w:p>\n",
+                            rotate,
+                            rotate * 180 / g_pi,
+                            rot
+                            );
+                }
+                
+                /* Output paragraphs p0..p2-1. */
+                for (p=p0; p<p1; ++p) {
+                    paragraph_t* paragraph = page->paragraphs[p];
+                    if (extract_document_to_docx_content_paragraph(&state, paragraph, &content)) goto end;
+                }
+                
+                extract_docx_char_append_string(&content, "\n");
+                extract_docx_char_append_string(&content, "                    </w:txbxContent>\n");
+                extract_docx_char_append_string(&content, "                  </wps:txbx>\n");
+                extract_docx_char_append_string(&content, "                  <wps:bodyPr rot=\"0\" spcFirstLastPara=\"0\" vertOverflow=\"overflow\" horzOverflow=\"overflow\" vert=\"horz\" wrap=\"square\" lIns=\"91440\" tIns=\"45720\" rIns=\"91440\" bIns=\"45720\" numCol=\"1\" spcCol=\"0\" rtlCol=\"0\" fromWordArt=\"0\" anchor=\"t\" anchorCtr=\"0\" forceAA=\"0\" compatLnSpc=\"1\">\n");
+                extract_docx_char_append_string(&content, "                    <a:prstTxWarp prst=\"textNoShape\">\n");
+                extract_docx_char_append_string(&content, "                      <a:avLst/>\n");
+                extract_docx_char_append_string(&content, "                    </a:prstTxWarp>\n");
+                extract_docx_char_append_string(&content, "                    <a:noAutofit/>\n");
+                extract_docx_char_append_string(&content, "                  </wps:bodyPr>\n");
+                extract_docx_char_append_string(&content, "                </wps:wsp>\n");
+                extract_docx_char_append_string(&content, "              </a:graphicData>\n");
+                extract_docx_char_append_string(&content, "            </a:graphic>\n");
+                extract_docx_char_append_string(&content, "          </wp:anchor>\n");
+                extract_docx_char_append_string(&content, "        </w:drawing>\n");
+                extract_docx_char_append_string(&content, "      </mc:Choice>\n");
+                
+                /* This fallack is copied from a real Word document. Not sure
+                whether it works - both Libreoffice and Word use the above
+                choice. */
+                extract_docx_char_append_string(&content, "      <mc:Fallback>\n");
+                extract_docx_char_append_string(&content, "        <w:pict>\n");
+                extract_docx_char_append_string(&content, "          <v:shapetype w14:anchorId=\"53A210D1\" id=\"_x0000_t202\" coordsize=\"21600,21600\" o:spt=\"202\" path=\"m,l,21600r21600,l21600,xe\">\n");
+                extract_docx_char_append_string(&content, "            <v:stroke joinstyle=\"miter\"/>\n");
+                extract_docx_char_append_string(&content, "            <v:path gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n");
+                extract_docx_char_append_string(&content, "          </v:shapetype>\n");
+                extract_docx_char_append_stringf(&content,"          <v:shape id=\"Text Box %i\" o:spid=\"_x0000_s1026\" type=\"#_x0000_t202\" style=\"position:absolute;margin-left:71.25pt;margin-top:48.75pt;width:254.25pt;height:180pt;rotation:-2241476fd;z-index:251659264;visibility:visible;mso-wrap-style:square;mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;mso-position-horizontal-relative:text;mso-position-vertical:absolute;mso-position-vertical-relative:text;v-text-anchor:top\" o:gfxdata=\"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&#10;bFBLBQYAAAAABAAEAPMAAAC8BQAAAAA=&#10;\" fillcolor=\"white [3201]\" strokeweight=\".5pt\">\n", text_box_id);
+                extract_docx_char_append_string(&content, "            <v:textbox>\n");
+                extract_docx_char_append_string(&content, "              <w:txbxContent>");
+
+                for (p=p0; p<p1; ++p) {
+                    paragraph = page->paragraphs[p];
+                    if (extract_document_to_docx_content_paragraph(&state, paragraph, &content)) goto end;
+                }
+
+                extract_docx_char_append_string(&content, "\n");
+                extract_docx_char_append_string(&content, "\n");
+                extract_docx_char_append_string(&content, "              </w:txbxContent>\n");
+                extract_docx_char_append_string(&content, "            </v:textbox>\n");
+                extract_docx_char_append_string(&content, "          </v:shape>\n");
+                extract_docx_char_append_string(&content, "        </w:pict>\n");
+                extract_docx_char_append_string(&content, "      </mc:Fallback>\n");
+                extract_docx_char_append_string(&content, "    </mc:AlternateContent>\n");
+                extract_docx_char_append_string(&content, "  </w:r>\n");
+                extract_docx_char_append_string(&content, "</w:p>");
+                p = p1 - 1;
+                //p = page->paragraphs_num - 1;
             }
-            if (font_name) {
-                if (extract_docx_run_finish(&content)) goto end;
-                font_name = NULL;
+            else {
+                if (extract_document_to_docx_content_paragraph(&state, paragraph, &content)) goto end;
             }
-            if (extract_docx_paragraph_finish(&content)) goto end;
         }
     }
     ret = 0;
@@ -1857,6 +2245,94 @@ int extract_document_to_docx_content(
     }
 
     return ret;
+}
+
+static int extract_document_to_docx_content_norotation(
+        extract_document_t* document,
+        int                 spacing,
+        char**              o_content,
+        size_t*             o_content_length
+        )
+/* Doesn't attempt to represent text rotation. */
+{
+    int ret = -1;
+
+    extract_astring_t   content;
+    extract_astring_init(&content);
+
+    /* Write paragraphs into <content>. */
+    int p;
+    for (p=0; p<document->pages_num; ++p) {
+        page_t* page = document->pages[p];
+
+        content_state_t state;
+        state.font_name = NULL;
+        state.font_size = 0;
+        state.font_bold = 0;
+        state.font_italic = 0;
+        state.ctm_prev = NULL;
+        int p;
+        for (p=0; p<page->paragraphs_num; ++p) {
+            paragraph_t* paragraph = page->paragraphs[p];
+
+            if (spacing
+                    && state.ctm_prev
+                    && paragraph->lines_num
+                    && paragraph->lines[0]->spans_num
+                    && matrix_cmp4(
+                            state.ctm_prev,
+                            &paragraph->lines[0]->spans[0]->ctm
+                            )
+                    ) {
+                /* Extra vertical space between paragraphs that were at
+                different angles in the original document. */
+                if (extract_docx_paragraph_empty(&content)) goto end;
+            }
+
+            if (spacing) {
+                /* Extra vertical space between paragraphs. */
+                if (extract_docx_paragraph_empty(&content)) goto end;
+            }
+            if (extract_document_to_docx_content_paragraph(&state, paragraph, &content)) goto end;
+        }
+    }
+    ret = 0;
+
+    end:
+
+    if (ret) {
+        extract_astring_free(&content);
+        *o_content = NULL;
+        *o_content_length = 0;
+    }
+    else {
+        *o_content = content.chars;
+        *o_content_length = content.chars_num;
+        content.chars = NULL;
+        content.chars_num = 0;
+    }
+
+    return ret;
+}
+
+int extract_document_to_docx_content(
+        extract_document_t* document,
+        int                 spacing,
+        int                 rotation,
+        char**              o_content,
+        size_t*             o_content_length
+        )
+/* Writes paragraphs from extract_document_t into docx content. On return *content
+points to zero-terminated content, allocated by realloc().
+
+spacing: if true, we insert extra vertical space between paragraphs. */
+{
+    if (rotation) {
+        return extract_document_to_docx_content_rotation(document, spacing, o_content, o_content_length);
+    }
+    else {
+        return extract_document_to_docx_content_norotation(document, spacing, o_content, o_content_length);
+    }
 }
 
 int extract_document_join(extract_document_t* document)

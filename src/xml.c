@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <errno.h>
 #include <limits.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -88,10 +89,20 @@ int extract_xml_tag_attributes_find_uint(
     return extract_xml_str_to_uint(text, o_out);
 }
 
-int extract_xml_str_to_int(const char* text, int* o_out)
+int extract_xml_tag_attributes_find_size(
+        extract_xml_tag_t*  tag,
+        const char*         name,
+        size_t*             o_out
+        )
+{
+    const char* text = extract_xml_tag_attributes_find(tag, name);
+    return extract_xml_str_to_size(text, o_out);
+}
+
+int extract_xml_str_to_llint(const char* text, long long* o_out)
 {
     char* endptr;
-    long x = strtol(text, &endptr, 10 /*base*/);
+    long long x;
     if (!text) {
         errno = ESRCH;
         return -1;
@@ -101,7 +112,7 @@ int extract_xml_str_to_int(const char* text, int* o_out)
         return -1;
     }
     errno = 0;
-    x = strtol(text, &endptr, 10 /*base*/);
+    x = strtoll(text, &endptr, 10 /*base*/);
     if (errno) {
         return -1;
     }
@@ -109,6 +120,40 @@ int extract_xml_str_to_int(const char* text, int* o_out)
         errno = EINVAL;
         return -1;
     }
+    *o_out = x;
+    return 0;
+}
+
+int extract_xml_str_to_ullint(const char* text, unsigned long long* o_out)
+{
+    char* endptr;
+    unsigned long long x;
+    if (!text) {
+        errno = ESRCH;
+        return -1;
+    }
+    if (text[0] == 0) {
+        errno = EINVAL;
+        return -1;
+    }
+    errno = 0;
+    x = strtoull(text, &endptr, 10 /*base*/);
+    if (errno) {
+        return -1;
+    }
+    if (*endptr) {
+        errno = EINVAL;
+        return -1;
+    }
+    *o_out = x;
+    return 0;
+}
+
+int extract_xml_str_to_int(const char* text, int* o_out)
+{
+    long long x;
+    int e = extract_xml_str_to_llint(text, &x);
+    if (e) return e;
     if (x > INT_MAX || x < INT_MIN) {
         errno = ERANGE;
         return -1;
@@ -119,26 +164,23 @@ int extract_xml_str_to_int(const char* text, int* o_out)
 
 int extract_xml_str_to_uint(const char* text, unsigned* o_out)
 {
-    char* endptr;
-    unsigned long x = strtoul(text, &endptr, 10 /*base*/);
-    if (!text) {
-        errno = ESRCH;
-        return -1;
-    }
-    if (text[0] == 0) {
-        errno = EINVAL;
-        return -1;
-    }
-    errno = 0;
-    x = strtoul(text, &endptr, 10 /*base*/);
-    if (errno) {
-        return -1;
-    }
-    if (*endptr) {
-        errno = EINVAL;
-        return -1;
-    }
+    unsigned long long x;
+    int e = extract_xml_str_to_ullint(text, &x);
+    if (e) return e;
     if (x > UINT_MAX) {
+        errno = ERANGE;
+        return -1;
+    }
+    *o_out = x;
+    return 0;
+}
+
+int extract_xml_str_to_size(const char* text, size_t* o_out)
+{
+    unsigned long long x;
+    int e = extract_xml_str_to_ullint(text, &x);
+    if (e) return e;
+    if (x > SIZE_MAX) {
         errno = ERANGE;
         return -1;
     }
