@@ -198,7 +198,7 @@ static void test_write(void)
 
 int main(void)
 {
-    outf_level_set(1);
+    outf_verbose_set(1);
     test_read();
     test_write();
     return 0;

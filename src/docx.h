@@ -1,5 +1,5 @@
-#ifndef ARTIFEX_DOCX_H
-#define ARTIFEX_DOCX_H
+#ifndef ARTIFEX_EXTRACT_DOCX_H
+#define ARTIFEX_EXTRACT_DOCX_H
 
 /* Only for internal use by extract code.  */
 

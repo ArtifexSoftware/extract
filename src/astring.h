@@ -1,5 +1,5 @@
-#ifndef ARTIFEX_AUTOSTRING_XML
-#define ARTIFEX_AUTOSTRING_XML
+#ifndef ARTIFEX_EXTRACT_AUTOSTRING_XML
+#define ARTIFEX_EXTRACT_AUTOSTRING_XML
 
 /* Only for internal use by extract code.  */
 

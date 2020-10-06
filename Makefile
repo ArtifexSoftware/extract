@@ -52,18 +52,22 @@ tests-all: test-buffer test-misc tests
 
 # Define the main test targets.
 #
-tests := test/Python2.pdf test/zlib.3.pdf
+tests := test/Python2.pdf test/zlib.3.pdf test/text_graphic_image.pdf
 tests := $(patsubst test/%, test/generated/%, $(tests))
 tests := \
         $(patsubst %, %.intermediate-mu.xml, $(tests)) \
         $(patsubst %, %.intermediate-gs.xml, $(tests)) \
 
 tests := \
-        $(patsubst %, %.content.xml,            $(tests)) \
-        $(patsubst %, %.content-rotate.xml,     $(tests)) \
-        $(patsubst %, %.content-autosplit.xml,  $(tests)) \
+        $(patsubst %, %.extract.docx,           $(tests)) \
+        $(patsubst %, %.extract-rotate.docx,    $(tests)) \
+        $(patsubst %, %.extract-autosplit.docx, $(tests)) \
+        $(patsubst %, %.extract-template.docx,  $(tests)) \
 
 tests := $(patsubst %, %.diff, $(tests))
+
+$(warn hello)
+$(warn $(tests))
 
 tests: $(tests)
 
@@ -95,34 +99,57 @@ $(exe): $(exe_obj)
 #
 test/generated/%.pdf.intermediate-mu.xml: test/%.pdf
 	@echo
-	@echo Generating intermediate file for $< with mutool.
+	@echo == Generating intermediate file for $< with mutool.
 	@mkdir -p test/generated
 	$(mutool) draw -F xmltext -o $@ $<
 
 test/generated/%.pdf.intermediate-gs.xml: test/%.pdf
 	@echo
-	@echo Generating intermediate file for $< with gs.
+	@echo == Generating intermediate file for $< with gs.
 	@mkdir -p test/generated
 	$(gs) -sDEVICE=txtwrite -dTextFormat=4 -o $@ $<
 
-%.content.xml: % $(exe)
+%.extract.docx: % $(exe)
 	@echo
 	@echo Generating content with extract.exe
-	./$(exe) -r 0 -i $< --o-content $@ -o $@.docx
+	./$(exe) -r 0 -i $< -o $@
 
-%.content-rotate.xml: % $(exe) Makefile
+%.extract-rotate.docx: % $(exe) Makefile
 	@echo
-	@echo Generating content with rotation with extract.exe
-	./$(exe) -r 1 -s 0 -i $< --o-content $@ -o $@.docx
+	@echo == Generating content with rotation with extract.exe
+	./$(exe) -r 1 -s 0 -i $< -o $@
 
-%.content-autosplit.xml: % $(exe)
+%.extract-autosplit.docx: % $(exe)
 	@echo
-	@echo Generating content with autosplit with extract.exe
-	./$(exe) -r 0 -i $< --autosplit 1 --o-content $@ -o $@.docx
+	@echo == Generating content with autosplit with extract.exe
+	./$(exe) -r 0 -i $< --autosplit 1 -o $@
 
-test/generated/%.diff: test/generated/% test/%.ref
-	@echo Comparing content with reference content.
-	-diff -u $^ >$@
+%.extract-template.docx: % $(exe)
+	@echo
+	@echo == Generating content using src/template.docx with extract.exe
+	./$(exe) -r 0 -i $< -t src/template.docx -o $@
+
+test/generated/%.docx.diff: test/generated/%.docx.dir test/%.docx.dir.ref
+	@echo
+	@echo == Comparing unzipped .docx files.
+	diff -ru $^
+
+# This checks that -t src/template.docx gives identical results.
+#
+test/generated/%.extract-template.docx.diff: test/generated/%.extract-template.docx.dir test/%.extract.docx.dir.ref
+	@echo
+	@echo == Comparing unzipped .docx files.
+	diff -ru $^
+
+%.docx.dir: %.docx
+	(rm -r $@ || true)
+	unzip -q -d $@ $<
+
+%.docx.dir.pretty: %.docx.dir
+	(rm -r $@ $@- || true)
+	cp -pr $< $@-
+	./src/docx_template_build.py --docx-pretty $@-
+	mv $@- $@
 
 
 # Buffer unit test.
@@ -149,24 +176,6 @@ $(exe_misc_test): $(exe_misc_test_obj)
 test-misc: $(exe_misc_test)
 	@echo Running test-misc
 	./$<
-
-
-# Zip analyse. For dev use only.
-#
-exe_ziptest = src/build/ziptest-$(build).exe
-exe_ziptest_src = src/zip-test.c src/outf.c
-exe_ziptest_obj = $(patsubst src/%.c, src/build/%.c-$(build).o, $(exe_ziptest_src))
-exe_ziptest_dep = $(exe_ziptest_obj:.o=.d)
-$(exe_ziptest): $(exe_ziptest_obj)
-	$(CC) $(flags_link) -o $@ $^
-ziptest: $(exe_ziptest)
-	@echo Running ziptest
-	#./$< test/generated/Python2.pdf.intermediate-mu.xml.content-rotate.xml.docx
-	#./$< test/generated/Python2.pdf.intermediate-mu.xml.content-rotate.xml.docx.dir.docx
-	./$< test/generated/Python2.pdf.intermediate-mu.xml.content-rotate.xml.docx 2>a
-	./$< test/generated/Python2.pdf.intermediate-mu.xml.content-rotate.xml.docx.dir.docx 2>b
-	#od -a test/generated/Python2.pdf.intermediate-mu.xml.content-rotate.xml.docx >aa
-	#od -a test/generated/Python2.pdf.intermediate-mu.xml.content-rotate.xml.docx.dir.docx >bb
 
 
 # Compile rule. We always include src/docx_template.c as a prerequisite in case
@@ -200,9 +209,13 @@ tags: .ALWAYS
 
 # Clean rule.
 #
-.PHONY: clean
 clean:
 	-rm -r src/build test/generated
+
+# Cleans test/generated except for intermediate files, which are slow to create
+# (when using gs).
+clean2:
+	-rm -r test/generated/*.pdf.intermediate-*.xml.*
 .PHONY: clean
 
 

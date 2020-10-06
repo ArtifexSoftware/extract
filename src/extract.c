@@ -5,6 +5,7 @@
 #include "../include/extract.h"
 
 #include "astring.h"
+#include "document.h"
 #include "docx.h"
 #include "outf.h"
 #include "xml.h"
@@ -433,7 +434,19 @@ static void paragraph_extend_point(const paragraph_t* paragraph, point_t* point)
         line_extend_point(line, point);
     }
 }
+
+
 */
+
+typedef struct
+{
+    char*   type;
+    char*   name;
+    char*   id;
+    char*   data;
+    size_t  data_size;
+} image_t;
+
 /* A page. Contains different representations of the same list of spans.
 */
 typedef struct
@@ -448,6 +461,9 @@ typedef struct
     /* .paragraphs[] refers to items in .lines. */
     paragraph_t**   paragraphs;
     int             paragraphs_num;
+    
+    image_t*        images;
+    int             images_num;
 } page_t;
 
 static void page_init(page_t* page)
@@ -525,6 +541,61 @@ struct extract_document_t
     page_t**    pages;
     int         pages_num;
 };
+
+int extract_document_imageinfos(extract_document_t* document, extract_document_imagesinfo_t* o_imageinfos)
+{
+    int e = -1;
+    extract_document_imagesinfo_t   imageinfos = {0};
+    
+    for (int p=0; p<document->pages_num; ++p) {
+        page_t* page = document->pages[p];
+        for (int i=0; i<page->images_num; ++i) {
+            image_t* image = &page->images[i];
+            extract_document_image_t* images = realloc(imageinfos.images, (imageinfos.images_num + 1) * sizeof(extract_document_image_t));
+            if (!images) goto end;
+            imageinfos.images = images;
+            outf("image->name=%s", image->name);
+            assert(image->name);
+            imageinfos.images[imageinfos.images_num].name = image->name;
+            imageinfos.images[imageinfos.images_num].id = image->id;
+            imageinfos.images[imageinfos.images_num].data = image->data;
+            imageinfos.images[imageinfos.images_num].data_size = image->data_size;
+            imageinfos.images_num += 1;
+            
+            /* Add image type if we haven't seen it before. */
+            int it;
+            for (it=0; it<imageinfos.imagetypes_num; ++it) {
+                if (!strcmp(imageinfos.imagetypes[it], image->type)) {
+                    break;
+                }
+            }
+            if (it == imageinfos.imagetypes_num) {
+                char** imagetypes = realloc(imageinfos.imagetypes, (imageinfos.imagetypes_num + 1) * sizeof(char*));
+                if (!imagetypes) goto end;
+                imageinfos.imagetypes = imagetypes;
+                assert(image->type);
+                imageinfos.imagetypes[imageinfos.imagetypes_num] = image->type;
+                imageinfos.imagetypes_num += 1;
+            }
+        }
+    }
+    e = 0;
+    end:
+    if (e) {
+    }
+    else {
+        *o_imageinfos = imageinfos;
+    }
+    return e;
+}
+
+void extract_document_imageinfos_free(extract_document_imagesinfo_t* imageinfos)
+{
+    free(imageinfos->images);
+    free(imageinfos->imagetypes);
+    imageinfos->images = NULL;
+    imageinfos->imagetypes = NULL;
+}
 
 /* Appends new empty page_t to an extract_document_t; returns NULL with errno
 set on error. */
@@ -1502,6 +1573,8 @@ int extract_intermediate_to_document(
     
     extract_xml_tag_t   tag;
     extract_xml_tag_init(&tag);
+    
+    image_t image_temp = {0};
 
     int num_spans = 0;
 
@@ -1607,29 +1680,58 @@ int extract_intermediate_to_document(
                 }
                 else {
                     /* Compressed. */
-                    size_t  datasize;
-                    size_t  i;
                     const char* c = tag.text.chars;
-                    if (extract_xml_tag_attributes_find_size(&tag, "datasize", &datasize)) goto end;
+                    const char* type = extract_xml_tag_attributes_find(&tag, "type");
+                    if (!type) goto end;
                     
-                    for (i=0; i<datasize; ++i) {
+                    assert(!image_temp.type);
+                    assert(!image_temp.data);
+                    assert(!image_temp.data_size);
+                    
+                    image_temp.type = strdup(type);
+                    outf("type=%s image_temp.type=%s", type, image_temp.type);
+                    if (!image_temp.type) goto end;
+                    if (extract_xml_tag_attributes_find_size(&tag, "datasize", &image_temp.data_size)) goto end;
+                    image_temp.data = malloc(image_temp.data_size);
+                    if (!image_temp.data) goto end;
+                    
+                    /* We use a static here to ensure uniqueness. Start at 10
+                    because template document might use some low-numbered IDs.
+                    */
+                    static int  s_image_n = 10;
+                    s_image_n += 1;
+                    char id_text[32];
+                    snprintf(id_text, sizeof(id_text), "rId%i", s_image_n);
+                    image_temp.id = strdup(id_text);
+                    if (!image_temp.id) goto end;
+                    if (asprintf(&image_temp.name, "image%i.%s", s_image_n, image_temp.type) < 0) goto end;
+                    
+                    outf("image_temp=%s: type=%s image_temp.type=%s image_temp.data_size=%zi",
+                            image_temp, type, image_temp.type, image_temp.data_size);
+                    
+                    size_t  i = 0;
+                    for(;;) {
                         int byte = 0;
                         int cc;
-                        if (*c == ' ' || *c == '\n') continue;
-                        
                         cc = *c;
+                        c += 1;
+                        if (cc == ' ' || cc == '\n') continue;
                         if (cc >= '0' && cc <= '9') byte += cc-'0';
                         else if (cc >= 'a' && cc <= 'f') byte += 10 + cc - 'a';
                         else goto compressed_error;
                         byte *= 16;
                         
-                        ++c;
                         cc = *c;
+                        c += 1;
                         if (cc >= '0' && cc <= '9') byte += cc-'0';
                         else if (cc >= 'a' && cc <= 'f') byte += 10 + cc - 'a';
                         else goto compressed_error;
                         
-                        ++c;
+                        image_temp.data[i] = byte;
+                        i += 1;
+                        if (i == image_temp.data_size) {
+                            break;
+                        }
                         continue;
                         
                         compressed_error:
@@ -1637,6 +1739,27 @@ int extract_intermediate_to_document(
                         errno = EINVAL;
                         goto end;
                     }
+                    image_t*    images = realloc(page->images, (page->images_num + 1) * sizeof(image_t));
+                    if (!images) goto end;
+                    page->images = images;
+                    page->images[page->images_num].name = image_temp.name;
+                    page->images[page->images_num].id = image_temp.id;
+                    page->images[page->images_num].type = image_temp.type;
+                    page->images[page->images_num].data = image_temp.data;
+                    page->images[page->images_num].data_size = image_temp.data_size;
+                    outf("type=%s image_temp.type=%s image_temp.data=%i %i %i %i",
+                            type, image_temp.type,
+                            image_temp.data[0],
+                            image_temp.data[1],
+                            image_temp.data[2],
+                            image_temp.data[3]
+                            );
+                    page->images_num += 1;
+                    
+                    image_temp.name = NULL;
+                    image_temp.type = NULL;
+                    image_temp.data = NULL;
+                    image_temp.data_size = 0;
                 }
                 if (extract_xml_pparse_next(buffer, &tag)) goto end;
                 if (strcmp(tag.name, "/image")) {
@@ -1793,7 +1916,13 @@ int extract_intermediate_to_document(
     ret = 0;
 
     end:
-    extract_xml_tag_free(&tag);    
+    extract_xml_tag_free(&tag);
+    
+    free(image_temp.type);
+    free(image_temp.data);
+    image_temp.type = NULL;
+    image_temp.data = NULL;
+    image_temp.data_size = 0;
 
     if (ret) {
         outf("read_spans_raw() returning error ret=%i", ret);
@@ -1927,14 +2056,220 @@ static int extract_document_to_docx_content_paragraph(
     return e;
 }
 
+static int extract_document_append_image(
+        extract_astring_t*  content,
+        image_t*            image
+        )
+/* Write reference to image into docx content. */
+{
+    extract_docx_char_append_string(content, "\n");
+    extract_docx_char_append_string(content, "     <w:p>\n");
+    extract_docx_char_append_string(content, "       <w:r>\n");
+    extract_docx_char_append_string(content, "         <w:rPr>\n");
+    extract_docx_char_append_string(content, "           <w:noProof/>\n");
+    extract_docx_char_append_string(content, "         </w:rPr>\n");
+    extract_docx_char_append_string(content, "         <w:drawing>\n");
+    extract_docx_char_append_string(content, "           <wp:inline distT=\"0\" distB=\"0\" distL=\"0\" distR=\"0\" wp14:anchorId=\"7057A832\" wp14:editId=\"466EB3FB\">\n");
+    extract_docx_char_append_string(content, "             <wp:extent cx=\"2933700\" cy=\"2200275\"/>\n");
+    extract_docx_char_append_string(content, "             <wp:effectExtent l=\"0\" t=\"0\" r=\"0\" b=\"9525\"/>\n");
+    extract_docx_char_append_string(content, "             <wp:docPr id=\"1\" name=\"Picture 1\"/>\n");
+    extract_docx_char_append_string(content, "             <wp:cNvGraphicFramePr>\n");
+    extract_docx_char_append_string(content, "               <a:graphicFrameLocks xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" noChangeAspect=\"1\"/>\n");
+    extract_docx_char_append_string(content, "             </wp:cNvGraphicFramePr>\n");
+    extract_docx_char_append_string(content, "             <a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\">\n");
+    extract_docx_char_append_string(content, "               <a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">\n");
+    extract_docx_char_append_string(content, "                 <pic:pic xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">\n");
+    extract_docx_char_append_string(content, "                   <pic:nvPicPr>\n");
+    extract_docx_char_append_string(content, "                     <pic:cNvPr id=\"1\" name=\"Picture 1\"/>\n");
+    extract_docx_char_append_string(content, "                     <pic:cNvPicPr>\n");
+    extract_docx_char_append_string(content, "                       <a:picLocks noChangeAspect=\"1\" noChangeArrowheads=\"1\"/>\n");
+    extract_docx_char_append_string(content, "                     </pic:cNvPicPr>\n");
+    extract_docx_char_append_string(content, "                   </pic:nvPicPr>\n");
+    extract_docx_char_append_string(content, "                   <pic:blipFill>\n");
+    extract_docx_char_append_stringf(content,"                     <a:blip r:embed=\"%s\">\n", image->id);
+    extract_docx_char_append_string(content, "                       <a:extLst>\n");
+    extract_docx_char_append_string(content, "                         <a:ext uri=\"{28A0092B-C50C-407E-A947-70E740481C1C}\">\n");
+    extract_docx_char_append_string(content, "                           <a14:useLocalDpi xmlns:a14=\"http://schemas.microsoft.com/office/drawing/2010/main\" val=\"0\"/>\n");
+    extract_docx_char_append_string(content, "                         </a:ext>\n");
+    extract_docx_char_append_string(content, "                       </a:extLst>\n");
+    extract_docx_char_append_string(content, "                     </a:blip>\n");
+    //extract_docx_char_append_string(content, "                     <a:srcRect/>\n");
+    extract_docx_char_append_string(content, "                     <a:stretch>\n");
+    extract_docx_char_append_string(content, "                       <a:fillRect/>\n");
+    extract_docx_char_append_string(content, "                     </a:stretch>\n");
+    extract_docx_char_append_string(content, "                   </pic:blipFill>\n");
+    extract_docx_char_append_string(content, "                   <pic:spPr bwMode=\"auto\">\n");
+    extract_docx_char_append_string(content, "                     <a:xfrm>\n");
+    extract_docx_char_append_string(content, "                       <a:off x=\"0\" y=\"0\"/>\n");
+    extract_docx_char_append_string(content, "                       <a:ext cx=\"2933700\" cy=\"2200275\"/>\n");
+    extract_docx_char_append_string(content, "                     </a:xfrm>\n");
+    extract_docx_char_append_string(content, "                     <a:prstGeom prst=\"rect\">\n");
+    extract_docx_char_append_string(content, "                       <a:avLst/>\n");
+    extract_docx_char_append_string(content, "                     </a:prstGeom>\n");
+    extract_docx_char_append_string(content, "                     <a:noFill/>\n");
+    extract_docx_char_append_string(content, "                     <a:ln>\n");
+    extract_docx_char_append_string(content, "                       <a:noFill/>\n");
+    extract_docx_char_append_string(content, "                     </a:ln>\n");
+    extract_docx_char_append_string(content, "                   </pic:spPr>\n");
+    extract_docx_char_append_string(content, "                 </pic:pic>\n");
+    extract_docx_char_append_string(content, "               </a:graphicData>\n");
+    extract_docx_char_append_string(content, "             </a:graphic>\n");
+    extract_docx_char_append_string(content, "           </wp:inline>\n");
+    extract_docx_char_append_string(content, "         </w:drawing>\n");
+    extract_docx_char_append_string(content, "       </w:r>\n");
+    extract_docx_char_append_string(content, "     </w:p>\n");
+    extract_docx_char_append_string(content, "\n");
+    return 0;
+}
 
-static int extract_document_to_docx_content_rotation(
+
+static int extract_document_output_rotated_paragraphs(
+        page_t*             page,
+        int                 paragraph_begin,
+        int                 paragraph_end,
+        int                 rot,
+        int                 x,
+        int                 y,
+        int                 w,
+        int                 h,
+        int                 text_box_id,
+        extract_astring_t*  content,
+        content_state_t*    state
+        )
+/* Writes paragraph to content inside rotated text box. */
+{
+    int e = 0;
+    outf("x,y=%ik,%ik = %i,%i", x/1000, y/1000, x, y);
+    extract_docx_char_append_string(content, "\n");
+    extract_docx_char_append_string(content, "\n");
+    extract_docx_char_append_string(content, "<w:p>\n");
+    extract_docx_char_append_string(content, "  <w:r>\n");
+    extract_docx_char_append_string(content, "    <mc:AlternateContent>\n");
+    extract_docx_char_append_string(content, "      <mc:Choice Requires=\"wps\">\n");
+    extract_docx_char_append_string(content, "        <w:drawing>\n");
+    extract_docx_char_append_string(content, "          <wp:anchor distT=\"0\" distB=\"0\" distL=\"0\" distR=\"0\" simplePos=\"0\" relativeHeight=\"0\" behindDoc=\"0\" locked=\"0\" layoutInCell=\"1\" allowOverlap=\"1\" wp14:anchorId=\"53A210D1\" wp14:editId=\"2B7E8016\">\n");
+    extract_docx_char_append_string(content, "            <wp:simplePos x=\"0\" y=\"0\"/>\n");
+    extract_docx_char_append_string(content, "            <wp:positionH relativeFrom=\"page\">\n");
+    extract_docx_char_append_stringf(content,"              <wp:posOffset>%i</wp:posOffset>\n", x);
+    extract_docx_char_append_string(content, "            </wp:positionH>\n");
+    extract_docx_char_append_string(content, "            <wp:positionV relativeFrom=\"page\">\n");
+    extract_docx_char_append_stringf(content,"              <wp:posOffset>%i</wp:posOffset>\n", y);
+    extract_docx_char_append_string(content, "            </wp:positionV>\n");
+    extract_docx_char_append_stringf(content,"            <wp:extent cx=\"%i\" cy=\"%i\"/>\n", w, h);
+    extract_docx_char_append_string(content, "            <wp:effectExtent l=\"381000\" t=\"723900\" r=\"371475\" b=\"723900\"/>\n");
+    extract_docx_char_append_string(content, "            <wp:wrapNone/>\n");
+    extract_docx_char_append_stringf(content,"            <wp:docPr id=\"%i\" name=\"Text Box %i\"/>\n", text_box_id, text_box_id);
+    extract_docx_char_append_string(content, "            <wp:cNvGraphicFramePr/>\n");
+    extract_docx_char_append_string(content, "            <a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\">\n");
+    extract_docx_char_append_string(content, "              <a:graphicData uri=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\">\n");
+    extract_docx_char_append_string(content, "                <wps:wsp>\n");
+    extract_docx_char_append_string(content, "                  <wps:cNvSpPr txBox=\"1\"/>\n");
+    extract_docx_char_append_string(content, "                  <wps:spPr>\n");
+    extract_docx_char_append_stringf(content,"                    <a:xfrm rot=\"%i\">\n", rot);
+    extract_docx_char_append_string(content, "                      <a:off x=\"0\" y=\"0\"/>\n");
+    extract_docx_char_append_string(content, "                      <a:ext cx=\"3228975\" cy=\"2286000\"/>\n");
+    extract_docx_char_append_string(content, "                    </a:xfrm>\n");
+    extract_docx_char_append_string(content, "                    <a:prstGeom prst=\"rect\">\n");
+    extract_docx_char_append_string(content, "                      <a:avLst/>\n");
+    extract_docx_char_append_string(content, "                    </a:prstGeom>\n");
+
+    /* Give box a solid background. */
+    if (0) {
+        extract_docx_char_append_string(content, "                    <a:solidFill>\n");
+        extract_docx_char_append_string(content, "                      <a:schemeClr val=\"lt1\"/>\n");
+        extract_docx_char_append_string(content, "                    </a:solidFill>\n");
+        }
+
+    /* Draw line around box. */
+    if (0) {
+        extract_docx_char_append_string(content, "                    <a:ln w=\"175\">\n");
+        extract_docx_char_append_string(content, "                      <a:solidFill>\n");
+        extract_docx_char_append_string(content, "                        <a:prstClr val=\"black\"/>\n");
+        extract_docx_char_append_string(content, "                      </a:solidFill>\n");
+        extract_docx_char_append_string(content, "                    </a:ln>\n");
+    }
+
+    extract_docx_char_append_string(content, "                  </wps:spPr>\n");
+    extract_docx_char_append_string(content, "                  <wps:txbx>\n");
+    extract_docx_char_append_string(content, "                    <w:txbxContent>");
+
+    #if 0
+    if (0) {
+        /* Output inline text describing the rotation. */
+        extract_docx_char_append_stringf(content, "<w:p>\n"
+                "<w:r><w:rPr><w:rFonts w:ascii=\"OpenSans\" w:hAnsi=\"OpenSans\"/><w:sz w:val=\"20.000000\"/><w:szCs w:val=\"15.000000\"/></w:rPr><w:t xml:space=\"preserve\">*** rotate: %f rad, %f deg. rot=%i</w:t></w:r>\n"
+                "</w:p>\n",
+                rotate,
+                rotate * 180 / g_pi,
+                rot
+                );
+    }
+    #endif
+
+    /* Output paragraphs p0..p2-1. */
+    for (int p=paragraph_begin; p<paragraph_end; ++p) {
+        paragraph_t* paragraph = page->paragraphs[p];
+        if (extract_document_to_docx_content_paragraph(state, paragraph, content)) goto end;
+    }
+
+    extract_docx_char_append_string(content, "\n");
+    extract_docx_char_append_string(content, "                    </w:txbxContent>\n");
+    extract_docx_char_append_string(content, "                  </wps:txbx>\n");
+    extract_docx_char_append_string(content, "                  <wps:bodyPr rot=\"0\" spcFirstLastPara=\"0\" vertOverflow=\"overflow\" horzOverflow=\"overflow\" vert=\"horz\" wrap=\"square\" lIns=\"91440\" tIns=\"45720\" rIns=\"91440\" bIns=\"45720\" numCol=\"1\" spcCol=\"0\" rtlCol=\"0\" fromWordArt=\"0\" anchor=\"t\" anchorCtr=\"0\" forceAA=\"0\" compatLnSpc=\"1\">\n");
+    extract_docx_char_append_string(content, "                    <a:prstTxWarp prst=\"textNoShape\">\n");
+    extract_docx_char_append_string(content, "                      <a:avLst/>\n");
+    extract_docx_char_append_string(content, "                    </a:prstTxWarp>\n");
+    extract_docx_char_append_string(content, "                    <a:noAutofit/>\n");
+    extract_docx_char_append_string(content, "                  </wps:bodyPr>\n");
+    extract_docx_char_append_string(content, "                </wps:wsp>\n");
+    extract_docx_char_append_string(content, "              </a:graphicData>\n");
+    extract_docx_char_append_string(content, "            </a:graphic>\n");
+    extract_docx_char_append_string(content, "          </wp:anchor>\n");
+    extract_docx_char_append_string(content, "        </w:drawing>\n");
+    extract_docx_char_append_string(content, "      </mc:Choice>\n");
+
+    /* This fallack is copied from a real Word document. Not sure
+    whether it works - both Libreoffice and Word use the above
+    choice. */
+    extract_docx_char_append_string(content, "      <mc:Fallback>\n");
+    extract_docx_char_append_string(content, "        <w:pict>\n");
+    extract_docx_char_append_string(content, "          <v:shapetype w14:anchorId=\"53A210D1\" id=\"_x0000_t202\" coordsize=\"21600,21600\" o:spt=\"202\" path=\"m,l,21600r21600,l21600,xe\">\n");
+    extract_docx_char_append_string(content, "            <v:stroke joinstyle=\"miter\"/>\n");
+    extract_docx_char_append_string(content, "            <v:path gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n");
+    extract_docx_char_append_string(content, "          </v:shapetype>\n");
+    extract_docx_char_append_stringf(content,"          <v:shape id=\"Text Box %i\" o:spid=\"_x0000_s1026\" type=\"#_x0000_t202\" style=\"position:absolute;margin-left:71.25pt;margin-top:48.75pt;width:254.25pt;height:180pt;rotation:-2241476fd;z-index:251659264;visibility:visible;mso-wrap-style:square;mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;mso-position-horizontal-relative:text;mso-position-vertical:absolute;mso-position-vertical-relative:text;v-text-anchor:top\" o:gfxdata=\"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&#10;bFBLBQYAAAAABAAEAPMAAAC8BQAAAAA=&#10;\" fillcolor=\"white [3201]\" strokeweight=\".5pt\">\n", text_box_id);
+    extract_docx_char_append_string(content, "            <v:textbox>\n");
+    extract_docx_char_append_string(content, "              <w:txbxContent>");
+
+    for (int p=paragraph_begin; p<paragraph_end; ++p) {
+        paragraph_t* paragraph = page->paragraphs[p];
+        if (extract_document_to_docx_content_paragraph(state, paragraph, content)) goto end;
+    }
+
+    extract_docx_char_append_string(content, "\n");
+    extract_docx_char_append_string(content, "\n");
+    extract_docx_char_append_string(content, "              </w:txbxContent>\n");
+    extract_docx_char_append_string(content, "            </v:textbox>\n");
+    extract_docx_char_append_string(content, "          </v:shape>\n");
+    extract_docx_char_append_string(content, "        </w:pict>\n");
+    extract_docx_char_append_string(content, "      </mc:Fallback>\n");
+    extract_docx_char_append_string(content, "    </mc:AlternateContent>\n");
+    extract_docx_char_append_string(content, "  </w:r>\n");
+    extract_docx_char_append_string(content, "</w:p>");
+    e = 0;
+    end:
+    return e;
+}
+
+
+int extract_document_to_docx_content(
         extract_document_t* document,
         int                 spacing,
+        int                 rotation,
+        int                 images,
         char**              o_content,
         size_t*             o_content_length
         )
-/* Puts rotated text into <w:drawing> items so that they appear rotated. */
 {
     int ret = -1;
     
@@ -1980,9 +2315,9 @@ static int extract_document_to_docx_content_rotation(
             const matrix_t* ctm = &paragraph->lines[0]->spans[0]->ctm;
             float rotate = atan2(ctm->b, ctm->a);
             
-            if (rotate) {
+            if (rotation && rotate) {
             
-                outf0("rotate=%.2frad=%.1fdeg ctm: ef=(%f %f) abcd=(%f %f %f %f)",
+                outf("rotate=%.2frad=%.1fdeg ctm: ef=(%f %f) abcd=(%f %f %f %f)",
                         rotate, rotate * 180 / g_pi,
                         ctm->e,
                         ctm->f,
@@ -2015,7 +2350,7 @@ static int extract_document_to_docx_content_rotation(
                         ctm_inverse.d = +ctm->a / ctm_det;
                     }
                     else {
-                        outf0("cannot invert ctm=(%f %f %f %f)",
+                        outf("cannot invert ctm=(%f %f %f %f)",
                                 ctm->a, ctm->b, ctm->c, ctm->d);
                     }
                     float rotate0 = rotate;
@@ -2049,7 +2384,7 @@ static int extract_document_to_docx_content_rotation(
                                 yy = -yy;
                                 if (xx > extent.x) extent.x = xx;
                                 if (yy > extent.y) extent.y = yy;
-                                outf0("rotate=%f p=%i: origin=(%f %f) xy=(%f %f) dxy=(%f %f) xxyy=(%f %f) span: %s",
+                                outf("rotate=%f p=%i: origin=(%f %f) xy=(%f %f) dxy=(%f %f) xxyy=(%f %f) span: %s",
                                         rotate, p, origin.x, origin.y, x, y, dx, dy, xx, yy, span_string(span));
                             }
                         }
@@ -2057,7 +2392,7 @@ static int extract_document_to_docx_content_rotation(
                     p1 = p;
                     rotate = rotate0;
                     ctm = ctm0;
-                    outf0("rotate=%f p0=%i p1=%i. extent is: (%f %f)",
+                    outf("rotate=%f p0=%i p1=%i. extent is: (%f %f)",
                             rotate, p0, p1, extent.x, extent.y);
                 }
                 
@@ -2105,127 +2440,23 @@ static int extract_document_to_docx_content_rotation(
                         );
                 x -= dx;
                 y -= -dy;
-                outf("x,y=%ik,%ik = %i,%i", x/1000, y/1000, x, y);
-                extract_docx_char_append_string(&content, "\n");
-                extract_docx_char_append_string(&content, "\n");
-                extract_docx_char_append_string(&content, "<w:p>\n");
-                extract_docx_char_append_string(&content, "  <w:r>\n");
-                extract_docx_char_append_string(&content, "    <mc:AlternateContent>\n");
-                extract_docx_char_append_string(&content, "      <mc:Choice Requires=\"wps\">\n");
-                extract_docx_char_append_string(&content, "        <w:drawing>\n");
-                extract_docx_char_append_string(&content, "          <wp:anchor distT=\"0\" distB=\"0\" distL=\"0\" distR=\"0\" simplePos=\"0\" relativeHeight=\"0\" behindDoc=\"0\" locked=\"0\" layoutInCell=\"1\" allowOverlap=\"1\" wp14:anchorId=\"53A210D1\" wp14:editId=\"2B7E8016\">\n");
-                extract_docx_char_append_string(&content, "            <wp:simplePos x=\"0\" y=\"0\"/>\n");
-                extract_docx_char_append_string(&content, "            <wp:positionH relativeFrom=\"page\">\n");
-                extract_docx_char_append_stringf(&content,"              <wp:posOffset>%i</wp:posOffset>\n", x);
-                extract_docx_char_append_string(&content, "            </wp:positionH>\n");
-                extract_docx_char_append_string(&content, "            <wp:positionV relativeFrom=\"page\">\n");
-                extract_docx_char_append_stringf(&content,"              <wp:posOffset>%i</wp:posOffset>\n", y);
-                extract_docx_char_append_string(&content, "            </wp:positionV>\n");
-                extract_docx_char_append_stringf(&content,"            <wp:extent cx=\"%i\" cy=\"%i\"/>\n", w, h);
-                extract_docx_char_append_string(&content, "            <wp:effectExtent l=\"381000\" t=\"723900\" r=\"371475\" b=\"723900\"/>\n");
-                extract_docx_char_append_string(&content, "            <wp:wrapNone/>\n");
-                extract_docx_char_append_stringf(&content,"            <wp:docPr id=\"%i\" name=\"Text Box %i\"/>\n", text_box_id, text_box_id);
-                extract_docx_char_append_string(&content, "            <wp:cNvGraphicFramePr/>\n");
-                extract_docx_char_append_string(&content, "            <a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\">\n");
-                extract_docx_char_append_string(&content, "              <a:graphicData uri=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\">\n");
-                extract_docx_char_append_string(&content, "                <wps:wsp>\n");
-                extract_docx_char_append_string(&content, "                  <wps:cNvSpPr txBox=\"1\"/>\n");
-                extract_docx_char_append_string(&content, "                  <wps:spPr>\n");
-                extract_docx_char_append_stringf(&content,"                    <a:xfrm rot=\"%i\">\n", rot);
-                extract_docx_char_append_string(&content, "                      <a:off x=\"0\" y=\"0\"/>\n");
-                extract_docx_char_append_string(&content, "                      <a:ext cx=\"3228975\" cy=\"2286000\"/>\n");
-                extract_docx_char_append_string(&content, "                    </a:xfrm>\n");
-                extract_docx_char_append_string(&content, "                    <a:prstGeom prst=\"rect\">\n");
-                extract_docx_char_append_string(&content, "                      <a:avLst/>\n");
-                extract_docx_char_append_string(&content, "                    </a:prstGeom>\n");
                 
-                /* Give box a solid background. */
-                if (0) {
-                    extract_docx_char_append_string(&content, "                    <a:solidFill>\n");
-                    extract_docx_char_append_string(&content, "                      <a:schemeClr val=\"lt1\"/>\n");
-                    extract_docx_char_append_string(&content, "                    </a:solidFill>\n");
-                    }
+                if (extract_document_output_rotated_paragraphs(page, p0, p1, rot, x, y, w, h, text_box_id, &content, &state)) goto end;
                 
-                /* Draw line around box. */
-                if (0) {
-                    extract_docx_char_append_string(&content, "                    <a:ln w=\"175\">\n");
-                    extract_docx_char_append_string(&content, "                      <a:solidFill>\n");
-                    extract_docx_char_append_string(&content, "                        <a:prstClr val=\"black\"/>\n");
-                    extract_docx_char_append_string(&content, "                      </a:solidFill>\n");
-                    extract_docx_char_append_string(&content, "                    </a:ln>\n");
-                }
-                
-                extract_docx_char_append_string(&content, "                  </wps:spPr>\n");
-                extract_docx_char_append_string(&content, "                  <wps:txbx>\n");
-                extract_docx_char_append_string(&content, "                    <w:txbxContent>");
-                
-                if (0) {
-                    /* Output inline text describing the rotation. */
-                    extract_docx_char_append_stringf(&content, "<w:p>\n"
-                            "<w:r><w:rPr><w:rFonts w:ascii=\"OpenSans\" w:hAnsi=\"OpenSans\"/><w:sz w:val=\"20.000000\"/><w:szCs w:val=\"15.000000\"/></w:rPr><w:t xml:space=\"preserve\">*** rotate: %f rad, %f deg. rot=%i</w:t></w:r>\n"
-                            "</w:p>\n",
-                            rotate,
-                            rotate * 180 / g_pi,
-                            rot
-                            );
-                }
-                
-                /* Output paragraphs p0..p2-1. */
-                for (p=p0; p<p1; ++p) {
-                    paragraph_t* paragraph = page->paragraphs[p];
-                    if (extract_document_to_docx_content_paragraph(&state, paragraph, &content)) goto end;
-                }
-                
-                extract_docx_char_append_string(&content, "\n");
-                extract_docx_char_append_string(&content, "                    </w:txbxContent>\n");
-                extract_docx_char_append_string(&content, "                  </wps:txbx>\n");
-                extract_docx_char_append_string(&content, "                  <wps:bodyPr rot=\"0\" spcFirstLastPara=\"0\" vertOverflow=\"overflow\" horzOverflow=\"overflow\" vert=\"horz\" wrap=\"square\" lIns=\"91440\" tIns=\"45720\" rIns=\"91440\" bIns=\"45720\" numCol=\"1\" spcCol=\"0\" rtlCol=\"0\" fromWordArt=\"0\" anchor=\"t\" anchorCtr=\"0\" forceAA=\"0\" compatLnSpc=\"1\">\n");
-                extract_docx_char_append_string(&content, "                    <a:prstTxWarp prst=\"textNoShape\">\n");
-                extract_docx_char_append_string(&content, "                      <a:avLst/>\n");
-                extract_docx_char_append_string(&content, "                    </a:prstTxWarp>\n");
-                extract_docx_char_append_string(&content, "                    <a:noAutofit/>\n");
-                extract_docx_char_append_string(&content, "                  </wps:bodyPr>\n");
-                extract_docx_char_append_string(&content, "                </wps:wsp>\n");
-                extract_docx_char_append_string(&content, "              </a:graphicData>\n");
-                extract_docx_char_append_string(&content, "            </a:graphic>\n");
-                extract_docx_char_append_string(&content, "          </wp:anchor>\n");
-                extract_docx_char_append_string(&content, "        </w:drawing>\n");
-                extract_docx_char_append_string(&content, "      </mc:Choice>\n");
-                
-                /* This fallack is copied from a real Word document. Not sure
-                whether it works - both Libreoffice and Word use the above
-                choice. */
-                extract_docx_char_append_string(&content, "      <mc:Fallback>\n");
-                extract_docx_char_append_string(&content, "        <w:pict>\n");
-                extract_docx_char_append_string(&content, "          <v:shapetype w14:anchorId=\"53A210D1\" id=\"_x0000_t202\" coordsize=\"21600,21600\" o:spt=\"202\" path=\"m,l,21600r21600,l21600,xe\">\n");
-                extract_docx_char_append_string(&content, "            <v:stroke joinstyle=\"miter\"/>\n");
-                extract_docx_char_append_string(&content, "            <v:path gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n");
-                extract_docx_char_append_string(&content, "          </v:shapetype>\n");
-                extract_docx_char_append_stringf(&content,"          <v:shape id=\"Text Box %i\" o:spid=\"_x0000_s1026\" type=\"#_x0000_t202\" style=\"position:absolute;margin-left:71.25pt;margin-top:48.75pt;width:254.25pt;height:180pt;rotation:-2241476fd;z-index:251659264;visibility:visible;mso-wrap-style:square;mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;mso-position-horizontal-relative:text;mso-position-vertical:absolute;mso-position-vertical-relative:text;v-text-anchor:top\" o:gfxdata=\"UEsDBBQABgAIAAAAIQC2gziS/gAAAOEBAAATAAAAW0NvbnRlbnRfVHlwZXNdLnhtbJSRQU7DMBBF&#10;90jcwfIWJU67QAgl6YK0S0CoHGBkTxKLZGx5TGhvj5O2G0SRWNoz/78nu9wcxkFMGNg6quQqL6RA&#10;0s5Y6ir5vt9lD1JwBDIwOMJKHpHlpr69KfdHjyxSmriSfYz+USnWPY7AufNIadK6MEJMx9ApD/oD&#10;OlTrorhX2lFEilmcO2RdNtjC5xDF9pCuTyYBB5bi6bQ4syoJ3g9WQ0ymaiLzg5KdCXlKLjvcW893&#10;SUOqXwnz5DrgnHtJTxOsQfEKIT7DmDSUCaxw7Rqn8787ZsmRM9e2VmPeBN4uqYvTtW7jvijg9N/y&#10;JsXecLq0q+WD6m8AAAD//wMAUEsDBBQABgAIAAAAIQA4/SH/1gAAAJQBAAALAAAAX3JlbHMvLnJl&#10;bHOkkMFqwzAMhu+DvYPRfXGawxijTi+j0GvpHsDYimMaW0Yy2fr2M4PBMnrbUb/Q94l/f/hMi1qR&#10;JVI2sOt6UJgd+ZiDgffL8ekFlFSbvV0oo4EbChzGx4f9GRdb25HMsYhqlCwG5lrLq9biZkxWOiqY&#10;22YiTra2kYMu1l1tQD30/bPm3wwYN0x18gb45AdQl1tp5j/sFB2T0FQ7R0nTNEV3j6o9feQzro1i&#10;OWA14Fm+Q8a1a8+Bvu/d/dMb2JY5uiPbhG/ktn4cqGU/er3pcvwCAAD//wMAUEsDBBQABgAIAAAA&#10;IQDQg5pQVgIAALEEAAAOAAAAZHJzL2Uyb0RvYy54bWysVE1v2zAMvQ/YfxB0X+2k+WiDOEXWosOA&#10;oi3QDj0rstwYk0VNUmJ3v35PipMl3U7DLgJFPj+Rj6TnV12j2VY5X5Mp+OAs50wZSWVtXgv+7fn2&#10;0wVnPghTCk1GFfxNeX61+Phh3tqZGtKadKkcA4nxs9YWfB2CnWWZl2vVCH9GVhkEK3KNCLi616x0&#10;ogV7o7Nhnk+yllxpHUnlPbw3uyBfJP6qUjI8VJVXgemCI7eQTpfOVTyzxVzMXp2w61r2aYh/yKIR&#10;tcGjB6obEQTbuPoPqqaWjjxV4UxSk1FV1VKlGlDNIH9XzdNaWJVqgTjeHmTy/49W3m8fHatL9I4z&#10;Ixq06Fl1gX2mjg2iOq31M4CeLGChgzsie7+HMxbdVa5hjiDu4HI8ml5MpkkLVMcAh+xvB6kjt4Tz&#10;fDi8uJyOOZOIwZ7keWpGtmOLrNb58EVRw6JRcIdeJlqxvfMBGQC6h0S4J12Xt7XW6RLnR11rx7YC&#10;ndch5YwvTlDasLbgk/NxnohPYpH68P1KC/k9Vn3KgJs2cEaNdlpEK3SrrhdoReUbdEvSQAZv5W0N&#10;3jvhw6NwGDQ4sTzhAUelCclQb3G2Jvfzb/6IR/8R5azF4Bbc/9gIpzjTXw0m43IwGsVJT5fReDrE&#10;xR1HVscRs2muCQqh+8gumREf9N6sHDUv2LFlfBUhYSTeLnjYm9dht07YUamWywTCbFsR7syTlZF6&#10;383n7kU42/czYBTuaT/iYvaurTts/NLQchOoqlPPo8A7VXvdsRepLf0Ox8U7vifU7z/N4hcAAAD/&#10;/wMAUEsDBBQABgAIAAAAIQBh17L63wAAAAoBAAAPAAAAZHJzL2Rvd25yZXYueG1sTI9BT4NAEIXv&#10;Jv6HzZh4s0ubgpayNIboSW3Syg9Y2BGI7CyyS0v99Y4nPU3ezMub72W72fbihKPvHClYLiIQSLUz&#10;HTUKyvfnuwcQPmgyuneECi7oYZdfX2U6Ne5MBzwdQyM4hHyqFbQhDKmUvm7Rar9wAxLfPtxodWA5&#10;NtKM+szhtperKEqk1R3xh1YPWLRYfx4nq8APVfz9VQxPb+WUNC+vZbGPDhelbm/mxy2IgHP4M8Mv&#10;PqNDzkyVm8h40bNer2K2Ktjc82RDEi+5XKVgHfNG5pn8XyH/AQAA//8DAFBLAQItABQABgAIAAAA&#10;IQC2gziS/gAAAOEBAAATAAAAAAAAAAAAAAAAAAAAAABbQ29udGVudF9UeXBlc10ueG1sUEsBAi0A&#10;FAAGAAgAAAAhADj9If/WAAAAlAEAAAsAAAAAAAAAAAAAAAAALwEAAF9yZWxzLy5yZWxzUEsBAi0A&#10;FAAGAAgAAAAhANCDmlBWAgAAsQQAAA4AAAAAAAAAAAAAAAAALgIAAGRycy9lMm9Eb2MueG1sUEsB&#10;Ai0AFAAGAAgAAAAhAGHXsvrfAAAACgEAAA8AAAAAAAAAAAAAAAAAsAQAAGRycy9kb3ducmV2Lnht&#10;bFBLBQYAAAAABAAEAPMAAAC8BQAAAAA=&#10;\" fillcolor=\"white [3201]\" strokeweight=\".5pt\">\n", text_box_id);
-                extract_docx_char_append_string(&content, "            <v:textbox>\n");
-                extract_docx_char_append_string(&content, "              <w:txbxContent>");
-
-                for (p=p0; p<p1; ++p) {
-                    paragraph = page->paragraphs[p];
-                    if (extract_document_to_docx_content_paragraph(&state, paragraph, &content)) goto end;
-                }
-
-                extract_docx_char_append_string(&content, "\n");
-                extract_docx_char_append_string(&content, "\n");
-                extract_docx_char_append_string(&content, "              </w:txbxContent>\n");
-                extract_docx_char_append_string(&content, "            </v:textbox>\n");
-                extract_docx_char_append_string(&content, "          </v:shape>\n");
-                extract_docx_char_append_string(&content, "        </w:pict>\n");
-                extract_docx_char_append_string(&content, "      </mc:Fallback>\n");
-                extract_docx_char_append_string(&content, "    </mc:AlternateContent>\n");
-                extract_docx_char_append_string(&content, "  </w:r>\n");
-                extract_docx_char_append_string(&content, "</w:p>");
                 p = p1 - 1;
                 //p = page->paragraphs_num - 1;
             }
             else {
                 if (extract_document_to_docx_content_paragraph(&state, paragraph, &content)) goto end;
             }
+        
+        }
+        
+        if (images) {
+            int i;
+            for (i=0; i<page->images_num; ++i) {
+                extract_document_append_image(&content, &page->images[i]);
+            }
         }
     }
     ret = 0;
@@ -2245,94 +2476,6 @@ static int extract_document_to_docx_content_rotation(
     }
 
     return ret;
-}
-
-static int extract_document_to_docx_content_norotation(
-        extract_document_t* document,
-        int                 spacing,
-        char**              o_content,
-        size_t*             o_content_length
-        )
-/* Doesn't attempt to represent text rotation. */
-{
-    int ret = -1;
-
-    extract_astring_t   content;
-    extract_astring_init(&content);
-
-    /* Write paragraphs into <content>. */
-    int p;
-    for (p=0; p<document->pages_num; ++p) {
-        page_t* page = document->pages[p];
-
-        content_state_t state;
-        state.font_name = NULL;
-        state.font_size = 0;
-        state.font_bold = 0;
-        state.font_italic = 0;
-        state.ctm_prev = NULL;
-        int p;
-        for (p=0; p<page->paragraphs_num; ++p) {
-            paragraph_t* paragraph = page->paragraphs[p];
-
-            if (spacing
-                    && state.ctm_prev
-                    && paragraph->lines_num
-                    && paragraph->lines[0]->spans_num
-                    && matrix_cmp4(
-                            state.ctm_prev,
-                            &paragraph->lines[0]->spans[0]->ctm
-                            )
-                    ) {
-                /* Extra vertical space between paragraphs that were at
-                different angles in the original document. */
-                if (extract_docx_paragraph_empty(&content)) goto end;
-            }
-
-            if (spacing) {
-                /* Extra vertical space between paragraphs. */
-                if (extract_docx_paragraph_empty(&content)) goto end;
-            }
-            if (extract_document_to_docx_content_paragraph(&state, paragraph, &content)) goto end;
-        }
-    }
-    ret = 0;
-
-    end:
-
-    if (ret) {
-        extract_astring_free(&content);
-        *o_content = NULL;
-        *o_content_length = 0;
-    }
-    else {
-        *o_content = content.chars;
-        *o_content_length = content.chars_num;
-        content.chars = NULL;
-        content.chars_num = 0;
-    }
-
-    return ret;
-}
-
-int extract_document_to_docx_content(
-        extract_document_t* document,
-        int                 spacing,
-        int                 rotation,
-        char**              o_content,
-        size_t*             o_content_length
-        )
-/* Writes paragraphs from extract_document_t into docx content. On return *content
-points to zero-terminated content, allocated by realloc().
-
-spacing: if true, we insert extra vertical space between paragraphs. */
-{
-    if (rotation) {
-        return extract_document_to_docx_content_rotation(document, spacing, o_content, o_content_length);
-    }
-    else {
-        return extract_document_to_docx_content_norotation(document, spacing, o_content, o_content_length);
-    }
 }
 
 int extract_document_join(extract_document_t* document)

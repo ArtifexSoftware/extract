@@ -7,6 +7,7 @@ twice without intervening call to docx_paragraph_finish(). */
 #include "docx_template.h"
 
 #include "astring.h"
+#include "document.h"
 #include "docx.h"
 #include "outf.h"
 #include "zip.h"
@@ -174,8 +175,9 @@ int extract_docx_char_truncate_if(extract_astring_t* content, char c)
     return 0;
 }
 
-/* Like system() but takes printf-style format and args. */
 static int systemf(const char* format, ...)
+/* Like system() but takes printf-style format and args. Also, if we return +ve
+we set errno to EIO. */
 {
     char* command;
     va_list va;
@@ -186,6 +188,9 @@ static int systemf(const char* format, ...)
     outf("running: %s", command);
     e = system(command);
     free(command);
+    if (e > 0) {
+        errno = EIO;
+    }
     return e;
 }
 
@@ -218,48 +223,67 @@ static char* read_all(FILE* in)
     }
 }
 
+static int read_all_path(const char* path, char** o_text)
+{
+    int e = -1;
+    FILE* f = NULL;
+    char*   text = NULL;
+    f = fopen(path, "rb");
+    if (!f) goto end;
+    text = read_all(f);
+    if (!text) goto end;
+    e = 0;
+    end:
+    if (f) fclose(f);
+    if (e) free(text);
+    else *o_text = text;
+    return e;
+}
 
+static int write_all(const void* data, size_t data_size, const char* path)
+{
+    int e = -1;
+    FILE* f = fopen(path, "w");
+    if (!f) goto end;
+    if (fwrite(data, data_size, 1 /*nmemb*/, f) != 1) goto end;
+    e = 0;
+    end:
+    if (f) fclose(f);
+    return e;
+}
 
-static int extract_docx_content_replace(
+static int extract_docx_content_insert(
         const char* original,
+        const char* mid_begin_name,
+        const char* mid_end_name,
         const char* content,
         int         content_length,
         char**      o_out
         )
-/*
-original:
-    Contents of word/document.xml from template.
-content:
-    Text to insert into <original>
-o_out:
-    Out-param, points to zero-terminated text allocated with malloc().
-*/
 {
     int e = -1;
-    const char* original_marker = "<w:body>";
-    const char* original_pos = strstr(original, original_marker);
-    if (!original_pos) {
+    const char* mid_begin = strstr(original, mid_begin_name);
+    if (!mid_begin) {
         outf("error: could not find '%s' in docx content",
-                original_marker);
+                mid_begin_name);
         errno = ESRCH;
         goto end;
     }
-    original_pos += strlen(original_marker);
+    mid_begin += strlen(mid_begin_name);
     
-    const char* original_marker_end = "</w:body>";
-    const char* original_pos_end = strstr(original, original_marker_end);
-    if (!original_pos_end) {
+    const char* mid_end = strstr(mid_begin, mid_end_name);
+    if (!mid_end) {
         outf("error: could not find '%s' in docx content",
-                original_marker_end);
+                mid_end_name);
         errno = ESRCH;
         goto end;
     }
 
     extract_astring_t   out;
     extract_astring_init(&out);
-    if (extract_astring_catl(&out, original, original_pos - original)) goto end;
+    if (extract_astring_catl(&out, original, mid_begin - original)) goto end;
     if (extract_astring_catl(&out, content, content_length)) goto end;
-    if (extract_astring_cat(&out, original_pos_end)) goto end;
+    if (extract_astring_cat(&out, mid_end)) goto end;
     
     *o_out = out.chars;
     out.chars = NULL;
@@ -269,64 +293,228 @@ o_out:
     return e;
 }
 
+static int s_find_mid(const char* text, const char* begin, const char* end, const char** o_begin, const char** o_end)
+{
+    *o_begin = strstr(text, begin);
+    if (!*o_begin) goto fail;
+    *o_begin += strlen(begin);
+    *o_end = strstr(*o_begin, end);
+    if (!*o_end) goto fail;
+    return 0;
+    fail:
+    errno = ESRCH;
+    return -1;
+}
+
+
+static int extract_docx_content_item(
+        const char*                     content,
+        size_t                          content_length,
+        extract_document_imagesinfo_t*  imageinfos,
+        const char*                     name,
+        const char*                     text,
+        char**                          text2
+        )
+/* Determines content of <name> in .docx file.
+
+content
+content_length
+    Text to insert into template word/document.xml.
+imageinfos
+    Information about images.
+name
+    Path with .docx zip file.
+text
+    Content of <name> in template .docx.
+text2
+    Out-param. Set to NULL if <text> should be used unchanged. Otherwise set to
+    point to desired text, allocated with malloc() which caller should free.
+*/
+{
+    int e = -1;
+    *text2 = NULL;
+    extract_astring_t   temp;
+    extract_astring_init(&temp);
+    if (0) {}
+    else if (!strcmp(name, "[Content_Types].xml")) {
+        const char* begin;
+        const char* end;
+        extract_astring_free(&temp);
+        outf("text: %s", text);
+        if (s_find_mid(text, "<Types ", "</Types>", &begin, &end)) goto end;
+
+        const char* insert = begin;
+        insert = strchr(insert, '>');
+        assert(insert);
+        insert += 1;
+
+        if (extract_astring_catl(&temp, text, insert - text)) goto end;
+        for (int it=0; it<imageinfos->imagetypes_num; ++it) {
+            const char* imagetype = imageinfos->imagetypes[it];
+            if (extract_astring_cat(&temp, "<Default Extension=\"")) goto end;
+            if (extract_astring_cat(&temp, imagetype)) goto end;
+            if (extract_astring_cat(&temp, "\" ContentType=\"image/")) goto end;
+            if (extract_astring_cat(&temp, imagetype)) goto end;
+            if (extract_astring_cat(&temp, "\"/>")) goto end;
+        }
+        if (extract_astring_cat(&temp, insert)) goto end;
+        *text2 = temp.chars;
+        extract_astring_init(&temp);
+    }
+    else if (!strcmp(name, "word/_rels/document.xml.rels")) {
+        const char* begin;
+        const char* end;
+        extract_astring_free(&temp);
+        outf("item->text: %s", text);
+        if (s_find_mid(text, "<Relationships", "</Relationships>", &begin, &end)) goto end;
+        if (extract_astring_catl(&temp, text, end - text)) goto end;
+        int j;
+        outf("imageinfos.images_num=%i", imageinfos->images_num);
+        for (j=0; j<imageinfos->images_num; ++j) {
+            extract_document_image_t* image = &imageinfos->images[j];
+            if (extract_astring_cat(&temp, "<Relationship Id=\"")) goto end;
+            if (extract_astring_cat(&temp, image->id)) goto end;
+            if (extract_astring_cat(&temp, "\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/image\" Target=\"media/")) goto end;
+            if (extract_astring_cat(&temp, image->name)) goto end;
+            if (extract_astring_cat(&temp, "\"/>")) goto end;
+        }
+        if (extract_astring_cat(&temp, end)) goto end;
+        *text2 = temp.chars;
+        extract_astring_init(&temp);
+    }
+    else if (!strcmp(name, "word/document.xml")) {
+        if (extract_docx_content_insert(
+                text,
+                "<w:body>",
+                "</w:body>",
+                content,
+                content_length,
+                text2
+                )) goto end;
+    }
+    else {
+        *text2 = NULL;
+    }
+    e = 0;
+    end:
+    if (e) {
+        free(*text2);
+    }
+    extract_astring_init(&temp);
+    return e;
+}
+        
 int extract_docx_content_to_docx(
         const char*         content,
         size_t              content_length,
+        extract_document_t* document,
         extract_buffer_t*   buffer
         )
 {
-    int e = -1;
-    char* content2;
-    if (extract_docx_content_replace(
-            extract_docx_word_document_xml,
-            content,
-            content_length,
-            &content2
-            )) goto end;
-
-    extract_zip_t*  zip;
+    int                             e = -1;
+    extract_zip_t*                  zip = NULL;
+    char*                           text2 = NULL;
+    extract_document_imagesinfo_t   imageinfos = {0};
+    
     if (extract_zip_open(buffer, &zip)) goto end;
-    if (extract_docx_write(zip, content2, strlen(content2))) goto end;
+    if (extract_document_imageinfos(document, &imageinfos)) goto end;
+    
+    outf("imageinfos.images_num=%i imageinfos.imagetypes_num=%i",
+            imageinfos.images_num, imageinfos.imagetypes_num);
+    
+    int i;
+    for (i=0; i<docx_template_items_num; ++i) {
+        free(text2);
+        text2 = NULL;
+        const docx_template_item_t* item = &docx_template_items[i];
+        outf("i=%i item->name=%s", i, item->name);
+        char*   text2;
+        if (extract_docx_content_item(
+                content,
+                content_length,
+                &imageinfos,
+                item->name,
+                item->text,
+                &text2
+                )) goto end;
+        const char* text3 = (text2) ? text2 : item->text;
+        if (extract_zip_write_file(zip, text3, strlen(text3), item->name)) goto end;
+    }
+    
+    for (i=0; i<imageinfos.images_num; ++i) {
+        extract_document_image_t* image = &imageinfos.images[i];
+        free(text2);
+        text2 = NULL;
+        if (asprintf(&text2, "word/media/%s", image->name) < 0) goto end;
+        if (extract_zip_write_file(zip, image->data, image->data_size, text2)) goto end;
+    }
+    
     if (extract_zip_close(zip)) goto end;
+    zip = NULL;
+    
     e = 0;
     
     end:
+    if (e) outf("failed: %s", strerror(errno));
+    extract_document_imageinfos_free(&imageinfos);
+    free(text2);
+    if (zip)    extract_zip_close(zip);
+    
     return e;
 }
 
+static int check_path_shell_safe(const char* path)
+/* Returns -1 with errno=EINVAL if <path> contains sequences that could make it
+unsafe in shell commands. */
+{
+    if (0
+            || strstr(path, "..")
+            || strchr(path, '\'')
+            || strchr(path, '"')
+            || strchr(path, ' ')
+            ) {
+        errno = EINVAL;
+        return -1;
+    }
+    return 0;
+}
+
+static int remove_directory(const char* path)
+{
+    if (check_path_shell_safe(path)) {
+        outf("path_out is unsafe: %s", path);
+        return -1;
+    }
+    return systemf("rm -r '%s'", path);
+}
+
 int extract_docx_content_to_docx_template(
-        const char* content,
-        size_t      content_length,
-        const char* path_template,
-        const char* path_out,
-        int         preserve_dir
+        const char*         content,
+        size_t              content_length,
+        extract_document_t* document,
+        const char*         path_template,
+        const char*         path_out,
+        int                 preserve_dir
         )
 {
     assert(path_out);
     assert(path_template);
     assert(content_length == strlen(content));
     
-    /* This gets set to zero only if everything succeeds. */
-    int ret = -1;
+    int                             e = -1;
+    char*                           path_tempdir = NULL;
+    FILE*                           f = NULL;
+    char*                           path = NULL;
+    char*                           text = NULL;
+    char*                           text2 = NULL;
+    extract_document_imagesinfo_t   imageinfos = {0};
 
-    char*   path_tempdir = NULL;
-    char*   word_document_xml = NULL;
-    char*   original = NULL;
-    FILE*   f = NULL;
-
-    int e;
-
-    if (0
-            || strstr(path_out, "..")
-            || strchr(path_out, '\'')
-            || strchr(path_out, '"')
-            || strchr(path_out, ' ')
-            ) {
+    if (check_path_shell_safe(path_out)) {
         outf("path_out is unsafe: %s", path_out);
-        errno = EINVAL;
         goto end;
     }
 
+    if (extract_document_imageinfos(document, &imageinfos)) goto end;
     if (local_asprintf(&path_tempdir, "%s.dir", path_out) < 0) goto end;
     if (systemf("rm -r '%s' 2>/dev/null", path_tempdir) < 0) goto end;
 
@@ -335,74 +523,90 @@ int extract_docx_content_to_docx_template(
         goto end;
     }
 
-    outfx("Unzipping template document '%s' to tempdir: %s",
+    outf("Unzipping template document '%s' to tempdir: %s",
             path_template, path_tempdir);
-    e = systemf("unzip -q -d %s %s", path_tempdir, path_template);
+    e = systemf("unzip -q -d '%s' '%s'", path_tempdir, path_template);
     if (e) {
         outf("Failed to unzip %s into %s",
                 path_template, path_tempdir);
-        if (e > 0) errno = EIO;
         goto end;
     }
 
-    if (local_asprintf(
-            &word_document_xml,
-            "%s/word/document.xml",
-            path_tempdir) < 0) goto end;
-
-    outfx("Reading tempdir's word/document.xml object");
-    f = fopen(word_document_xml, "r");
-    if (!f) {
-        outf("Failed to open docx object: %s", word_document_xml);
-        goto end;
+    /* Might be nice to iterate through all items in path_tempdir, but for now
+    we look at just the items that we know extract_docx_content_item() will
+    modify. */
+    
+    char*   names[] = {
+            "word/document.xml",
+            "[Content_Types].xml",
+            "word/_rels/document.xml.rels",
+            };
+    int names_num = sizeof(names) / sizeof(names[0]);
+    int i;
+    for (i=0; i<names_num; ++i) {
+        free(path);
+        path = NULL;
+        free(text);
+        text = NULL;
+        free(text2);
+        text2 = NULL;
+        const char* name = names[i];
+        if (asprintf(&path, "%s/%s", path_tempdir, name) < 0) goto end;
+        if (read_all_path(path, &text)) goto end;
+        char*   text2;
+        if (extract_docx_content_item(
+                content,
+                content_length,
+                &imageinfos,
+                name,
+                text,
+                &text2
+                )) goto end;
+        const char* text3 = (text2) ? text2 : text;
+        if (write_all(text3, strlen(text3), path)) goto end;
     }
-    original = read_all(f);
-    if (!original) goto end;
-    if (fclose(f)) goto end;
-    f = NULL;
 
-    char*   content2;
-    if (extract_docx_content_replace(
-            original,
-            content,
-            content_length,
-            &content2
-            )) goto end;
-    f = fopen(word_document_xml, "w");
-    if (fwrite(content2, strlen(content2), 1 /*nmemb*/, f) != 1) goto end;
-    if (fclose(f) < 0) goto end;
-    f = NULL;
-
+    /* Copy images into <path_tempdir>/media/. */
+    free(path);
+    path = NULL;
+    if (asprintf(&path, "%s/word/media", path_tempdir) < 0) goto end;
+    if (mkdir(path, 0777)) goto end;
+    
+    for (i=0; i<imageinfos.images_num; ++i) {
+        extract_document_image_t* image = &imageinfos.images[i];
+        free(path);
+        path = NULL;
+        if (asprintf(&path, "%s/word/media/%s", path_tempdir, image->name) < 0) goto end;
+        if (write_all(image->data, image->data_size, path)) goto end;
+    }
+    
     outf("Zipping tempdir to create %s", path_out);
     const char* path_out_leaf = strrchr(path_out, '/');
     if (!path_out_leaf) path_out_leaf = path_out;
-    e = systemf("cd %s && zip -q -r -D ../%s .", path_tempdir, path_out_leaf);
+    e = systemf("cd '%s' && zip -q -r -D '../%s' .", path_tempdir, path_out_leaf);
     if (e) {
         outf("Zip command failed to convert '%s' directory into output file: %s",
                 path_tempdir, path_out);
-        if (e > 0) errno = EIO;
         goto end;
     }
 
     if (!preserve_dir) {
-        if (strchr(path_tempdir, '\'') || strstr(path_tempdir, "..")) {
-            outf("Refusing to delete path_tempdir=%s because not safe for shell");
-        }
-        e = systemf("rm -r '%s'", path_tempdir);
-        if (e) {
-            outf("error: Failed to delete tempdir: %s", path_tempdir);
-            if (e > 0) errno = EIO;
-            goto end;
-        }
+        if (remove_directory(path_tempdir)) goto end;
     }
 
-    ret = 0;
+    e = 0;
 
     end:
-    if (path_tempdir)   free(path_tempdir);
-    if (word_document_xml)  free(word_document_xml);
-    if (original)   free(original);
+    outf("e=%i", e);
+    extract_document_imageinfos_free(&imageinfos);
+    free(path_tempdir);
+    free(path);
+    free(text);
+    free(text2);
     if (f)  fclose(f);
 
-    return ret;
+    if (e) {
+        outf("Failed to create %s", path_out);
+    }
+    return e;
 }

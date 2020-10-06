@@ -4,11 +4,11 @@
 #include <stdio.h>
 #include <string.h>
 
-static int s_level = 1;
+static int s_verbose = 0;
 
-void outf_level_set(int level)
+void outf_verbose_set(int verbose)
 {
-    s_level = level;
+    s_verbose = verbose;
 }
 
 void (outf)(
@@ -20,13 +20,10 @@ void (outf)(
         ...
         )
 {
-    if (level >= s_level) {
+    if (level > s_verbose) {
         return;
     }
     va_list va;
-    if (s_level <= 0) {
-        return;
-    }
     
     if (ln) {
         fprintf(stderr, "%s:%i:%s: ", file, line, fn);

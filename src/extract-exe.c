@@ -50,6 +50,7 @@ int main(int argc, char** argv)
     int         spacing             = 1;
     int         rotation            = 1;
     int         autosplit           = 0;
+    int         images              = 1;
 
     extract_document_t* document = NULL;
     char*               content = NULL;
@@ -73,8 +74,6 @@ int main(int argc, char** argv)
                     "    --autosplit 0|1\n"
                     "        If 1, we initially split spans when y coordinate changes. This\n"
                     "        stresses our handling of spans when input is from mupdf.\n"
-                    "    -d <level>\n"
-                    "        Set verbose level.\n"
                     "    -i <intermediate-path>\n"
                     "        Path of XML file containing intermediate text spans.\n"
                     "    -o <docx-path>\n"
@@ -96,6 +95,8 @@ int main(int argc, char** argv)
                     "    -t <docx-template>\n"
                     "        If specified we use <docx-template> as template. Otheerwise we use"
                     "        an internal template.\n"
+                    "    -v <verbose>\n"
+                    "        Set verbose level.\n"
                     );
             if (i + 1 == argc) {
                 e = 0;
@@ -105,10 +106,11 @@ int main(int argc, char** argv)
         else if (!strcmp(arg, "--autosplit")) {
             if (arg_next_int(argv, argc, &i, &autosplit)) goto end;
         }
-        else if (!strcmp(arg, "-d")) {
-            int level;
-            if (arg_next_int(argv, argc, &i, &level)) goto end;
-            outf_level_set(level);
+        else if (!strcmp(arg, "-v")) {
+            int verbose;
+            if (arg_next_int(argv, argc, &i, &verbose)) goto end;
+            outf_verbose_set(verbose);
+            outf("Have changed verbose to %i", verbose);
         }
         else if (!strcmp(arg, "-i")) {
             if (arg_next_string(argv, argc, &i, &input_path)) goto end;
@@ -161,7 +163,7 @@ int main(int argc, char** argv)
         goto end;
     }
     
-    if (extract_document_to_docx_content(document, spacing, rotation, &content, &content_length)) {
+    if (extract_document_to_docx_content(document, spacing, rotation, images, &content, &content_length)) {
         printf("Failed to create docx content.\n");
         goto end;
     }
@@ -185,9 +187,11 @@ int main(int argc, char** argv)
     if (docx_out_path) {
         printf("Creating .docx file: %s\n", docx_out_path);
         if (docx_template_path) {
+            printf("Using template: %s\n", docx_template_path);
             if (extract_docx_content_to_docx_template(
                     content,
                     content_length,
+                    document,
                     docx_template_path,
                     docx_out_path,
                     preserve_dir
@@ -201,16 +205,22 @@ int main(int argc, char** argv)
             instead test with extract_buffer_open_file() and
             extract_docx_content_to_docx_buffer(). */
             extract_buffer_t* buffer;
+            outf("");
             if (extract_buffer_open_file(docx_out_path, 1 /*writable*/, &buffer)) goto end;
+            outf("");
+            
             if (extract_docx_content_to_docx(
                     content,
                     content_length,
+                    document,
                     buffer
                     )) {
                 printf("Failed to create .docx file: %s\n", docx_out_path);
                 goto end;
             }
+            outf("");
             if (extract_buffer_close(&buffer)) goto end;
+            outf("");
         }
     }
 

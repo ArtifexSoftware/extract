@@ -62,10 +62,12 @@ int extract_document_to_docx_content(
         extract_document_t* document,
         int                 spacing,
         int                 rotation,
+        int                 images,
         char**              o_content,
         size_t*             o_content_length
         );
-/* Reads from document and converts into docx content.
+/* Reads from document and converts into docx content for embedding inside the
+word/document.xml item within the .docx.
 
 document:
     Should contain paragraphs e.g. from extract_document_join().
@@ -74,6 +76,8 @@ spacing:
 rotation:
     If non-zero we output rotated text inside a rotated drawing. Otherwise
     output text is always horizontal.
+images:
+    If non-zero we include images.
 o_content:
     Out param: set to point to zero-terminated text in buffer from malloc().
 o_content_length:
@@ -83,32 +87,36 @@ On error *o_content=NULL and *o_content_length=0.
 */
 
 
-typedef int (*extract_out)(void* handle, const char* data, int data_length);
-
 int extract_docx_content_to_docx(
-        const char*         content,
-        size_t              content_length,
-        extract_buffer_t*   buffer
+        const char*             content,
+        size_t                  content_length,
+        extract_document_t*     document,
+        extract_buffer_t*       buffer
         );
 /* Writes a .docx file to an extract_buffer_t.
 
-Uses internal template docx files.
+Uses internal template docx.
 
 content:
     E.g. from extract_document_to_docx_content().
 content_length:
     Length of content.
+document:
+    Information about any images in <document> will be included in the
+    generated .docx file. <content> should contain references to these
+    images.
 buffer:
     Where to write the zipped docx contents.
 */
 
 
 int extract_docx_content_to_docx_template(
-        const char* content,
-        size_t      content_length,
-        const char* path_template,
-        const char* path_out,
-        int         preserve_dir
+        const char*         content,
+        size_t              content_length,
+        extract_document_t* document,
+        const char*         path_template,
+        const char*         path_out,
+        int                 preserve_dir
         );
 /* Creates a new .docx file using a provided template document.
 
