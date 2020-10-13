@@ -1,5 +1,7 @@
 #include "../include/extract_buffer.h"
 
+#include "alloc.h"
+#include "memento.h"
 #include "outf.h"
 
 #include <assert.h>
@@ -61,13 +63,20 @@ static int s_read_cache(void* handle, void** o_cache, size_t* o_numbytes)
     return 0;
 }
 
+static void s_read_buffer_close(void* handle)
+{
+    mem_t* r = handle;
+    free(r->data);
+    r->data = NULL;
+}
+
 static void s_create_read_buffer(int bytes, mem_t* r, extract_buffer_t** o_buffer)
 /* Creates extract_buffer_t that reads from randomised data using randomised
 short reads and cache with randomised sizes. */
 {
     int i;
     int e;
-    r->data = malloc(bytes);
+    r->data = extract_malloc(bytes);
     for (i=0; i<bytes; ++i) {
         r->data[i] = rand();
     }
@@ -76,7 +85,7 @@ short reads and cache with randomised sizes. */
     r->num_calls_cache = 0;
     r->num_calls_read = 0;
     r->num_calls_write = 0;
-    e = extract_buffer_open(r, s_read, NULL /*write*/, s_read_cache, NULL /*close*/, o_buffer);
+    e = extract_buffer_open(r, s_read, NULL /*write*/, s_read_cache, s_read_buffer_close, o_buffer);
     assert(!e);
 }
 
@@ -90,7 +99,7 @@ static void test_read(void)
         
     /* Repeatedly read from read-buffer until we get EOF, and check we read the
     original content. */
-    char* out_buffer = malloc(len);
+    char* out_buffer = extract_malloc(len);
     size_t out_pos = 0;
     int its;
     for (its=0;; ++its) {
@@ -107,6 +116,11 @@ static void test_read(void)
     assert(!memcmp(out_buffer, r.data, len));
     outf("its=%i num_calls_read=%i num_calls_write=%i num_calls_cache=%i",
             its, r.num_calls_read, r.num_calls_write, r.num_calls_cache);
+    free(out_buffer);
+    out_buffer = NULL;
+    int e = extract_buffer_close(&buffer);
+    assert(!e);
+    
     outf("Read test passed.\n");
 }
 
@@ -144,19 +158,27 @@ static int s_write_cache(void* handle, void** o_cache, size_t* o_numbytes)
     return 0;
 }
 
+static void s_write_buffer_close(void* handle)
+{
+    mem_t* mem = handle;
+    outf("*** freeing mem->data=%p", mem->data);
+    free(mem->data);
+    mem->data = NULL;
+}
+
 static void s_create_write_buffer(size_t bytes, mem_t* r, extract_buffer_t** o_buffer)
 /* Creates extract_buffer_t that reads from randomised data using randomised
 short reads and cache with randomised sizes. */
 {
     int e;
-    r->data = malloc(bytes+1);
+    r->data = extract_malloc(bytes+1);
     bzero(r->data, bytes);
     r->bytes = bytes;
     r->pos = 0;
     r->num_calls_cache = 0;
     r->num_calls_read = 0;
     r->num_calls_write = 0;
-    e = extract_buffer_open(r, NULL /*read*/, s_write, s_write_cache, NULL /*close*/, o_buffer);
+    e = extract_buffer_open(r, NULL /*read*/, s_write, s_write_cache, s_write_buffer_close, o_buffer);
     assert(!e);
 }
 
@@ -170,7 +192,7 @@ static void test_write(void)
     s_create_write_buffer(len, &r, &buffer);
     
     /* Write to read-buffer, and check it contains the original content. */
-    char* out_buffer = malloc(len);
+    char* out_buffer = extract_malloc(len);
     unsigned i;
     for (i=0; i<len; ++i) {
         out_buffer[i] = 'a' + rand_int(26);
@@ -186,12 +208,14 @@ static void test_write(void)
         if (e == 1) break;
         assert(!e);
     }
-    int e = extract_buffer_close(&buffer);
-    assert(!e);
     assert(out_pos == len);
     assert(!memcmp(out_buffer, r.data, len));
+    free(out_buffer);
+    out_buffer = NULL;
     outf("its=%i num_calls_read=%i num_calls_write=%i num_calls_cache=%i",
             its, r.num_calls_read, r.num_calls_write, r.num_calls_cache);
+    int e = extract_buffer_close(&buffer);
+    assert(!e);
     outf("Write test passed.\n");
 }
 

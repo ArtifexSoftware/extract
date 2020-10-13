@@ -2,6 +2,8 @@
 
 #include "../include/extract.h"
 
+#include "alloc.h"
+#include "memento.h"
 #include "outf.h"
 
 #include <assert.h>
@@ -51,10 +53,13 @@ int main(int argc, char** argv)
     int         rotation            = 1;
     int         autosplit           = 0;
     int         images              = 1;
+    int         alloc_stats         = 0;
 
     extract_document_t* document = NULL;
     char*               content = NULL;
     size_t              content_length = 0;
+    extract_buffer_t*   intermediate = NULL;
+    extract_buffer_t*   out_buffer = NULL;
 
     int e = -1;
     
@@ -97,20 +102,22 @@ int main(int argc, char** argv)
                     "        an internal template.\n"
                     "    -v <verbose>\n"
                     "        Set verbose level.\n"
+                    "    -v-alloc\n"
+                    "        Show alloc stats.\n"
                     );
             if (i + 1 == argc) {
                 e = 0;
                 goto end;
             }
         }
+        else if (!strcmp(arg, "--alloc-exp-min")) {
+            int size;
+            if (arg_next_int(argv, argc, &i, &size)) goto end;
+            outf0("Calling alloc_set_min_alloc_size(%i)", size);
+            extract_alloc_exp_min(size);
+        }
         else if (!strcmp(arg, "--autosplit")) {
             if (arg_next_int(argv, argc, &i, &autosplit)) goto end;
-        }
-        else if (!strcmp(arg, "-v")) {
-            int verbose;
-            if (arg_next_int(argv, argc, &i, &verbose)) goto end;
-            outf_verbose_set(verbose);
-            outf("Have changed verbose to %i", verbose);
         }
         else if (!strcmp(arg, "-i")) {
             if (arg_next_string(argv, argc, &i, &input_path)) goto end;
@@ -133,6 +140,15 @@ int main(int argc, char** argv)
         else if (!strcmp(arg, "-t")) {
             if (arg_next_string(argv, argc, &i, &docx_template_path)) goto end;
         }
+        else if (!strcmp(arg, "-v")) {
+            int verbose;
+            if (arg_next_int(argv, argc, &i, &verbose)) goto end;
+            outf_verbose_set(verbose);
+            outf("Have changed verbose to %i", verbose);
+        }
+        else if (!strcmp(arg, "--v-alloc")) {
+            if (arg_next_int(argv, argc, &i, &alloc_stats)) goto end;
+        }
         else {
             printf("Unrecognised arg: '%s'\n", arg);
             errno = EINVAL;
@@ -148,9 +164,8 @@ int main(int argc, char** argv)
         goto end;
     }
     
-    extract_buffer_t*   intermediate;
     if (extract_buffer_open_file(input_path, 0 /*writable*/, &intermediate)) {
-        printf("Failed to open intermediate file: %s", input_path);
+        printf("Failed to open intermediate file: %s\n", input_path);
         goto end;
     }
     if (extract_intermediate_to_document(intermediate, autosplit, &document)) {
@@ -204,23 +219,18 @@ int main(int argc, char** argv)
             /* We could use extract_docx_content_to_docx(), but
             instead test with extract_buffer_open_file() and
             extract_docx_content_to_docx_buffer(). */
-            extract_buffer_t* buffer;
-            outf("");
-            if (extract_buffer_open_file(docx_out_path, 1 /*writable*/, &buffer)) goto end;
-            outf("");
+            if (extract_buffer_open_file(docx_out_path, 1 /*writable*/, &out_buffer)) goto end;
             
             if (extract_docx_content_to_docx(
                     content,
                     content_length,
                     document,
-                    buffer
+                    out_buffer
                     )) {
                 printf("Failed to create .docx file: %s\n", docx_out_path);
                 goto end;
             }
-            outf("");
-            if (extract_buffer_close(&buffer)) goto end;
-            outf("");
+            if (extract_buffer_close(&out_buffer)) goto end;
         }
     }
 
@@ -229,12 +239,25 @@ int main(int argc, char** argv)
 
     free(content);
     extract_document_free(&document);
+    extract_buffer_close(&intermediate);
+    extract_buffer_close(&out_buffer);
 
     if (e) {
         printf("Failed (errno=%i): %s\n", errno, strerror(errno));
         return 1;
     }
     
+    extern void extract_end(void);
+    extract_end();
+    
+    if (alloc_stats) {
+        printf("Alloc stats: num_malloc=%i num_realloc=%i num_free=%i num_libc_realloc=%i\n",
+                extract_alloc_info.num_malloc,
+                extract_alloc_info.num_realloc,
+                extract_alloc_info.num_free,
+                extract_alloc_info.num_libc_realloc
+                );
+    }
     printf("Finished.\n");
     return 0;
 }

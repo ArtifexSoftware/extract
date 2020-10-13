@@ -1,3 +1,4 @@
+#include "memento.h"
 #include "xml.h"
 
 #include <errno.h>

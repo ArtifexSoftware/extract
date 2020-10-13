@@ -1,5 +1,7 @@
 #include "../include/extract_buffer.h"
 
+#include "alloc.h"
+#include "memento.h"
 #include "outf.h"
 
 #include <assert.h>
@@ -33,7 +35,7 @@ int extract_buffer_open(
         )
 {
     int e = -1;
-    extract_buffer_t* buffer = malloc(sizeof(*buffer));
+    extract_buffer_t* buffer = extract_malloc(sizeof(*buffer));
     if (!buffer) goto end;
     
     buffer->handle = handle;
@@ -133,11 +135,11 @@ int extract_buffer_close(extract_buffer_t** p_buffer)
             goto end;
         }
     }
+    if (buffer->fn_close) buffer->fn_close(buffer->handle);
     e = 0;
     end:
     free(buffer);
     *p_buffer = NULL;
-    outf("returning e=%i", e);
     return e;
 }
 
@@ -158,7 +160,7 @@ int extract_buffer_open_simple(
         extract_buffer_t**      o_buffer
         )
 {
-    extract_buffer_t* buffer = malloc(sizeof(*buffer));
+    extract_buffer_t* buffer = extract_malloc(sizeof(*buffer));
     if (!buffer) return -1;
     
     /* We need cast away the const here. data[] will be written-to if caller

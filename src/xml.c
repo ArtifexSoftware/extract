@@ -1,3 +1,10 @@
+#ifdef __linux__
+    /* This is required to get asprintf(). */
+    #define _GNU_SOURCE
+#endif
+
+#include "alloc.h"
+#include "memento.h"
 #include "outf.h"
 #include "xml.h"
 
@@ -16,7 +23,11 @@ errno set. */
 static int str_catl(char** p, const char* s, int s_len)
 {
     int p_len = (*p) ? strlen(*p) : 0;
-    char* pp = realloc(*p, p_len + s_len + 1);
+    char* pp = extract_realloc(
+            *p,
+            p_len + 1,
+            p_len + s_len + 1
+            );
     if (!pp)    return -1;
     memcpy(pp + p_len, s, s_len);
     pp[p_len + s_len] = 0;
@@ -195,9 +206,10 @@ static int extract_xml_tag_attributes_append(
         char*               value
         )
 {
-    extract_xml_attribute_t* a = realloc(
+    extract_xml_attribute_t* a = extract_realloc(
             tag->attributes,
-            (tag->attributes_num+1) * sizeof(extract_xml_attribute_t)
+            sizeof(extract_xml_attribute_t) * tag->attributes_num,
+            sizeof(extract_xml_attribute_t) * (tag->attributes_num+1)
             );
     if (!a) return -1;
     tag->attributes = a;
@@ -275,7 +287,7 @@ int extract_xml_pparse_init(extract_buffer_t* buffer, const char* first_line)
 
     if (first_line) {
         size_t first_line_len = strlen(first_line);
-        first_line_buffer = malloc(first_line_len + 1);
+        first_line_buffer = extract_malloc(first_line_len + 1);
         if (!buffer) goto end;
 
         size_t actual;
@@ -293,7 +305,11 @@ int extract_xml_pparse_init(extract_buffer_t* buffer, const char* first_line)
 
     for(;;) {
         char c;
-        if (extract_buffer_read(buffer, &c, 1, NULL)) goto end;
+        int ee = extract_buffer_read(buffer, &c, 1, NULL);
+        if (ee) {
+            if (ee==1) errno = ESRCH;   /* EOF. */
+            goto end;
+        }
         if (c == '<') {
             break;
         }
@@ -321,9 +337,19 @@ static int s_next(extract_buffer_t* buffer, int* ret, char* o_c)
     return e;
 }
 
+static const char* extract_xml_tag_string(extract_xml_tag_t* tag)
+{
+    static char* buffer = NULL;
+    free(buffer);
+    buffer = NULL;
+    asprintf(&buffer, "<name=%s>", tag->name ? tag->name : "");
+    return buffer;
+}
+
 int extract_xml_pparse_next(extract_buffer_t* buffer, extract_xml_tag_t* out)
 {
     int ret = -1;
+    if (0) outf("out is: %s", extract_xml_tag_string(out));
     extract_xml_tag_free(out);
 
     char*   attribute_name = NULL;

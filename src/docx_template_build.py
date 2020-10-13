@@ -135,6 +135,7 @@ def main():
     
     num_items = 0
     for dirpath, dirnames, filenames in os.walk(path_temp):
+        dirnames.sort()
         
         if 0:
             # Write code to create directory item in zip. This isn't recognised by zipinfo, and doesn't

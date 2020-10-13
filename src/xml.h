@@ -45,7 +45,8 @@ tag. */
 
 If first_line is not NULL, we check that it matches the first line in the file.
 
-Returns NULL with errno set if error. */
+Returns -1 with errno=ESRCH if we fail to read the first '<' due to EOF.
+*/
 
 
 int extract_xml_pparse_next(extract_buffer_t* buffer, extract_xml_tag_t* out);

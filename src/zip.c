@@ -1,3 +1,5 @@
+#include "alloc.h"
+#include "memento.h"
 #include "outf.h"
 #include "zip.h"
 
@@ -51,7 +53,7 @@ struct extract_zip_t
 int extract_zip_open(extract_buffer_t* buffer, extract_zip_t** o_zip)
 {
     int e = -1;
-    extract_zip_t* zip = malloc(sizeof(*zip));
+    extract_zip_t* zip = extract_malloc(sizeof(*zip));
     if (!zip)   goto end;
     
     zip->cd_files = NULL;
@@ -154,12 +156,13 @@ int extract_zip_write_file(
         )
 {
     int e = -1;
-    extract_zip_cd_file_t* cd_file;
+    extract_zip_cd_file_t* cd_file = NULL;
     
     /* Create central directory file header for later. */
-    extract_zip_cd_file_t*  cd_files = realloc(
+    extract_zip_cd_file_t*  cd_files = extract_realloc(
             zip->cd_files,
-            (zip->cd_files_num+1) * sizeof(extract_zip_cd_file_t)
+            sizeof(extract_zip_cd_file_t) * zip->cd_files_num,
+            sizeof(extract_zip_cd_file_t) * (zip->cd_files_num+1)
             );
     if (!cd_files) goto end;
     zip->cd_files = cd_files;

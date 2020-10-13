@@ -2,13 +2,20 @@
 sensible order to create valid content - e.g. don't call docx_paragraph_start()
 twice without intervening call to docx_paragraph_finish(). */
 
+#ifdef __linux__
+    /* This is required to get asprintf(). */
+    #define _GNU_SOURCE
+#endif
+
 #include "../include/extract.h"
 
 #include "docx_template.h"
 
+#include "alloc.h"
 #include "astring.h"
 #include "document.h"
 #include "docx.h"
+#include "memento.h"
 #include "outf.h"
 #include "zip.h"
 
@@ -34,7 +41,7 @@ static int local_vasprintf(char** out, const char* format, va_list va0)
     len += 1; /* For terminating 0. */
 
     /* Repeat call of vnsprintf() with required buffer. */
-    char* buffer = malloc(len);
+    char* buffer = extract_malloc(len);
     if (!buffer) {
         return -1;
     }
@@ -100,7 +107,6 @@ int extract_docx_run_start(
         extract_astring_cat(content, "\"/>");
     }
     if (!e) e = extract_astring_cat(content, "</w:rPr><w:t xml:space=\"preserve\">");
-    assert(!e);
     return e;
 
 }
@@ -116,15 +122,13 @@ int extract_docx_char_append_string(extract_astring_t* content, char* text)
 
 int extract_docx_char_append_stringf(extract_astring_t* content, char* format, ...)
 {
-    char* buffer;
+    char* buffer = NULL;
     int e;
     va_list va;
     va_start(va, format);
     e = vasprintf(&buffer, format, va);
     va_end(va);
     if (e < 0) return e;
-    /*outf_level_set(1);
-    outf("format='%s' buffer is: %s", format, buffer);*/
     e = extract_astring_cat(content, buffer);
     free(buffer);
     return e;
@@ -202,7 +206,7 @@ static char* read_all(FILE* in)
     int     len = 0;
     size_t  delta = 128;
     for(;;) {
-        char* p = realloc(ret, len + delta + 1);
+        char* p = extract_realloc(ret, len, len + delta + 1);
         if (!p) {
             free(ret);
             return NULL;
@@ -290,6 +294,10 @@ static int extract_docx_content_insert(
     e = 0;
     
     end:
+    if (e) {
+        extract_astring_free(&out);
+        *o_out = NULL;
+    }
     return e;
 }
 
@@ -365,7 +373,6 @@ text2
         const char* begin;
         const char* end;
         extract_astring_free(&temp);
-        outf("item->text: %s", text);
         if (s_find_mid(text, "<Relationships", "</Relationships>", &begin, &end)) goto end;
         if (extract_astring_catl(&temp, text, end - text)) goto end;
         int j;
@@ -399,6 +406,7 @@ text2
     end:
     if (e) {
         free(*text2);
+        extract_astring_free(&temp);
     }
     extract_astring_init(&temp);
     return e;
@@ -428,7 +436,6 @@ int extract_docx_content_to_docx(
         text2 = NULL;
         const docx_template_item_t* item = &docx_template_items[i];
         outf("i=%i item->name=%s", i, item->name);
-        char*   text2;
         if (extract_docx_content_item(
                 content,
                 content_length,
@@ -553,7 +560,6 @@ int extract_docx_content_to_docx_template(
         const char* name = names[i];
         if (asprintf(&path, "%s/%s", path_tempdir, name) < 0) goto end;
         if (read_all_path(path, &text)) goto end;
-        char*   text2;
         if (extract_docx_content_item(
                 content,
                 content_length,

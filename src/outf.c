@@ -1,3 +1,4 @@
+#include "memento.h"
 #include "outf.h"
 
 #include <stdarg.h>
