@@ -185,6 +185,7 @@
 #ifndef MEMENTO_H
 
 #include <stdlib.h>
+#include <stdarg.h>
 
 #define MEMENTO_H
 
@@ -237,6 +238,9 @@ void *Memento_malloc(size_t s);
 void *Memento_realloc(void *, size_t s);
 void  Memento_free(void *);
 void *Memento_calloc(size_t, size_t);
+char *Memento_strdup(const char*);
+int Memento_asprintf(char **ret, const char *format, ...);
+int Memento_vasprintf(char **ret, const char *format, va_list ap);
 
 void Memento_info(void *addr);
 void Memento_listBlockInfo(void);
@@ -274,6 +278,9 @@ void Memento_bt(void);
 #define free    Memento_free
 #define realloc Memento_realloc
 #define calloc  Memento_calloc
+#define strdup  Memento_strdup
+#define asprintf Memento_asprintf
+#define vasprintf Memento_vasprintf
 #endif
 
 #else
