@@ -76,7 +76,7 @@ short reads and cache with randomised sizes. */
 {
     int i;
     int e;
-    r->data = extract_malloc(bytes);
+    if (extract_malloc(&r->data, bytes)) abort();
     for (i=0; i<bytes; ++i) {
         r->data[i] = rand();
     }
@@ -99,7 +99,8 @@ static void test_read(void)
         
     /* Repeatedly read from read-buffer until we get EOF, and check we read the
     original content. */
-    char* out_buffer = extract_malloc(len);
+    char* out_buffer;
+    if (extract_malloc(&out_buffer, len)) abort();
     size_t out_pos = 0;
     int its;
     for (its=0;; ++its) {
@@ -171,7 +172,7 @@ static void s_create_write_buffer(size_t bytes, mem_t* r, extract_buffer_t** o_b
 short reads and cache with randomised sizes. */
 {
     int e;
-    r->data = extract_malloc(bytes+1);
+    if (extract_malloc(&r->data, bytes+1)) abort();
     bzero(r->data, bytes);
     r->bytes = bytes;
     r->pos = 0;
@@ -192,7 +193,8 @@ static void test_write(void)
     s_create_write_buffer(len, &r, &buffer);
     
     /* Write to read-buffer, and check it contains the original content. */
-    char* out_buffer = extract_malloc(len);
+    char* out_buffer;
+    if (extract_malloc(&out_buffer, len)) abort();
     unsigned i;
     for (i=0; i<len; ++i) {
         out_buffer[i] = 'a' + rand_int(26);

@@ -21,9 +21,7 @@ void extract_astring_free(extract_astring_t* string)
 
 int extract_astring_catl(extract_astring_t* string, const char* s, int s_len)
 {
-    char* chars = extract_realloc(string->chars, string->chars_num+1, string->chars_num + s_len + 1);
-    if (!chars) return -1;
-    string->chars = chars;
+    if (extract_realloc2(&string->chars, string->chars_num+1, string->chars_num + s_len + 1)) return -1;
     memcpy(string->chars + string->chars_num, s, s_len);
     string->chars[string->chars_num + s_len] = 0;
     string->chars_num += s_len;

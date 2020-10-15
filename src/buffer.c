@@ -35,8 +35,8 @@ int extract_buffer_open(
         )
 {
     int e = -1;
-    extract_buffer_t* buffer = extract_malloc(sizeof(*buffer));
-    if (!buffer) goto end;
+    extract_buffer_t* buffer;
+    if (extract_malloc(&buffer, sizeof(*buffer))) goto end;
     
     buffer->handle = handle;
     buffer->fn_read = fn_read;
@@ -160,8 +160,8 @@ int extract_buffer_open_simple(
         extract_buffer_t**      o_buffer
         )
 {
-    extract_buffer_t* buffer = extract_malloc(sizeof(*buffer));
-    if (!buffer) return -1;
+    extract_buffer_t* buffer;
+    if (extract_malloc(&buffer, sizeof(*buffer))) return -1;
     
     /* We need cast away the const here. data[] will be written-to if caller
     uses us as a write buffer. */

@@ -203,13 +203,13 @@ static const char* span_string2(span_t* span)
 fields zeroed. */
 static int span_append_c(span_t* span, int c)
 {
-    char_t* items = extract_realloc(
-            span->chars,
-            sizeof(*items) * span->chars_num,
-            sizeof(*items) * (span->chars_num + 1)
-            );
-    if (!items) return -1;
-    span->chars = items;
+    if (extract_realloc2(
+            &span->chars,
+            sizeof(*span->chars) * span->chars_num,
+            sizeof(*span->chars) * (span->chars_num + 1)
+            )) {
+        return -1;
+    }
     char_t* item = &span->chars[span->chars_num];
     span->chars_num += 1;
     char_init(item);
@@ -518,21 +518,19 @@ static void page_free(page_t* page)
 */
 static span_t* page_span_append(page_t* page)
 {
-    span_t* span = extract_malloc(sizeof(*span));
-    if (!span) return NULL;
+    span_t* span;
+    if (extract_malloc(&span, sizeof(*span))) return NULL;
     span->font_name = NULL;
     span->chars = NULL;
     span->chars_num = 0;
-    span_t** s = extract_realloc(
-            page->spans,
-            sizeof(*s) * page->spans_num,
-            sizeof(*s) * (page->spans_num + 1)
-            );
-    if (!s) {
+    if (extract_realloc2(
+            &page->spans,
+            sizeof(*page->spans) * page->spans_num,
+            sizeof(*page->spans) * (page->spans_num + 1)
+            )) {
         free(span);
         return NULL;
     }
-    page->spans = s;
     page->spans[page->spans_num] = span;
     page->spans_num += 1;
     return span;
@@ -556,13 +554,11 @@ int extract_document_imageinfos(extract_document_t* document, extract_document_i
         page_t* page = document->pages[p];
         for (int i=0; i<page->images_num; ++i) {
             image_t* image = &page->images[i];
-            extract_document_image_t* images = extract_realloc(
-                    imageinfos.images,
+            if (extract_realloc2(
+                    &imageinfos.images,
                     sizeof(extract_document_image_t) * imageinfos.images_num,
                     sizeof(extract_document_image_t) * (imageinfos.images_num + 1)
-                    );
-            if (!images) goto end;
-            imageinfos.images = images;
+                    )) goto end;
             outfx("image->name=%s image->id=%s", image->name, image->id);
             assert(image->name);
             imageinfos.images[imageinfos.images_num].name = image->name;
@@ -579,13 +575,11 @@ int extract_document_imageinfos(extract_document_t* document, extract_document_i
                 }
             }
             if (it == imageinfos.imagetypes_num) {
-                char** imagetypes = extract_realloc(
-                        imageinfos.imagetypes,
+                if (extract_realloc2(
+                        &imageinfos.imagetypes,
                         sizeof(char*) * imageinfos.imagetypes_num,
                         sizeof(char*) * (imageinfos.imagetypes_num + 1)
-                        );
-                if (!imagetypes) goto end;
-                imageinfos.imagetypes = imagetypes;
+                        )) goto end;
                 assert(image->type);
                 imageinfos.imagetypes[imageinfos.imagetypes_num] = image->type;
                 imageinfos.imagetypes_num += 1;
@@ -614,24 +608,22 @@ void extract_document_imageinfos_free(extract_document_imagesinfo_t* imageinfos)
 set on error. */
 static page_t* document_page_append(extract_document_t* document)
 {
-    page_t* page = extract_malloc(sizeof(page_t));
-    if (!page) return NULL;
+    page_t* page;
+    if (extract_malloc(&page, sizeof(page_t))) return NULL;
     page->spans = NULL;
     page->spans_num = 0;
     page->lines = NULL;
     page->lines_num = 0;
     page->paragraphs = NULL;
     page->paragraphs_num = 0;
-    page_t** pages = extract_realloc(
-            document->pages,
-            sizeof(page_t*) * document->pages_num,
+    if (extract_realloc2(
+            &document->pages,
+            sizeof(page_t*) * document->pages_num + 1,
             sizeof(page_t*) * (document->pages_num + 1)
-            );
-    if (!pages) {
-        free(page);
+            )) {
+        extract_free(&page);
         return NULL;
     }
-    document->pages = pages;
     page_init(page);
     document->pages[document->pages_num] = page;
     document->pages_num += 1;
@@ -849,8 +841,7 @@ static int make_lines(
     int         lines_num = spans_num;
     line_t**    lines = NULL;
 
-    lines = extract_malloc(sizeof(*lines) * lines_num);
-    if (!lines) goto end;
+    if (extract_malloc(&lines, sizeof(*lines) * lines_num)) goto end;
 
     int a;
     /* Ensure we can clean up after error. */
@@ -858,11 +849,9 @@ static int make_lines(
         lines[a] = NULL;
     }
     for (a=0; a<lines_num; ++a) {
-        lines[a] = extract_malloc(sizeof(line_t));
-        if (!lines[a])  goto end;
+        if (extract_malloc(&lines[a], sizeof(line_t))) goto end;
         lines[a]->spans_num = 0;
-        lines[a]->spans = extract_malloc(sizeof(span_t*) * 1);
-        if (!lines[a]->spans)   goto end;
+        if (extract_malloc(&lines[a]->spans, sizeof(span_t*) * 1)) goto end;
         lines[a]->spans_num = 1;
         lines[a]->spans[0] = spans[a];
         outfx("initial line a=%i: %s", a, line_string(lines[a]));
@@ -1009,13 +998,11 @@ static int make_lines(
                         outf("    a: %s", span_string(span_a));
                         outf("    b: %s", span_string(span_b));
                     }
-                    char_t* p = extract_realloc(
-                            span_a->chars,
+                    if (extract_realloc2(
+                            &span_a->chars,
                             sizeof(char_t) * span_a->chars_num,
                             sizeof(char_t) * (span_a->chars_num + 1)
-                            );
-                    if (!p) goto end;
-                    span_a->chars = p;
+                            )) goto end;
                     char_t* item = &span_a->chars[span_a->chars_num];
                     span_a->chars_num += 1;
                     bzero(item, sizeof(*item));
@@ -1054,13 +1041,11 @@ static int make_lines(
                 outf("    %s", span_string2(span_a));
                 outf("    %s", span_string2(span_b));
             }
-            span_t** s = extract_realloc(
-                    line_a->spans,
+            if (extract_realloc2(
+                    &line_a->spans,
                     sizeof(span_t*) * line_a->spans_num,
                     sizeof(span_t*) * (line_a->spans_num + nearest_line->spans_num)
-                    );
-            if (!s) goto end;
-            line_a->spans = s;
+                    )) goto end;
             int k;
             for (k=0; k<nearest_line->spans_num; ++k) {
                 line_a->spans[ line_a->spans_num + k] = nearest_line->spans[k];
@@ -1099,15 +1084,14 @@ static int make_lines(
     }
     int lines_num_old = lines_num;
     lines_num = to;
-    line_t** l = extract_realloc(
-            lines,
+    if (extract_realloc2(
+            &lines,
             sizeof(line_t*) * lines_num_old,
             sizeof(line_t*) * lines_num
-            );
-    /* Should always succeed because we're not increasing allocation size. */
-    if (!l) goto end;
-
-    lines = l;
+            )) {
+        /* Should always succeed because we're not increasing allocation size. */
+        goto end;
+    }
 
     *o_lines = lines;
     *o_lines_num = lines_num;
@@ -1252,8 +1236,7 @@ static int make_paragraphs(
 
     /* Start off with an paragraph_t for each line_t. */
     int paragraphs_num = lines_num;
-    paragraphs = extract_malloc(sizeof(*paragraphs) * paragraphs_num);
-    if (!paragraphs) goto end;
+    if (extract_malloc(&paragraphs, sizeof(*paragraphs) * paragraphs_num)) goto end;
     int a;
     /* Ensure we can clean up after error when setting up. */
     for (a=0; a<paragraphs_num; ++a) {
@@ -1261,11 +1244,9 @@ static int make_paragraphs(
     }
     /* Set up initial paragraphs. */
     for (a=0; a<paragraphs_num; ++a) {
-        paragraphs[a] = extract_malloc(sizeof(paragraph_t));
-        if (!paragraphs[a]) goto end;
+        if (extract_malloc(&paragraphs[a], sizeof(paragraph_t))) goto end;
         paragraphs[a]->lines_num = 0;
-        paragraphs[a]->lines = extract_malloc(sizeof(line_t*) * 1);
-        if (!paragraphs[a]->lines) goto end;
+        if (extract_malloc(&paragraphs[a]->lines, sizeof(line_t*) * 1)) goto end;
         paragraphs[a]->lines_num = 1;
         paragraphs[a]->lines[0] = lines[a];
     }
@@ -1381,13 +1362,11 @@ static int make_paragraphs(
                 }
 
                 int a_lines_num_new = paragraph_a->lines_num + nearest_paragraph->lines_num;
-                line_t** l = extract_realloc(
-                        paragraph_a->lines,
+                if (extract_realloc2(
+                        &paragraph_a->lines,
                         sizeof(line_t*) * paragraph_a->lines_num,
                         sizeof(line_t*) * a_lines_num_new
-                        );
-                if (!l) goto end;
-                paragraph_a->lines = l;
+                        )) goto end;
                 int i;
                 for (i=0; i<nearest_paragraph->lines_num; ++i) {
                     paragraph_a->lines[paragraph_a->lines_num + i]
@@ -1436,16 +1415,15 @@ static int make_paragraphs(
     outfx("paragraphs_num=%i => %i", paragraphs_num, to);
     int paragraphs_num_old = paragraphs_num;
     paragraphs_num = to;
-    paragraph_t** p = extract_realloc(
-            paragraphs,
+    if (extract_realloc2(
+            &paragraphs,
             sizeof(paragraph_t*) * paragraphs_num_old,
             sizeof(paragraph_t*) * paragraphs_num
-            );
-    /* Should always succeed because we're not increasing allocation size, but
-    can fail with memento squeeze. */
-    if (!p) goto end;
-
-    paragraphs = p;
+            )) {
+        /* Should always succeed because we're not increasing allocation size, but
+        can fail with memento squeeze. */
+        goto end;
+    }
 
     /* Sort paragraphs so they appear in correct order, using paragraphs_cmp().
     */
@@ -1578,8 +1556,7 @@ static int page_span_end_clean(page_t* page)
         span2->font_name = strdup(span->font_name);
         if (!span2->font_name) goto end;
         span2->chars_num = 1;
-        span2->chars = extract_malloc(sizeof(char_t) * span2->chars_num);
-        if (!span2->chars) goto end;
+        if (extract_malloc(&span2->chars, sizeof(char_t) * span2->chars_num)) goto end;
         span2->chars[0] = char_[-1];
         span->chars_num -= 1;
         return 0;
@@ -1613,8 +1590,7 @@ int extract_intermediate_to_document(
     /* Num extra spans from autosplit=1. */
     int num_spans_autosplit = 0;
 
-    document = extract_malloc(sizeof(**o_document));
-    if (!document) goto end;
+    if (extract_malloc(&document, sizeof(**o_document))) goto end;
     s_document_init(document);
     
     if (extract_xml_pparse_init(buffer, NULL /*first_line*/)) {
@@ -1720,8 +1696,7 @@ int extract_intermediate_to_document(
                     image_temp.type = strdup(type);
                     if (!image_temp.type) goto end;
                     if (extract_xml_tag_attributes_find_size(&tag, "datasize", &image_temp.data_size)) goto end;
-                    image_temp.data = extract_malloc(image_temp.data_size);
-                    if (!image_temp.data) goto end;
+                    if (extract_malloc(&image_temp.data, image_temp.data_size)) goto end;
                     
                     /* We use a static here to ensure uniqueness. Start at 10
                     because template document might use some low-numbered IDs.
@@ -1767,13 +1742,11 @@ int extract_intermediate_to_document(
                         errno = EINVAL;
                         goto end;
                     }
-                    image_t*    images = extract_realloc(
-                            page->images,
+                    if (extract_realloc2(
+                            &page->images,
                             sizeof(image_t) * page->images_num,
                             sizeof(image_t) * (page->images_num + 1)
-                            );
-                    if (!images) goto end;
-                    page->images = images;
+                            )) goto end;
                     page->images[page->images_num].name = image_temp.name;
                     page->images[page->images_num].id = image_temp.id;
                     page->images[page->images_num].type = image_temp.type;

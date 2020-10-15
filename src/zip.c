@@ -53,8 +53,8 @@ struct extract_zip_t
 int extract_zip_open(extract_buffer_t* buffer, extract_zip_t** o_zip)
 {
     int e = -1;
-    extract_zip_t* zip = extract_malloc(sizeof(*zip));
-    if (!zip)   goto end;
+    extract_zip_t* zip;
+    if (extract_malloc(&zip, sizeof(*zip))) goto end;
     
     zip->cd_files = NULL;
     zip->cd_files_num = 0;
@@ -159,14 +159,12 @@ int extract_zip_write_file(
     extract_zip_cd_file_t* cd_file = NULL;
     
     /* Create central directory file header for later. */
-    extract_zip_cd_file_t*  cd_files = extract_realloc(
-            zip->cd_files,
+    if (extract_realloc2(
+            &zip->cd_files,
             sizeof(extract_zip_cd_file_t) * zip->cd_files_num,
             sizeof(extract_zip_cd_file_t) * (zip->cd_files_num+1)
-            );
-    if (!cd_files) goto end;
-    zip->cd_files = cd_files;
-    cd_file = &cd_files[zip->cd_files_num];
+            )) goto end;
+    cd_file = &zip->cd_files[zip->cd_files_num];
     cd_file->name = NULL;
     
     cd_file->mtime = zip->mtime;

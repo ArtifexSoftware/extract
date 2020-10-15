@@ -27,30 +27,40 @@ static int round_up(size_t n)
     }
 }
 
-void* extract_malloc(size_t size)
+int (extract_malloc)(void** pptr, size_t size)
 {
     size = round_up(size);
     extract_alloc_info.num_malloc += 1;
-    void* ret = malloc(size);
-    return ret;
+    void* p = malloc(size);
+    if (!p) return -1;
+    *pptr = p;
+    return 0;
 }
 
-void* extract_realloc(void* ptr, size_t oldsize, size_t newsize)
+int (extract_realloc)(void** pptr, size_t newsize)
+{
+    void* p = realloc(*pptr, newsize);
+    if (!p) return -1;
+    *pptr = p;
+    return 0;
+}
+
+int (extract_realloc2)(void** pptr, size_t oldsize, size_t newsize)
 {
     /* We ignore <oldsize> if <ptr> is NULL - allows callers to not worry about
     edge cases e.g. with strlen+1. */
-    oldsize = ptr ? round_up(oldsize) : 0;
+    oldsize = (*pptr) ? round_up(oldsize) : 0;
     newsize = round_up(newsize);
     extract_alloc_info.num_realloc += 1;
-    if (newsize == oldsize) return ptr;
-    extract_alloc_info.num_libc_realloc += 1;
-    return realloc(ptr, newsize);
+    if (newsize == oldsize) return 0;
+    return (extract_realloc)(pptr, newsize);
 }
 
-void extract_free(void* ptr)
+void (extract_free)(void** pptr)
 {
     extract_alloc_info.num_free += 1;
-    free(ptr);
+    free(*pptr);
+    *pptr = NULL;
 }
 
 void extract_alloc_exp_min(size_t size)

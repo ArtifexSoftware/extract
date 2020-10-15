@@ -41,10 +41,8 @@ static int local_vasprintf(char** out, const char* format, va_list va0)
     len += 1; /* For terminating 0. */
 
     /* Repeat call of vnsprintf() with required buffer. */
-    char* buffer = extract_malloc(len);
-    if (!buffer) {
-        return -1;
-    }
+    char* buffer;
+    if (extract_malloc(&buffer, len)) return -1;
     va_copy(va, va0);
     int len2 = vsnprintf(buffer, len, format, va);
     va_end(va);
@@ -206,12 +204,10 @@ static char* read_all(FILE* in)
     int     len = 0;
     size_t  delta = 128;
     for(;;) {
-        char* p = extract_realloc(ret, len, len + delta + 1);
-        if (!p) {
+        if (extract_realloc2(&ret, len, len + delta + 1)) {
             free(ret);
             return NULL;
         }
-        ret = p;
         ssize_t n = fread(ret + len, 1 /*size*/, delta /*nmemb*/, in);
         len += n;
         if (feof(in)) {

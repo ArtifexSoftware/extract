@@ -23,15 +23,13 @@ errno set. */
 static int str_catl(char** p, const char* s, int s_len)
 {
     int p_len = (*p) ? strlen(*p) : 0;
-    char* pp = extract_realloc(
-            *p,
+    if (extract_realloc2(
+            p,
             p_len + 1,
             p_len + s_len + 1
-            );
-    if (!pp)    return -1;
-    memcpy(pp + p_len, s, s_len);
-    pp[p_len + s_len] = 0;
-    *p = pp;
+            )) return -1;
+    memcpy(*p + p_len, s, s_len);
+    (*p)[p_len + s_len] = 0;
     return 0;
 }
 
@@ -206,13 +204,11 @@ static int extract_xml_tag_attributes_append(
         char*               value
         )
 {
-    extract_xml_attribute_t* a = extract_realloc(
-            tag->attributes,
+    if (extract_realloc2(
+            &tag->attributes,
             sizeof(extract_xml_attribute_t) * tag->attributes_num,
             sizeof(extract_xml_attribute_t) * (tag->attributes_num+1)
-            );
-    if (!a) return -1;
-    tag->attributes = a;
+            )) return -1;
     tag->attributes[tag->attributes_num].name = name;
     tag->attributes[tag->attributes_num].value = value;
     tag->attributes_num += 1;
@@ -287,8 +283,7 @@ int extract_xml_pparse_init(extract_buffer_t* buffer, const char* first_line)
 
     if (first_line) {
         size_t first_line_len = strlen(first_line);
-        first_line_buffer = extract_malloc(first_line_len + 1);
-        if (!buffer) goto end;
+        if (extract_malloc(&first_line_buffer, first_line_len + 1)) goto end;
 
         size_t actual;
         if (extract_buffer_read(buffer, first_line_buffer, first_line_len, &actual)) {
