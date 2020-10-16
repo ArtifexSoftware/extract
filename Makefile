@@ -19,7 +19,7 @@
 build = debug
 
 flags_link      = -W -Wall -lm
-flags_compile   = -W -Wall -Wmissing-declarations -Wmissing-prototypes -Werror -MMD -MP
+flags_compile   = -W -Wall -Wpointer-sign -Wmissing-declarations -Wmissing-prototypes -Werror -MMD -MP
 
 uname = $(shell uname)
 
@@ -59,24 +59,43 @@ tests-all: test-buffer test-misc tests
 
 # Define the main test targets.
 #
-tests := test/Python2.pdf test/zlib.3.pdf test/text_graphic_image.pdf
-tests := $(patsubst test/%, test/generated/%, $(tests))
-tests := \
-        $(patsubst %, %.intermediate-mu.xml, $(tests)) \
-        $(patsubst %, %.intermediate-gs.xml, $(tests)) \
+pdfs = test/Python2.pdf test/zlib.3.pdf test/text_graphic_image.pdf
+pdfs_generated = $(patsubst test/%, test/generated/%, $(pdfs))
 
-tests := \
-        $(patsubst %, %.extract.docx,           $(tests)) \
-        $(patsubst %, %.extract-rotate.docx,    $(tests)) \
-        $(patsubst %, %.extract-autosplit.docx, $(tests)) \
-        $(patsubst %, %.extract-template.docx,  $(tests)) \
+# Generate targets that check all combinations of mu/gs and the various
+# rotate/autosplit options of extract-exe.
+#
+tests_exe :=  \
+        $(patsubst %, %.intermediate-mu.xml, $(pdfs_generated)) \
+        $(patsubst %, %.intermediate-gs.xml, $(pdfs_generated)) \
 
-tests := $(patsubst %, %.diff, $(tests))
+tests_exe := \
+        $(patsubst %, %.extract.docx,                   $(tests_exe)) \
+        $(patsubst %, %.extract-rotate.docx,            $(tests_exe)) \
+        $(patsubst %, %.extract-rotate-spacing.docx,    $(tests_exe)) \
+        $(patsubst %, %.extract-autosplit.docx,         $(tests_exe)) \
+        $(patsubst %, %.extract-template.docx,          $(tests_exe)) \
 
-$(warn hello)
-$(warn $(tests))
+tests_exe := $(patsubst %, %.diff, $(tests_exe))
 
-tests: $(tests)
+# Targets that test direct conversion with mutool. As of 2020-10-16, mutool
+# uses rotate=true and spacing=true, so we diff with reference directory
+# ...pdf.intermediate-mu.xml.extract-rotate-spacing.docx.dir.ref
+#
+tests_mutool := $(patsubst %, %.mutool.docx.diff, $(pdfs_generated))
+
+#$(warn $(pdfs_generated_intermediate_docx_diffs))
+#$(warn $(tests))
+
+tests: $(tests_exe) #$(tests_mutool)
+
+tests-exe: $(tests_exe)
+
+# Checks output of mutool conversion from .pdf to .docx. Requires that mutool
+# was built with extract as a third-party library. As of 2020-10-16 this
+# requires mupdf/thirdparty/extract e.g. as a softlink to extract checkout.
+#
+tests-mutool: $(tests_mutool)
 
 
 # Main executable.
@@ -114,8 +133,10 @@ ifeq ($(build),memento)
     endif
 endif
 
-# Define rules that make the various intermediate targets required by $(tests).
+
+# Rules that make the various intermediate targets required by $(tests).
 #
+
 test/generated/%.pdf.intermediate-mu.xml: test/%.pdf $(mutool)
 	@echo
 	@echo == Generating intermediate file for $< with mutool.
@@ -130,22 +151,27 @@ test/generated/%.pdf.intermediate-gs.xml: test/%.pdf $(gs)
 
 %.extract.docx: % $(exe)
 	@echo
-	@echo Generating content with extract.exe
+	@echo Generating docx with extract.exe
 	$(run_exe) -v 1 -r 0 -i $< -o $@
 
 %.extract-rotate.docx: % $(exe) Makefile
 	@echo
-	@echo == Generating content with rotation with extract.exe
+	@echo == Generating docx with rotation with extract.exe
 	$(run_exe) -r 1 -s 0 -i $< -o $@
+
+%.extract-rotate-spacing.docx: % $(exe) Makefile
+	@echo
+	@echo == Generating docx with rotation with extract.exe
+	$(run_exe) -r 1 -s 1 -i $< -o $@
 
 %.extract-autosplit.docx: % $(exe)
 	@echo
-	@echo == Generating content with autosplit with extract.exe
+	@echo == Generating docx with autosplit with extract.exe
 	$(run_exe) -r 0 -i $< --autosplit 1 -o $@
 
 %.extract-template.docx: % $(exe)
 	@echo
-	@echo == Generating content using src/template.docx with extract.exe
+	@echo == Generating docx using src/template.docx with extract.exe
 	$(run_exe) -r 0 -i $< -t src/template.docx -o $@
 
 test/generated/%.docx.diff: test/generated/%.docx.dir test/%.docx.dir.ref
@@ -157,18 +183,36 @@ test/generated/%.docx.diff: test/generated/%.docx.dir test/%.docx.dir.ref
 #
 test/generated/%.extract-template.docx.diff: test/generated/%.extract-template.docx.dir test/%.extract.docx.dir.ref
 	@echo
-	@echo == Comparing unzipped .docx files.
+	@echo == Comparing docx from extract-exe.
 	diff -ru $^
 
+# Unzips .docx into .docx.dir/ directory.
 %.docx.dir: %.docx
 	(rm -r $@ || true)
 	unzip -q -d $@ $<
 
+# Prettyifies each .xml file within .docx.dir/ directory.
 %.docx.dir.pretty: %.docx.dir
 	(rm -r $@ $@- || true)
 	cp -pr $< $@-
 	./src/docx_template_build.py --docx-pretty $@-
 	mv $@- $@
+
+# Converts .pdf to .docx using mutool.
+test/generated/%.pdf.mutool.docx: test/%.pdf
+	$(mutool) convert -o $@ $<
+
+# Compares .docx from mutool with reference .docx.
+#
+# As of 2020-10-16, mutool uses rotate=true and
+# spacing=true, so we diff with reference directory
+# ...pdf.intermediate-mu.xml.extract-rotate-spacing.docx.dir.ref
+#
+test/generated/%.pdf.mutool.docx.diff: test/generated/%.pdf.mutool.docx.dir test/%.pdf.intermediate-mu.xml.extract-rotate-spacing.docx.dir.ref
+	@echo
+	@echo == Checking docx from mutool.
+	diff -ru $^
+
 
 # Valgrind test
 #
@@ -183,6 +227,22 @@ msqueeze: $(exe) test/generated/Python2.pdf.intermediate-mu.xml
 mfailat: $(exe) test/generated/Python2.pdf.intermediate-mu.xml
 	MEMENTO_FAILAT=61463 $(run_exe) --alloc-min-block-size 0 -r 1 -s 0 -i test/generated/Python2.pdf.intermediate-mu.xml -o test/generated/msqueeze-out.docx
 endif
+
+
+# Temporary rules for generating reference files.
+#
+#temp_ersdr = \
+#        $(patsubst %, %.intermediate-mu.xml.extract-rotate-spacing.docx.dir.ref, $(pdfs)) \
+#        $(patsubst %, %.intermediate-gs.xml.extract-rotate-spacing.docx.dir.ref, $(pdfs)) \
+#
+#temp: $(temp_ersdr)
+#test/%.xml.extract-rotate-spacing.docx.dir.ref: test/generated/%.xml.extract-rotate-spacing.docx.dir
+#	@echo
+#	@echo copying $< to %@
+#	rsync -ai $</ $@/
+
+
+
 
 # Buffer unit test.
 #
