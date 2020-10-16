@@ -225,8 +225,8 @@ void extract_xml_tag_init(extract_xml_tag_t* tag)
 
 void extract_xml_tag_free(extract_xml_tag_t* tag)
 {
-    extract_free(&tag->name);
     int i;
+    extract_free(&tag->name);
     for (i=0; i<tag->attributes_num; ++i) {
         extract_xml_attribute_t* attribute = &tag->attributes[i];
         extract_free(&attribute->name);
@@ -283,9 +283,9 @@ int extract_xml_pparse_init(extract_buffer_t* buffer, const char* first_line)
 
     if (first_line) {
         size_t first_line_len = strlen(first_line);
+        size_t actual;
         if (extract_malloc(&first_line_buffer, first_line_len + 1)) goto end;
 
-        size_t actual;
         if (extract_buffer_read(buffer, first_line_buffer, first_line_len, &actual)) {
             outf("error: failed to read first line.");
             goto end;
@@ -342,20 +342,17 @@ static const char* extract_xml_tag_string(extract_xml_tag_t* tag)
 
 int extract_xml_pparse_next(extract_buffer_t* buffer, extract_xml_tag_t* out)
 {
-    int ret = -1;
-    if (0) outf("out is: %s", extract_xml_tag_string(out));
-    extract_xml_tag_free(out);
-
+    int     ret = -1;
     char*   attribute_name = NULL;
     char*   attribute_value = NULL;
-
-    extract_xml_tag_init(out);
-    char c;
+    char    c;
+    int     i;
+    if (0) outf("out is: %s", extract_xml_tag_string(out));
+    extract_xml_tag_free(out);
 
     assert(buffer);
 
     /* Read tag name. */
-    int i = 0;
     for( i=0;; ++i) {
         int e = extract_buffer_read(buffer, &c, 1, NULL);
         if (e) {
@@ -382,6 +379,7 @@ int extract_xml_pparse_next(extract_buffer_t* buffer, extract_xml_tag_t* out)
                 /* Read attribute value. */
                 int quote_single = 0;
                 int quote_double = 0;
+                int l;
                 for(;;) {
                     if (s_next(buffer, &ret, &c)) goto end;
                     if (c == '\'')      quote_single = !quote_single;
@@ -400,7 +398,7 @@ int extract_xml_pparse_next(extract_buffer_t* buffer, extract_xml_tag_t* out)
                 }
 
                 /* Remove any enclosing quotes. */
-                int l = strlen(attribute_value);
+                l = strlen(attribute_value);
                 if (l >= 2) {
                     if (
                             (attribute_value[0] == '"' && attribute_value[l-1] == '"')

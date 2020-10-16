@@ -21,10 +21,10 @@ void (outf)(
         ...
         )
 {
+    va_list va;
     if (level > s_verbose) {
         return;
     }
-    va_list va;
     
     if (ln) {
         fprintf(stderr, "%s:%i:%s: ", file, line, fn);

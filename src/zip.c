@@ -111,10 +111,11 @@ static int s_native_little_endinesss(void)
 
 static int s_write(extract_zip_t* zip, const void* data, size_t data_length)
 {
+    size_t actual;
+    int e;
     if (zip->errno_)    return -1;
     if (zip->eof)       return +1;
-    size_t actual;
-    int e = extract_buffer_write(zip->buffer, data, data_length, &actual);
+    e = extract_buffer_write(zip->buffer, data, data_length, &actual);
     if (e == -1)    zip->errno_ = errno;
     if (e == +1)    zip->eof = 1;
     return e;
@@ -179,21 +180,22 @@ int extract_zip_write_file(
     if (!cd_file->name) goto end;
     
     /* Write local file header. */
-    const char extra_local[] = "";
-    s_write_uint32(zip, 0x04034b50);
-    s_write_uint16(zip, zip->version_extract);          /* Version needed to extract (minimum). */
-    s_write_uint16(zip, zip->general_purpose_bit_flag); /* General purpose bit flag */
-    s_write_uint16(zip, 0);                             /* Compression method */
-    s_write_uint16(zip, cd_file->mtime);                /* File last modification time */
-    s_write_uint16(zip, cd_file->mdate);                /* File last modification date */
-    s_write_uint32(zip, cd_file->crc_sum);              /* CRC-32 of uncompressed data */
-    s_write_uint32(zip, cd_file->size_compressed);      /* Compressed size */
-    s_write_uint32(zip, cd_file->size_uncompressed);    /* Uncompressed size */
-    s_write_uint16(zip, strlen(name));                  /* File name length (n) */
-    s_write_uint16(zip, sizeof(extra_local)-1);         /* Extra field length (m) */
-    s_write_string(zip, cd_file->name);                 /* File name */
-    s_write(zip, extra_local, sizeof(extra_local)-1);   /* Extra field */
-    
+    {
+        const char extra_local[] = "";  /* Modify for testing. */
+        s_write_uint32(zip, 0x04034b50);
+        s_write_uint16(zip, zip->version_extract);          /* Version needed to extract (minimum). */
+        s_write_uint16(zip, zip->general_purpose_bit_flag); /* General purpose bit flag */
+        s_write_uint16(zip, 0);                             /* Compression method */
+        s_write_uint16(zip, cd_file->mtime);                /* File last modification time */
+        s_write_uint16(zip, cd_file->mdate);                /* File last modification date */
+        s_write_uint32(zip, cd_file->crc_sum);              /* CRC-32 of uncompressed data */
+        s_write_uint32(zip, cd_file->size_compressed);      /* Compressed size */
+        s_write_uint32(zip, cd_file->size_uncompressed);    /* Uncompressed size */
+        s_write_uint16(zip, strlen(name));                  /* File name length (n) */
+        s_write_uint16(zip, sizeof(extra_local)-1);         /* Extra field length (m) */
+        s_write_string(zip, cd_file->name);                 /* File name */
+        s_write(zip, extra_local, sizeof(extra_local)-1);   /* Extra field */
+    }
     /* Write the (uncompressed) data. */
     s_write(zip, data, data_length);
     

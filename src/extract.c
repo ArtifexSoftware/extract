@@ -1066,9 +1066,11 @@ static int make_lines(
                     sizeof(span_t*) * line_a->spans_num,
                     sizeof(span_t*) * (line_a->spans_num + nearest_line->spans_num)
                     )) goto end;
-            int k;
-            for (k=0; k<nearest_line->spans_num; ++k) {
-                line_a->spans[ line_a->spans_num + k] = nearest_line->spans[k];
+            {
+                int k;
+                for (k=0; k<nearest_line->spans_num; ++k) {
+                    line_a->spans[ line_a->spans_num + k] = nearest_line->spans[k];
+                }
             }
             line_a->spans_num += nearest_line->spans_num;
 
@@ -1089,28 +1091,31 @@ static int make_lines(
         }
     }
 
-    /* Remove empty lines left behind after we appended pairs of lines. */
-    int from;
-    int to;
-    for (from=0, to=0; from<lines_num; ++from) {
-        if (lines[from]) {
-            outfx("final line from=%i: %s",
-                    from,
-                    lines[from] ? line_string(lines[from]) : "NULL"
-                    );
-            lines[to] = lines[from];
-            to += 1;
+    {
+        /* Remove empty lines left behind after we appended pairs of lines. */
+        int from;
+        int to;
+        int lines_num_old;
+        for (from=0, to=0; from<lines_num; ++from) {
+            if (lines[from]) {
+                outfx("final line from=%i: %s",
+                        from,
+                        lines[from] ? line_string(lines[from]) : "NULL"
+                        );
+                lines[to] = lines[from];
+                to += 1;
+            }
         }
-    }
-    int lines_num_old = lines_num;
-    lines_num = to;
-    if (extract_realloc2(
-            &lines,
-            sizeof(line_t*) * lines_num_old,
-            sizeof(line_t*) * lines_num
-            )) {
-        /* Should always succeed because we're not increasing allocation size. */
-        goto end;
+        lines_num_old = lines_num;
+        lines_num = to;
+        if (extract_realloc2(
+                &lines,
+                sizeof(line_t*) * lines_num_old,
+                sizeof(line_t*) * lines_num
+                )) {
+            /* Should always succeed because we're not increasing allocation size. */
+            goto end;
+        }
     }
 
     *o_lines = lines;
@@ -1207,20 +1212,24 @@ static int paragraphs_cmp(const void* a, const void* b)
     int d = matrix_cmp4(&a_span->ctm, &b_span->ctm);
     if (d)  return d;
 
-    float a_angle = line_angle(a_line);
-    float b_angle = line_angle(b_line);
-    if (fabs(a_angle - b_angle) > 3.14/2) {
-        /* Give up if more than 90 deg. */
-        return 0;
+    {
+        float a_angle = line_angle(a_line);
+        float b_angle = line_angle(b_line);
+        if (fabs(a_angle - b_angle) > 3.14/2) {
+            /* Give up if more than 90 deg. */
+            return 0;
+        }
+        {
+            float angle = (a_angle + b_angle) / 2;
+            float ax = line_item_first(a_line)->x;
+            float ay = line_item_first(a_line)->y;
+            float bx = line_item_first(b_line)->x;
+            float by = line_item_first(b_line)->y;
+            float distance = line_distance(ax, ay, bx, by, angle);
+            if (distance > 0)   return -1;
+            if (distance < 0)   return +1;
+        }
     }
-    float angle = (a_angle + b_angle) / 2;
-    float ax = line_item_first(a_line)->x;
-    float ay = line_item_first(a_line)->y;
-    float bx = line_item_first(b_line)->x;
-    float by = line_item_first(b_line)->y;
-    float distance = line_distance(ax, ay, bx, by, angle);
-    if (distance > 0)   return -1;
-    if (distance < 0)   return +1;
     return 0;
 }
 
@@ -1252,12 +1261,13 @@ static int make_paragraphs(
         )
 {
     int ret = -1;
+    int a;
+    int num_joins;
     paragraph_t** paragraphs = NULL;
 
     /* Start off with an paragraph_t for each line_t. */
     int paragraphs_num = lines_num;
     if (extract_malloc(&paragraphs, sizeof(*paragraphs) * paragraphs_num)) goto end;
-    int a;
     /* Ensure we can clean up after error when setting up. */
     for (a=0; a<paragraphs_num; ++a) {
         paragraphs[a] = NULL;
@@ -1271,9 +1281,16 @@ static int make_paragraphs(
         paragraphs[a]->lines[0] = lines[a];
     }
 
-    int num_joins = 0;
+    num_joins = 0;
     for (a=0; a<paragraphs_num; ++a) {
-
+        paragraph_t* nearest_paragraph;
+        int nearest_paragraph_b;
+        float nearest_paragraph_distance;
+        line_t* line_a;
+        float angle_a;
+        int verbose;
+        int b;
+        
         paragraph_t* paragraph_a = paragraphs[a];
         if (!paragraph_a) {
             /* This paragraph is empty - already been appended to a different
@@ -1281,71 +1298,75 @@ static int make_paragraphs(
             continue;
         }
 
-        paragraph_t* nearest_paragraph = NULL;
-        int nearest_paragraph_b = -1;
-        float nearest_paragraph_distance = -1;
+        nearest_paragraph = NULL;
+        nearest_paragraph_b = -1;
+        nearest_paragraph_distance = -1;
         assert(paragraph_a->lines_num > 0);
 
-        line_t* line_a = paragraph_line_last(paragraph_a);
-        float angle_a = line_angle(line_a);
+        line_a = paragraph_line_last(paragraph_a);
+        angle_a = line_angle(line_a);
 
-        int verbose = 0;
+        verbose = 0;
 
         /* Look for nearest paragraph_t that could be appended to
         paragraph_a. */
-        int b;
         for (b=0; b<paragraphs_num; ++b) {
             paragraph_t* paragraph_b = paragraphs[b];
+            line_t* line_b;
             if (!paragraph_b) {
                 /* This paragraph is empty - already been appended to a different
                 paragraph. */
                 continue;
             }
-            line_t* line_b = paragraph_line_first(paragraph_b);
+            line_b = paragraph_line_first(paragraph_b);
             if (!lines_are_compatible(line_a, line_b, angle_a, 0)) {
                 continue;
             }
 
-            float ax = line_item_last(line_a)->x;
-            float ay = line_item_last(line_a)->y;
-            float bx = line_item_first(line_b)->x;
-            float by = line_item_first(line_b)->y;
-            float distance = line_distance(ax, ay, bx, by, angle_a);
-            if (verbose) {
-                outf(
-                        "angle_a=%lf a=(%lf %lf) b=(%lf %lf) delta=(%lf %lf) distance=%lf:",
-                        angle_a * 180 / g_pi,
-                        ax, ay,
-                        bx, by,
-                        bx - ax,
-                        by - ay,
-                        distance
-                        );
-                outf("    line_a=%s", line_string2(line_a));
-                outf("    line_b=%s", line_string2(line_b));
-            }
-            if (distance > 0) {
-                if (nearest_paragraph_distance == -1
-                        || distance < nearest_paragraph_distance) {
-                    if (verbose) {
-                        outf("updating nearest. distance=%lf:", distance);
-                        outf("    line_a=%s", line_string2(line_a));
-                        outf("    line_b=%s", line_string2(line_b));
+            {
+                float ax = line_item_last(line_a)->x;
+                float ay = line_item_last(line_a)->y;
+                float bx = line_item_first(line_b)->x;
+                float by = line_item_first(line_b)->y;
+                float distance = line_distance(ax, ay, bx, by, angle_a);
+                if (verbose) {
+                    outf(
+                            "angle_a=%lf a=(%lf %lf) b=(%lf %lf) delta=(%lf %lf) distance=%lf:",
+                            angle_a * 180 / g_pi,
+                            ax, ay,
+                            bx, by,
+                            bx - ax,
+                            by - ay,
+                            distance
+                            );
+                    outf("    line_a=%s", line_string2(line_a));
+                    outf("    line_b=%s", line_string2(line_b));
+                }
+                if (distance > 0) {
+                    if (nearest_paragraph_distance == -1
+                            || distance < nearest_paragraph_distance) {
+                        if (verbose) {
+                            outf("updating nearest. distance=%lf:", distance);
+                            outf("    line_a=%s", line_string2(line_a));
+                            outf("    line_b=%s", line_string2(line_b));
+                        }
+                        nearest_paragraph_distance = distance;
+                        nearest_paragraph_b = b;
+                        nearest_paragraph = paragraph_b;
                     }
-                    nearest_paragraph_distance = distance;
-                    nearest_paragraph_b = b;
-                    nearest_paragraph = paragraph_b;
                 }
             }
         }
 
         if (nearest_paragraph) {
-            line_t* line_b = paragraph_line_first(nearest_paragraph);
-            (void) line_b; /* Only used in outfx(). */
             float line_b_size = line_font_size_max(
                     paragraph_line_first(nearest_paragraph)
                     );
+            line_t* line_b = paragraph_line_first(nearest_paragraph);
+            (void) line_b; /* Only used in outfx(). */
             if (nearest_paragraph_distance < 1.5 * line_b_size) {
+                span_t* a_span;
+                int a_lines_num_new;
                 if (verbose) {
                     outf(
                             "joing paragraphs. a=(%lf,%lf) b=(%lf,%lf) nearest_paragraph_distance=%lf line_b_size=%lf",
@@ -1366,7 +1387,7 @@ static int make_paragraphs(
                             );
                 }
                 /* Join these two paragraph_t's. */
-                span_t* a_span = line_span_last(line_a);
+                a_span = line_span_last(line_a);
                 if (span_char_last(a_span)->ucs == '-') {
                     /* remove trailing '-' at end of prev line. char_t doesn't
                     contain any malloc-heap pointers so this doesn't leak. */
@@ -1374,23 +1395,27 @@ static int make_paragraphs(
                 }
                 else {
                     /* Insert space before joining adjacent lines. */
+                    char_t* c_prev;
+                    char_t* c;
                     if (span_append_c(line_span_last(line_a), ' ')) goto end;
-                    char_t* c_prev = &a_span->chars[ a_span->chars_num-2];
-                    char_t* c = &a_span->chars[ a_span->chars_num-1];
+                    c_prev = &a_span->chars[ a_span->chars_num-2];
+                    c = &a_span->chars[ a_span->chars_num-1];
                     c->x = c_prev->x + c_prev->adv * a_span->ctm.a;
                     c->y = c_prev->y + c_prev->adv * a_span->ctm.c;
                 }
 
-                int a_lines_num_new = paragraph_a->lines_num + nearest_paragraph->lines_num;
+                a_lines_num_new = paragraph_a->lines_num + nearest_paragraph->lines_num;
                 if (extract_realloc2(
                         &paragraph_a->lines,
                         sizeof(line_t*) * paragraph_a->lines_num,
                         sizeof(line_t*) * a_lines_num_new
                         )) goto end;
-                int i;
-                for (i=0; i<nearest_paragraph->lines_num; ++i) {
-                    paragraph_a->lines[paragraph_a->lines_num + i]
-                        = nearest_paragraph->lines[i];
+                {
+                    int i;
+                    for (i=0; i<nearest_paragraph->lines_num; ++i) {
+                        paragraph_a->lines[paragraph_a->lines_num + i]
+                            = nearest_paragraph->lines[i];
+                    }
                 }
                 paragraph_a->lines_num = a_lines_num_new;
 
@@ -1423,26 +1448,29 @@ static int make_paragraphs(
         }
     }
 
-    /* Remove empty paragraphs. */
-    int from;
-    int to;
-    for (from=0, to=0; from<paragraphs_num; ++from) {
-        if (paragraphs[from]) {
-            paragraphs[to] = paragraphs[from];
-            to += 1;
+    {
+        /* Remove empty paragraphs. */
+        int from;
+        int to;
+        int paragraphs_num_old;
+        for (from=0, to=0; from<paragraphs_num; ++from) {
+            if (paragraphs[from]) {
+                paragraphs[to] = paragraphs[from];
+                to += 1;
+            }
         }
-    }
-    outfx("paragraphs_num=%i => %i", paragraphs_num, to);
-    int paragraphs_num_old = paragraphs_num;
-    paragraphs_num = to;
-    if (extract_realloc2(
-            &paragraphs,
-            sizeof(paragraph_t*) * paragraphs_num_old,
-            sizeof(paragraph_t*) * paragraphs_num
-            )) {
-        /* Should always succeed because we're not increasing allocation size, but
-        can fail with memento squeeze. */
-        goto end;
+        outfx("paragraphs_num=%i => %i", paragraphs_num, to);
+        paragraphs_num_old = paragraphs_num;
+        paragraphs_num = to;
+        if (extract_realloc2(
+                &paragraphs,
+                sizeof(paragraph_t*) * paragraphs_num_old,
+                sizeof(paragraph_t*) * paragraphs_num
+                )) {
+            /* Should always succeed because we're not increasing allocation size, but
+            can fail with memento squeeze. */
+            goto end;
+        }
     }
 
     /* Sort paragraphs so they appear in correct order, using paragraphs_cmp().
@@ -1492,21 +1520,29 @@ char_t into a new span_t. */
 static int page_span_end_clean(page_t* page)
 {
     int ret = -1;
+    span_t* span;
+    char_t* char_;
+    float font_size;
+    float x;
+    float y;
+    float err_x;
+    float err_y;
+    point_t dir;
+    
     assert(page->spans_num);
-    span_t* span = page->spans[page->spans_num-1];
+    span = page->spans[page->spans_num-1];
     assert(span->chars_num);
 
     /* Last two char_t's are char_[-2] and char_[-1]. */
-    char_t* char_ = &span->chars[span->chars_num];
+    char_ = &span->chars[span->chars_num];
 
     if (span->chars_num == 1) {
         return 0;
     }
 
-    float font_size = matrix_expansion(span->trm)
+    font_size = matrix_expansion(span->trm)
             * matrix_expansion(span->ctm);
 
-    point_t dir;
     if (span->wmode) {
         dir.x = 0;
         dir.y = 1;
@@ -1517,11 +1553,11 @@ static int page_span_end_clean(page_t* page)
     }
     dir = multiply_matrix_point(span->trm, dir);
 
-    float x = char_[-2].pre_x + char_[-2].adv * dir.x;
-    float y = char_[-2].pre_y + char_[-2].adv * dir.y;
+    x = char_[-2].pre_x + char_[-2].adv * dir.x;
+    y = char_[-2].pre_y + char_[-2].adv * dir.y;
 
-    float err_x = (char_[-1].pre_x - x) / font_size;
-    float err_y = (char_[-1].pre_y - y) / font_size;
+    err_x = (char_[-1].pre_x - x) / font_size;
+    err_y = (char_[-1].pre_y - y) / font_size;
 
     if (span->chars_num >= 2 && span->chars[span->chars_num-2].ucs == ' ') {
         int remove_penultimate_space = 0;
@@ -1570,15 +1606,17 @@ static int page_span_end_clean(page_t* page)
                 err_y,
                 span_string2(span)
                 );
-        span_t* span2 = page_span_append(page);
-        if (!span2) goto end;
-        *span2 = *span;
-        span2->font_name = strdup(span->font_name);
-        if (!span2->font_name) goto end;
-        span2->chars_num = 1;
-        if (extract_malloc(&span2->chars, sizeof(char_t) * span2->chars_num)) goto end;
-        span2->chars[0] = char_[-1];
-        span->chars_num -= 1;
+        {
+            span_t* span2 = page_span_append(page);
+            if (!span2) goto end;
+            *span2 = *span;
+            span2->font_name = strdup(span->font_name);
+            if (!span2->font_name) goto end;
+            span2->chars_num = 1;
+            if (extract_malloc(&span2->chars, sizeof(char_t) * span2->chars_num)) goto end;
+            span2->chars[0] = char_[-1];
+            span->chars_num -= 1;
+        }
         return 0;
     }
     ret = 0;
@@ -1804,139 +1842,146 @@ int extract_intermediate_to_document(
                 goto end;
             }
 
-            span_t* span = page_span_append(page);
-            if (!span) goto end;
-
-            if (s_matrix_read(extract_xml_tag_attributes_find(&tag, "ctm"), &span->ctm)) goto end;
-            if (s_matrix_read(extract_xml_tag_attributes_find(&tag, "trm"), &span->trm)) goto end;
-
-            char* f = extract_xml_tag_attributes_find(&tag, "font_name");
-            if (!f) {
-                outf("Failed to find attribute 'font_name'");
-                goto end;
-            }
-            char* ff = strchr(f, '+');
-            if (ff)  f = ff + 1;
-            span->font_name = strdup(f);
-            if (!span->font_name) {
-                outf("Attribute 'font_name' is bad: %s", f);
-                goto end;
-            }
-            span->font_bold = strstr(span->font_name, "-Bold") ? 1 : 0;
-            span->font_italic = strstr(span->font_name, "-Oblique") ? 1 : 0;
-            
             {
-                /* Need to use temporary int because span->wmode is a bitfield. */
-                int wmode;
-                if (extract_xml_tag_attributes_find_int(&tag, "wmode", &wmode)) {
-                    outf("Failed to find attribute 'wmode'");
-                    goto end;
-                }
-                span->wmode = wmode;
-            }
-
-            float   offset_x = 0;
-            float   offset_y = 0;
-            for(;;) {
-                float char_pre_x;
-                float char_pre_y;
-                char_t* char_;
+                span_t* span = page_span_append(page);
+                char*   f;
+                char*   ff;
+                float   offset_x;
+                float   offset_y;
                 
-                if (extract_xml_pparse_next(buffer, &tag)) {
-                    outf("Failed to find <char or </span");
+                if (!span) goto end;
+
+                if (s_matrix_read(extract_xml_tag_attributes_find(&tag, "ctm"), &span->ctm)) goto end;
+                if (s_matrix_read(extract_xml_tag_attributes_find(&tag, "trm"), &span->trm)) goto end;
+
+                f = extract_xml_tag_attributes_find(&tag, "font_name");
+                if (!f) {
+                    outf("Failed to find attribute 'font_name'");
                     goto end;
                 }
-                if (!strcmp(tag.name, "/span")) {
-                    break;
-                }
-                if (strcmp(tag.name, "char")) {
-                    errno = ESRCH;
-                    outf("Expected <char> but tag.name='%s'", tag.name);
+                ff = strchr(f, '+');
+                if (ff)  f = ff + 1;
+                span->font_name = strdup(f);
+                if (!span->font_name) {
+                    outf("Attribute 'font_name' is bad: %s", f);
                     goto end;
                 }
+                span->font_bold = strstr(span->font_name, "-Bold") ? 1 : 0;
+                span->font_italic = strstr(span->font_name, "-Oblique") ? 1 : 0;
 
-                if (extract_xml_tag_attributes_find_float(&tag, "x", &char_pre_x)) goto end;
-                if (extract_xml_tag_attributes_find_float(&tag, "y", &char_pre_y)) goto end;
+                {
+                    /* Need to use temporary int because span->wmode is a bitfield. */
+                    int wmode;
+                    if (extract_xml_tag_attributes_find_int(&tag, "wmode", &wmode)) {
+                        outf("Failed to find attribute 'wmode'");
+                        goto end;
+                    }
+                    span->wmode = wmode;
+                }
 
-                if (autosplit && char_pre_y - offset_y != 0) {
-                    float e = span->ctm.e + span->ctm.a * (char_pre_x-offset_x)
-                            + span->ctm.b * (char_pre_y - offset_y);
-                    float f = span->ctm.f + span->ctm.c * (char_pre_x-offset_x)
-                            + span->ctm.d * (char_pre_y - offset_y);
-                    offset_x = char_pre_x;
-                    offset_y = char_pre_y;
-                    outfx("autosplit: char_pre_y=%f offset_y=%f",
-                            char_pre_y, offset_y);
+                offset_x = 0;
+                offset_y = 0;
+                for(;;) {
+                    float char_pre_x;
+                    float char_pre_y;
+                    char_t* char_;
+
+                    if (extract_xml_pparse_next(buffer, &tag)) {
+                        outf("Failed to find <char or </span");
+                        goto end;
+                    }
+                    if (!strcmp(tag.name, "/span")) {
+                        break;
+                    }
+                    if (strcmp(tag.name, "char")) {
+                        errno = ESRCH;
+                        outf("Expected <char> but tag.name='%s'", tag.name);
+                        goto end;
+                    }
+
+                    if (extract_xml_tag_attributes_find_float(&tag, "x", &char_pre_x)) goto end;
+                    if (extract_xml_tag_attributes_find_float(&tag, "y", &char_pre_y)) goto end;
+
+                    if (autosplit && char_pre_y - offset_y != 0) {
+                        float e = span->ctm.e + span->ctm.a * (char_pre_x-offset_x)
+                                + span->ctm.b * (char_pre_y - offset_y);
+                        float f = span->ctm.f + span->ctm.c * (char_pre_x-offset_x)
+                                + span->ctm.d * (char_pre_y - offset_y);
+                        offset_x = char_pre_x;
+                        offset_y = char_pre_y;
+                        outfx("autosplit: char_pre_y=%f offset_y=%f",
+                                char_pre_y, offset_y);
+                        outfx(
+                                "autosplit: changing ctm.{e,f} from (%f, %f) to (%f, %f)",
+                                span->ctm.e,
+                                span->ctm.f,
+                                e, f
+                                );
+                        if (span->chars_num > 0) {
+                            /* Create new span. */
+                            span_t* span0 = span;
+                            num_spans_autosplit += 1;
+                            span = page_span_append(page);
+                            if (!span) goto end;
+                            *span = *span0;
+                            span->chars = NULL;
+                            span->chars_num = 0;
+                            span->font_name = strdup(span0->font_name);
+                            if (!span->font_name) goto end;
+                        }
+                        span->ctm.e = e;
+                        span->ctm.f = f;
+                        outfx("autosplit: char_pre_y=%f offset_y=%f",
+                                char_pre_y, offset_y);
+                    }
+
+                    if (span_append_c(span, 0 /*c*/)) goto end;
+                    char_ = &span->chars[ span->chars_num-1];
+                    char_->pre_x = char_pre_x - offset_x;
+                    char_->pre_y = char_pre_y - offset_y;
+                    if (char_->pre_y) {
+                        outfx("char_->pre=(%f %f)",
+                                char_->pre_x, char_->pre_y);
+                    }
+
+                    char_->x = span->ctm.a * char_->pre_x + span->ctm.b * char_->pre_y;
+                    char_->y = span->ctm.c * char_->pre_x + span->ctm.d * char_->pre_y;
+
+                    if (extract_xml_tag_attributes_find_float(&tag, "adv", &char_->adv)) goto end;
+
+                    if (extract_xml_tag_attributes_find_uint(&tag, "ucs", &char_->ucs)) goto end;
+
+                    {
+                        char    trm[64];
+                        snprintf(trm, sizeof(trm), "%s", matrix_string(&span->trm));
+                    }
+                    char_->x += span->ctm.e;
+                    char_->y += span->ctm.f;
+
                     outfx(
-                            "autosplit: changing ctm.{e,f} from (%f, %f) to (%f, %f)",
-                            span->ctm.e,
-                            span->ctm.f,
-                            e, f
+                            "ctm=%s trm=%s ctm*trm=%f pre=(%f %f) =>"
+                            " xy=(%f %f) [orig xy=(%f %f)]",
+                            matrix_string(&span->ctm),
+                            trm,
+                            span->ctm.a * span->trm.a,
+                            char_->pre_x,
+                            char_->pre_y,
+                            char_->x,
+                            char_->y,
+                            x, y
                             );
-                    if (span->chars_num > 0) {
-                        /* Create new span. */
-                        span_t* span0 = span;
-                        num_spans_autosplit += 1;
-                        span = page_span_append(page);
-                        if (!span) goto end;
-                        *span = *span0;
-                        span->chars = NULL;
-                        span->chars_num = 0;
-                        span->font_name = strdup(span0->font_name);
-                        if (!span->font_name) goto end;
-                    }
-                    span->ctm.e = e;
-                    span->ctm.f = f;
-                    outfx("autosplit: char_pre_y=%f offset_y=%f",
-                            char_pre_y, offset_y);
-                }
 
-                if (span_append_c(span, 0 /*c*/)) goto end;
-                char_ = &span->chars[ span->chars_num-1];
-                char_->pre_x = char_pre_x - offset_x;
-                char_->pre_y = char_pre_y - offset_y;
-                if (char_->pre_y) {
-                    outfx("char_->pre=(%f %f)",
-                            char_->pre_x, char_->pre_y);
-                }
-
-                char_->x = span->ctm.a * char_->pre_x + span->ctm.b * char_->pre_y;
-                char_->y = span->ctm.c * char_->pre_x + span->ctm.d * char_->pre_y;
-
-                if (extract_xml_tag_attributes_find_float(&tag, "adv", &char_->adv)) goto end;
-
-                if (extract_xml_tag_attributes_find_uint(&tag, "ucs", &char_->ucs)) goto end;
-
-                {
-                    char    trm[64];
-                    snprintf(trm, sizeof(trm), "%s", matrix_string(&span->trm));
-                }
-                char_->x += span->ctm.e;
-                char_->y += span->ctm.f;
-
-                outfx(
-                        "ctm=%s trm=%s ctm*trm=%f pre=(%f %f) =>"
-                        " xy=(%f %f) [orig xy=(%f %f)]",
-                        matrix_string(&span->ctm),
-                        trm,
-                        span->ctm.a * span->trm.a,
-                        char_->pre_x,
-                        char_->pre_y,
-                        char_->x,
-                        char_->y,
-                        x, y
-                        );
-
-                {
-                    int page_spans_num_old = page->spans_num;
-                    if (page_span_end_clean(page)) goto end;
-                    span = page->spans[page->spans_num-1];
-                    if (page->spans_num != page_spans_num_old) {
-                        num_spans_split += 1;
+                    {
+                        int page_spans_num_old = page->spans_num;
+                        if (page_span_end_clean(page)) goto end;
+                        span = page->spans[page->spans_num-1];
+                        if (page->spans_num != page_spans_num_old) {
+                            num_spans_split += 1;
+                        }
                     }
                 }
+                extract_xml_tag_free(&tag);
             }
-            extract_xml_tag_free(&tag);
         }
         outf("page=%i page->num_spans=%i",
                 document->pages_num, page->spans_num);
