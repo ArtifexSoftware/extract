@@ -16,10 +16,12 @@
 
 # Build flags.
 #
+# Note that OpenBSD's clang-8 appears to ignore -Wdeclaration-after-statement.
+#
 build = debug
 
 flags_link      = -W -Wall -lm
-flags_compile   = -W -Wall -Wpointer-sign -Wmissing-declarations -Wmissing-prototypes -Werror -MMD -MP
+flags_compile   = -W -Wall -Wpointer-sign -Wmissing-declarations -Wmissing-prototypes -Wdeclaration-after-statement -Werror -MMD -MP
 
 uname = $(shell uname)
 

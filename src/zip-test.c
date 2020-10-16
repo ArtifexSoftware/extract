@@ -209,7 +209,7 @@ static int s_show(const char* filename)
     }
     
     outf("finished");
-    free(data);
+    extract_free(&data);
     
     return 0;
 }

@@ -84,8 +84,8 @@ int extract_zip_open(extract_buffer_t* buffer, extract_zip_t** o_zip)
     
     end:
     if (e) {
-        if (zip) free(zip->archive_comment);
-        free(zip);
+        if (zip) extract_free(&zip->archive_comment);
+        extract_free(&zip);
         *o_zip = NULL;
     }
     else {
@@ -207,7 +207,7 @@ int extract_zip_write_file(
     if (e) {
         /* Leave zip->cd_files_num unchanged, so calling extract_zip_close()
         will write out any earlier files. Free cd_file->name to avoid leak. */
-        if (cd_file) free(cd_file->name);
+        if (cd_file) extract_free(&cd_file->name);
     }
     else {
         /* cd_files[zip->cd_files_num] is valid. */
@@ -250,11 +250,9 @@ int extract_zip_close(extract_zip_t* zip)
         s_write_string(zip, cd_file->name);                 /* File name */
         s_write(zip, extra, sizeof(extra)-1);               /* Extra field */
         len += extract_buffer_pos(zip->buffer) - pos2;
-        free(cd_file->name);
-        cd_file->name = NULL;
+        extract_free(&cd_file->name);
     }
-    free(zip->cd_files);
-    zip->cd_files = NULL;
+    extract_free(&zip->cd_files);
     
     /* Write End of central directory record. */
     s_write_uint32(zip, 0x06054b50);
@@ -267,13 +265,13 @@ int extract_zip_close(extract_zip_t* zip)
     
     s_write_uint16(zip, strlen(zip->archive_comment));  /* Comment length (n) */
     s_write_string(zip, zip->archive_comment);
-    free(zip->archive_comment);
+    extract_free(&zip->archive_comment);
     
     if (zip->errno_)    e = -1;
     else if (zip->eof)  e = +1;
     else e = 0;
     
-    free(zip);
+    extract_free(&zip);
     
     return e;
 }

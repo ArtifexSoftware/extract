@@ -225,14 +225,14 @@ void extract_xml_tag_init(extract_xml_tag_t* tag)
 
 void extract_xml_tag_free(extract_xml_tag_t* tag)
 {
-    free(tag->name);
+    extract_free(&tag->name);
     int i;
     for (i=0; i<tag->attributes_num; ++i) {
         extract_xml_attribute_t* attribute = &tag->attributes[i];
-        free(attribute->name);
-        free(attribute->value);
+        extract_free(&attribute->name);
+        extract_free(&attribute->value);
     }
-    free(tag->attributes);
+    extract_free(&tag->attributes);
     extract_astring_free(&tag->text);
     extract_xml_tag_init(tag);
 }
@@ -317,7 +317,7 @@ int extract_xml_pparse_init(extract_buffer_t* buffer, const char* first_line)
     e = 0;
 
     end:
-    free(first_line_buffer);
+    extract_free(&first_line_buffer);
     return e;
 }
 
@@ -335,8 +335,7 @@ static int s_next(extract_buffer_t* buffer, int* ret, char* o_c)
 static const char* extract_xml_tag_string(extract_xml_tag_t* tag)
 {
     static char* buffer = NULL;
-    free(buffer);
-    buffer = NULL;
+    extract_free(&buffer);
     asprintf(&buffer, "<name=%s>", tag->name ? tag->name : "");
     return buffer;
 }
@@ -440,8 +439,8 @@ int extract_xml_pparse_next(extract_buffer_t* buffer, extract_xml_tag_t* out)
 
     end:
 
-    free(attribute_name);
-    free(attribute_value);
+    extract_free(&attribute_name);
+    extract_free(&attribute_value);
     if (ret) {
         extract_xml_tag_free(out);
     }

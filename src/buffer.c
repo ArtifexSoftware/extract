@@ -51,8 +51,7 @@ int extract_buffer_open(
     
     end:
     if (e) {
-        free(buffer);
-        *o_buffer = NULL;
+        extract_free(&buffer);
     }
     else {
         *o_buffer = buffer;
@@ -138,7 +137,7 @@ int extract_buffer_close(extract_buffer_t** p_buffer)
     if (buffer->fn_close) buffer->fn_close(buffer->handle);
     e = 0;
     end:
-    free(buffer);
+    extract_free(&buffer);
     *p_buffer = NULL;
     return e;
 }
@@ -259,9 +258,9 @@ int extract_buffer_read_internal(
     /* In each iteration we either read from cache, or use buffer->fn_read()
     directly or repopulate the cache. */
     for(;;) {
+        size_t n;
         if (pos == numbytes) break;
-        
-        size_t n = buffer->cache.numbytes - buffer->cache.pos;
+        n = buffer->cache.numbytes - buffer->cache.pos;
         if (n) {
             /* There is data in cache. */
             if (n > numbytes - pos) n = numbytes - pos;
@@ -286,8 +285,8 @@ int extract_buffer_read_internal(
             if (use_read) {
                 /* Use buffer->fn_read() directly, carrying on looping in case
                 of short read. */
-                outfx("using buffer->fn_read() directly for numbytes-pos=%i\n", numbytes-pos);
                 size_t actual;
+                outfx("using buffer->fn_read() directly for numbytes-pos=%i\n", numbytes-pos);
                 if (buffer->fn_read(buffer->handle, (char*) destination + pos, numbytes - pos, &actual)) goto end;
                 if (actual == 0) break; /* EOF. */
                 pos += actual;
@@ -325,11 +324,11 @@ int extract_buffer_write_internal(
     /* In each iteration we either write to cache, or use buffer->fn_write()
     directly or repopulate the cache. */
     for(;;) {
+        size_t  n;
         outfx("numbytes=%i pos=%i. buffer->cache.numbytes=%i buffer->cache.pos=%i\n",
                 numbytes, pos, buffer->cache.numbytes, buffer->cache.pos);
         if (pos == numbytes) break;
-        
-        size_t n = buffer->cache.numbytes - buffer->cache.pos;
+        n = buffer->cache.numbytes - buffer->cache.pos;
         if (n) {
             /* There is space in cache for writing. */
             if (n > numbytes - pos) n = numbytes - pos;
@@ -340,15 +339,17 @@ int extract_buffer_write_internal(
         }
         else {
             /* No space in cache. */
+            int use_write = 0;
             outfx("cache empty. pos=%i. buffer->cache.numbytes=%i buffer->cache.pos=%i\n",
                     pos, buffer->cache.numbytes, buffer->cache.pos);
             {
                 size_t actual;
                 int ee;
                 size_t b = buffer->cache.numbytes;
+                ssize_t delta;
                 ee = s_cache_flush(buffer, &actual);
                 assert(actual <= b);
-                ssize_t delta = actual - b;
+                delta = actual - b;
                 pos += delta;
                 buffer->pos += delta;
                 if (delta) {
@@ -363,7 +364,6 @@ int extract_buffer_write_internal(
                 if (ee) goto end;
             }
             
-            int use_write = 0;
             if (!buffer->fn_cache) {
                 use_write = 1;
             }

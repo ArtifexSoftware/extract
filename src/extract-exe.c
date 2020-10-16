@@ -184,8 +184,9 @@ int main(int argc, char** argv)
     }
 
     if (content_path) {
+        FILE* f;
         printf("Writing content to: %s\n", content_path);
-        FILE* f = fopen(content_path, "w");
+        f = fopen(content_path, "w");
         if (!f) {
             printf("Failed to create content file: %s\n", content_path);
             goto end;
@@ -237,7 +238,7 @@ int main(int argc, char** argv)
     e = 0;
     end:
 
-    free(content);
+    extract_free(&content);
     extract_document_free(&document);
     extract_buffer_close(&intermediate);
     extract_buffer_close(&out_buffer);
@@ -247,7 +248,6 @@ int main(int argc, char** argv)
         return 1;
     }
     
-    extern void extract_end(void);
     extract_end();
     
     if (alloc_stats) {

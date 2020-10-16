@@ -66,8 +66,7 @@ static int s_read_cache(void* handle, void** o_cache, size_t* o_numbytes)
 static void s_read_buffer_close(void* handle)
 {
     mem_t* r = handle;
-    free(r->data);
-    r->data = NULL;
+    extract_free(&r->data);
 }
 
 static void s_create_read_buffer(int bytes, mem_t* r, extract_buffer_t** o_buffer)
@@ -117,7 +116,7 @@ static void test_read(void)
     assert(!memcmp(out_buffer, r.data, len));
     outf("its=%i num_calls_read=%i num_calls_write=%i num_calls_cache=%i",
             its, r.num_calls_read, r.num_calls_write, r.num_calls_cache);
-    free(out_buffer);
+    extract_free(&out_buffer);
     out_buffer = NULL;
     int e = extract_buffer_close(&buffer);
     assert(!e);
@@ -163,8 +162,7 @@ static void s_write_buffer_close(void* handle)
 {
     mem_t* mem = handle;
     outf("*** freeing mem->data=%p", mem->data);
-    free(mem->data);
-    mem->data = NULL;
+    extract_free(&mem->data);
 }
 
 static void s_create_write_buffer(size_t bytes, mem_t* r, extract_buffer_t** o_buffer)
@@ -212,8 +210,7 @@ static void test_write(void)
     }
     assert(out_pos == len);
     assert(!memcmp(out_buffer, r.data, len));
-    free(out_buffer);
-    out_buffer = NULL;
+    extract_free(&out_buffer);
     outf("its=%i num_calls_read=%i num_calls_write=%i num_calls_cache=%i",
             its, r.num_calls_read, r.num_calls_write, r.num_calls_cache);
     int e = extract_buffer_close(&buffer);

@@ -13,11 +13,13 @@ static int round_up(size_t n)
 {
     if (s_exp_min_alloc_size) {
         /* Round up to power of two. */
+        size_t ret;
         if (n==0) return 0;
-        size_t ret = s_exp_min_alloc_size;
+        ret = s_exp_min_alloc_size;
         for(;;) {
+            size_t ret_old;
             if (ret >= n) return ret;
-            size_t ret_old = ret;
+            ret_old = ret;
             ret *= 2;
             assert(ret > ret_old);
         }
@@ -29,9 +31,10 @@ static int round_up(size_t n)
 
 int (extract_malloc)(void** pptr, size_t size)
 {
+    void* p;
     size = round_up(size);
     extract_alloc_info.num_malloc += 1;
-    void* p = malloc(size);
+    p = malloc(size);
     if (!p) return -1;
     *pptr = p;
     return 0;

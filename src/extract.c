@@ -40,7 +40,7 @@ static float matrix_expansion(matrix_t m)
     return sqrtf(fabsf(m.a * m.d - m.b * m.c));
 }
 
-/* Unused but usefult o keep code here. */
+/* Unused but useful to keep code here. */
 #if 0
 static void matrix_scale(matrix_t* matrix, float scale)
 {
@@ -135,14 +135,15 @@ typedef struct
 static const char* span_string(span_t* span)
 {
     static extract_astring_t ret = {0};
-    extract_astring_free(&ret);
-    if (!span) return NULL;
     float x0 = 0;
     float y0 = 0;
     float x1 = 0;
     float y1 = 0;
     int c0 = 0;
     int c1 = 0;
+    int i;
+    extract_astring_free(&ret);
+    if (!span) return NULL;
     if (span->chars_num) {
         c0 = span->chars[0].ucs;
         x0 = span->chars[0].x;
@@ -151,30 +152,31 @@ static const char* span_string(span_t* span)
         x1 = span->chars[span->chars_num-1].x;
         y1 = span->chars[span->chars_num-1].y;
     }
-    char buffer[200];
-    snprintf(buffer, sizeof(buffer),
-            "span chars_num=%i (%c:%f,%f)..(%c:%f,%f) font=%s:(%f,%f) wmode=%i chars_num=%i: ",
-            span->chars_num,
-            c0, x0, y0,
-            c1, x1, y1,
-            span->font_name,
-            span->trm.a,
-            span->trm.d,
-            span->wmode,
-            span->chars_num
-            );
-    extract_astring_cat(&ret, buffer);
-    int i;
-    for (i=0; i<span->chars_num; ++i) {
-        snprintf(
-                buffer,
-                sizeof(buffer),
-                " i=%i {x=%f adv=%f}",
-                i,
-                span->chars[i].x,
-                span->chars[i].adv
+    {
+        char buffer[200];
+        snprintf(buffer, sizeof(buffer),
+                "span chars_num=%i (%c:%f,%f)..(%c:%f,%f) font=%s:(%f,%f) wmode=%i chars_num=%i: ",
+                span->chars_num,
+                c0, x0, y0,
+                c1, x1, y1,
+                span->font_name,
+                span->trm.a,
+                span->trm.d,
+                span->wmode,
+                span->chars_num
                 );
         extract_astring_cat(&ret, buffer);
+        for (i=0; i<span->chars_num; ++i) {
+            snprintf(
+                    buffer,
+                    sizeof(buffer),
+                    " i=%i {x=%f adv=%f}",
+                    i,
+                    span->chars[i].x,
+                    span->chars[i].adv
+                    );
+            extract_astring_cat(&ret, buffer);
+        }
     }
     extract_astring_cat(&ret, ": ");
     extract_astring_catc(&ret, '"');
@@ -189,9 +191,9 @@ static const char* span_string(span_t* span)
 static const char* span_string2(span_t* span)
 {
     static extract_astring_t ret = {0};
+    int i;
     extract_astring_free(&ret);
     extract_astring_catc(&ret, '"');
-    int i;
     for (i=0; i<span->chars_num; ++i) {
         extract_astring_catc(&ret, span->chars[i].ucs);
     }
@@ -203,6 +205,7 @@ static const char* span_string2(span_t* span)
 fields zeroed. */
 static int span_append_c(span_t* span, int c)
 {
+    char_t* item;
     if (extract_realloc2(
             &span->chars,
             sizeof(*span->chars) * span->chars_num,
@@ -210,7 +213,7 @@ static int span_append_c(span_t* span, int c)
             )) {
         return -1;
     }
-    char_t* item = &span->chars[span->chars_num];
+    item = &span->chars[span->chars_num];
     span->chars_num += 1;
     char_init(item);
     item->ucs = c;
@@ -219,13 +222,13 @@ static int span_append_c(span_t* span, int c)
 
 static char_t* span_char_first(span_t* span)
 {
-    assert(span->chars_num);
+    assert(span->chars_num > 0);
     return &span->chars[0];
 }
 
 static char_t* span_char_last(span_t* span)
 {
-    assert(span->chars_num);
+    assert(span->chars_num > 0);
     return &span->chars[span->chars_num-1];
 }
 
@@ -296,7 +299,7 @@ typedef struct
     int         spans_num;
 } line_t;
 
-/* Unused but usefult o keep code here. */
+/* Unused but useful to keep code here. */
 #if 0
 /* Returns static string containing info about line_t. */
 static const char* line_string(line_t* line)
@@ -320,6 +323,7 @@ static const char* line_string2(line_t* line)
 {
     static extract_astring_t ret = {0};
     char    buffer[256];
+    int i;
     extract_astring_free(&ret);
     snprintf(buffer, sizeof(buffer), "line x=%f y=%f spans_num=%i:",
             line->spans[0]->chars[0].x,
@@ -327,7 +331,6 @@ static const char* line_string2(line_t* line)
             line->spans_num
             );
     extract_astring_cat(&ret, buffer);
-    int i;
     for (i=0; i<line->spans_num; ++i) {
         extract_astring_cat(&ret, " ");
         extract_astring_cat(&ret, span_string2(line->spans[i]));
@@ -473,45 +476,51 @@ static void page_init(page_t* page)
 
 static void page_free(page_t* page)
 {
+    int s;
     if (!page) return;
 
-    int s;
     for (s=0; s<page->spans_num; ++s) {
         span_t* span = page->spans[s];
         if (span) {
-            free(span->chars);
-            free(span->font_name);
+            extract_free(&span->chars);
+            extract_free(&span->font_name);
         }
-        free(span);
+        extract_free(&span);
     }
-    free(page->spans);
+    extract_free(&page->spans);
 
-    int l;
-    for (l=0; l<page->lines_num; ++l) {
-        line_t* line = page->lines[l];
-        free(line->spans);
-        free(line);
-        /* We don't free line->spans->chars[] because already freed via
-        page->spans. */
+    {
+        int l;
+        for (l=0; l<page->lines_num; ++l) {
+            line_t* line = page->lines[l];
+            extract_free(&line->spans);
+            extract_free(&line);
+            /* We don't free line->spans->chars[] because already freed via
+            page->spans. */
+        }
     }
-    free(page->lines);
+    extract_free(&page->lines);
 
-    int p;
-    for (p=0; p<page->paragraphs_num; ++p) {
-        paragraph_t* paragraph = page->paragraphs[p];
-        if (paragraph) free(paragraph->lines);
-        free(paragraph);
+    {
+        int p;
+        for (p=0; p<page->paragraphs_num; ++p) {
+            paragraph_t* paragraph = page->paragraphs[p];
+            if (paragraph) extract_free(&paragraph->lines);
+            extract_free(&paragraph);
+        }
     }
-    free(page->paragraphs);
+    extract_free(&page->paragraphs);
     
-    int i;
-    for (i=0; i<page->images_num; ++i) {
-        free(page->images[i].data);
-        free(page->images[i].type);
-        free(page->images[i].id);
-        free(page->images[i].name);
+    {
+        int i;
+        for (i=0; i<page->images_num; ++i) {
+            extract_free(&page->images[i].data);
+            extract_free(&page->images[i].type);
+            extract_free(&page->images[i].id);
+            extract_free(&page->images[i].name);
+        }
     }
-    free(page->images);
+    extract_free(&page->images);
 }
 
 /* Appends new empty span_ to an page_t; returns NULL with errno set on error.
@@ -528,7 +537,7 @@ static span_t* page_span_append(page_t* page)
             sizeof(*page->spans) * page->spans_num,
             sizeof(*page->spans) * (page->spans_num + 1)
             )) {
-        free(span);
+        extract_free(&span);
         return NULL;
     }
     page->spans[page->spans_num] = span;
@@ -568,21 +577,23 @@ int extract_document_imageinfos(extract_document_t* document, extract_document_i
             imageinfos.images_num += 1;
             
             /* Add image type if we haven't seen it before. */
-            int it;
-            for (it=0; it<imageinfos.imagetypes_num; ++it) {
-                if (!strcmp(imageinfos.imagetypes[it], image->type)) {
-                    break;
+            {
+                int it;
+                for (it=0; it<imageinfos.imagetypes_num; ++it) {
+                    if (!strcmp(imageinfos.imagetypes[it], image->type)) {
+                        break;
+                    }
                 }
-            }
-            if (it == imageinfos.imagetypes_num) {
-                if (extract_realloc2(
-                        &imageinfos.imagetypes,
-                        sizeof(char*) * imageinfos.imagetypes_num,
-                        sizeof(char*) * (imageinfos.imagetypes_num + 1)
-                        )) goto end;
-                assert(image->type);
-                imageinfos.imagetypes[imageinfos.imagetypes_num] = image->type;
-                imageinfos.imagetypes_num += 1;
+                if (it == imageinfos.imagetypes_num) {
+                    if (extract_realloc2(
+                            &imageinfos.imagetypes,
+                            sizeof(char*) * imageinfos.imagetypes_num,
+                            sizeof(char*) * (imageinfos.imagetypes_num + 1)
+                            )) goto end;
+                    assert(image->type);
+                    imageinfos.imagetypes[imageinfos.imagetypes_num] = image->type;
+                    imageinfos.imagetypes_num += 1;
+                }
             }
         }
     }
@@ -598,8 +609,8 @@ int extract_document_imageinfos(extract_document_t* document, extract_document_i
 
 void extract_document_imageinfos_free(extract_document_imagesinfo_t* imageinfos)
 {
-    free(imageinfos->images);
-    free(imageinfos->imagetypes);
+    extract_free(&imageinfos->images);
+    extract_free(&imageinfos->imagetypes);
     imageinfos->images = NULL;
     imageinfos->imagetypes = NULL;
 }
@@ -640,12 +651,12 @@ void extract_document_free(extract_document_t** io_document)
     for (p=0; p<document->pages_num; ++p) {
         page_t* page = document->pages[p];
         page_free(page);
-        free(page);
+        extract_free(&page);
     }
-    free(document->pages);
+    extract_free(&document->pages);
     document->pages = NULL;
     document->pages_num = 0;
-    free(document);
+    extract_free(&document);
     *io_document = NULL;
 }
 
@@ -658,7 +669,7 @@ static int s_sign(float x)
     return 0;
 }
 
-/* Unused but usefult o keep code here. */
+/* Unused but useful to keep code here. */
 #if 0
 /* Returns zero if *lhs and *rhs are equal, otherwise +/- 1. */
 static int matrix_cmp(
@@ -709,12 +720,13 @@ typedef struct
 
 static int s_matrix_read(const char* text, matrix_t* matrix)
 {
+    int n;
     if (!text) {
         outf("text is NULL in s_matrix_read()");
         errno = EINVAL;
         return -1;
     }
-    int n = sscanf(text,
+    n = sscanf(text,
             "%f %f %f %f %f %f",
             &matrix->a,
             &matrix->b,
@@ -730,7 +742,7 @@ static int s_matrix_read(const char* text, matrix_t* matrix)
     return 0;
 }
 
-/* Unused but usefult o keep code here. */
+/* Unused but useful to keep code here. */
 #if 0
 /* Like s_matrix_read() but only expects four values, and sets .e and .g to
 zero. */
@@ -761,7 +773,9 @@ static int s_matrix_read4(const char* text, matrix_t* matrix)
 
 /* Things for direct conversion of text spans into lines and paragraphs. */
 
-/* Returns 1 if lines have same wmode and are at the same angle, else 0. */
+/* Returns 1 if lines have same wmode and are at the same angle, else 0.
+
+todo: allow small epsilon? */
 static int lines_are_compatible(
         line_t* a,
         line_t* b,
@@ -799,18 +813,19 @@ static int lines_are_compatible(
         }
         return 0;
     }
-    float angle_b = span_angle(line_span_first(b));
-    if (angle_b != angle_a) {
-        outfx("%s:%i: angles differ");
-        return 0;
+    {
+        float angle_b = span_angle(line_span_first(b));
+        if (angle_b != angle_a) {
+            outfx("%s:%i: angles differ");
+            return 0;
+        }
     }
     return 1;
 }
 
 
-/* Creates representation of span_t's that consists of a list of
-line_t's, with each line_t containins pointers to a list of
-span_t's.
+/* Creates representation of span_t's that consists of a list of line_t's, with
+each line_t contains pointers to a list of span_t's.
 
 We only join spans that are at the same angle and are aligned.
 
@@ -840,10 +855,11 @@ static int make_lines(
     line_t's together before returning. */
     int         lines_num = spans_num;
     line_t**    lines = NULL;
-
+    int         a;
+    int         num_compatible;
+    int         num_joins;
     if (extract_malloc(&lines, sizeof(*lines) * lines_num)) goto end;
 
-    int a;
     /* Ensure we can clean up after error. */
     for (a=0; a<lines_num; ++a) {
         lines[a] = NULL;
@@ -857,26 +873,29 @@ static int make_lines(
         outfx("initial line a=%i: %s", a, line_string(lines[a]));
     }
 
-    int num_compatible = 0;
+    num_compatible = 0;
 
     /* For each line, look for nearest aligned line, and append if found. */
-    int num_joins = 0;
+    num_joins = 0;
     for (a=0; a<lines_num; ++a) {
-
+        int b;
+        int verbose = 0;
+        int nearest_line_b = -1;
+        float nearest_adv = 0;
+        line_t* nearest_line = NULL;
+        span_t* span_a;
+        float angle_a;
+        
         line_t* line_a = lines[a];
         if (!line_a) {
             continue;
         }
 
-        int verbose = 0;
         if (0 && a < 1) verbose = 1;
         outfx("looking at line_a=%s", line_string2(line_a));
-        line_t* nearest_line = NULL;
-        int nearest_line_b = -1;
-        float nearest_adv = 0;
 
-        span_t* span_a = line_span_last(line_a);
-        float angle_a = span_angle(span_a);
+        span_a = line_span_last(line_a);
+        angle_a = span_angle(span_a);
         if (verbose) outf("a=%i angle_a=%lf ctm=%s: %s",
                 a,
                 angle_a * 180/g_pi,
@@ -884,7 +903,6 @@ static int make_lines(
                 line_string2(line_a)
                 );
 
-        int b;
         for (b=0; b<lines_num; ++b) {
             line_t* line_b = lines[b];
             if (!line_b) {
@@ -910,68 +928,69 @@ static int make_lines(
             }
 
             num_compatible += 1;
-
-            /* Find angle between last glyph of span_a and first glyph of
-            span_b. This detects whether the lines are lined up with each other
-            (as opposed to being at the same angle but in different lines). */
-            span_t* span_b = line_span_first(line_b);
-            float dx = span_char_first(span_b)->x - span_char_last(span_a)->x;
-            float dy = span_char_first(span_b)->y - span_char_last(span_a)->y;
-            float angle_a_b = atan2(-dy, dx);
-            if (verbose) {
-                outf("delta=(%f %f) alast=(%f %f) bfirst=(%f %f): angle_a=%lf angle_a_b=%lf",
-                        dx,
-                        dy,
-                        span_char_last(span_a)->x,
-                        span_char_last(span_a)->y,
-                        span_char_first(span_b)->x,
-                        span_char_first(span_b)->y,
-                        angle_a * 180 / g_pi,
-                        angle_a_b * 180 / g_pi
-                        );
-            }
-            /* Might want to relax this when we test on non-horizontal lines.
-            */
-            const float angle_tolerance_deg = 1;
-            if (fabs(angle_a_b - angle_a) * 180 / g_pi <= angle_tolerance_deg) {
-                /* Find distance between end of line_a and beginning of line_b. */
-                float adv = spans_adv(
-                        span_a,
-                        span_char_last(span_a),
-                        span_char_first(span_b)
-                        );
-                if (verbose) outf("nearest_adv=%lf. angle_a_b=%lf adv=%lf",
-                        nearest_adv,
-                        angle_a_b,
-                        adv
-                        );
-                if (!nearest_line || adv < nearest_adv) {
-                    nearest_line = line_b;
-                    nearest_adv = adv;
-                    nearest_line_b = b;
+            {
+                /* Find angle between last glyph of span_a and first glyph of
+                span_b. This detects whether the lines are lined up with each other
+                (as opposed to being at the same angle but in different lines). */
+                span_t* span_b = line_span_first(line_b);
+                float dx = span_char_first(span_b)->x - span_char_last(span_a)->x;
+                float dy = span_char_first(span_b)->y - span_char_last(span_a)->y;
+                float angle_a_b = atan2(-dy, dx);
+                const float angle_tolerance_deg = 1;
+                if (verbose) {
+                    outf("delta=(%f %f) alast=(%f %f) bfirst=(%f %f): angle_a=%lf angle_a_b=%lf",
+                            dx,
+                            dy,
+                            span_char_last(span_a)->x,
+                            span_char_last(span_a)->y,
+                            span_char_first(span_b)->x,
+                            span_char_first(span_b)->y,
+                            angle_a * 180 / g_pi,
+                            angle_a_b * 180 / g_pi
+                            );
                 }
-            }
-            else {
-                if (verbose) outf(
-                        "angle beyond tolerance: span_a last=(%f,%f) span_b first=(%f,%f) angle_a_b=%lg angle_a=%lg span_a.trm{a=%f b=%f}",
-                        span_char_last(span_a)->x,
-                        span_char_last(span_a)->y,
-                        span_char_first(span_b)->x,
-                        span_char_first(span_b)->y,
-                        angle_a_b * 180 / g_pi,
-                        angle_a * 180 / g_pi,
-                        span_a->trm.a,
-                        span_a->trm.b
-                        );
+                /* Might want to relax this when we test on non-horizontal lines.
+                */
+                if (fabs(angle_a_b - angle_a) * 180 / g_pi <= angle_tolerance_deg) {
+                    /* Find distance between end of line_a and beginning of line_b. */
+                    float adv = spans_adv(
+                            span_a,
+                            span_char_last(span_a),
+                            span_char_first(span_b)
+                            );
+                    if (verbose) outf("nearest_adv=%lf. angle_a_b=%lf adv=%lf",
+                            nearest_adv,
+                            angle_a_b,
+                            adv
+                            );
+                    if (!nearest_line || adv < nearest_adv) {
+                        nearest_line = line_b;
+                        nearest_adv = adv;
+                        nearest_line_b = b;
+                    }
+                }
+                else {
+                    if (verbose) outf(
+                            "angle beyond tolerance: span_a last=(%f,%f) span_b first=(%f,%f) angle_a_b=%lg angle_a=%lg span_a.trm{a=%f b=%f}",
+                            span_char_last(span_a)->x,
+                            span_char_last(span_a)->y,
+                            span_char_first(span_b)->x,
+                            span_char_first(span_b)->y,
+                            angle_a_b * 180 / g_pi,
+                            angle_a * 180 / g_pi,
+                            span_a->trm.a,
+                            span_a->trm.b
+                            );
+                }
             }
         }
 
         if (nearest_line) {
             /* line_a and nearest_line are aligned so we can move line_b's
             spans on to the end of line_a. */
+            span_t* span_b = line_span_first(nearest_line);
             b = nearest_line_b;
             if (verbose) outf("found nearest line. a=%i b=%i", a, b);
-            span_t* span_b = line_span_first(nearest_line);
 
             if (1
                     && span_char_last(span_a)->ucs != ' '
@@ -990,6 +1009,7 @@ static int make_lines(
                 int insert_space = (nearest_adv > 0.25 * average_adv);
                 if (insert_space) {
                     /* Append space to span_a before concatenation. */
+                    char_t* item;
                     if (verbose) {
                         outf("(inserted space) nearest_adv=%lf average_adv=%lf",
                                 nearest_adv,
@@ -1003,7 +1023,7 @@ static int make_lines(
                             sizeof(char_t) * span_a->chars_num,
                             sizeof(char_t) * (span_a->chars_num + 1)
                             )) goto end;
-                    char_t* item = &span_a->chars[span_a->chars_num];
+                    item = &span_a->chars[span_a->chars_num];
                     span_a->chars_num += 1;
                     bzero(item, sizeof(*item));
                     item->ucs = ' ';
@@ -1053,8 +1073,8 @@ static int make_lines(
             line_a->spans_num += nearest_line->spans_num;
 
             /* Ensure that we ignore nearest_line from now on. */
-            free(nearest_line->spans);
-            free(nearest_line);
+            extract_free(&nearest_line->spans);
+            extract_free(&nearest_line);
             outfx("setting line[b=%i] to NULL", b);
             lines[b] = NULL;
 
@@ -1108,11 +1128,11 @@ static int make_lines(
         /* Free everything. */
         if (lines) {
             for (a=0; a<lines_num; ++a) {
-                if (lines[a])   free(lines[a]->spans);
-                free(lines[a]);
+                if (lines[a])   extract_free(&lines[a]->spans);
+                extract_free(&lines[a]);
             }
         }
-        free(lines);
+        extract_free(&lines);
     }
     return ret;
 }
@@ -1375,8 +1395,8 @@ static int make_paragraphs(
                 paragraph_a->lines_num = a_lines_num_new;
 
                 /* Ensure that we skip nearest_paragraph in future. */
-                free(nearest_paragraph->lines);
-                free(nearest_paragraph);
+                extract_free(&nearest_paragraph->lines);
+                extract_free(&nearest_paragraph);
                 paragraphs[nearest_paragraph_b] = NULL;
 
                 num_joins += 1;
@@ -1447,11 +1467,11 @@ static int make_paragraphs(
     if (ret) {
         if (paragraphs) {
             for (a=0; a<paragraphs_num; ++a) {
-                if (paragraphs[a])   free(paragraphs[a]->lines);
-                free(paragraphs[a]);
+                if (paragraphs[a])   extract_free(&paragraphs[a]->lines);
+                extract_free(&paragraphs[a]);
             }
         }
-        free(paragraphs);
+        extract_free(&paragraphs);
     }
     return ret;
 }
@@ -1576,12 +1596,8 @@ int extract_intermediate_to_document(
     int ret = -1;
 
     extract_document_t* document = NULL;
-    
-    extract_xml_tag_t   tag;
-    extract_xml_tag_init(&tag);
-    
     image_t image_temp = {0};
-
+    
     int num_spans = 0;
 
     /* Number of extra spans from page_span_end_clean(). */
@@ -1589,6 +1605,9 @@ int extract_intermediate_to_document(
 
     /* Num extra spans from autosplit=1. */
     int num_spans_autosplit = 0;
+
+    extract_xml_tag_t   tag;
+    extract_xml_tag_init(&tag);
 
     if (extract_malloc(&document, sizeof(**o_document))) goto end;
     s_document_init(document);
@@ -1624,6 +1643,7 @@ int extract_intermediate_to_document(
         Split spans in two where there seem to be large gaps between glyphs.
     */
     for(;;) {
+        page_t* page;
         int e = extract_xml_pparse_next(buffer, &tag);
         if (e == 1) break; /* EOF. */
         if (e) goto end;
@@ -1639,7 +1659,7 @@ int extract_intermediate_to_document(
             goto end;
         }
         outfx("loading spans for page %i...", document->pages_num);
-        page_t* page = document_page_append(document);
+        page = document_page_append(document);
         if (!page) goto end;
 
         for(;;) {
@@ -1658,17 +1678,17 @@ int extract_intermediate_to_document(
                 if (!strcmp(type, "pixmap")) {
                     int w;
                     int h;
+                    int y;
                     if (extract_xml_tag_attributes_find_int(&tag, "w", &w)) goto end;
                     if (extract_xml_tag_attributes_find_int(&tag, "h", &h)) goto end;
-                    int y;
                     for (y=0; y<h; ++y) {
+                        int yy;
                         if (extract_xml_pparse_next(buffer, &tag)) goto end;
                         if (strcmp(tag.name, "line")) {
                             outf("Expected <line> but tag.name='%s'", tag.name);
                             errno = ESRCH;
                             goto end;
                         }
-                        int yy;
                         if (extract_xml_tag_attributes_find_int(&tag, "y", &yy)) goto end;
                         if (yy != y) {
                             outf("Expected <line y=%i> but found <line y=%i>", y, yy);
@@ -1685,6 +1705,12 @@ int extract_intermediate_to_document(
                 }
                 else {
                     /* Compressed. */
+                    
+                    /* We use a static here to ensure uniqueness. Start at 10
+                    because template document might use some low-numbered IDs.
+                    */
+                    static int  s_image_n = 10;
+                    size_t  i = 0;
                     const char* c = tag.text.chars;
                     const char* type = extract_xml_tag_attributes_find(&tag, "type");
                     if (!type) goto end;
@@ -1697,23 +1723,19 @@ int extract_intermediate_to_document(
                     if (!image_temp.type) goto end;
                     if (extract_xml_tag_attributes_find_size(&tag, "datasize", &image_temp.data_size)) goto end;
                     if (extract_malloc(&image_temp.data, image_temp.data_size)) goto end;
-                    
-                    /* We use a static here to ensure uniqueness. Start at 10
-                    because template document might use some low-numbered IDs.
-                    */
-                    static int  s_image_n = 10;
                     s_image_n += 1;
-                    char id_text[32];
-                    snprintf(id_text, sizeof(id_text), "rId%i", s_image_n);
-                    image_temp.id = strdup(id_text);
+                    {
+                        char id_text[32];
+                        snprintf(id_text, sizeof(id_text), "rId%i", s_image_n);
+                        image_temp.id = strdup(id_text);
+                    }
                     if (!image_temp.id) goto end;
                     if (asprintf(&image_temp.name, "image%i.%s", s_image_n, image_temp.type) < 0) goto end;
                     
                     outfx("type=%s: image_temp.type=%s image_temp.data_size=%zi image_temp.name=%s image_temp.id=%s",
                             type, image_temp.type, image_temp.data_size, image_temp.name, image_temp.id);
                     
-                    size_t  i = 0;
-                    for(;;) {
+                    for(i=0;;) {
                         int byte = 0;
                         int cc;
                         cc = *c;
@@ -1816,6 +1838,10 @@ int extract_intermediate_to_document(
             float   offset_x = 0;
             float   offset_y = 0;
             for(;;) {
+                float char_pre_x;
+                float char_pre_y;
+                char_t* char_;
+                
                 if (extract_xml_pparse_next(buffer, &tag)) {
                     outf("Failed to find <char or </span");
                     goto end;
@@ -1829,20 +1855,18 @@ int extract_intermediate_to_document(
                     goto end;
                 }
 
-                float char_pre_x;
-                float char_pre_y;
                 if (extract_xml_tag_attributes_find_float(&tag, "x", &char_pre_x)) goto end;
                 if (extract_xml_tag_attributes_find_float(&tag, "y", &char_pre_y)) goto end;
 
                 if (autosplit && char_pre_y - offset_y != 0) {
-                    outfx("autosplit: char_pre_y=%f offset_y=%f",
-                            char_pre_y, offset_y);
                     float e = span->ctm.e + span->ctm.a * (char_pre_x-offset_x)
                             + span->ctm.b * (char_pre_y - offset_y);
                     float f = span->ctm.f + span->ctm.c * (char_pre_x-offset_x)
                             + span->ctm.d * (char_pre_y - offset_y);
                     offset_x = char_pre_x;
                     offset_y = char_pre_y;
+                    outfx("autosplit: char_pre_y=%f offset_y=%f",
+                            char_pre_y, offset_y);
                     outfx(
                             "autosplit: changing ctm.{e,f} from (%f, %f) to (%f, %f)",
                             span->ctm.e,
@@ -1851,8 +1875,8 @@ int extract_intermediate_to_document(
                             );
                     if (span->chars_num > 0) {
                         /* Create new span. */
-                        num_spans_autosplit += 1;
                         span_t* span0 = span;
+                        num_spans_autosplit += 1;
                         span = page_span_append(page);
                         if (!span) goto end;
                         *span = *span0;
@@ -1868,7 +1892,7 @@ int extract_intermediate_to_document(
                 }
 
                 if (span_append_c(span, 0 /*c*/)) goto end;
-                char_t* char_ = &span->chars[ span->chars_num-1];
+                char_ = &span->chars[ span->chars_num-1];
                 char_->pre_x = char_pre_x - offset_x;
                 char_->pre_y = char_pre_y - offset_y;
                 if (char_->pre_y) {
@@ -1883,8 +1907,10 @@ int extract_intermediate_to_document(
 
                 if (extract_xml_tag_attributes_find_uint(&tag, "ucs", &char_->ucs)) goto end;
 
-                char    trm[64];
-                snprintf(trm, sizeof(trm), "%s", matrix_string(&span->trm));
+                {
+                    char    trm[64];
+                    snprintf(trm, sizeof(trm), "%s", matrix_string(&span->trm));
+                }
                 char_->x += span->ctm.e;
                 char_->y += span->ctm.f;
 
@@ -1901,11 +1927,13 @@ int extract_intermediate_to_document(
                         x, y
                         );
 
-                int page_spans_num_old = page->spans_num;
-                if (page_span_end_clean(page)) goto end;
-                span = page->spans[page->spans_num-1];
-                if (page->spans_num != page_spans_num_old) {
-                    num_spans_split += 1;
+                {
+                    int page_spans_num_old = page->spans_num;
+                    if (page_span_end_clean(page)) goto end;
+                    span = page->spans[page->spans_num-1];
+                    if (page->spans_num != page_spans_num_old) {
+                        num_spans_split += 1;
+                    }
                 }
             }
             extract_xml_tag_free(&tag);
@@ -1925,10 +1953,10 @@ int extract_intermediate_to_document(
     end:
     extract_xml_tag_free(&tag);
     
-    free(image_temp.type);
-    free(image_temp.data);
-    free(image_temp.id);
-    free(image_temp.name);
+    extract_free(&image_temp.type);
+    extract_free(&image_temp.data);
+    extract_free(&image_temp.id);
+    extract_free(&image_temp.name);
     image_temp.type = NULL;
     image_temp.data = NULL;
     image_temp.data_size = 0;
@@ -1972,18 +2000,18 @@ static int extract_document_to_docx_content_paragraph(
         )
 {
     int e = -1;
+    int l;
     if (extract_docx_paragraph_start(content)) goto end;
 
-    int l;
     for (l=0; l<paragraph->lines_num; ++l) {
         line_t* line = paragraph->lines[l];
         int s;
         for (s=0; s<line->spans_num; ++s) {
+            int si;
             span_t* span = line->spans[s];
+            float font_size_new;
             state->ctm_prev = &span->ctm;
-            float font_size_new = matrices_to_font_size(
-                    &span->ctm, &span->trm
-                    );
+            font_size_new = matrices_to_font_size(&span->ctm, &span->trm);
             if (!state->font_name
                     || strcmp(span->font_name, state->font_name)
                     || span->font_bold != state->font_bold
@@ -2006,7 +2034,6 @@ static int extract_document_to_docx_content_paragraph(
                         )) goto end;
             }
 
-            int si;
             for (si=0; si<span->chars_num; ++si) {
                 char_t* char_ = &span->chars[si];
                 int c = char_->ucs;
@@ -2281,26 +2308,27 @@ int extract_document_to_docx_content(
         )
 {
     int ret = -1;
-    
+    int text_box_id = 0;
+    int p;
+
     extract_astring_t   content;
     extract_astring_init(&content);
     
-    int text_box_id = 0;
-
     /* Write paragraphs into <content>. */
-    int p;
     for (p=0; p<document->pages_num; ++p) {
         page_t* page = document->pages[p];
-
+        int p;
         content_state_t state;
         state.font_name = NULL;
         state.font_size = 0;
         state.font_bold = 0;
         state.font_italic = 0;
         state.ctm_prev = NULL;
-        int p;
+        
         for (p=0; p<page->paragraphs_num; ++p) {
             paragraph_t* paragraph = page->paragraphs[p];
+            const matrix_t* ctm = &paragraph->lines[0]->spans[0]->ctm;
+            float rotate = atan2(ctm->b, ctm->a);
             
             if (spacing
                     && state.ctm_prev
@@ -2321,11 +2349,15 @@ int extract_document_to_docx_content(
                 if (extract_docx_paragraph_empty(&content)) goto end;
             }
             
-            const matrix_t* ctm = &paragraph->lines[0]->spans[0]->ctm;
-            float rotate = atan2(ctm->b, ctm->a);
-            
             if (rotation && rotate) {
             
+                /* Find extent of paragraphs with this same rotation. extent
+                will contain max width and max height of paragraphs, in units
+                before application of ctm, i.e. before rotation. */
+                point_t extent = {0, 0};
+                int p0 = p;
+                int p1;
+                
                 outf("rotate=%.2frad=%.1fdeg ctm: ef=(%f %f) abcd=(%f %f %f %f)",
                         rotate, rotate * 180 / g_pi,
                         ctm->e,
@@ -2336,16 +2368,11 @@ int extract_document_to_docx_content(
                         ctm->d
                         );
                 
-                /* Find extent of paragraphs with this same rotation. extent
-                will contain max width and max height of paragraphs, in units
-                before application of ctm, i.e. before rotation. */
-                point_t extent = {0, 0};
-                int p0 = p;
-                int p1;
-                
                 {
                     /* We assume that first span is at origin of text
                     block. This assumes left-to-right text. */
+                    float rotate0 = rotate;
+                    const matrix_t* ctm0 = ctm;
                     point_t origin = {
                             paragraph->lines[0]->spans[0]->chars[0].x,
                             paragraph->lines[0]->spans[0]->chars[0].y
@@ -2362,8 +2389,6 @@ int extract_document_to_docx_content(
                         outf("cannot invert ctm=(%f %f %f %f)",
                                 ctm->a, ctm->b, ctm->c, ctm->d);
                     }
-                    float rotate0 = rotate;
-                    const matrix_t* ctm0 = ctm;
 
                     for (p=p0; p<page->paragraphs_num; ++p) {
                         paragraph = page->paragraphs[p];
@@ -2411,47 +2436,52 @@ int extract_document_to_docx_content(
                 /* We need unique id for text box. */
                 text_box_id += 1;
                 
-                /* Angles are in units of 1/60,000 degree. */
-                int rot = rotate * 180 / g_pi * 60000;
-                if (0) outf("rotate: %f rad, %f deg. rot=%i", rotate, rotate*180/g_pi, rot);
-                
-                /* <wp:anchor distT=\.. etc are in EMU - 1/360,000 of a cm.
-                relativeHeight is z-ordering. (wp:positionV:wp:posOffset,
-                wp:positionV:wp:posOffset) is position of origin of box in EMU.
+                {
+                    /* Angles are in units of 1/60,000 degree. */
+                    int rot = rotate * 180 / g_pi * 60000;
 
-                The box rotates about its centre but we want to rotate about
-                the origin (top-left). So we correct the position of box by
-                subtracting the vector that the top-left moves when rotated by
-                angle <rotate> about the middle. */
-                int point_to_emu = 12700;   /* https://en.wikipedia.org/wiki/Office_Open_XML_file_formats#DrawingML */
-                int x = ctm->e * point_to_emu;
-                int y = ctm->f * point_to_emu;
-                int w = extent.x * point_to_emu; //3228975;
-                int h = extent.y * point_to_emu; //2286000;
-                
-                h *= 2;
-                /* We can't predict how much space Word will actually require
-                for the rotated text, so make the box have the original width
-                but allow text to take extra vertical space. There doesn't seem
-                to be a way to make the text box auto-grow to contain the text.
-                */
-                
-                int dx = w/2 * (1-cos(rotate)) + h/2 * sin(rotate);
-                int dy = h/2 * (cos(rotate)-1) + w/2 * sin(rotate);
-                outf("ctm->e,f=%f,%f rotate=%f => x,y=%ik %ik dx,dy=%ik %ik",
-                        ctm->e,
-                        ctm->f,
-                        rotate * 180/g_pi,
-                        x/1000,
-                        y/1000,
-                        dx/1000,
-                        dy/1000
-                        );
-                x -= dx;
-                y -= -dy;
-                
-                if (extract_document_output_rotated_paragraphs(page, p0, p1, rot, x, y, w, h, text_box_id, &content, &state)) goto end;
-                
+                    /* <wp:anchor distT=\.. etc are in EMU - 1/360,000 of a cm.
+                    relativeHeight is z-ordering. (wp:positionV:wp:posOffset,
+                    wp:positionV:wp:posOffset) is position of origin of box in
+                    EMU.
+
+                    The box rotates about its centre but we want to rotate
+                    about the origin (top-left). So we correct the position of
+                    box by subtracting the vector that the top-left moves when
+                    rotated by angle <rotate> about the middle. */
+                    int point_to_emu = 12700;   /* https://en.wikipedia.org/wiki/Office_Open_XML_file_formats#DrawingML */
+                    int x = ctm->e * point_to_emu;
+                    int y = ctm->f * point_to_emu;
+                    int w = extent.x * point_to_emu; //3228975;
+                    int h = extent.y * point_to_emu; //2286000;
+                    int dx;
+                    int dy;
+
+                    if (0) outf("rotate: %f rad, %f deg. rot=%i", rotate, rotate*180/g_pi, rot);
+
+                    h *= 2;
+                    /* We can't predict how much space Word will actually
+                    require for the rotated text, so make the box have the
+                    original width but allow text to take extra vertical
+                    space. There doesn't seem to be a way to make the text box
+                    auto-grow to contain the text. */
+
+                    dx = w/2 * (1-cos(rotate)) + h/2 * sin(rotate);
+                    dy = h/2 * (cos(rotate)-1) + w/2 * sin(rotate);
+                    outf("ctm->e,f=%f,%f rotate=%f => x,y=%ik %ik dx,dy=%ik %ik",
+                            ctm->e,
+                            ctm->f,
+                            rotate * 180/g_pi,
+                            x/1000,
+                            y/1000,
+                            dx/1000,
+                            dy/1000
+                            );
+                    x -= dx;
+                    y -= -dy;
+
+                    if (extract_document_output_rotated_paragraphs(page, p0, p1, rot, x, y, w, h, text_box_id, &content, &state)) goto end;
+                }
                 p = p1 - 1;
                 //p = page->paragraphs_num - 1;
             }
@@ -2520,8 +2550,6 @@ int extract_document_join(extract_document_t* document)
 
     return ret;
 }
-
-void extract_end(void);
 
 void extract_end(void)
 {

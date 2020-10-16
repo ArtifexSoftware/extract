@@ -137,4 +137,10 @@ path_out:
     make internal shell commands unsafe.
 */
 
+
+void extract_end(void);
+/* Cleans up internal state that can look like a memory leak when running under
+Memento or valgrind. */
+
+
 #endif

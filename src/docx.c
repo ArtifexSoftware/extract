@@ -32,19 +32,21 @@ twice without intervening call to docx_paragraph_finish(). */
 static int local_vasprintf(char** out, const char* format, va_list va0)
 {
     va_list va;
+    int     len;
+    int     len2;
+    char*   buffer;
 
     /* Find required length. */
     va_copy(va, va0);
-    int len = vsnprintf(NULL, 0, format, va);
+    len = vsnprintf(NULL, 0, format, va);
     va_end(va);
     assert(len >= 0);
     len += 1; /* For terminating 0. */
 
     /* Repeat call of vnsprintf() with required buffer. */
-    char* buffer;
     if (extract_malloc(&buffer, len)) return -1;
     va_copy(va, va0);
-    int len2 = vsnprintf(buffer, len, format, va);
+    len2 = vsnprintf(buffer, len, format, va);
     va_end(va);
     assert(len2 + 1 == len);
     *out = buffer;
@@ -55,8 +57,9 @@ static int local_vasprintf(char** out, const char* format, va_list va0)
 static int local_asprintf(char** out, const char* format, ...)
 {
     va_list va;
+    int     ret;
     va_start(va, format);
-    int ret = local_vasprintf(out, format, va);
+    ret = local_vasprintf(out, format, va);
     va_end(va);
     return ret;
 }
@@ -128,7 +131,7 @@ int extract_docx_char_append_stringf(extract_astring_t* content, char* format, .
     va_end(va);
     if (e < 0) return e;
     e = extract_astring_cat(content, buffer);
-    free(buffer);
+    extract_free(&buffer);
     return e;
 }
 
@@ -181,15 +184,16 @@ static int systemf(const char* format, ...)
 /* Like system() but takes printf-style format and args. Also, if we return +ve
 we set errno to EIO. */
 {
+    int e;
     char* command;
     va_list va;
     va_start(va, format);
-    int e = local_vasprintf(&command, format, va);
+    e = local_vasprintf(&command, format, va);
     va_end(va);
     if (e < 0) return e;
     outf("running: %s", command);
     e = system(command);
-    free(command);
+    extract_free(&command);
     if (e > 0) {
         errno = EIO;
     }
@@ -204,11 +208,12 @@ static char* read_all(FILE* in)
     int     len = 0;
     size_t  delta = 128;
     for(;;) {
+        ssize_t n;
         if (extract_realloc2(&ret, len, len + delta + 1)) {
-            free(ret);
+            extract_free(&ret);
             return NULL;
         }
-        ssize_t n = fread(ret + len, 1 /*size*/, delta /*nmemb*/, in);
+        n = fread(ret + len, 1 /*size*/, delta /*nmemb*/, in);
         len += n;
         if (feof(in)) {
             ret[len] = 0;
@@ -217,7 +222,7 @@ static char* read_all(FILE* in)
         if (ferror(in)) {
             /* It's weird that fread() and ferror() don't set errno. */
             errno = EIO;
-            free(ret);
+            extract_free(&ret);
             return NULL;
         }
     }
@@ -235,7 +240,7 @@ static int read_all_path(const char* path, char** o_text)
     e = 0;
     end:
     if (f) fclose(f);
-    if (e) free(text);
+    if (e) extract_free(&text);
     else *o_text = text;
     return e;
 }
@@ -262,16 +267,21 @@ static int extract_docx_content_insert(
         )
 {
     int e = -1;
-    const char* mid_begin = strstr(original, mid_begin_name);
+    const char* mid_begin;
+    const char* mid_end;
+    extract_astring_t   out;
+    extract_astring_init(&out);
+    
+    mid_begin = strstr(original, mid_begin_name);
     if (!mid_begin) {
         outf("error: could not find '%s' in docx content",
                 mid_begin_name);
         errno = ESRCH;
         goto end;
     }
+    mid_end = strstr(mid_begin, mid_end_name);
     mid_begin += strlen(mid_begin_name);
     
-    const char* mid_end = strstr(mid_begin, mid_end_name);
     if (!mid_end) {
         outf("error: could not find '%s' in docx content",
                 mid_end_name);
@@ -279,8 +289,6 @@ static int extract_docx_content_insert(
         goto end;
     }
 
-    extract_astring_t   out;
-    extract_astring_init(&out);
     if (extract_astring_catl(&out, original, mid_begin - original)) goto end;
     if (extract_astring_catl(&out, content, content_length)) goto end;
     if (extract_astring_cat(&out, mid_end)) goto end;
@@ -336,18 +344,19 @@ text2
 */
 {
     int e = -1;
-    *text2 = NULL;
     extract_astring_t   temp;
     extract_astring_init(&temp);
+    *text2 = NULL;
     if (0) {}
     else if (!strcmp(name, "[Content_Types].xml")) {
         const char* begin;
         const char* end;
+        const char* insert;
         extract_astring_free(&temp);
         outf("text: %s", text);
         if (s_find_mid(text, "<Types ", "</Types>", &begin, &end)) goto end;
 
-        const char* insert = begin;
+        insert = begin;
         insert = strchr(insert, '>');
         assert(insert);
         insert += 1;
@@ -368,10 +377,10 @@ text2
     else if (!strcmp(name, "word/_rels/document.xml.rels")) {
         const char* begin;
         const char* end;
+        int         j;
         extract_astring_free(&temp);
         if (s_find_mid(text, "<Relationships", "</Relationships>", &begin, &end)) goto end;
         if (extract_astring_catl(&temp, text, end - text)) goto end;
-        int j;
         outf("imageinfos.images_num=%i", imageinfos->images_num);
         for (j=0; j<imageinfos->images_num; ++j) {
             extract_document_image_t* image = &imageinfos->images[j];
@@ -401,7 +410,7 @@ text2
     e = 0;
     end:
     if (e) {
-        free(*text2);
+        extract_free(&*text2);
         extract_astring_free(&temp);
     }
     extract_astring_init(&temp);
@@ -419,6 +428,7 @@ int extract_docx_content_to_docx(
     extract_zip_t*                  zip = NULL;
     char*                           text2 = NULL;
     extract_document_imagesinfo_t   imageinfos = {0};
+    int                             i;
     
     if (extract_zip_open(buffer, &zip)) goto end;
     if (extract_document_imageinfos(document, &imageinfos)) goto end;
@@ -426,11 +436,9 @@ int extract_docx_content_to_docx(
     outf("imageinfos.images_num=%i imageinfos.imagetypes_num=%i",
             imageinfos.images_num, imageinfos.imagetypes_num);
     
-    int i;
     for (i=0; i<docx_template_items_num; ++i) {
-        free(text2);
-        text2 = NULL;
         const docx_template_item_t* item = &docx_template_items[i];
+        extract_free(&text2);
         outf("i=%i item->name=%s", i, item->name);
         if (extract_docx_content_item(
                 content,
@@ -440,14 +448,15 @@ int extract_docx_content_to_docx(
                 item->text,
                 &text2
                 )) goto end;
-        const char* text3 = (text2) ? text2 : item->text;
-        if (extract_zip_write_file(zip, text3, strlen(text3), item->name)) goto end;
+        {
+            const char* text3 = (text2) ? text2 : item->text;
+            if (extract_zip_write_file(zip, text3, strlen(text3), item->name)) goto end;
+        }
     }
     
     for (i=0; i<imageinfos.images_num; ++i) {
         extract_document_image_t* image = &imageinfos.images[i];
-        free(text2);
-        text2 = NULL;
+        extract_free(&text2);
         if (asprintf(&text2, "word/media/%s", image->name) < 0) goto end;
         if (extract_zip_write_file(zip, image->data, image->data_size, text2)) goto end;
     }
@@ -460,7 +469,7 @@ int extract_docx_content_to_docx(
     end:
     if (e) outf("failed: %s", strerror(errno));
     extract_document_imageinfos_free(&imageinfos);
-    free(text2);
+    extract_free(&text2);
     if (zip)    extract_zip_close(zip);
     
     return e;
@@ -500,11 +509,8 @@ int extract_docx_content_to_docx_template(
         int                 preserve_dir
         )
 {
-    assert(path_out);
-    assert(path_template);
-    assert(content_length == strlen(content));
-    
     int                             e = -1;
+    int                             i;
     char*                           path_tempdir = NULL;
     FILE*                           f = NULL;
     char*                           path = NULL;
@@ -512,6 +518,10 @@ int extract_docx_content_to_docx_template(
     char*                           text2 = NULL;
     extract_document_imagesinfo_t   imageinfos = {0};
 
+    assert(path_out);
+    assert(path_template);
+    assert(content_length == strlen(content));
+    
     if (check_path_shell_safe(path_out)) {
         outf("path_out is unsafe: %s", path_out);
         goto end;
@@ -539,57 +549,57 @@ int extract_docx_content_to_docx_template(
     we look at just the items that we know extract_docx_content_item() will
     modify. */
     
-    char*   names[] = {
-            "word/document.xml",
-            "[Content_Types].xml",
-            "word/_rels/document.xml.rels",
-            };
-    int names_num = sizeof(names) / sizeof(names[0]);
-    int i;
-    for (i=0; i<names_num; ++i) {
-        free(path);
-        path = NULL;
-        free(text);
-        text = NULL;
-        free(text2);
-        text2 = NULL;
-        const char* name = names[i];
-        if (asprintf(&path, "%s/%s", path_tempdir, name) < 0) goto end;
-        if (read_all_path(path, &text)) goto end;
-        if (extract_docx_content_item(
-                content,
-                content_length,
-                &imageinfos,
-                name,
-                text,
-                &text2
-                )) goto end;
-        const char* text3 = (text2) ? text2 : text;
-        if (write_all(text3, strlen(text3), path)) goto end;
+    {
+        char*   names[] = {
+                "word/document.xml",
+                "[Content_Types].xml",
+                "word/_rels/document.xml.rels",
+                };
+        int names_num = sizeof(names) / sizeof(names[0]);
+        for (i=0; i<names_num; ++i) {
+            const char* name = names[i];
+            extract_free(&path);
+            extract_free(&text);
+            extract_free(&text2);
+            if (asprintf(&path, "%s/%s", path_tempdir, name) < 0) goto end;
+            if (read_all_path(path, &text)) goto end;
+            if (extract_docx_content_item(
+                    content,
+                    content_length,
+                    &imageinfos,
+                    name,
+                    text,
+                    &text2
+                    )) goto end;
+            {
+                const char* text3 = (text2) ? text2 : text;
+                if (write_all(text3, strlen(text3), path)) goto end;
+            }
+        }
     }
 
     /* Copy images into <path_tempdir>/media/. */
-    free(path);
-    path = NULL;
+    extract_free(&path);
     if (asprintf(&path, "%s/word/media", path_tempdir) < 0) goto end;
     if (mkdir(path, 0777)) goto end;
     
     for (i=0; i<imageinfos.images_num; ++i) {
         extract_document_image_t* image = &imageinfos.images[i];
-        free(path);
-        path = NULL;
+        extract_free(&path);
         if (asprintf(&path, "%s/word/media/%s", path_tempdir, image->name) < 0) goto end;
         if (write_all(image->data, image->data_size, path)) goto end;
     }
     
     outf("Zipping tempdir to create %s", path_out);
-    const char* path_out_leaf = strrchr(path_out, '/');
-    if (!path_out_leaf) path_out_leaf = path_out;
-    e = systemf("cd '%s' && zip -q -r -D '../%s' .", path_tempdir, path_out_leaf);
-    if (e) {
-        outf("Zip command failed to convert '%s' directory into output file: %s",
-                path_tempdir, path_out);
-        goto end;
+    {
+        const char* path_out_leaf = strrchr(path_out, '/');
+        if (!path_out_leaf) path_out_leaf = path_out;
+        e = systemf("cd '%s' && zip -q -r -D '../%s' .", path_tempdir, path_out_leaf);
+        if (e) {
+            outf("Zip command failed to convert '%s' directory into output file: %s",
+                    path_tempdir, path_out);
+            goto end;
+        }
     }
 
     if (!preserve_dir) {
@@ -601,10 +611,10 @@ int extract_docx_content_to_docx_template(
     end:
     outf("e=%i", e);
     extract_document_imageinfos_free(&imageinfos);
-    free(path_tempdir);
-    free(path);
-    free(text);
-    free(text2);
+    extract_free(&path_tempdir);
+    extract_free(&path);
+    extract_free(&text);
+    extract_free(&text2);
     if (f)  fclose(f);
 
     if (e) {

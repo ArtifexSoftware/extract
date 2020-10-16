@@ -14,7 +14,7 @@ void extract_astring_init(extract_astring_t* string)
 
 void extract_astring_free(extract_astring_t* string)
 {
-    free(string->chars);
+    extract_free(&string->chars);
     extract_astring_init(string);
 }
 
