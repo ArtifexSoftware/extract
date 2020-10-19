@@ -89,7 +89,7 @@ tests_mutool := $(patsubst %, %.mutool.docx.diff, $(pdfs_generated))
 #$(warn $(pdfs_generated_intermediate_docx_diffs))
 #$(warn $(tests))
 
-tests: $(tests_exe) #$(tests_mutool)
+tests: $(tests_exe) $(tests_mutool)
 
 tests-exe: $(tests_exe)
 
@@ -178,14 +178,14 @@ test/generated/%.pdf.intermediate-gs.xml: test/%.pdf $(gs)
 
 test/generated/%.docx.diff: test/generated/%.docx.dir test/%.docx.dir.ref
 	@echo
-	@echo == Comparing unzipped .docx files.
+	@echo == Checking $<
 	diff -ru $^
 
 # This checks that -t src/template.docx gives identical results.
 #
 test/generated/%.extract-template.docx.diff: test/generated/%.extract-template.docx.dir test/%.extract.docx.dir.ref
 	@echo
-	@echo == Comparing docx from extract-exe.
+	@echo == Checking $<
 	diff -ru $^
 
 # Unzips .docx into .docx.dir/ directory.
@@ -200,8 +200,10 @@ test/generated/%.extract-template.docx.diff: test/generated/%.extract-template.d
 	./src/docx_template_build.py --docx-pretty $@-
 	mv $@- $@
 
-# Converts .pdf to .docx using mutool.
+# Converts .pdf directly to .docx using mutool.
 test/generated/%.pdf.mutool.docx: test/%.pdf
+	@echo
+	@echo Converting .pdf directly to .docx using mutool.
 	$(mutool) convert -o $@ $<
 
 # Compares .docx from mutool with reference .docx.
@@ -212,7 +214,7 @@ test/generated/%.pdf.mutool.docx: test/%.pdf
 #
 test/generated/%.pdf.mutool.docx.diff: test/generated/%.pdf.mutool.docx.dir test/%.pdf.intermediate-mu.xml.extract-rotate-spacing.docx.dir.ref
 	@echo
-	@echo == Checking docx from mutool.
+	@echo == Checking $<
 	diff -ru $^
 
 
@@ -242,8 +244,6 @@ endif
 #	@echo
 #	@echo copying $< to %@
 #	rsync -ai $</ $@/
-
-
 
 
 # Buffer unit test.
