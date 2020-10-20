@@ -28,6 +28,8 @@ bytes:
     Number of bytes transferred.
 o_actual:
     Optional out-param, set to actual number of bytes read.
+
+Implemented in extract_buffer_impl.h.
 */
 
 
@@ -48,6 +50,8 @@ bytes:
 out_actual:
     Optional out-param, set to actual number of bytes read. Can be negative if
     internal cache-flush using fn_write() fails or returns EOF.
+
+Implemented in extract_buffer_impl.h.
 */
 
 
@@ -151,7 +155,7 @@ fn_read:
 fn_write:
     Callback for writing data.
 fn_cache:
-    Optional cache calback.
+    Optional cache callback.
 fn_close:
     Optional close callback.
 o_buffer:
@@ -166,28 +170,33 @@ int extract_buffer_open_simple(
         extract_buffer_fn_close fn_close,
         extract_buffer_t**      o_buffer
         );
-/* Creates an extract_buffer_t that reads from a single fixed block of memory.
+/* Creates an extract_buffer_t that reads from or writes to a single fixed
+block of memory.
 
-The data is not copied so data..+data_length must exist for the lifetime of the
+The address region data..+data_length must exist for the lifetime of the
 returned extract_buffer_t.
 
 data:
     Start of memory region. Note that if the extract_buffer_t is used as a
-    write buffer then data[] can be written-to, despite the 'const'.
+    write buffer then data[] will be written-to, despite the 'const'. [This
+    use of const avoids the need for the caller to use a cast when creating a
+    read-buffer.]
 bytes:
     Size of memory region.
 handle:
     Passed to fn_close.
 fn_close:
-    Optional callback called by extract_buffer_close().
+    Optional callback called by extract_buffer_close(). E.g. could copy the
+    memory region elsewhere if the buffer was used as a write buffer.
 o_buffer:
     Out-param.
 */
 
 
 int extract_buffer_open_file(const char* path, int writable, extract_buffer_t** o_buffer);
-/* Creates an read buffer that reads from or writes to a file. Uses a
-fixed-size internal cache.
+/* Creates a buffer that reads from, or writes to, a file. For portability
+uses an internal FILE* rather than an integer file descriptor, so doesn't use
+extract_buffer's caching support because FILE* already provides caching.
 
 path:
     Path of file to read from.

@@ -21,7 +21,7 @@ struct extract_buffer_t
     extract_buffer_fn_write fn_write;
     extract_buffer_fn_cache fn_cache;
     extract_buffer_fn_close fn_close;
-    int                     pos;    /* Does not include bytes currently read/written to cache. */
+    size_t                  pos;    /* Does not include bytes currently read/written to cache. */
 };
 
 
@@ -62,7 +62,7 @@ int extract_buffer_open(
 
 size_t extract_buffer_pos(extract_buffer_t* buffer)
 {
-    int ret = buffer->pos;
+    size_t ret = buffer->pos;
     if (buffer->cache.cache) {
         ret += buffer->cache.pos;
     }
@@ -73,7 +73,7 @@ size_t extract_buffer_pos(extract_buffer_t* buffer)
 static int s_cache_flush(extract_buffer_t* buffer, size_t* o_actual)
 /* Sends contents of cache to fn_write() using a loop to cope with short
 writes. Returns with *o_actual containing the number of bytes successfully
-sent, and buffer->cache.cache,numbytes,pos all set to zero.
+sent, and buffer->cache.{cache,numbytes,pos} all set to zero.
 
 If we return zero but *actual is less than original buffer->cache.numbytes,
 then fn_write returned EOF. */
