@@ -51,7 +51,7 @@ endif
 # paths.
 #
 gs      = ../ghostpdl/debug-bin/gs
-mutool  = ../mupdf/build/debug/mutool
+mutool  = ../mupdf/build/debug-extract/mutool
 
 
 # Default target - run all tests.
@@ -84,7 +84,9 @@ tests_exe := $(patsubst %, %.diff, $(tests_exe))
 # uses rotate=true and spacing=true, so we diff with reference directory
 # ...pdf.intermediate-mu.xml.extract-rotate-spacing.docx.dir.ref
 #
-tests_mutool := $(patsubst %, %.mutool.docx.diff, $(pdfs_generated))
+tests_mutool := \
+        $(patsubst %, %.mutool.docx.diff, $(pdfs_generated)) \
+        $(patsubst %, %.mutool-norotate.docx.diff, $(pdfs_generated)) \
 
 #$(warn $(pdfs_generated_intermediate_docx_diffs))
 #$(warn $(tests))
@@ -206,6 +208,11 @@ test/generated/%.pdf.mutool.docx: test/%.pdf
 	@echo Converting .pdf directly to .docx using mutool.
 	$(mutool) convert -o $@ $<
 
+test/generated/%.pdf.mutool-norotate.docx: test/%.pdf
+	@echo
+	@echo Converting .pdf directly to .docx using mutool.
+	$(mutool) convert -O rotation=0,spacing=1 -o $@ $<
+
 # Compares .docx from mutool with reference .docx.
 #
 # As of 2020-10-16, mutool uses rotate=true and
@@ -213,6 +220,11 @@ test/generated/%.pdf.mutool.docx: test/%.pdf
 # ...pdf.intermediate-mu.xml.extract-rotate-spacing.docx.dir.ref
 #
 test/generated/%.pdf.mutool.docx.diff: test/generated/%.pdf.mutool.docx.dir test/%.pdf.intermediate-mu.xml.extract-rotate-spacing.docx.dir.ref
+	@echo
+	@echo == Checking $<
+	diff -ru $^
+
+test/generated/%.pdf.mutool-norotate.docx.diff: test/generated/%.pdf.mutool-norotate.docx.dir test/%.pdf.intermediate-mu.xml.extract.docx.dir.ref
 	@echo
 	@echo == Checking $<
 	diff -ru $^
@@ -326,6 +338,7 @@ clean:
 # (when using gs).
 clean2:
 	-rm -r test/generated/*.pdf.intermediate-*.xml.*
+	-rm -r test/generated/*.pdf.mutool*.docx*
 .PHONY: clean
 
 
