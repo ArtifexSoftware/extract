@@ -152,7 +152,7 @@ static int s_simple_cache(void* handle, void** o_cache, size_t* o_numbytes)
 }
 
 int extract_buffer_open_simple(
-        const char*             data,
+        const void*             data,
         size_t                  numbytes,
         void*                   handle,
         extract_buffer_fn_close fn_close,
@@ -322,7 +322,7 @@ int extract_buffer_write_internal(
     size_t pos = 0;    /* Number of bytes written so far. */
     
     /* In each iteration we either write to cache, or use buffer->fn_write()
-    directly or repopulate the cache. */
+    directly or flush the cache. */
     for(;;) {
         size_t  n;
         outfx("numbytes=%i pos=%i. buffer->cache.numbytes=%i buffer->cache.pos=%i\n",
@@ -338,11 +338,12 @@ int extract_buffer_write_internal(
             buffer->cache.pos += n;
         }
         else {
-            /* No space in cache. */
+            /* No space left in cache. */
             int use_write = 0;
             outfx("cache empty. pos=%i. buffer->cache.numbytes=%i buffer->cache.pos=%i\n",
                     pos, buffer->cache.numbytes, buffer->cache.pos);
             {
+                /* Flush the cache. */
                 size_t actual;
                 int ee;
                 size_t b = buffer->cache.numbytes;

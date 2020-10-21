@@ -164,7 +164,7 @@ o_buffer:
 
 
 int extract_buffer_open_simple(
-        const char*             data,
+        const void*             data,
         size_t                  numbytes,
         void*                   handle,
         extract_buffer_fn_close fn_close,
