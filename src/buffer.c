@@ -182,28 +182,28 @@ int extract_buffer_open_simple(
 static int s_file_read(void* handle, void* data, size_t numbytes, size_t* o_actual)
 {
     FILE* file = handle;
-    ssize_t n = fread(data, 1, numbytes, file);
+    size_t n = fread(data, 1, numbytes, file);
     outfx("file=%p numbytes=%i => n=%zi", file, numbytes, n);
     assert(o_actual); /* We are called by other extract_buffer fns, not by user code. */
-    if (n < 0) {
-        *o_actual = 0;
-        return n;
-    }
     *o_actual = n;
+    if (!n && ferror(file)) {
+        errno = EIO;
+        return -1;
+    }
     return 0;
 }
 
 static int s_file_write(void* handle, const void* data, size_t numbytes, size_t* o_actual)
 {
     FILE* file = handle;
-    ssize_t n = fwrite(data, 1 /*size*/, numbytes /*nmemb*/, file);
-    outfx("file=%p numbytes=%i => n=%zi", file, numbytes, n);
+    size_t n = fwrite(data, 1 /*size*/, numbytes /*nmemb*/, file);
+    outf("file=%p numbytes=%i => n=%zi", file, numbytes, n);
     assert(o_actual); /* We are called by other extract_buffer fns, not by user code. */
-    if (n < 0) {
-        *o_actual = 0;
-        return n;
-    }
     *o_actual = n;
+    if (!n && ferror(file)) {
+        errno = EIO;
+        return -1;
+    }
     return 0;
 }
 
