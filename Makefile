@@ -21,7 +21,7 @@
 build = debug
 
 flags_link      = -W -Wall -lm
-flags_compile   = -W -Wall -Wpointer-sign -Wmissing-declarations -Wmissing-prototypes -Wdeclaration-after-statement -Werror -MMD -MP
+flags_compile   = -W -Wall -Wpointer-sign -Wmissing-declarations -Wmissing-prototypes -Wdeclaration-after-statement -Wpointer-arith -Werror -MMD -MP
 
 uname = $(shell uname)
 
