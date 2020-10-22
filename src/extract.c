@@ -1,8 +1,3 @@
-#ifdef __linux__
-    /* This is required to get asprintf(). */
-    #define _GNU_SOURCE
-#endif
-
 #include "../include/extract.h"
 
 #include "alloc.h"
@@ -10,6 +5,7 @@
 #include "document.h"
 #include "docx.h"
 #include "memento.h"
+#include "mem.h"
 #include "outf.h"
 #include "xml.h"
 
@@ -1768,7 +1764,7 @@ int extract_intermediate_to_document(
                         image_temp.id = strdup(id_text);
                     }
                     if (!image_temp.id) goto end;
-                    if (asprintf(&image_temp.name, "image%i.%s", s_image_n, image_temp.type) < 0) goto end;
+                    if (extract_asprintf(&image_temp.name, "image%i.%s", s_image_n, image_temp.type) < 0) goto end;
                     
                     outfx("type=%s: image_temp.type=%s image_temp.data_size=%zi image_temp.name=%s image_temp.id=%s",
                             type, image_temp.type, image_temp.data_size, image_temp.name, image_temp.id);

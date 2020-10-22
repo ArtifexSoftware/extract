@@ -113,6 +113,7 @@ exe_src = \
         src/docx_template.c \
         src/extract-exe.c \
         src/extract.c \
+        src/mem.c \
         src/outf.c \
         src/xml.c src/zip.c \
 

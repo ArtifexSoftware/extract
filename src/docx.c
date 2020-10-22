@@ -2,11 +2,6 @@
 sensible order to create valid content - e.g. don't call docx_paragraph_start()
 twice without intervening call to docx_paragraph_finish(). */
 
-#ifdef __linux__
-    /* This is required to get asprintf(). */
-    #define _GNU_SOURCE
-#endif
-
 #include "../include/extract.h"
 
 #include "docx_template.h"
@@ -15,6 +10,7 @@ twice without intervening call to docx_paragraph_finish(). */
 #include "astring.h"
 #include "document.h"
 #include "docx.h"
+#include "mem.h"
 #include "memento.h"
 #include "outf.h"
 #include "zip.h"
@@ -127,7 +123,7 @@ int extract_docx_char_append_stringf(extract_astring_t* content, char* format, .
     int e;
     va_list va;
     va_start(va, format);
-    e = vasprintf(&buffer, format, va);
+    e = extract_vasprintf(&buffer, format, va);
     va_end(va);
     if (e < 0) return e;
     e = extract_astring_cat(content, buffer);
@@ -457,7 +453,7 @@ int extract_docx_content_to_docx(
     for (i=0; i<imageinfos.images_num; ++i) {
         extract_document_image_t* image = &imageinfos.images[i];
         extract_free(&text2);
-        if (asprintf(&text2, "word/media/%s", image->name) < 0) goto end;
+        if (extract_asprintf(&text2, "word/media/%s", image->name) < 0) goto end;
         if (extract_zip_write_file(zip, image->data, image->data_size, text2)) goto end;
     }
     
@@ -561,7 +557,7 @@ int extract_docx_content_to_docx_template(
             extract_free(&path);
             extract_free(&text);
             extract_free(&text2);
-            if (asprintf(&path, "%s/%s", path_tempdir, name) < 0) goto end;
+            if (extract_asprintf(&path, "%s/%s", path_tempdir, name) < 0) goto end;
             if (read_all_path(path, &text)) goto end;
             if (extract_docx_content_item(
                     content,
@@ -580,13 +576,13 @@ int extract_docx_content_to_docx_template(
 
     /* Copy images into <path_tempdir>/media/. */
     extract_free(&path);
-    if (asprintf(&path, "%s/word/media", path_tempdir) < 0) goto end;
+    if (extract_asprintf(&path, "%s/word/media", path_tempdir) < 0) goto end;
     if (mkdir(path, 0777)) goto end;
     
     for (i=0; i<imageinfos.images_num; ++i) {
         extract_document_image_t* image = &imageinfos.images[i];
         extract_free(&path);
-        if (asprintf(&path, "%s/word/media/%s", path_tempdir, image->name) < 0) goto end;
+        if (extract_asprintf(&path, "%s/word/media/%s", path_tempdir, image->name) < 0) goto end;
         if (write_all(image->data, image->data_size, path)) goto end;
     }
     

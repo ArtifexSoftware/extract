@@ -1,9 +1,5 @@
-#ifdef __linux__
-    /* This is required to get asprintf(). */
-    #define _GNU_SOURCE
-#endif
-
 #include "alloc.h"
+#include "mem.h"
 #include "memento.h"
 #include "outf.h"
 #include "xml.h"
@@ -336,7 +332,7 @@ static const char* extract_xml_tag_string(extract_xml_tag_t* tag)
 {
     static char* buffer = NULL;
     extract_free(&buffer);
-    asprintf(&buffer, "<name=%s>", tag->name ? tag->name : "");
+    extract_asprintf(&buffer, "<name=%s>", tag->name ? tag->name : "");
     return buffer;
 }
 
