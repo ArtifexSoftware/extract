@@ -1,7 +1,7 @@
 # Example commands:
 #
 #   make
-#   make tests
+#   make tests-all
 #       Runs all tests.
 #
 #   make build=debug-opt ...
@@ -56,7 +56,7 @@ mutool  = ../mupdf/build/debug-extract/mutool
 
 # Default target - run all tests.
 #
-tests-all: test-buffer test-misc tests
+tests-all: test-buffer test-misc test-src tests
 
 
 # Define the main test targets.
@@ -300,6 +300,12 @@ test-misc: $(exe_misc_test)
 	@echo Running test-misc
 	./$<
 
+# Source code check.
+#
+test-src:
+	@echo
+	@echo Checking for use of ssize_t in source.
+	if PAGER= git grep -wn ssize_t src include; then false; else true; fi
 
 # Compile rule. We always include src/docx_template.c as a prerequisite in case
 # code #includes docx_template.h.
