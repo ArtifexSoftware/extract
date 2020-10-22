@@ -16,6 +16,7 @@ Args:
 
 import io
 import os
+import re
 import sys
 import textwrap
 
@@ -161,6 +162,11 @@ def main():
             # text not binary seems to be the right thing.
             #
             text = text.replace('\n', '\\r\\n"\n                "')
+
+            # Split on '<' to avoid overly-long lines, which break windows
+            # compiler.
+            #
+            text = re.sub('([<][^/])', '"\n                "\\1', text)
             
             out_c.write(f'    {{\n')
             out_c.write(f'        "{name}",\n')
