@@ -5,6 +5,7 @@
 #include "outf.h"
 
 #include <assert.h>
+#include <errno.h>
 #include <stdlib.h>
 
 
@@ -218,11 +219,59 @@ static void test_write(void)
     outf("Write test passed.\n");
 }
 
+static void test_file(void)
+{
+    /* Check we can write 3 bytes to file. */
+    extract_buffer_t* file_buffer;
+    if (extract_buffer_open_file("test/generated/buffer-file", 1 /*writable*/, &file_buffer)) abort();
+    {
+        size_t  n;
+        errno = 0;
+        int e = extract_buffer_write(file_buffer, "foo", 3, &n);
+        if (e == 0 && n == 3) {}
+        else {
+            outf("extract_buffer_write() returned e=%i errno=%i n=%zi", e, errno, n);
+            abort();
+        }
+    }
+    if (extract_buffer_close(&file_buffer)) abort();
+    
+    /* Check we get back expected short reads and EOF when reading from 3-byte
+    file created above. */
+    if (extract_buffer_open_file("test/generated/buffer-file", 0 /*writable*/, &file_buffer)) abort();
+    {
+        size_t  n;
+        errno = 0;
+        char    buffer[10];
+        int     e;
+        e = extract_buffer_read(file_buffer, buffer, 2, &n);
+        if (e == 0 && n == 2) {}
+        else {
+            outf("extract_buffer_read() returned e=%i errno=%i n=%zi", e, errno, n);
+            abort();
+        }
+        e = extract_buffer_read(file_buffer, buffer, 3, &n);
+        if (e == 1 && n == 1) {}
+        else {
+            outf("extract_buffer_read() returned e=%i errno=%i n=%zi", e, errno, n);
+            abort();
+        }
+        e = extract_buffer_read(file_buffer, buffer, 3, &n);
+        if (e == 1 && n == 0) {}
+        else {
+            outf("extract_buffer_read() returned e=%i errno=%i n=%zi", e, errno, n);
+            abort();
+        }
+    }
+    if (extract_buffer_close(&file_buffer)) abort();
+    outf("file buffer tests passed.\n");
+}
 
 int main(void)
 {
     outf_verbose_set(1);
     test_read();
     test_write();
+    test_file();
     return 0;
 }
