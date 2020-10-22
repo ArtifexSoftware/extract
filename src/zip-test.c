@@ -34,9 +34,8 @@ static int s_show(const char* filename)
     size_t  datasize = 10*1000*1000;
     char* data = extract_malloc(datasize);
     assert(data);
-    ssize_t n = fread(data, 1, datasize, f);
-    assert(n >= 0);
-    assert((size_t) n < datasize);
+    size_t n = fread(data, 1, datasize, f);
+    assert(n < datasize);
     datasize = n;
     outf("datasize=%zi", datasize);
     fclose(f);

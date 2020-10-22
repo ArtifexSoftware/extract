@@ -204,7 +204,7 @@ static char* read_all(FILE* in)
     int     len = 0;
     size_t  delta = 128;
     for(;;) {
-        ssize_t n;
+        size_t n;
         if (extract_realloc2(&ret, len, len + delta + 1)) {
             extract_free(&ret);
             return NULL;

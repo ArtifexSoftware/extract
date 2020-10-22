@@ -347,7 +347,7 @@ int extract_buffer_write_internal(
                 size_t actual;
                 int ee;
                 size_t b = buffer->cache.numbytes;
-                ssize_t delta;
+                ptrdiff_t delta;
                 ee = s_cache_flush(buffer, &actual);
                 assert(actual <= b);
                 delta = actual - b;
