@@ -36,7 +36,7 @@ static inline int extract_buffer_read(
         return extract_buffer_read_internal(buffer, data, numbytes, o_actual);
     }
     /* We can use just the cache. */
-    memcpy(data, cache->cache + cache->pos, numbytes);
+    memcpy(data, (char*) cache->cache + cache->pos, numbytes);
     cache->pos += numbytes;
     if (o_actual) *o_actual = numbytes;
     return 0;
@@ -64,7 +64,7 @@ static inline int extract_buffer_write(
         return extract_buffer_write_internal(buffer, data, numbytes, o_actual);
     }
     /* We can use just the cache. */
-    memcpy(cache->cache + cache->pos, data, numbytes);
+    memcpy((char*) cache->cache + cache->pos, data, numbytes);
     cache->pos += numbytes;
     if (o_actual) *o_actual = numbytes;
     return 0;

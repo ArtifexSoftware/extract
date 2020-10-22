@@ -86,7 +86,7 @@ then fn_write returned EOF. */
         if (p == buffer->cache.pos) break;
         if (buffer->fn_write(
                 buffer->handle,
-                buffer->cache.cache + p,
+                (char*) buffer->cache.cache + p,
                 buffer->cache.pos - p,
                 &actual
                 )) goto end;
@@ -264,7 +264,7 @@ int extract_buffer_read_internal(
         if (n) {
             /* There is data in cache. */
             if (n > numbytes - pos) n = numbytes - pos;
-            memcpy(destination + pos, buffer->cache.cache + buffer->cache.pos, n);
+            memcpy((char*) destination + pos, (char*) buffer->cache.cache + buffer->cache.pos, n);
             pos += n;
             buffer->cache.pos += n;
         }
@@ -333,7 +333,7 @@ int extract_buffer_write_internal(
             /* There is space in cache for writing. */
             if (n > numbytes - pos) n = numbytes - pos;
             outfx("writing to cache: numbytes=%i n=%i\n", numbytes, n);
-            memcpy(buffer->cache.cache + buffer->cache.pos, source + pos, n);
+            memcpy((char*) buffer->cache.cache + buffer->cache.pos, (char*) source + pos, n);
             pos += n;
             buffer->cache.pos += n;
         }
