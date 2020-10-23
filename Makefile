@@ -1,7 +1,7 @@
 # Example commands:
 #
 #   make
-#   make tests-all
+#   make tests
 #       Runs all tests.
 #
 #   make build=debug-opt ...
@@ -56,7 +56,7 @@ mutool  = ../mupdf/build/debug-extract/mutool
 
 # Default target - run all tests.
 #
-tests-all: test-buffer test-misc test-src tests
+tests: test-buffer test-misc test-src test
 
 
 # Define the main test targets.
@@ -91,15 +91,15 @@ tests_mutool := \
 #$(warn $(pdfs_generated_intermediate_docx_diffs))
 #$(warn $(tests))
 
-tests: $(tests_exe) $(tests_mutool)
+test: $(tests_exe) $(tests_mutool)
 
-tests-exe: $(tests_exe)
+test-exe: $(tests_exe)
 
 # Checks output of mutool conversion from .pdf to .docx. Requires that mutool
 # was built with extract as a third-party library. As of 2020-10-16 this
 # requires mupdf/thirdparty/extract e.g. as a softlink to extract checkout.
 #
-tests-mutool: $(tests_mutool)
+test-mutool: $(tests_mutool)
 
 
 # Main executable.
