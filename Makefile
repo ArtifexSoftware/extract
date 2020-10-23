@@ -306,6 +306,8 @@ test-src:
 	@echo
 	@echo Checking for use of ssize_t in source.
 	if PAGER= git grep -wn ssize_t src include; then false; else true; fi
+	@echo Checking for use of strdup in source.
+	if PAGER= git grep -wn strdup `ls -d src/*|grep -v src/memento.h` include; then false; else true; fi
 
 # Compile rule. We always include src/docx_template.c as a prerequisite in case
 # code #includes docx_template.h.

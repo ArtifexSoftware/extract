@@ -1,4 +1,5 @@
 #include "alloc.h"
+#include "mem.h"
 #include "memento.h"
 #include "outf.h"
 #include "zip.h"
@@ -78,8 +79,7 @@ int extract_zip_open(extract_buffer_t* buffer, extract_zip_t** o_zip)
     0100644:0.  (0100644 is S_IFREG (regular file) plus rw-r-r. See stat(2) for
     details.) */
     zip->file_attr_external = (0100644 << 16) + 0;
-    zip->archive_comment = strdup("Artifex");
-    if (!zip->archive_comment) goto end;
+    if (extract_strdup("Artifex", &zip->archive_comment)) goto end;
     
     e = 0;
     
@@ -187,7 +187,7 @@ int extract_zip_write_file(
     cd_file->crc_sum = (int32_t) crc32(crc32(0, NULL, 0), data, (int) data_length);
     cd_file->size_compressed = (int) data_length;
     cd_file->size_uncompressed = (int) data_length;
-    cd_file->name = strdup(name);
+    if (extract_strdup(name, &cd_file->name)) goto end;
     cd_file->offset = (int) extract_buffer_pos(zip->buffer);
     cd_file->attr_internal = zip->file_attr_internal;
     cd_file->attr_external = zip->file_attr_external;

@@ -38,3 +38,10 @@ int extract_asprintf(char** out, const char* format, ...)
     return ret;
 }
 
+int extract_strdup(const char* s, char** o_out)
+{
+    size_t l = strlen(s) + 1;
+    if (extract_malloc(o_out, l)) return -1;
+    memcpy(*o_out, s, l);
+    return 0;
+}

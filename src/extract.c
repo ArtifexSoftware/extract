@@ -1608,8 +1608,7 @@ static int page_span_end_clean(page_t* page)
             span_t* span2 = page_span_append(page);
             if (!span2) goto end;
             *span2 = *span;
-            span2->font_name = strdup(span->font_name);
-            if (!span2->font_name) goto end;
+            if (extract_strdup(span->font_name, &span2->font_name)) goto end;
             span2->chars_num = 1;
             if (extract_malloc(&span2->chars, sizeof(char_t) * span2->chars_num)) goto end;
             span2->chars[0] = char_[-1];
@@ -1755,15 +1754,14 @@ int extract_intermediate_to_document(
                     assert(!image_temp.data);
                     assert(!image_temp.data_size);
                     
-                    image_temp.type = strdup(type);
-                    if (!image_temp.type) goto end;
+                    if (extract_strdup(type, &image_temp.type)) goto end;
                     if (extract_xml_tag_attributes_find_size(&tag, "datasize", &image_temp.data_size)) goto end;
                     if (extract_malloc(&image_temp.data, image_temp.data_size)) goto end;
                     s_image_n += 1;
                     {
                         char id_text[32];
                         snprintf(id_text, sizeof(id_text), "rId%i", s_image_n);
-                        image_temp.id = strdup(id_text);
+                        if (extract_strdup(id_text, &image_temp.id)) goto end;
                     }
                     if (!image_temp.id) goto end;
                     if (extract_asprintf(&image_temp.name, "image%i.%s", s_image_n, image_temp.type) < 0) goto end;
@@ -1859,11 +1857,7 @@ int extract_intermediate_to_document(
                 }
                 ff = strchr(f, '+');
                 if (ff)  f = ff + 1;
-                span->font_name = strdup(f);
-                if (!span->font_name) {
-                    outf("Attribute 'font_name' is bad: %s", f);
-                    goto end;
-                }
+                if (extract_strdup(f, &span->font_name)) goto end;
                 span->font_bold = strstr(span->font_name, "-Bold") ? 1 : 0;
                 span->font_italic = strstr(span->font_name, "-Oblique") ? 1 : 0;
 
@@ -1924,8 +1918,7 @@ int extract_intermediate_to_document(
                             *span = *span0;
                             span->chars = NULL;
                             span->chars_num = 0;
-                            span->font_name = strdup(span0->font_name);
-                            if (!span->font_name) goto end;
+                            if (extract_strdup(span0->font_name, &span->font_name)) goto end;
                         }
                         span->ctm.e = e;
                         span->ctm.f = f;
