@@ -22,6 +22,7 @@ static size_t round_up(size_t n)
             ret_old = ret;
             ret *= 2;
             assert(ret > ret_old);
+            (void) ret_old;
         }
     }
     else {
