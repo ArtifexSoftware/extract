@@ -497,9 +497,16 @@ static int remove_directory(const char* path)
 }
 
 #ifdef _WIN32
-static int mkdir(const char* path)
+#include <direct.h>
+static int s_mkdir(const char* path, int mode)
 {
+    (void) mode;
     return _mkdir(path);
+}
+#else
+static int s_mkdir(const char* path, int mode)
+{
+    return mkdir(path, mode);
 }
 #endif
 
@@ -535,7 +542,7 @@ int extract_docx_content_to_docx_template(
     if (local_asprintf(&path_tempdir, "%s.dir", path_out) < 0) goto end;
     if (systemf("rm -r '%s' 2>/dev/null", path_tempdir) < 0) goto end;
 
-    if (mkdir(path_tempdir, 0777)) {
+    if (s_mkdir(path_tempdir, 0777)) {
         outf("Failed to create directory: %s", path_tempdir);
         goto end;
     }
@@ -585,7 +592,7 @@ int extract_docx_content_to_docx_template(
     /* Copy images into <path_tempdir>/media/. */
     extract_free(&path);
     if (extract_asprintf(&path, "%s/word/media", path_tempdir) < 0) goto end;
-    if (mkdir(path, 0777)) goto end;
+    if (s_mkdir(path, 0777)) goto end;
     
     for (i=0; i<imageinfos.images_num; ++i) {
         extract_document_image_t* image = &imageinfos.images[i];
