@@ -35,8 +35,8 @@ typedef struct
 static int s_read(void* handle, void* destination, size_t bytes, size_t* o_actual)
 /* Does a randomised short read. */
 {
-    assert(bytes > 0);
     mem_t* r = handle;
+    assert(bytes > 0);
     r->num_calls_read += 1;
     assert(r->pos <= r->bytes);
     size_t n = 91;
