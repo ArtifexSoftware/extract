@@ -1021,7 +1021,7 @@ static int make_lines(
                             )) goto end;
                     item = &span_a->chars[span_a->chars_num];
                     span_a->chars_num += 1;
-                    bzero(item, sizeof(*item));
+                    extract_bzero(item, sizeof(*item));
                     item->ucs = ' ';
                     item->adv = nearest_adv;
                 }

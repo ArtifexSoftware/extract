@@ -1,6 +1,7 @@
 #include "../include/extract_buffer.h"
 
 #include "alloc.h"
+#include "mem.h"
 #include "memento.h"
 #include "outf.h"
 
@@ -172,7 +173,7 @@ short reads and cache with randomised sizes. */
 {
     int e;
     if (extract_malloc(&r->data, bytes+1)) abort();
-    bzero(r->data, bytes);
+    extract_bzero(r->data, bytes);
     r->bytes = bytes;
     r->pos = 0;
     r->num_calls_cache = 0;

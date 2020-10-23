@@ -262,7 +262,7 @@ endif
 # Buffer unit test.
 #
 exe_buffer_test = src/build/buffer-test-$(build).exe
-exe_buffer_test_src = src/buffer.c src/buffer-test.c src/outf.c src/alloc.c
+exe_buffer_test_src = src/buffer.c src/buffer-test.c src/outf.c src/alloc.c src/mem.c
 ifeq ($(build),memento)
     exe_buffer_test_src += src/memento.c
 endif
@@ -308,6 +308,8 @@ test-src:
 	if PAGER= git grep -wn ssize_t src include; then false; else true; fi
 	@echo Checking for use of strdup in source.
 	if PAGER= git grep -wn strdup `ls -d src/*|grep -v src/memento.h` include; then false; else true; fi
+	@echo Checking for use of bzero in source.
+	if PAGER= git grep -wn bzero src include; then false; else true; fi
 
 # Compile rule. We always include src/docx_template.c as a prerequisite in case
 # code #includes docx_template.h.
