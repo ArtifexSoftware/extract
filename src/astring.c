@@ -24,7 +24,7 @@ int extract_astring_catl(extract_astring_t* string, const char* s, size_t s_len)
     if (extract_realloc2(&string->chars, string->chars_num+1, string->chars_num + s_len + 1)) return -1;
     memcpy(string->chars + string->chars_num, s, s_len);
     string->chars[string->chars_num + s_len] = 0;
-    string->chars_num += s_len;
+    string->chars_num += (int) s_len;
     return 0;
 }
 

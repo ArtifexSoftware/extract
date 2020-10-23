@@ -118,9 +118,9 @@ typedef struct
     /* font size is matrix_expansion(trm). */
     
     struct {
-        int font_bold   : 1;
-        int font_italic : 1;
-        int wmode       : 1;
+        unsigned font_bold      : 1;
+        unsigned font_italic    : 1;
+        unsigned wmode          : 1;
     };
     
     char_t*     chars;
@@ -1858,7 +1858,7 @@ int extract_intermediate_to_document(
                 ff = strchr(f, '+');
                 if (ff)  f = ff + 1;
                 if (extract_strdup(f, &span->font_name)) goto end;
-                span->font_bold = strstr(span->font_name, "-Bold") ? 1 : 0;
+                span->font_bold = (strstr(span->font_name, "-Bold") != NULL) ? 1 : 0;
                 span->font_italic = strstr(span->font_name, "-Oblique") ? 1 : 0;
 
                 {
@@ -1868,7 +1868,7 @@ int extract_intermediate_to_document(
                         outf("Failed to find attribute 'wmode'");
                         goto end;
                     }
-                    span->wmode = wmode;
+                    span->wmode = (wmode) ? 1 : 0;
                 }
 
                 offset_x = 0;

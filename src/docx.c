@@ -201,7 +201,7 @@ with realloc(). If error, we return NULL with errno set. */
 static char* read_all(FILE* in)
 {
     char*   ret = NULL;
-    int     len = 0;
+    size_t  len = 0;
     size_t  delta = 128;
     for(;;) {
         size_t n;
