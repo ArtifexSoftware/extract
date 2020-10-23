@@ -254,10 +254,10 @@ static float span_angle(span_t* span)
     assumes that it also inclines text, but maybe it only rotates individual
     glyphs? */
     /*if (span->wmode == 0) {
-        return atan2(span->trm.b, span->trm.a);
+        return atan2f(span->trm.b, span->trm.a);
     }
     else {
-        return atan2(span->trm.d, span->trm.c);
+        return atan2f(span->trm.d, span->trm.c);
     }*/
 }
 
@@ -2371,12 +2371,7 @@ int extract_document_to_docx_content(
         for (p=0; p<page->paragraphs_num; ++p) {
             paragraph_t* paragraph = page->paragraphs[p];
             const matrix_t* ctm = &paragraph->lines[0]->spans[0]->ctm;
-            float rotate = (float) atan2(ctm->b, ctm->a);
-            /*float rotate_test = atan2(ctm->b, ctm->a);
-            if (fabs(rotate_test - rotate) > 0.0000001) {
-                outf0("ctm->b=%f, ctm->a=%f rotate=%f rotate_test=%f", ctm->b, ctm->a, rotate, rotate_test);
-                //assert(0);
-            }*/
+            float rotate = atan2f(ctm->b, ctm->a);
             
             if (spacing
                     && state.ctm_prev
@@ -2441,7 +2436,7 @@ int extract_document_to_docx_content(
                     for (p=p0; p<page->paragraphs_num; ++p) {
                         paragraph = page->paragraphs[p];
                         ctm = &paragraph->lines[0]->spans[0]->ctm;
-                        rotate = (float) atan2(ctm->b, ctm->a);
+                        rotate = atan2f(ctm->b, ctm->a);
                         if (rotate != rotate0) {
                             break;
                         }
