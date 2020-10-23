@@ -197,7 +197,7 @@ static int s_file_write(void* handle, const void* data, size_t numbytes, size_t*
 {
     FILE* file = handle;
     size_t n = fwrite(data, 1 /*size*/, numbytes /*nmemb*/, file);
-    outf("file=%p numbytes=%i => n=%zi", file, numbytes, n);
+    outfx("file=%p numbytes=%i => n=%zi", file, numbytes, n);
     assert(o_actual); /* We are called by other extract_buffer fns, not by user code. */
     *o_actual = n;
     if (!n && ferror(file)) {
