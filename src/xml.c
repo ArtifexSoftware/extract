@@ -187,7 +187,7 @@ int extract_xml_str_to_size(const char* text, size_t* o_out)
         errno = ERANGE;
         return -1;
     }
-    *o_out = x;
+    *o_out = (size_t) x;
     return 0;
 }
 
