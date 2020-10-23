@@ -246,7 +246,7 @@ static void span_extend_point(span_t* span, point_t* point)
 static float span_angle(span_t* span)
 {
     /* Assume ctm is a rotation matix. */
-    float ret = atan2f(-span->ctm.c, span->ctm.a);
+    float ret = (float) atan2(-span->ctm.c, span->ctm.a);
     outfx("ctm.a=%f ctm.b=%f ret=%f", span->ctm.a, span->ctm.b, ret);
     return ret;
     /* Not sure whether this is right. Inclined text seems to be done by
@@ -931,7 +931,7 @@ static int make_lines(
                 span_t* span_b = line_span_first(line_b);
                 float dx = span_char_first(span_b)->x - span_char_last(span_a)->x;
                 float dy = span_char_first(span_b)->y - span_char_last(span_a)->y;
-                float angle_a_b = atan2f(-dy, dx);
+                float angle_a_b = (float) atan2(-dy, dx);
                 const float angle_tolerance_deg = 1;
                 if (verbose) {
                     outf("delta=(%f %f) alast=(%f %f) bfirst=(%f %f): angle_a=%lf angle_a_b=%lf",
@@ -2364,7 +2364,7 @@ int extract_document_to_docx_content(
         for (p=0; p<page->paragraphs_num; ++p) {
             paragraph_t* paragraph = page->paragraphs[p];
             const matrix_t* ctm = &paragraph->lines[0]->spans[0]->ctm;
-            float rotate = atan2f(ctm->b, ctm->a);
+            float rotate = (float) atan2(ctm->b, ctm->a);
             
             if (spacing
                     && state.ctm_prev
@@ -2429,7 +2429,7 @@ int extract_document_to_docx_content(
                     for (p=p0; p<page->paragraphs_num; ++p) {
                         paragraph = page->paragraphs[p];
                         ctm = &paragraph->lines[0]->spans[0]->ctm;
-                        rotate = atan2f(ctm->b, ctm->a);
+                        rotate = (float) atan2(ctm->b, ctm->a);
                         if (rotate != rotate0) {
                             break;
                         }
@@ -2502,8 +2502,8 @@ int extract_document_to_docx_content(
                     space. There doesn't seem to be a way to make the text box
                     auto-grow to contain the text. */
 
-                    dx = (int) (w/2 * (1-cos(rotate)) + h/2 * sin(rotate));
-                    dy = (int) (h/2 * (cos(rotate)-1) + w/2 * sin(rotate));
+                    dx = (int) ((float) (w/2) * (1-cosf(rotate)) + (float) (h/2) * sinf(rotate));
+                    dy = (int) ((float) (h/2) * (cosf(rotate)-1) + (float) (w/2) * sinf(rotate));
                     outf("ctm->e,f=%f,%f rotate=%f => x,y=%ik %ik dx,dy=%ik %ik",
                             ctm->e,
                             ctm->f,

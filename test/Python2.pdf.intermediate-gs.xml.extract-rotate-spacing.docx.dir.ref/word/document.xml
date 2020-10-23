@@ -233,7 +233,7 @@
           <wp:anchor distT="0" distB="0" distL="0" distR="0" simplePos="0" relativeHeight="0" behindDoc="0" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="53A210D1" wp14:editId="2B7E8016">
             <wp:simplePos x="0" y="0"/>
             <wp:positionH relativeFrom="page">
-              <wp:posOffset>3428888</wp:posOffset>
+              <wp:posOffset>3428887</wp:posOffset>
             </wp:positionH>
             <wp:positionV relativeFrom="page">
               <wp:posOffset>2213022</wp:posOffset>
@@ -248,7 +248,7 @@
                 <wps:wsp>
                   <wps:cNvSpPr txBox="1"/>
                   <wps:spPr>
-                    <a:xfrm rot="6130097">
+                    <a:xfrm rot="6130098">
                       <a:off x="0" y="0"/>
                       <a:ext cx="3228975" cy="2286000"/>
                     </a:xfrm>
