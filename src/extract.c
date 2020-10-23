@@ -1196,8 +1196,8 @@ static float line_distance(
 page. */
 static int paragraphs_cmp(const void* a, const void* b)
 {
-    paragraph_t* const* a_paragraph = a;
-    paragraph_t* const* b_paragraph = b;
+    const paragraph_t* const* a_paragraph = a;
+    const paragraph_t* const* b_paragraph = b;
     line_t* a_line = paragraph_line_first(*a_paragraph);
     line_t* b_line = paragraph_line_first(*b_paragraph);
 
