@@ -6,6 +6,7 @@
 
 #include <assert.h>
 #include <errno.h>
+#include <float.h>
 #include <limits.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -18,7 +19,7 @@ errno set. */
 /* Appends first <s_len> chars of string <s> to *p. */
 static int str_catl(char** p, const char* s, int s_len)
 {
-    int p_len = (*p) ? strlen(*p) : 0;
+    size_t p_len = (*p) ? strlen(*p) : 0;
     if (extract_realloc2(
             p,
             p_len + 1,
@@ -70,7 +71,7 @@ int extract_xml_tag_attributes_find_float(
         errno = ESRCH;
         return -1;
     }
-    *o_out = atof(value);
+    if (extract_xml_str_to_float(value, o_out)) return -1;
     return 0;
 }
 
@@ -157,34 +158,31 @@ int extract_xml_str_to_ullint(const char* text, unsigned long long* o_out)
 int extract_xml_str_to_int(const char* text, int* o_out)
 {
     long long x;
-    int e = extract_xml_str_to_llint(text, &x);
-    if (e) return e;
+    if (extract_xml_str_to_llint(text, &x)) return -1;
     if (x > INT_MAX || x < INT_MIN) {
         errno = ERANGE;
         return -1;
     }
-    *o_out = x;
+    *o_out = (int) x;
     return 0;
 }
 
 int extract_xml_str_to_uint(const char* text, unsigned* o_out)
 {
     unsigned long long x;
-    int e = extract_xml_str_to_ullint(text, &x);
-    if (e) return e;
+    if (extract_xml_str_to_ullint(text, &x)) return -1;
     if (x > UINT_MAX) {
         errno = ERANGE;
         return -1;
     }
-    *o_out = x;
+    *o_out = (unsigned) x;
     return 0;
 }
 
 int extract_xml_str_to_size(const char* text, size_t* o_out)
 {
     unsigned long long x;
-    int e = extract_xml_str_to_ullint(text, &x);
-    if (e) return e;
+    if (extract_xml_str_to_ullint(text, &x)) return -1;
     if (x > SIZE_MAX) {
         errno = ERANGE;
         return -1;
@@ -193,6 +191,44 @@ int extract_xml_str_to_size(const char* text, size_t* o_out)
     return 0;
 }
 
+int extract_xml_str_to_double(const char* text, double* o_out)
+{
+    char* endptr;
+    double x;
+    if (!text) {
+        errno = ESRCH;
+        return -1;
+    }
+    if (text[0] == 0) {
+        errno = EINVAL;
+        return -1;
+    }
+    errno = 0;
+    x = strtod(text, &endptr);
+    if (errno) {
+        return -1;
+    }
+    if (*endptr) {
+        errno = EINVAL;
+        return -1;
+    }
+    *o_out = x;
+    return 0;
+}
+
+int extract_xml_str_to_float(const char* text, float* o_out)
+{
+    double x;
+    if (extract_xml_str_to_double(text, &x)) {
+        return -1;
+    }
+    if (x > FLT_MAX || x < -FLT_MAX) {
+        errno = ERANGE;
+        return -1;
+    }
+    *o_out = (float) x;
+    return 0;
+}
 
 static int extract_xml_tag_attributes_append(
         extract_xml_tag_t*  tag,
@@ -375,7 +411,7 @@ int extract_xml_pparse_next(extract_buffer_t* buffer, extract_xml_tag_t* out)
                 /* Read attribute value. */
                 int quote_single = 0;
                 int quote_double = 0;
-                int l;
+                size_t l;
                 for(;;) {
                     if (s_next(buffer, &ret, &c)) goto end;
                     if (c == '\'')      quote_single = !quote_single;

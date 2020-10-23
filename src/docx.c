@@ -258,7 +258,7 @@ static int extract_docx_content_insert(
         const char* mid_begin_name,
         const char* mid_end_name,
         const char* content,
-        int         content_length,
+        size_t      content_length,
         char**      o_out
         )
 {
@@ -495,6 +495,14 @@ static int remove_directory(const char* path)
     }
     return systemf("rm -r '%s'", path);
 }
+
+#ifdef _WIN32
+static int mkdir(const char* path)
+{
+    return _mkdir(path);
+}
+#endif
+
 
 int extract_docx_content_to_docx_template(
         const char*         content,

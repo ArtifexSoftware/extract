@@ -9,7 +9,7 @@ extract_alloc_info_t    extract_alloc_info = {0};
 
 static size_t s_exp_min_alloc_size = 0;
 
-static int round_up(size_t n)
+static size_t round_up(size_t n)
 {
     if (s_exp_min_alloc_size) {
         /* Round up to power of two. */

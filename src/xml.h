@@ -85,6 +85,11 @@ int extract_xml_str_to_uint(const char* text, unsigned* o_out);
 
 int extract_xml_str_to_size(const char* text, size_t* o_out);
 
+int extract_xml_str_to_double(const char* text, double* o_out);
+
+int extract_xml_str_to_float(const char* text, float* o_out);
+
+
 int extract_xml_tag_attributes_find_int(
         extract_xml_tag_t*  tag,
         const char*         name,

@@ -18,7 +18,7 @@
 #include <string.h>
 
 
-static const float g_pi = 3.14159265;
+static const float g_pi = 3.14159265f;
 
 
 typedef struct
@@ -177,7 +177,7 @@ static const char* span_string(span_t* span)
     extract_astring_cat(&ret, ": ");
     extract_astring_catc(&ret, '"');
     for (i=0; i<span->chars_num; ++i) {
-        extract_astring_catc(&ret, span->chars[i].ucs);
+        extract_astring_catc(&ret, (char) span->chars[i].ucs);
     }
     extract_astring_catc(&ret, '"');
     return ret.chars;
@@ -191,7 +191,7 @@ static const char* span_string2(span_t* span)
     extract_astring_free(&ret);
     extract_astring_catc(&ret, '"');
     for (i=0; i<span->chars_num; ++i) {
-        extract_astring_catc(&ret, span->chars[i].ucs);
+        extract_astring_catc(&ret, (char) span->chars[i].ucs);
     }
     extract_astring_catc(&ret, '"');
     return ret.chars;
@@ -269,7 +269,7 @@ static float span_adv_total(span_t* span)
     /* We add on the advance of the last item; this avoids us returning zero if
     there's only one item. */
     float adv = span_char_last(span)->adv * matrix_expansion(span->trm);
-    return sqrt(dx*dx + dy*dy) + adv;
+    return sqrtf(dx*dx + dy*dy) + adv;
 }
 
 /* Returns distance between end of <a> and beginning of <b>. */
@@ -281,7 +281,7 @@ static float spans_adv(
 {
     float delta_x = b->x - a->x;
     float delta_y = b->y - a->y;
-    float s = sqrt( delta_x*delta_x + delta_y*delta_y);
+    float s = sqrtf( delta_x*delta_x + delta_y*delta_y);
     float a_size = a->adv * matrix_expansion(a_span->trm);
     s -= a_size;
     return s;
@@ -931,7 +931,7 @@ static int make_lines(
                 span_t* span_b = line_span_first(line_b);
                 float dx = span_char_first(span_b)->x - span_char_last(span_a)->x;
                 float dy = span_char_first(span_b)->y - span_char_last(span_a)->y;
-                float angle_a_b = atan2(-dy, dx);
+                float angle_a_b = atan2f(-dy, dx);
                 const float angle_tolerance_deg = 1;
                 if (verbose) {
                     outf("delta=(%f %f) alast=(%f %f) bfirst=(%f %f): angle_a=%lf angle_a_b=%lf",
@@ -999,7 +999,7 @@ static int make_lines(
                 float average_adv = (
                         (span_adv_total(span_a) + span_adv_total(span_b))
                         /
-                        (span_a->chars_num + span_b->chars_num)
+                        (float) (span_a->chars_num + span_b->chars_num)
                         );
 
                 int insert_space = (nearest_adv > 0.25 * average_adv);
@@ -1146,9 +1146,10 @@ static float line_font_size_max(line_t* line)
     int i;
     for (i=0; i<line->spans_num; ++i) {
         span_t* span = line->spans[i];
-        int size = matrix_expansion(span->trm);
-        if (size > size_max) {
-            size_max = size;
+        /* fixme: <size> should be float, which changes some output. */
+        int size = (int) matrix_expansion(span->trm);
+        if ((float) size > size_max) {
+            size_max = (float) size;
         }
     }
     return size_max;
@@ -1186,7 +1187,8 @@ static float line_distance(
     float dx = bx - ax;
     float dy = by - ay;
 
-    return dx * sin(angle) + dy * cos(angle);
+
+    return dx * sinf(angle) + dy * cosf(angle);
 }
 
 
@@ -1786,7 +1788,7 @@ int extract_intermediate_to_document(
                         else if (cc >= 'a' && cc <= 'f') byte += 10 + cc - 'a';
                         else goto compressed_error;
                         
-                        image_temp.data[i] = byte;
+                        image_temp.data[i] = (char) byte;
                         i += 1;
                         if (i == image_temp.data_size) {
                             break;
@@ -1935,7 +1937,7 @@ int extract_intermediate_to_document(
                     char_ = &span->chars[ span->chars_num-1];
                     char_->pre_x = char_pre_x - offset_x;
                     char_->pre_y = char_pre_y - offset_y;
-                    if (char_->pre_y) {
+                    if (char_->pre_y != 0) {
                         outfx("char_->pre=(%f %f)",
                                 char_->pre_x, char_->pre_y);
                     }
@@ -2020,7 +2022,7 @@ static float matrices_to_font_size(matrix_t* ctm, matrix_t* trm)
     float font_size = matrix_expansion(*trm)
             * matrix_expansion(*ctm);
     /* Round font_size to nearest 0.01. */
-    font_size = (int) (font_size * 100 + 0.5) / 100.0;
+    font_size = (float) (int) (font_size * 100.0f + 0.5f) / 100.0f;
     return font_size;
 }
 
@@ -2107,7 +2109,7 @@ static int extract_document_to_docx_content_paragraph(
 
                 /* Output ASCII verbatim. */
                 else if (c >= 32 && c <= 127) {
-                    if (extract_docx_char_append_char(content, c)) goto end;
+                    if (extract_docx_char_append_char(content, (char) c)) goto end;
                 }
 
                 /* Escape all other characters. */
@@ -2369,7 +2371,12 @@ int extract_document_to_docx_content(
         for (p=0; p<page->paragraphs_num; ++p) {
             paragraph_t* paragraph = page->paragraphs[p];
             const matrix_t* ctm = &paragraph->lines[0]->spans[0]->ctm;
-            float rotate = atan2(ctm->b, ctm->a);
+            float rotate = (float) atan2(ctm->b, ctm->a);
+            /*float rotate_test = atan2(ctm->b, ctm->a);
+            if (fabs(rotate_test - rotate) > 0.0000001) {
+                outf0("ctm->b=%f, ctm->a=%f rotate=%f rotate_test=%f", ctm->b, ctm->a, rotate, rotate_test);
+                //assert(0);
+            }*/
             
             if (spacing
                     && state.ctm_prev
@@ -2390,7 +2397,7 @@ int extract_document_to_docx_content(
                 if (extract_docx_paragraph_empty(&content)) goto end;
             }
             
-            if (rotation && rotate) {
+            if (rotation && rotate != 0) {
             
                 /* Find extent of paragraphs with this same rotation. extent
                 will contain max width and max height of paragraphs, in units
@@ -2434,7 +2441,7 @@ int extract_document_to_docx_content(
                     for (p=p0; p<page->paragraphs_num; ++p) {
                         paragraph = page->paragraphs[p];
                         ctm = &paragraph->lines[0]->spans[0]->ctm;
-                        rotate = atan2(ctm->b, ctm->a);
+                        rotate = (float) atan2(ctm->b, ctm->a);
                         if (rotate != rotate0) {
                             break;
                         }
@@ -2447,8 +2454,8 @@ int extract_document_to_docx_content(
                                 span_t* span = line_span_last(line);
                                 char_t* char_ = span_char_last(span);
                                 float adv = char_->adv * matrix_expansion(span->trm);
-                                float x = char_->x + adv * cos(rotate);
-                                float y = char_->y + adv * sin(rotate);
+                                float x = char_->x + adv * cosf(rotate);
+                                float y = char_->y + adv * sinf(rotate);
 
                                 float dx = x - origin.x;
                                 float dy = y - origin.y;
@@ -2479,7 +2486,7 @@ int extract_document_to_docx_content(
                 
                 {
                     /* Angles are in units of 1/60,000 degree. */
-                    int rot = rotate * 180 / g_pi * 60000;
+                    int rot = (int) (rotate * 180 / g_pi * 60000);
 
                     /* <wp:anchor distT=\.. etc are in EMU - 1/360,000 of a cm.
                     relativeHeight is z-ordering. (wp:positionV:wp:posOffset,
@@ -2490,11 +2497,11 @@ int extract_document_to_docx_content(
                     about the origin (top-left). So we correct the position of
                     box by subtracting the vector that the top-left moves when
                     rotated by angle <rotate> about the middle. */
-                    int point_to_emu = 12700;   /* https://en.wikipedia.org/wiki/Office_Open_XML_file_formats#DrawingML */
-                    int x = ctm->e * point_to_emu;
-                    int y = ctm->f * point_to_emu;
-                    int w = extent.x * point_to_emu; //3228975;
-                    int h = extent.y * point_to_emu; //2286000;
+                    float point_to_emu = 12700;   /* https://en.wikipedia.org/wiki/Office_Open_XML_file_formats#DrawingML */
+                    int x = (int) (ctm->e * point_to_emu);
+                    int y = (int) (ctm->f * point_to_emu);
+                    int w = (int) (extent.x * point_to_emu);
+                    int h = (int) (extent.y * point_to_emu);
                     int dx;
                     int dy;
 
@@ -2507,8 +2514,8 @@ int extract_document_to_docx_content(
                     space. There doesn't seem to be a way to make the text box
                     auto-grow to contain the text. */
 
-                    dx = w/2 * (1-cos(rotate)) + h/2 * sin(rotate);
-                    dy = h/2 * (cos(rotate)-1) + w/2 * sin(rotate);
+                    dx = (int) (w/2 * (1-cos(rotate)) + h/2 * sin(rotate));
+                    dy = (int) (h/2 * (cos(rotate)-1) + w/2 * sin(rotate));
                     outf("ctm->e,f=%f,%f rotate=%f => x,y=%ik %ik dx,dy=%ik %ik",
                             ctm->e,
                             ctm->f,

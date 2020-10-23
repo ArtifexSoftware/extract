@@ -21,7 +21,7 @@
 build = debug
 
 flags_link      = -W -Wall -lm
-flags_compile   = -W -Wall -Wpointer-sign -Wmissing-declarations -Wmissing-prototypes -Wdeclaration-after-statement -Wpointer-arith -Werror -MMD -MP
+flags_compile   = -W -Wall -Wextra -Wpointer-sign -Wmissing-declarations -Wmissing-prototypes -Wdeclaration-after-statement -Wpointer-arith -Wconversion -Wno-sign-conversion -Werror -MMD -MP
 
 uname = $(shell uname)
 
@@ -346,6 +346,7 @@ clean:
 clean2:
 	-rm -r test/generated/*.pdf.intermediate-*.xml.*
 	-rm -r test/generated/*.pdf.mutool*.docx*
+	-rm -r src/build
 .PHONY: clean
 
 

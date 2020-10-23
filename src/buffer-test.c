@@ -41,7 +41,7 @@ static int s_read(void* handle, void* destination, size_t bytes, size_t* o_actua
     size_t n = 91;
     if (n > bytes) n = bytes;
     if (n > r->bytes - r->pos) n = r->bytes - r->pos;
-    if (n) n = rand_int(n-1) + 1;
+    if (n) n = rand_int((int) n-1) + 1;
     memcpy(destination, r->data + r->pos, n);
     r->pos += n;
     *o_actual = n;
@@ -54,7 +54,7 @@ static int s_read_cache(void* handle, void** o_cache, size_t* o_numbytes)
     mem_t* r = handle;
     r->num_calls_cache += 1;
     *o_cache = r->cache;
-    int n = r->bytes - r->pos;
+    int n = (int) (r->bytes - r->pos);
     if (n > (int) sizeof(r->cache)) n = sizeof(r->cache);
     if (n) n = rand_int( n - 1) + 1;
     memcpy(r->cache, r->data + r->pos, n);
@@ -78,7 +78,7 @@ short reads and cache with randomised sizes. */
     int e;
     if (extract_malloc(&r->data, bytes)) abort();
     for (i=0; i<bytes; ++i) {
-        r->data[i] = rand();
+        r->data[i] = (char) rand();
     }
     r->bytes = bytes;
     r->pos = 0;
@@ -92,7 +92,7 @@ short reads and cache with randomised sizes. */
 static void test_read(void)
 {
     /* Create read buffer with randomised content. */
-    size_t len = 12345;
+    int len = 12345;
     mem_t r;
     extract_buffer_t* buffer;
     s_create_read_buffer(len, &r, &buffer);
@@ -101,14 +101,14 @@ static void test_read(void)
     original content. */
     char* out_buffer;
     if (extract_malloc(&out_buffer, len)) abort();
-    size_t out_pos = 0;
+    int out_pos = 0;
     int its;
     for (its=0;; ++its) {
         size_t actual;
-        size_t n = rand_int(120)+1;
+        int n = rand_int(120)+1;
         int e = extract_buffer_read(buffer, out_buffer + out_pos, n, &actual);
-        out_pos += actual;
-        assert(out_pos == extract_buffer_pos(buffer));
+        out_pos += (int) actual;
+        assert(out_pos == (int) extract_buffer_pos(buffer));
         if (e == 1) break;
         assert(!e);
         assert(!memcmp(out_buffer, r.data, out_pos));
@@ -131,11 +131,11 @@ static int s_write(void* handle, const void* source, size_t bytes, size_t* o_act
 {
     mem_t* r = handle;
     r->num_calls_write += 1;
-    size_t n = 61;
-    if (n > bytes) n = bytes;
-    if (n > r->bytes - r->pos) n = r->bytes - r->pos;
+    int n = 61;
+    if (n > (int) bytes) n = (int) bytes;
+    if (n > (int) (r->bytes - r->pos)) n = (int) (r->bytes - r->pos);
     assert(n);
-    n = rand_int(n-1) + 1;
+    n = rand_int((int) n-1) + 1;
     memcpy(r->data + r->pos, source, n);
     r->data[r->bytes] = 0;
     r->pos += n;
@@ -150,7 +150,7 @@ static int s_write_cache(void* handle, void** o_cache, size_t* o_numbytes)
     r->num_calls_cache += 1;
     assert(r->bytes >= r->pos);
     *o_cache = r->cache;
-    int n = r->bytes - r->pos;
+    int n = (int) (r->bytes - r->pos);
     if (n > (int) sizeof(r->cache)) n = sizeof(r->cache);
     if (n) n = rand_int( n - 1) + 1;
     *o_cache = r->cache;
@@ -196,7 +196,7 @@ static void test_write(void)
     if (extract_malloc(&out_buffer, len)) abort();
     unsigned i;
     for (i=0; i<len; ++i) {
-        out_buffer[i] = 'a' + rand_int(26);
+        out_buffer[i] = 'a' + (char) rand_int(26);
     }
     size_t out_pos = 0;
     int its;

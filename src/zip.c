@@ -8,6 +8,7 @@
 
 #include <assert.h>
 #include <errno.h>
+#include <limits.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -127,7 +128,12 @@ static int s_write_uint32(extract_zip_t* zip, uint32_t value)
         return s_write(zip, &value, sizeof(value));
     }
     else {
-        unsigned char value2[4] = { value, value>>8, value>>16, value>>24};
+        unsigned char value2[4] = {
+                (unsigned char) (value >> 0),
+                (unsigned char) (value >> 8),
+                (unsigned char) (value >> 16),
+                (unsigned char) (value >> 24)
+                };
         return s_write(zip, &value2, sizeof(value2));
     }
 }
@@ -138,7 +144,10 @@ static int s_write_uint16(extract_zip_t* zip, uint16_t value)
         return s_write(zip, &value, sizeof(value));
     }
     else {
-        unsigned char value2[2] = { value, value>>8};
+        unsigned char value2[2] = {
+                (unsigned char) (value >> 0),
+                (unsigned char) (value >> 8)
+                };
         return s_write(zip, &value2, sizeof(value2));
     }
 }
@@ -159,6 +168,11 @@ int extract_zip_write_file(
     int e = -1;
     extract_zip_cd_file_t* cd_file = NULL;
     
+    if (data_length > INT_MAX) {
+        assert(0);
+        errno = EINVAL;
+        return -1;
+    }
     /* Create central directory file header for later. */
     if (extract_realloc2(
             &zip->cd_files,
@@ -170,11 +184,11 @@ int extract_zip_write_file(
     
     cd_file->mtime = zip->mtime;
     cd_file->mdate = zip->mtime;
-    cd_file->crc_sum = crc32(crc32(0, NULL, 0), data, data_length);
-    cd_file->size_compressed = data_length;
-    cd_file->size_uncompressed = data_length;
+    cd_file->crc_sum = (int32_t) crc32(crc32(0, NULL, 0), data, (int) data_length);
+    cd_file->size_compressed = (int) data_length;
+    cd_file->size_uncompressed = (int) data_length;
     cd_file->name = strdup(name);
-    cd_file->offset = extract_buffer_pos(zip->buffer);
+    cd_file->offset = (int) extract_buffer_pos(zip->buffer);
     cd_file->attr_internal = zip->file_attr_internal;
     cd_file->attr_external = zip->file_attr_external;
     if (!cd_file->name) goto end;
@@ -191,7 +205,7 @@ int extract_zip_write_file(
         s_write_uint32(zip, cd_file->crc_sum);              /* CRC-32 of uncompressed data */
         s_write_uint32(zip, cd_file->size_compressed);      /* Compressed size */
         s_write_uint32(zip, cd_file->size_uncompressed);    /* Uncompressed size */
-        s_write_uint16(zip, strlen(name));                  /* File name length (n) */
+        s_write_uint16(zip, (uint16_t) strlen(name));       /* File name length (n) */
         s_write_uint16(zip, sizeof(extra_local)-1);         /* Extra field length (m) */
         s_write_string(zip, cd_file->name);                 /* File name */
         s_write(zip, extra_local, sizeof(extra_local)-1);   /* Extra field */
@@ -233,24 +247,24 @@ int extract_zip_close(extract_zip_t* zip)
         size_t pos2 = extract_buffer_pos(zip->buffer);
         extract_zip_cd_file_t* cd_file = &zip->cd_files[i];
         s_write_uint32(zip, 0x02014b50);
-        s_write_uint16(zip, zip->version_creator);          /* Version made by, copied from command-line zip. */
-        s_write_uint16(zip, zip->version_extract);          /* Version needed to extract (minimum). */
-        s_write_uint16(zip, zip->general_purpose_bit_flag); /* General purpose bit flag */
-        s_write_uint16(zip, 0);                             /* Compression method */
-        s_write_uint16(zip, cd_file->mtime);                /* File last modification time */
-        s_write_uint16(zip, cd_file->mdate);                /* File last modification date */
-        s_write_uint32(zip, cd_file->crc_sum);              /* CRC-32 of uncompressed data */
-        s_write_uint32(zip, cd_file->size_compressed);      /* Compressed size */
-        s_write_uint32(zip, cd_file->size_uncompressed);    /* Uncompressed size */
-        s_write_uint16(zip, strlen(cd_file->name));         /* File name length (n) */
-        s_write_uint16(zip, sizeof(extra)-1);               /* Extra field length (m) */
-        s_write_uint16(zip, 0);                             /* File comment length (k) */
-        s_write_uint16(zip, 0);                             /* Disk number where file starts */
-        s_write_uint16(zip, cd_file->attr_internal);        /* Internal file attributes */
-        s_write_uint32(zip, cd_file->attr_external);        /* External file attributes. */
-        s_write_uint32(zip, cd_file->offset);               /* Offset of local file header. */
-        s_write_string(zip, cd_file->name);                 /* File name */
-        s_write(zip, extra, sizeof(extra)-1);               /* Extra field */
+        s_write_uint16(zip, zip->version_creator);              /* Version made by, copied from command-line zip. */
+        s_write_uint16(zip, zip->version_extract);              /* Version needed to extract (minimum). */
+        s_write_uint16(zip, zip->general_purpose_bit_flag);     /* General purpose bit flag */
+        s_write_uint16(zip, 0);                                 /* Compression method */
+        s_write_uint16(zip, cd_file->mtime);                    /* File last modification time */
+        s_write_uint16(zip, cd_file->mdate);                    /* File last modification date */
+        s_write_uint32(zip, cd_file->crc_sum);                  /* CRC-32 of uncompressed data */
+        s_write_uint32(zip, cd_file->size_compressed);          /* Compressed size */
+        s_write_uint32(zip, cd_file->size_uncompressed);        /* Uncompressed size */
+        s_write_uint16(zip, (uint16_t) strlen(cd_file->name));  /* File name length (n) */
+        s_write_uint16(zip, sizeof(extra)-1);                   /* Extra field length (m) */
+        s_write_uint16(zip, 0);                                 /* File comment length (k) */
+        s_write_uint16(zip, 0);                                 /* Disk number where file starts */
+        s_write_uint16(zip, cd_file->attr_internal);            /* Internal file attributes */
+        s_write_uint32(zip, cd_file->attr_external);            /* External file attributes. */
+        s_write_uint32(zip, cd_file->offset);                   /* Offset of local file header. */
+        s_write_string(zip, cd_file->name);                     /* File name */
+        s_write(zip, extra, sizeof(extra)-1);                   /* Extra field */
         len += extract_buffer_pos(zip->buffer) - pos2;
         extract_free(&cd_file->name);
     }
@@ -258,14 +272,14 @@ int extract_zip_close(extract_zip_t* zip)
     
     /* Write End of central directory record. */
     s_write_uint32(zip, 0x06054b50);
-    s_write_uint16(zip, 0);                  /* Number of this disk */
-    s_write_uint16(zip, 0);                  /* Disk where central directory starts */
-    s_write_uint16(zip, zip->cd_files_num);  /* Number of central directory records on this disk */
-    s_write_uint16(zip, zip->cd_files_num);  /* Total number of central directory records */
-    s_write_uint32(zip, len);                /* Size of central directory (bytes) */
-    s_write_uint32(zip, pos);                /* Offset of start of central directory, relative to start of archive */
+    s_write_uint16(zip, 0);                             /* Number of this disk */
+    s_write_uint16(zip, 0);                             /* Disk where central directory starts */
+    s_write_uint16(zip, (uint16_t) zip->cd_files_num);  /* Number of central directory records on this disk */
+    s_write_uint16(zip, (uint16_t) zip->cd_files_num);  /* Total number of central directory records */
+    s_write_uint32(zip, (int) len);                     /* Size of central directory (bytes) */
+    s_write_uint32(zip, (int) pos);                     /* Offset of start of central directory, relative to start of archive */
     
-    s_write_uint16(zip, strlen(zip->archive_comment));  /* Comment length (n) */
+    s_write_uint16(zip, (uint16_t) strlen(zip->archive_comment));  /* Comment length (n) */
     s_write_string(zip, zip->archive_comment);
     extract_free(&zip->archive_comment);
     

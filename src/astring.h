@@ -14,7 +14,7 @@ void extract_astring_init(extract_astring_t* string);
 
 void extract_astring_free(extract_astring_t* string);
 
-int extract_astring_catl(extract_astring_t* string, const char* s, int s_len);
+int extract_astring_catl(extract_astring_t* string, const char* s, size_t s_len);
 
 int extract_astring_catc(extract_astring_t* string, char c);
 
