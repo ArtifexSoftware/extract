@@ -207,11 +207,13 @@ test/generated/%.extract-template.docx.diff: test/generated/%.extract-template.d
 test/generated/%.pdf.mutool.docx: test/%.pdf
 	@echo
 	@echo Converting .pdf directly to .docx using mutool.
+	@mkdir -p test/generated
 	$(mutool) convert -o $@ $<
 
 test/generated/%.pdf.mutool-norotate.docx: test/%.pdf
 	@echo
 	@echo Converting .pdf directly to .docx using mutool.
+	@mkdir -p test/generated
 	$(mutool) convert -O rotation=0,spacing=1 -o $@ $<
 
 # Compares .docx from mutool with reference .docx.
