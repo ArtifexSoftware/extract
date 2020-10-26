@@ -4,13 +4,20 @@
 #   make tests
 #       Runs all tests.
 #
+#   make test
+#       Runs regression tests.
+#
+#   make test-mutool
+#       Runs mutool regression tests. This is used by mupdf's extract-test with
+#       extract being a git submodule.
+#
+#   make test-buffer test-misc test-src
+#       Runs unit tests etc.
+#
 #   make build=debug-opt ...
 #       Set build flags.
 #
-#   make test-buffer
-#       Run buffer unit tests.
-#
-#   make build=memento maqueeze
+#   make build=memento msqueeze
 #       Run memento squeeze test.
 
 
@@ -48,7 +55,10 @@ endif
 
 
 # Locations of mutool and gs - we assume these are available at hard-coded
-# paths.
+# paths, with mupdf and ghostpdl checked out next to extract.
+#
+# If this extract checkout is a mupdf submodule, one could override with:
+#   make gs=../../../ghostpdl/debug-bin/gs mutool=../../build/debug-extract/mutool ...
 #
 gs      = ../ghostpdl/debug-bin/gs
 mutool  = ../mupdf/build/debug-extract/mutool
@@ -156,7 +166,7 @@ test/generated/%.pdf.intermediate-gs.xml: test/%.pdf $(gs)
 
 %.extract.docx: % $(exe)
 	@echo
-	@echo Generating docx with extract.exe
+	@echo == Generating docx with extract.exe
 	$(run_exe) -v 1 -r 0 -i $< -o $@
 
 %.extract-rotate.docx: % $(exe) Makefile
@@ -193,12 +203,14 @@ test/generated/%.extract-template.docx.diff: test/generated/%.extract-template.d
 
 # Unzips .docx into .docx.dir/ directory.
 %.docx.dir: %.docx
-	(rm -r $@ || true)
+	@echo
+	@echo == Extracting .docx into directory.
+	@rm -r $@ 2>/dev/null || true
 	unzip -q -d $@ $<
 
 # Prettyifies each .xml file within .docx.dir/ directory.
 %.docx.dir.pretty: %.docx.dir
-	(rm -r $@ $@- || true)
+	@rm -r $@ $@- 2>/dev/null || true
 	cp -pr $< $@-
 	./src/docx_template_build.py --docx-pretty $@-
 	mv $@- $@
@@ -206,13 +218,13 @@ test/generated/%.extract-template.docx.diff: test/generated/%.extract-template.d
 # Converts .pdf directly to .docx using mutool.
 test/generated/%.pdf.mutool.docx: test/%.pdf
 	@echo
-	@echo Converting .pdf directly to .docx using mutool.
+	@echo == Converting .pdf directly to .docx using mutool.
 	@mkdir -p test/generated
 	$(mutool) convert -o $@ $<
 
 test/generated/%.pdf.mutool-norotate.docx: test/%.pdf
 	@echo
-	@echo Converting .pdf directly to .docx using mutool.
+	@echo == Converting .pdf directly to .docx using mutool.
 	@mkdir -p test/generated
 	$(mutool) convert -O rotation=0,spacing=1 -o $@ $<
 
@@ -273,10 +285,12 @@ exe_buffer_test_dep = $(exe_buffer_test_obj:.o=.d)
 $(exe_buffer_test): $(exe_buffer_test_obj)
 	$(CC) $(flags_link) -o $@ $^
 test-buffer: $(exe_buffer_test)
-	@echo Running test-buffer
+	@echo
+	@echo == Running test-buffer
 	./$<
 test-buffer-valgrind: $(exe_buffer_test)
-	@echo Running test-buffer with valgrind
+	@echo
+	@echo == Running test-buffer with valgrind
 	valgrind --leak-check=full ./$<
 
 
@@ -299,18 +313,19 @@ exe_misc_test_dep = $(exe_buffer_test_obj:.o=.d)
 $(exe_misc_test): $(exe_misc_test_obj)
 	$(CC) $(flags_link) -o $@ $^
 test-misc: $(exe_misc_test)
-	@echo Running test-misc
+	@echo
+	@echo == Running test-misc
 	./$<
 
 # Source code check.
 #
 test-src:
 	@echo
-	@echo Checking for use of ssize_t in source.
+	@echo == Checking for use of ssize_t in source.
 	if PAGER= git grep -wn ssize_t src include; then false; else true; fi
-	@echo Checking for use of strdup in source.
+	@echo == Checking for use of strdup in source.
 	if PAGER= git grep -wn strdup `ls -d src/*|grep -v src/memento.h` include; then false; else true; fi
-	@echo Checking for use of bzero in source.
+	@echo == Checking for use of bzero in source.
 	if PAGER= git grep -wn bzero src include; then false; else true; fi
 
 # Compile rule. We always include src/docx_template.c as a prerequisite in case
@@ -326,7 +341,8 @@ src/build/%.c-$(build).o: src/%.c src/docx_template.c
 # These files are also in git to allow builds if python is not available.
 #
 src/docx_template.c: src/docx_template_build.py .ALWAYS
-	@echo Building $@
+	@echo
+	@echo == Building $@
 	./src/docx_template_build.py -i src/template.docx -o src/docx_template
 .ALWAYS:
 .PHONY: .ALWAYS
@@ -345,14 +361,14 @@ tags: .ALWAYS
 # Clean rule.
 #
 clean:
-	-rm -r src/build test/generated
+	rm -r src/build test/generated src/template.docx.dir 2>/dev/null || true
 
 # Cleans test/generated except for intermediate files, which are slow to create
 # (when using gs).
 clean2:
-	-rm -r test/generated/*.pdf.intermediate-*.xml.*
-	-rm -r test/generated/*.pdf.mutool*.docx*
-	-rm -r src/build
+	rm -r test/generated/*.pdf.intermediate-*.xml.* 2>/dev/null || true
+	rm -r test/generated/*.pdf.mutool*.docx* 2>/dev/null || true
+	rm -r src/build 2>/dev/null || true
 .PHONY: clean
 
 
