@@ -138,6 +138,34 @@ path_out:
 */
 
 
+int extract_intermediate_to_docx(
+        extract_buffer_t*   buffer_in,
+        int                 autosplit,
+        int                 spacing,
+        int                 rotation,
+        int                 images,
+        extract_buffer_t*   buffer_out
+        );
+/* Converts intermediate format into .docx.
+
+buffer_in
+    Source of intermediate format data.
+autosplit
+    If true, we split spans when the y coordinate changes, in order to stress
+    the joining algorithms.
+spacing
+    If non-zero, we add extra vertical space between paragraphs.
+rotation
+    If non-zero we output rotated text inside a rotated drawing. Otherwise
+    output text is always horizontal.
+images
+    If non-zero we include images.
+buffer_out
+    Where to write the zipped docx contents.
+
+*/
+
+
 void extract_end(void);
 /* Cleans up internal state that can look like a memory leak when running under
 Memento or valgrind. */

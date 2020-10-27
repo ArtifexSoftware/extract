@@ -2590,6 +2590,35 @@ int extract_document_join(extract_document_t* document)
     return ret;
 }
 
+
+int extract_intermediate_to_docx(
+        extract_buffer_t*   buffer_in,
+        int                 autosplit,
+        int                 spacing,
+        int                 rotation,
+        int                 images,
+        extract_buffer_t*   buffer_out
+        )
+{
+    int e = -1;
+    
+    extract_document_t* document = NULL;
+    char* content = NULL;
+    size_t content_length = 0;
+    
+    if (extract_intermediate_to_document(buffer_in, autosplit, &document)) goto end;
+    if (extract_document_join(document)) goto end;
+    if (extract_document_to_docx_content(document, spacing, rotation, images, &content, &content_length)) goto end;
+    if (extract_docx_content_to_docx(content, content_length, document, buffer_out)) goto end;
+    e = 0;
+    
+    end:
+    extract_free(&content);
+    extract_document_free(&document);
+    return e;
+}
+
+
 void extract_end(void)
 {
     span_string(NULL);

@@ -168,70 +168,87 @@ int main(int argc, char** argv)
         printf("Failed to open intermediate file: %s\n", input_path);
         goto end;
     }
-    if (extract_intermediate_to_document(intermediate, autosplit, &document)) {
-        printf("Failed to read 'raw' output from: %s\n", input_path);
-        goto end;
-    }
     
-    if (extract_document_join(document)) {
-        printf("Failed to join spans into lines and paragraphs.\n");
-        goto end;
+    if (!content_path && docx_out_path && !docx_template_path) {
+        outf("calling extract_intermediate_to_docx()");
+        if (extract_buffer_open_file(docx_out_path, 1 /*writable*/, &out_buffer)) goto end;
+        if (extract_intermediate_to_docx(
+                intermediate,
+                autosplit,
+                spacing,
+                rotation,
+                images,
+                out_buffer
+                )) {
+            goto end;
+        }
     }
-    
-    if (extract_document_to_docx_content(document, spacing, rotation, images, &content, &content_length)) {
-        printf("Failed to create docx content.\n");
-        goto end;
-    }
+    else {
+        if (extract_intermediate_to_document(intermediate, autosplit, &document)) {
+            printf("Failed to read 'raw' output from: %s\n", input_path);
+            goto end;
+        }
 
-    if (content_path) {
-        FILE* f;
-        printf("Writing content to: %s\n", content_path);
-        f = fopen(content_path, "w");
-        if (!f) {
-            printf("Failed to create content file: %s\n", content_path);
+        if (extract_document_join(document)) {
+            printf("Failed to join spans into lines and paragraphs.\n");
             goto end;
         }
-        if (fwrite(content, content_length, 1 /*nmemb*/, f) != 1) {
-            printf("Failed to write to content file: %s\n", content_path);
+
+        if (extract_document_to_docx_content(document, spacing, rotation, images, &content, &content_length)) {
+            printf("Failed to create docx content.\n");
+            goto end;
+        }
+
+        if (content_path) {
+            FILE* f;
+            printf("Writing content to: %s\n", content_path);
+            f = fopen(content_path, "w");
+            if (!f) {
+                printf("Failed to create content file: %s\n", content_path);
+                goto end;
+            }
+            if (fwrite(content, content_length, 1 /*nmemb*/, f) != 1) {
+                printf("Failed to write to content file: %s\n", content_path);
+                fclose(f);
+                errno = EIO;
+                goto end;
+            }
             fclose(f);
-            errno = EIO;
-            goto end;
         }
-        fclose(f);
-    }
-    
-    if (docx_out_path) {
-        printf("Creating .docx file: %s\n", docx_out_path);
-        if (docx_template_path) {
-            printf("Using template: %s\n", docx_template_path);
-            if (extract_docx_content_to_docx_template(
-                    content,
-                    content_length,
-                    document,
-                    docx_template_path,
-                    docx_out_path,
-                    preserve_dir
-                    )) {
-                printf("Failed to create .docx file: %s\n", docx_out_path);
-                goto end;
+
+        if (docx_out_path) {
+            printf("Creating .docx file: %s\n", docx_out_path);
+            if (docx_template_path) {
+                printf("Using template: %s\n", docx_template_path);
+                if (extract_docx_content_to_docx_template(
+                        content,
+                        content_length,
+                        document,
+                        docx_template_path,
+                        docx_out_path,
+                        preserve_dir
+                        )) {
+                    printf("Failed to create .docx file: %s\n", docx_out_path);
+                    goto end;
+                }
             }
-        }
-        else {
-            /* We could use extract_docx_content_to_docx(), but
-            instead test with extract_buffer_open_file() and
-            extract_docx_content_to_docx_buffer(). */
-            if (extract_buffer_open_file(docx_out_path, 1 /*writable*/, &out_buffer)) goto end;
-            
-            if (extract_docx_content_to_docx(
-                    content,
-                    content_length,
-                    document,
-                    out_buffer
-                    )) {
-                printf("Failed to create .docx file: %s\n", docx_out_path);
-                goto end;
+            else {
+                /* We could use extract_docx_content_to_docx(), but
+                instead test with extract_buffer_open_file() and
+                extract_docx_content_to_docx_buffer(). */
+                if (extract_buffer_open_file(docx_out_path, 1 /*writable*/, &out_buffer)) goto end;
+
+                if (extract_docx_content_to_docx(
+                        content,
+                        content_length,
+                        document,
+                        out_buffer
+                        )) {
+                    printf("Failed to create .docx file: %s\n", docx_out_path);
+                    goto end;
+                }
+                if (extract_buffer_close(&out_buffer)) goto end;
             }
-            if (extract_buffer_close(&out_buffer)) goto end;
         }
     }
 
