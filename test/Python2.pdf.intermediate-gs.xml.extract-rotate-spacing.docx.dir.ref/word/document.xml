@@ -13,10 +13,10 @@
           <wp:anchor distT="0" distB="0" distL="0" distR="0" simplePos="0" relativeHeight="0" behindDoc="0" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="53A210D1" wp14:editId="2B7E8016">
             <wp:simplePos x="0" y="0"/>
             <wp:positionH relativeFrom="page">
-              <wp:posOffset>781085</wp:posOffset>
+              <wp:posOffset>781084</wp:posOffset>
             </wp:positionH>
             <wp:positionV relativeFrom="page">
-              <wp:posOffset>2932471</wp:posOffset>
+              <wp:posOffset>2932470</wp:posOffset>
             </wp:positionV>
             <wp:extent cx="2190257" cy="2819346"/>
             <wp:effectExtent l="381000" t="723900" r="371475" b="723900"/>
@@ -386,7 +386,7 @@
               <wp:posOffset>4205387</wp:posOffset>
             </wp:positionH>
             <wp:positionV relativeFrom="page">
-              <wp:posOffset>954591</wp:posOffset>
+              <wp:posOffset>954592</wp:posOffset>
             </wp:positionV>
             <wp:extent cx="2309037" cy="1989180"/>
             <wp:effectExtent l="381000" t="723900" r="371475" b="723900"/>

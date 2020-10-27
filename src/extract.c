@@ -2502,8 +2502,8 @@ int extract_document_to_docx_content(
                     space. There doesn't seem to be a way to make the text box
                     auto-grow to contain the text. */
 
-                    dx = (int) ((double) (w/2) * (1-cos(rotate)) + (double) (h/2) * sin(rotate));
-                    dy = (int) ((double) (h/2) * (cos(rotate)-1) + (double) (w/2) * sin(rotate));
+                    dx = (int) ((1-cos(rotate)) * w / 2.0 + sin(rotate) * h / 2.0);
+                    dy = (int) ((cos(rotate)-1) * h / 2.0 + sin(rotate) * w / 2.0);
                     outf("ctm->e,f=%f,%f rotate=%f => x,y=%ik %ik dx,dy=%ik %ik",
                             ctm->e,
                             ctm->f,
