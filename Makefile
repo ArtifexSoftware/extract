@@ -215,7 +215,7 @@ test/generated/%.extract-template.docx.diff: test/generated/%.extract-template.d
 	@rm -r $@ 2>/dev/null || true
 	unzip -q -d $@ $<
 
-# Prettyifies each .xml file within .docx.dir/ directory.
+# Prettifies each .xml file within .docx.dir/ directory.
 %.docx.dir.pretty: %.docx.dir
 	@rm -r $@ $@- 2>/dev/null || true
 	cp -pr $< $@-
@@ -223,13 +223,13 @@ test/generated/%.extract-template.docx.diff: test/generated/%.extract-template.d
 	mv $@- $@
 
 # Converts .pdf directly to .docx using mutool.
-test/generated/%.pdf.mutool.docx: test/%.pdf
+test/generated/%.pdf.mutool.docx: test/%.pdf $(mutool)
 	@echo
 	@echo == Converting .pdf directly to .docx using mutool.
 	@mkdir -p test/generated
 	$(mutool) convert -o $@ $<
 
-test/generated/%.pdf.mutool-norotate.docx: test/%.pdf
+test/generated/%.pdf.mutool-norotate.docx: test/%.pdf $(mutool)
 	@echo
 	@echo == Converting .pdf directly to .docx using mutool.
 	@mkdir -p test/generated

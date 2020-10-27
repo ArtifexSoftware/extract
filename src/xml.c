@@ -58,8 +58,6 @@ char* extract_xml_tag_attributes_find(extract_xml_tag_t* tag, const char* name)
     return NULL;
 }
 
-/* Finds float value of specified attribute, returning error if not found. We
-use atof() and don't check for non-numeric attribute value. */
 int extract_xml_tag_attributes_find_float(
         extract_xml_tag_t*  tag,
         const char*         name,
@@ -72,6 +70,21 @@ int extract_xml_tag_attributes_find_float(
         return -1;
     }
     if (extract_xml_str_to_float(value, o_out)) return -1;
+    return 0;
+}
+
+int extract_xml_tag_attributes_find_double(
+        extract_xml_tag_t*  tag,
+        const char*         name,
+        double*             o_out
+        )
+{
+    const char* value = extract_xml_tag_attributes_find(tag, name);
+    if (!value) {
+        errno = ESRCH;
+        return -1;
+    }
+    if (extract_xml_str_to_double(value, o_out)) return -1;
     return 0;
 }
 

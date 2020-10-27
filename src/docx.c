@@ -76,7 +76,7 @@ terminate any previous run. */
 int extract_docx_run_start(
         extract_astring_t* content,
         const char* font_name,
-        float font_size,
+        double font_size,
         int bold,
         int italic
         )

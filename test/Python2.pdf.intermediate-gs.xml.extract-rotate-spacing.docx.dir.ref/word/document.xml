@@ -13,12 +13,12 @@
           <wp:anchor distT="0" distB="0" distL="0" distR="0" simplePos="0" relativeHeight="0" behindDoc="0" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="53A210D1" wp14:editId="2B7E8016">
             <wp:simplePos x="0" y="0"/>
             <wp:positionH relativeFrom="page">
-              <wp:posOffset>781084</wp:posOffset>
+              <wp:posOffset>781085</wp:posOffset>
             </wp:positionH>
             <wp:positionV relativeFrom="page">
-              <wp:posOffset>2932470</wp:posOffset>
+              <wp:posOffset>2932471</wp:posOffset>
             </wp:positionV>
-            <wp:extent cx="2190258" cy="2819346"/>
+            <wp:extent cx="2190257" cy="2819346"/>
             <wp:effectExtent l="381000" t="723900" r="371475" b="723900"/>
             <wp:wrapNone/>
             <wp:docPr id="1" name="Text Box 1"/>
@@ -28,7 +28,7 @@
                 <wps:wsp>
                   <wps:cNvSpPr txBox="1"/>
                   <wps:spPr>
-                    <a:xfrm rot="-8517154">
+                    <a:xfrm rot="-8517153">
                       <a:off x="0" y="0"/>
                       <a:ext cx="3228975" cy="2286000"/>
                     </a:xfrm>
@@ -148,7 +148,7 @@
             <wp:positionV relativeFrom="page">
               <wp:posOffset>1727386</wp:posOffset>
             </wp:positionV>
-            <wp:extent cx="4204295" cy="5742838"/>
+            <wp:extent cx="4204294" cy="5742838"/>
             <wp:effectExtent l="381000" t="723900" r="371475" b="723900"/>
             <wp:wrapNone/>
             <wp:docPr id="2" name="Text Box 2"/>
@@ -158,7 +158,7 @@
                 <wps:wsp>
                   <wps:cNvSpPr txBox="1"/>
                   <wps:spPr>
-                    <a:xfrm rot="10470861">
+                    <a:xfrm rot="10470860">
                       <a:off x="0" y="0"/>
                       <a:ext cx="3228975" cy="2286000"/>
                     </a:xfrm>
@@ -238,7 +238,7 @@
             <wp:positionV relativeFrom="page">
               <wp:posOffset>2213022</wp:posOffset>
             </wp:positionV>
-            <wp:extent cx="2856669" cy="3710084"/>
+            <wp:extent cx="2856668" cy="3710084"/>
             <wp:effectExtent l="381000" t="723900" r="371475" b="723900"/>
             <wp:wrapNone/>
             <wp:docPr id="3" name="Text Box 3"/>
@@ -248,7 +248,7 @@
                 <wps:wsp>
                   <wps:cNvSpPr txBox="1"/>
                   <wps:spPr>
-                    <a:xfrm rot="6130098">
+                    <a:xfrm rot="6130097">
                       <a:off x="0" y="0"/>
                       <a:ext cx="3228975" cy="2286000"/>
                     </a:xfrm>
@@ -383,7 +383,7 @@
           <wp:anchor distT="0" distB="0" distL="0" distR="0" simplePos="0" relativeHeight="0" behindDoc="0" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="53A210D1" wp14:editId="2B7E8016">
             <wp:simplePos x="0" y="0"/>
             <wp:positionH relativeFrom="page">
-              <wp:posOffset>4205388</wp:posOffset>
+              <wp:posOffset>4205387</wp:posOffset>
             </wp:positionH>
             <wp:positionV relativeFrom="page">
               <wp:posOffset>954591</wp:posOffset>

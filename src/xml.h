@@ -67,8 +67,17 @@ int extract_xml_tag_attributes_find_float(
         const char*         name,
         float*              o_out
         );
-/* Finds float value of specified attribute, returning error if not found. We
-use atof() and don't check for non-numeric attribute value. */
+/* Finds float value of specified attribute, returning error if not found or
+there is trailing text. */
+
+int extract_xml_tag_attributes_find_double(
+        extract_xml_tag_t*  tag,
+        const char*         name,
+        double*             o_out
+        );
+/* Finds double value of specified attribute, returning error if not found or there is
+trailing text. */
+
 
 /* Next few functions write to out-param and return zero on success, else
 return -1 with errno set.

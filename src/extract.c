@@ -18,27 +18,27 @@
 #include <string.h>
 
 
-static const float g_pi = 3.14159265f;
+static const double g_pi = 3.141592653589793;
 
 
 typedef struct
 {
-    float   a;
-    float   b;
-    float   c;
-    float   d;
-    float   e;
-    float   f;
+    double  a;
+    double  b;
+    double  c;
+    double  d;
+    double  e;
+    double  f;
 } matrix_t;
 
-static float matrix_expansion(matrix_t m)
+static double matrix_expansion(matrix_t m)
 {
-    return sqrtf(fabsf(m.a * m.d - m.b * m.c));
+    return sqrt(fabs(m.a * m.d - m.b * m.c));
 }
 
 /* Unused but useful to keep code here. */
 #if 0
-static void matrix_scale(matrix_t* matrix, float scale)
+static void matrix_scale(matrix_t* matrix, double scale)
 {
     matrix->a *= scale;
     matrix->b *= scale;
@@ -48,7 +48,7 @@ static void matrix_scale(matrix_t* matrix, float scale)
     matrix->f *= scale;
 }
 
-static void matrix_scale4(matrix_t* matrix, float scale)
+static void matrix_scale4(matrix_t* matrix, double scale)
 {
     matrix->a *= scale;
     matrix->b *= scale;
@@ -73,8 +73,8 @@ static const char* matrix_string(const matrix_t* matrix)
 
 typedef struct
 {
-    float x;
-    float y;
+    double x;
+    double y;
 } point_t;
 
 
@@ -83,16 +83,16 @@ typedef struct
 typedef struct
 {
     /* (x,y) before transformation by ctm and trm. */
-    float       pre_x;
-    float       pre_y;
+    double      pre_x;
+    double      pre_y;
     
     /* (x,y) after transformation by ctm and trm. */
-    float       x;
-    float       y;
+    double      x;
+    double      y;
     
     int         gid;
     unsigned    ucs;
-    float       adv;
+    double      adv;
 } char_t;
 
 static void char_init(char_t* item)
@@ -131,10 +131,10 @@ typedef struct
 static const char* span_string(span_t* span)
 {
     static extract_astring_t ret = {0};
-    float x0 = 0;
-    float y0 = 0;
-    float x1 = 0;
-    float y1 = 0;
+    double x0 = 0;
+    double y0 = 0;
+    double x1 = 0;
+    double y1 = 0;
     int c0 = 0;
     int c1 = 0;
     int i;
@@ -231,22 +231,22 @@ static char_t* span_char_last(span_t* span)
 /*
 static void span_extend_point(span_t* span, point_t* point)
 {
-    float x = span_char_last(span)->pre_x;
+    double x = span_char_last(span)->pre_x;
     x += span_char_last(span)->adv * matrix_expansion(span->trm);
     if (x > point->x) {
         point->x = x;
     }
-    float y = span_char_first(span)->pre_y;
+    double y = span_char_first(span)->pre_y;
     if (y > point->y) {
         point->y = y;
     };
 }
 */
 
-static float span_angle(span_t* span)
+static double span_angle(span_t* span)
 {
     /* Assume ctm is a rotation matix. */
-    float ret = (float) atan2(-span->ctm.c, span->ctm.a);
+    double ret = atan2(-span->ctm.c, span->ctm.a);
     outfx("ctm.a=%f ctm.b=%f ret=%f", span->ctm.a, span->ctm.b, ret);
     return ret;
     /* Not sure whether this is right. Inclined text seems to be done by
@@ -254,35 +254,35 @@ static float span_angle(span_t* span)
     assumes that it also inclines text, but maybe it only rotates individual
     glyphs? */
     /*if (span->wmode == 0) {
-        return atan2f(span->trm.b, span->trm.a);
+        return atan2(span->trm.b, span->trm.a);
     }
     else {
-        return atan2f(span->trm.d, span->trm.c);
+        return atan2(span->trm.d, span->trm.c);
     }*/
 }
 
 /* Returns total width of span. */
-static float span_adv_total(span_t* span)
+static double span_adv_total(span_t* span)
 {
-    float dx = span_char_last(span)->x - span_char_first(span)->x;
-    float dy = span_char_last(span)->y - span_char_first(span)->y;
+    double dx = span_char_last(span)->x - span_char_first(span)->x;
+    double dy = span_char_last(span)->y - span_char_first(span)->y;
     /* We add on the advance of the last item; this avoids us returning zero if
     there's only one item. */
-    float adv = span_char_last(span)->adv * matrix_expansion(span->trm);
-    return sqrtf(dx*dx + dy*dy) + adv;
+    double adv = span_char_last(span)->adv * matrix_expansion(span->trm);
+    return sqrt(dx*dx + dy*dy) + adv;
 }
 
 /* Returns distance between end of <a> and beginning of <b>. */
-static float spans_adv(
+static double spans_adv(
         span_t* a_span,
         char_t* a,
         char_t* b
         )
 {
-    float delta_x = b->x - a->x;
-    float delta_y = b->y - a->y;
-    float s = sqrtf( delta_x*delta_x + delta_y*delta_y);
-    float a_size = a->adv * matrix_expansion(a_span->trm);
+    double delta_x = b->x - a->x;
+    double delta_y = b->y - a->y;
+    double s = sqrt( delta_x*delta_x + delta_y*delta_y);
+    double a_size = a->adv * matrix_expansion(a_span->trm);
     s -= a_size;
     return s;
 }
@@ -363,7 +363,7 @@ static char_t* line_item_last(line_t* line)
 }
 
 /* Returns angle of <line>. */
-static float line_angle(line_t* line)
+static double line_angle(line_t* line)
 {
     /* All spans in a line must have same angle, so just use the first span. */
     assert(line->spans_num > 0);
@@ -658,7 +658,7 @@ void extract_document_free(extract_document_t** io_document)
 
 
 /* Returns +1, 0 or -1 depending on sign of x. */
-static int s_sign(float x)
+static int s_sign(double x)
 {
     if (x < 0)  return -1;
     if (x > 0)  return +1;
@@ -702,7 +702,7 @@ static int matrix_cmp4(
 
 static point_t multiply_matrix_point(matrix_t m, point_t p)
 {
-    float x = p.x;
+    double x = p.x;
     p.x = m.a * x + m.c * p.y;
     p.y = m.b * x + m.d * p.y;
     return p;
@@ -723,7 +723,7 @@ static int s_matrix_read(const char* text, matrix_t* matrix)
         return -1;
     }
     n = sscanf(text,
-            "%f %f %f %f %f %f",
+            "%lf %lf %lf %lf %lf %lf",
             &matrix->a,
             &matrix->b,
             &matrix->c,
@@ -750,7 +750,7 @@ static int s_matrix_read4(const char* text, matrix_t* matrix)
         return -1;
     }
     int n = sscanf(text,
-            "%f %f %f %f",
+            "%lf %lf %lf %lf",
             &matrix->a,
             &matrix->b,
             &matrix->c,
@@ -775,8 +775,8 @@ todo: allow small epsilon? */
 static int lines_are_compatible(
         line_t* a,
         line_t* b,
-        float           angle_a,
-        int             verbose
+        double  angle_a,
+        int     verbose
         )
 {
     if (a == b) return 0;
@@ -810,7 +810,7 @@ static int lines_are_compatible(
         return 0;
     }
     {
-        float angle_b = span_angle(line_span_first(b));
+        double angle_b = span_angle(line_span_first(b));
         if (angle_b != angle_a) {
             outfx("%s:%i: angles differ");
             return 0;
@@ -877,10 +877,10 @@ static int make_lines(
         int b;
         int verbose = 0;
         int nearest_line_b = -1;
-        float nearest_adv = 0;
+        double nearest_adv = 0;
         line_t* nearest_line = NULL;
         span_t* span_a;
-        float angle_a;
+        double angle_a;
         
         line_t* line_a = lines[a];
         if (!line_a) {
@@ -892,7 +892,7 @@ static int make_lines(
 
         span_a = line_span_last(line_a);
         angle_a = span_angle(span_a);
-        if (verbose) outf("a=%i angle_a=%lf ctm=%s: %s",
+        if (verbose) outf("a=%i angle_a=%f ctm=%s: %s",
                 a,
                 angle_a * 180/g_pi,
                 matrix_string(&span_a->ctm),
@@ -909,7 +909,7 @@ static int make_lines(
             }
             if (verbose) {
                 outf("");
-                outf("a=%i b=%i: nearest_line_b=%i nearest_adv=%lf",
+                outf("a=%i b=%i: nearest_line_b=%i nearest_adv=%f",
                         a,
                         b,
                         nearest_line_b,
@@ -929,12 +929,12 @@ static int make_lines(
                 span_b. This detects whether the lines are lined up with each other
                 (as opposed to being at the same angle but in different lines). */
                 span_t* span_b = line_span_first(line_b);
-                float dx = span_char_first(span_b)->x - span_char_last(span_a)->x;
-                float dy = span_char_first(span_b)->y - span_char_last(span_a)->y;
-                float angle_a_b = (float) atan2(-dy, dx);
-                const float angle_tolerance_deg = 1;
+                double dx = span_char_first(span_b)->x - span_char_last(span_a)->x;
+                double dy = span_char_first(span_b)->y - span_char_last(span_a)->y;
+                double angle_a_b = atan2(-dy, dx);
+                const double angle_tolerance_deg = 1;
                 if (verbose) {
-                    outf("delta=(%f %f) alast=(%f %f) bfirst=(%f %f): angle_a=%lf angle_a_b=%lf",
+                    outf("delta=(%f %f) alast=(%f %f) bfirst=(%f %f): angle_a=%f angle_a_b=%f",
                             dx,
                             dy,
                             span_char_last(span_a)->x,
@@ -949,12 +949,12 @@ static int make_lines(
                 */
                 if (fabs(angle_a_b - angle_a) * 180 / g_pi <= angle_tolerance_deg) {
                     /* Find distance between end of line_a and beginning of line_b. */
-                    float adv = spans_adv(
+                    double adv = spans_adv(
                             span_a,
                             span_char_last(span_a),
                             span_char_first(span_b)
                             );
-                    if (verbose) outf("nearest_adv=%lf. angle_a_b=%lf adv=%lf",
+                    if (verbose) outf("nearest_adv=%f. angle_a_b=%f adv=%f",
                             nearest_adv,
                             angle_a_b,
                             adv
@@ -967,7 +967,7 @@ static int make_lines(
                 }
                 else {
                     if (verbose) outf(
-                            "angle beyond tolerance: span_a last=(%f,%f) span_b first=(%f,%f) angle_a_b=%lg angle_a=%lg span_a.trm{a=%f b=%f}",
+                            "angle beyond tolerance: span_a last=(%f,%f) span_b first=(%f,%f) angle_a_b=%g angle_a=%g span_a.trm{a=%f b=%f}",
                             span_char_last(span_a)->x,
                             span_char_last(span_a)->y,
                             span_char_first(span_b)->x,
@@ -996,10 +996,10 @@ static int make_lines(
                 lines we are considering joining, so that we can decide whether
                 the distance between them is large enough to merit joining with
                 a space character). */
-                float average_adv = (
+                double average_adv = (
                         (span_adv_total(span_a) + span_adv_total(span_b))
                         /
-                        (float) (span_a->chars_num + span_b->chars_num)
+                        (double) (span_a->chars_num + span_b->chars_num)
                         );
 
                 int insert_space = (nearest_adv > 0.25 * average_adv);
@@ -1007,7 +1007,7 @@ static int make_lines(
                     /* Append space to span_a before concatenation. */
                     char_t* item;
                     if (verbose) {
-                        outf("(inserted space) nearest_adv=%lf average_adv=%lf",
+                        outf("(inserted space) nearest_adv=%f average_adv=%f",
                                 nearest_adv,
                                 average_adv
                                 );
@@ -1034,7 +1034,7 @@ static int make_lines(
                 if (0) {
                     /* Show details about what we're joining. */
                     outf(
-                            "joining line insert_space=%i a=%i (y=%f) to line b=%i (y=%f). nearest_adv=%lf average_adv=%lf",
+                            "joining line insert_space=%i a=%i (y=%f) to line b=%i (y=%f). nearest_adv=%f average_adv=%f",
                             insert_space,
                             a,
                             span_char_last(span_a)->y,
@@ -1140,16 +1140,16 @@ static int make_lines(
 
 
 /* Returns max font size of all span_t's in an line_t. */
-static float line_font_size_max(line_t* line)
+static double line_font_size_max(line_t* line)
 {
-    float   size_max = 0;
+    double  size_max = 0;
     int i;
     for (i=0; i<line->spans_num; ++i) {
         span_t* span = line->spans[i];
-        /* fixme: <size> should be float, which changes some output. */
+        /* fixme: <size> should be double, which changes some output. */
         int size = (int) matrix_expansion(span->trm);
-        if ((float) size > size_max) {
-            size_max = (float) size;
+        if ((double) size > size_max) {
+            size_max = (double) size;
         }
     }
     return size_max;
@@ -1176,19 +1176,19 @@ respectively.
 
 AQB is a right angle. We need to find AQ.
 */
-static float line_distance(
-        float ax,
-        float ay,
-        float bx,
-        float by,
-        float angle
+static double line_distance(
+        double ax,
+        double ay,
+        double bx,
+        double by,
+        double angle
         )
 {
-    float dx = bx - ax;
-    float dy = by - ay;
+    double dx = bx - ax;
+    double dy = by - ay;
 
 
-    return dx * sinf(angle) + dy * cosf(angle);
+    return dx * sin(angle) + dy * cos(angle);
 }
 
 
@@ -1211,19 +1211,19 @@ static int paragraphs_cmp(const void* a, const void* b)
     if (d)  return d;
 
     {
-        float a_angle = line_angle(a_line);
-        float b_angle = line_angle(b_line);
+        double a_angle = line_angle(a_line);
+        double b_angle = line_angle(b_line);
         if (fabs(a_angle - b_angle) > 3.14/2) {
             /* Give up if more than 90 deg. */
             return 0;
         }
         {
-            float angle = (a_angle + b_angle) / 2;
-            float ax = line_item_first(a_line)->x;
-            float ay = line_item_first(a_line)->y;
-            float bx = line_item_first(b_line)->x;
-            float by = line_item_first(b_line)->y;
-            float distance = line_distance(ax, ay, bx, by, angle);
+            double angle = (a_angle + b_angle) / 2;
+            double ax = line_item_first(a_line)->x;
+            double ay = line_item_first(a_line)->y;
+            double bx = line_item_first(b_line)->x;
+            double by = line_item_first(b_line)->y;
+            double distance = line_distance(ax, ay, bx, by, angle);
             if (distance > 0)   return -1;
             if (distance < 0)   return +1;
         }
@@ -1283,9 +1283,9 @@ static int make_paragraphs(
     for (a=0; a<paragraphs_num; ++a) {
         paragraph_t* nearest_paragraph;
         int nearest_paragraph_b;
-        float nearest_paragraph_distance;
+        double nearest_paragraph_distance;
         line_t* line_a;
-        float angle_a;
+        double angle_a;
         int verbose;
         int b;
         
@@ -1322,14 +1322,14 @@ static int make_paragraphs(
             }
 
             {
-                float ax = line_item_last(line_a)->x;
-                float ay = line_item_last(line_a)->y;
-                float bx = line_item_first(line_b)->x;
-                float by = line_item_first(line_b)->y;
-                float distance = line_distance(ax, ay, bx, by, angle_a);
+                double ax = line_item_last(line_a)->x;
+                double ay = line_item_last(line_a)->y;
+                double bx = line_item_first(line_b)->x;
+                double by = line_item_first(line_b)->y;
+                double distance = line_distance(ax, ay, bx, by, angle_a);
                 if (verbose) {
                     outf(
-                            "angle_a=%lf a=(%lf %lf) b=(%lf %lf) delta=(%lf %lf) distance=%lf:",
+                            "angle_a=%f a=(%f %f) b=(%f %f) delta=(%f %f) distance=%f:",
                             angle_a * 180 / g_pi,
                             ax, ay,
                             bx, by,
@@ -1344,7 +1344,7 @@ static int make_paragraphs(
                     if (nearest_paragraph_distance == -1
                             || distance < nearest_paragraph_distance) {
                         if (verbose) {
-                            outf("updating nearest. distance=%lf:", distance);
+                            outf("updating nearest. distance=%f:", distance);
                             outf("    line_a=%s", line_string2(line_a));
                             outf("    line_b=%s", line_string2(line_b));
                         }
@@ -1357,7 +1357,7 @@ static int make_paragraphs(
         }
 
         if (nearest_paragraph) {
-            float line_b_size = line_font_size_max(
+            double line_b_size = line_font_size_max(
                     paragraph_line_first(nearest_paragraph)
                     );
             line_t* line_b = paragraph_line_first(nearest_paragraph);
@@ -1367,7 +1367,7 @@ static int make_paragraphs(
                 int a_lines_num_new;
                 if (verbose) {
                     outf(
-                            "joing paragraphs. a=(%lf,%lf) b=(%lf,%lf) nearest_paragraph_distance=%lf line_b_size=%lf",
+                            "joing paragraphs. a=(%f,%f) b=(%f,%f) nearest_paragraph_distance=%f line_b_size=%f",
                             line_item_last(line_a)->x,
                             line_item_last(line_a)->y,
                             line_item_first(line_b)->x,
@@ -1438,7 +1438,7 @@ static int make_paragraphs(
             }
             else {
                 outfx(
-                        "Not joining paragraphs. nearest_paragraph_distance=%lf line_b_size=%lf",
+                        "Not joining paragraphs. nearest_paragraph_distance=%f line_b_size=%f",
                         nearest_paragraph_distance,
                         line_b_size
                         );
@@ -1520,11 +1520,11 @@ static int page_span_end_clean(page_t* page)
     int ret = -1;
     span_t* span;
     char_t* char_;
-    float font_size;
-    float x;
-    float y;
-    float err_x;
-    float err_y;
+    double font_size;
+    double x;
+    double y;
+    double err_x;
+    double err_y;
     point_t dir;
     
     assert(page->spans_num);
@@ -1842,8 +1842,8 @@ int extract_intermediate_to_document(
                 span_t* span = page_span_append(page);
                 char*   f;
                 char*   ff;
-                float   offset_x;
-                float   offset_y;
+                double  offset_x;
+                double  offset_y;
                 
                 if (!span) goto end;
 
@@ -1874,8 +1874,8 @@ int extract_intermediate_to_document(
                 offset_x = 0;
                 offset_y = 0;
                 for(;;) {
-                    float char_pre_x;
-                    float char_pre_y;
+                    double char_pre_x;
+                    double char_pre_y;
                     char_t* char_;
 
                     if (extract_xml_pparse_next(buffer, &tag)) {
@@ -1891,13 +1891,13 @@ int extract_intermediate_to_document(
                         goto end;
                     }
 
-                    if (extract_xml_tag_attributes_find_float(&tag, "x", &char_pre_x)) goto end;
-                    if (extract_xml_tag_attributes_find_float(&tag, "y", &char_pre_y)) goto end;
+                    if (extract_xml_tag_attributes_find_double(&tag, "x", &char_pre_x)) goto end;
+                    if (extract_xml_tag_attributes_find_double(&tag, "y", &char_pre_y)) goto end;
 
                     if (autosplit && char_pre_y - offset_y != 0) {
-                        float e = span->ctm.e + span->ctm.a * (char_pre_x-offset_x)
+                        double e = span->ctm.e + span->ctm.a * (char_pre_x-offset_x)
                                 + span->ctm.b * (char_pre_y - offset_y);
-                        float f = span->ctm.f + span->ctm.c * (char_pre_x-offset_x)
+                        double f = span->ctm.f + span->ctm.c * (char_pre_x-offset_x)
                                 + span->ctm.d * (char_pre_y - offset_y);
                         offset_x = char_pre_x;
                         offset_y = char_pre_y;
@@ -1938,7 +1938,7 @@ int extract_intermediate_to_document(
                     char_->x = span->ctm.a * char_->pre_x + span->ctm.b * char_->pre_y;
                     char_->y = span->ctm.c * char_->pre_x + span->ctm.d * char_->pre_y;
 
-                    if (extract_xml_tag_attributes_find_float(&tag, "adv", &char_->adv)) goto end;
+                    if (extract_xml_tag_attributes_find_double(&tag, "adv", &char_->adv)) goto end;
 
                     if (extract_xml_tag_attributes_find_uint(&tag, "ucs", &char_->ucs)) goto end;
 
@@ -2010,19 +2010,19 @@ int extract_intermediate_to_document(
 }
 
 
-static float matrices_to_font_size(matrix_t* ctm, matrix_t* trm)
+static double matrices_to_font_size(matrix_t* ctm, matrix_t* trm)
 {
-    float font_size = matrix_expansion(*trm)
+    double font_size = matrix_expansion(*trm)
             * matrix_expansion(*ctm);
     /* Round font_size to nearest 0.01. */
-    font_size = (float) (int) (font_size * 100.0f + 0.5f) / 100.0f;
+    font_size = (double) (int) (font_size * 100.0f + 0.5f) / 100.0f;
     return font_size;
 }
 
 typedef struct
 {
     const char* font_name;
-    float       font_size;
+    double      font_size;
     int         font_bold;
     int         font_italic;
     matrix_t*   ctm_prev;
@@ -2045,7 +2045,7 @@ static int extract_document_to_docx_content_paragraph(
         for (s=0; s<line->spans_num; ++s) {
             int si;
             span_t* span = line->spans[s];
-            float font_size_new;
+            double font_size_new;
             state->ctm_prev = &span->ctm;
             font_size_new = matrices_to_font_size(&span->ctm, &span->trm);
             if (!state->font_name
@@ -2364,7 +2364,7 @@ int extract_document_to_docx_content(
         for (p=0; p<page->paragraphs_num; ++p) {
             paragraph_t* paragraph = page->paragraphs[p];
             const matrix_t* ctm = &paragraph->lines[0]->spans[0]->ctm;
-            float rotate = (float) atan2(ctm->b, ctm->a);
+            double rotate = atan2(ctm->b, ctm->a);
             
             if (spacing
                     && state.ctm_prev
@@ -2407,14 +2407,14 @@ int extract_document_to_docx_content(
                 {
                     /* We assume that first span is at origin of text
                     block. This assumes left-to-right text. */
-                    float rotate0 = rotate;
+                    double rotate0 = rotate;
                     const matrix_t* ctm0 = ctm;
                     point_t origin = {
                             paragraph->lines[0]->spans[0]->chars[0].x,
                             paragraph->lines[0]->spans[0]->chars[0].y
                             };
                     matrix_t ctm_inverse = {1, 0, 0, 1, 0, 0};
-                    float ctm_det = ctm->a*ctm->d - ctm->b*ctm->c;
+                    double ctm_det = ctm->a*ctm->d - ctm->b*ctm->c;
                     if (ctm_det != 0) {
                         ctm_inverse.a = +ctm->d / ctm_det;
                         ctm_inverse.b = -ctm->b / ctm_det;
@@ -2429,7 +2429,7 @@ int extract_document_to_docx_content(
                     for (p=p0; p<page->paragraphs_num; ++p) {
                         paragraph = page->paragraphs[p];
                         ctm = &paragraph->lines[0]->spans[0]->ctm;
-                        rotate = (float) atan2(ctm->b, ctm->a);
+                        rotate = atan2(ctm->b, ctm->a);
                         if (rotate != rotate0) {
                             break;
                         }
@@ -2441,16 +2441,16 @@ int extract_document_to_docx_content(
                                 line_t* line = paragraph->lines[l];
                                 span_t* span = line_span_last(line);
                                 char_t* char_ = span_char_last(span);
-                                float adv = char_->adv * matrix_expansion(span->trm);
-                                float x = char_->x + adv * cosf(rotate);
-                                float y = char_->y + adv * sinf(rotate);
+                                double adv = char_->adv * matrix_expansion(span->trm);
+                                double x = char_->x + adv * cos(rotate);
+                                double y = char_->y + adv * sin(rotate);
 
-                                float dx = x - origin.x;
-                                float dy = y - origin.y;
+                                double dx = x - origin.x;
+                                double dy = y - origin.y;
 
                                 /* Position relative to origin and before box rotation. */
-                                float xx = ctm_inverse.a * dx + ctm_inverse.b * dy;
-                                float yy = ctm_inverse.c * dx + ctm_inverse.d * dy;
+                                double xx = ctm_inverse.a * dx + ctm_inverse.b * dy;
+                                double yy = ctm_inverse.c * dx + ctm_inverse.d * dy;
                                 yy = -yy;
                                 if (xx > extent.x) extent.x = xx;
                                 if (yy > extent.y) extent.y = yy;
@@ -2485,7 +2485,7 @@ int extract_document_to_docx_content(
                     about the origin (top-left). So we correct the position of
                     box by subtracting the vector that the top-left moves when
                     rotated by angle <rotate> about the middle. */
-                    float point_to_emu = 12700;   /* https://en.wikipedia.org/wiki/Office_Open_XML_file_formats#DrawingML */
+                    double point_to_emu = 12700;    /* https://en.wikipedia.org/wiki/Office_Open_XML_file_formats#DrawingML */
                     int x = (int) (ctm->e * point_to_emu);
                     int y = (int) (ctm->f * point_to_emu);
                     int w = (int) (extent.x * point_to_emu);
@@ -2502,8 +2502,8 @@ int extract_document_to_docx_content(
                     space. There doesn't seem to be a way to make the text box
                     auto-grow to contain the text. */
 
-                    dx = (int) ((float) (w/2) * (1-cosf(rotate)) + (float) (h/2) * sinf(rotate));
-                    dy = (int) ((float) (h/2) * (cosf(rotate)-1) + (float) (w/2) * sinf(rotate));
+                    dx = (int) ((double) (w/2) * (1-cos(rotate)) + (double) (h/2) * sin(rotate));
+                    dy = (int) ((double) (h/2) * (cos(rotate)-1) + (double) (w/2) * sin(rotate));
                     outf("ctm->e,f=%f,%f rotate=%f => x,y=%ik %ik dx,dy=%ik %ik",
                             ctm->e,
                             ctm->f,

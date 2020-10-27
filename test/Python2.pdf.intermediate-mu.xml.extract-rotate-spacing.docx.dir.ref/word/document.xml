@@ -16,9 +16,9 @@
               <wp:posOffset>3197324</wp:posOffset>
             </wp:positionH>
             <wp:positionV relativeFrom="page">
-              <wp:posOffset>5504611</wp:posOffset>
+              <wp:posOffset>5504612</wp:posOffset>
             </wp:positionV>
-            <wp:extent cx="2893510" cy="1885522"/>
+            <wp:extent cx="2893510" cy="1885520"/>
             <wp:effectExtent l="381000" t="723900" r="371475" b="723900"/>
             <wp:wrapNone/>
             <wp:docPr id="1" name="Text Box 1"/>
@@ -28,7 +28,7 @@
                 <wps:wsp>
                   <wps:cNvSpPr txBox="1"/>
                   <wps:spPr>
-                    <a:xfrm rot="10470857">
+                    <a:xfrm rot="10470858">
                       <a:off x="0" y="0"/>
                       <a:ext cx="3228975" cy="2286000"/>
                     </a:xfrm>
@@ -106,9 +106,9 @@
               <wp:posOffset>840434</wp:posOffset>
             </wp:positionH>
             <wp:positionV relativeFrom="page">
-              <wp:posOffset>2977601</wp:posOffset>
+              <wp:posOffset>2977603</wp:posOffset>
             </wp:positionV>
-            <wp:extent cx="2190229" cy="2819248"/>
+            <wp:extent cx="2190228" cy="2819246"/>
             <wp:effectExtent l="381000" t="723900" r="371475" b="723900"/>
             <wp:wrapNone/>
             <wp:docPr id="2" name="Text Box 2"/>
@@ -118,7 +118,7 @@
                 <wps:wsp>
                   <wps:cNvSpPr txBox="1"/>
                   <wps:spPr>
-                    <a:xfrm rot="-8517154">
+                    <a:xfrm rot="-8517153">
                       <a:off x="0" y="0"/>
                       <a:ext cx="3228975" cy="2286000"/>
                     </a:xfrm>
@@ -236,7 +236,7 @@
               <wp:posOffset>3428932</wp:posOffset>
             </wp:positionH>
             <wp:positionV relativeFrom="page">
-              <wp:posOffset>2211674</wp:posOffset>
+              <wp:posOffset>2211673</wp:posOffset>
             </wp:positionV>
             <wp:extent cx="2856636" cy="3710000"/>
             <wp:effectExtent l="381000" t="723900" r="371475" b="723900"/>
@@ -522,7 +522,7 @@
                 <wps:wsp>
                   <wps:cNvSpPr txBox="1"/>
                   <wps:spPr>
-                    <a:xfrm rot="-1645561">
+                    <a:xfrm rot="-1645562">
                       <a:off x="0" y="0"/>
                       <a:ext cx="3228975" cy="2286000"/>
                     </a:xfrm>
