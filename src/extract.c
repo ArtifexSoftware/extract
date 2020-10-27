@@ -1147,9 +1147,9 @@ static double line_font_size_max(line_t* line)
     for (i=0; i<line->spans_num; ++i) {
         span_t* span = line->spans[i];
         /* fixme: <size> should be double, which changes some output. */
-        int size = (int) matrix_expansion(span->trm);
-        if ((double) size > size_max) {
-            size_max = (double) size;
+        double size = matrix_expansion(span->trm);
+        if (size > size_max) {
+            size_max = size;
         }
     }
     return size_max;
@@ -1362,7 +1362,10 @@ static int make_paragraphs(
                     );
             line_t* line_b = paragraph_line_first(nearest_paragraph);
             (void) line_b; /* Only used in outfx(). */
-            if (nearest_paragraph_distance < 1.5 * line_b_size) {
+            if (nearest_paragraph_distance < 1.4 * line_b_size) {
+                /* Paragraphs are close together vertically compared to maximum
+                font size of first line in second paragraph, so we'll join them
+                into a single paragraph. */
                 span_t* a_span;
                 int a_lines_num_new;
                 if (verbose) {
