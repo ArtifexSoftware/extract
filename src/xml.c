@@ -301,9 +301,10 @@ extract_xml_tag_t::text members. */
 int extract_xml_compare_tags(const extract_xml_tag_t* lhs, const extract_xml_tag_t* rhs)
 {
     int d;
+    int i;
     d = extract_xml_strcmp_null(lhs->name, rhs->name);
     if (d)  return d;
-    for(int i=0;; ++i) {
+    for(i=0;; ++i) {
         if (i >= lhs->attributes_num || i >= rhs->attributes_num) {
             break;
         }

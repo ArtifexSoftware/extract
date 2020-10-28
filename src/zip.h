@@ -51,7 +51,7 @@ name:
 */
 
 
-int extract_zip_close(extract_zip_t* zip);
+int extract_zip_close(extract_zip_t** pzip);
 /* Finishes writing the zip file (e.g. appends Central directory file headers
 and End of central directory record).
 

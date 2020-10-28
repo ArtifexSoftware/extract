@@ -7,8 +7,6 @@
 
 #include "astring.h"
 
-#include <stdio.h>
-
 
 /* Things for representing XML. */
 

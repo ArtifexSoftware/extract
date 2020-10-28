@@ -37,10 +37,10 @@ static void s_check(
 
 static void s_check_int(const char* text, int value_expected, int expected_errno)
 {
-    int         value;
-    int         ret = extract_xml_str_to_int(text, &value);
-    char        value_s[32];
-    char        value_expected_s[32];
+    int     value;
+    int     ret = extract_xml_str_to_int(text, &value);
+    char    value_s[32];
+    char    value_expected_s[32];
     snprintf(value_s, sizeof(value_s), "%i", value);
     snprintf(value_expected_s, sizeof(value_expected_s), "%i", value_expected);
     s_check(value == value_expected, text, ret, value_s, errno, value_expected_s, expected_errno);

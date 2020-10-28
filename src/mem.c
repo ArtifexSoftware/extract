@@ -1,10 +1,9 @@
+#include "alloc.h"
 #include "mem.h"
 
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
-
-#include "alloc.h"
 
 
 void extract_bzero(void *b, size_t len)

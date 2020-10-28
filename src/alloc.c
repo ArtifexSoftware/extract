@@ -36,8 +36,8 @@ int (extract_malloc)(void** pptr, size_t size)
     size = round_up(size);
     extract_alloc_info.num_malloc += 1;
     p = malloc(size);
-    if (!p) return -1;
     *pptr = p;
+    if (!p) return -1;
     return 0;
 }
 

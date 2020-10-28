@@ -1,12 +1,12 @@
 #! /usr/bin/env python3
 
 '''
-Creates C code for creating .docx files using internal template .docx content.
+Creates C code for creating docx files using internal template docx content.
 
 Args:
 
     -i <docx-path>
-        Set template .docx file to extract from.
+        Set template docx file to extract from.
 
     -o <out-path>
         Set name of output files.
@@ -32,10 +32,11 @@ def system(command):
 
 def read(path):
     '''
-    Returns contents of file.
+    Returns contents of file. We assume it is utf-8.
     '''
-    with open(path) as f:
-        return f.read()
+    with open(path, 'rb') as f:
+        raw = f.read()
+        return raw.decode('utf-8')
 
 def write(text, path):
     '''
@@ -153,15 +154,13 @@ def main():
             path = os.path.join(dirpath, filename)
             name = path[ len(path_temp)+1: ]
             text = read(os.path.join(dirpath, filename))
+            #print(f'first line is: %r' % text.split("\n")[0])
             text = text.replace('"', '\\"')
             
-            # Need to convert newlines to cr-nl to make output identical to
-            # when we use zip/unzip on template .docx file. Have tried to use
-            # binary read instead but this requires decoding and with latin-1
-            # ends up changing other bytes in the content. I.e. reading file as
-            # text not binary seems to be the right thing.
+            # Looks like template files use \r\n when we interpret them as
+            # utf-8, so we preserve this in the generated strings.
             #
-            text = text.replace('\n', '\\r\\n"\n                "')
+            text = text.replace('\r\n', '\\r\\n"\n                "')
 
             # Split on '<' to avoid overly-long lines, which break windows
             # compiler.
@@ -182,16 +181,16 @@ def main():
     write_if_diff(out_c, f'{path_out}.c')
     
     out_h = io.StringIO()
-    out_h.write(f'#ifndef EXTRACT_EXTRACT_DOCX_TEMPLATE_H\n')
-    out_h.write(f'#define EXTRACT_EXTRACT_DOCX_TEMPLATE_H\n')
+    out_h.write(f'#ifndef EXTRACT_DOCX_TEMPLATE_H\n')
+    out_h.write(f'#define EXTRACT_DOCX_TEMPLATE_H\n')
     out_h.write(f'\n')
     out_h.write(f'/* THIS IS AUTO-GENERATED CODE, DO NOT EDIT. */\n')
     out_h.write(f'\n')
     out_h.write(f'\n')
     out_h.write(f'typedef struct\n')
     out_h.write(f'{{\n')
-    out_h.write(f'    const char* name;\n')
-    out_h.write(f'    const char* text;\n')
+    out_h.write(f'    const char* name; /* Name of item in docx archive. */\n')
+    out_h.write(f'    const char* text; /* Contents of item in docx archive. */\n')
     out_h.write(f'}} docx_template_item_t;\n')
     out_h.write(f'\n')
     out_h.write(f'extern const docx_template_item_t docx_template_items[];\n')

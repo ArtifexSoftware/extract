@@ -4,8 +4,10 @@
 #include "extract_buffer.h"
 
 
-/* Functions for extracting paragraphs of text from intermediate format data
-created by these commands:
+/* Functions for creating docx archives.
+
+We can accept images and paragraphs of text from intermediate format data, for
+example created by these commands:
 
     mutool draw -F xmltext ...
     gs -sDEVICE=txtwrite -dTextFormat=4 ... 
@@ -15,160 +17,184 @@ set.
 */
 
 
-typedef struct extract_document_t extract_document_t;
-/* Contains characters, spans, lines, paragraphs and pages. */
-
-void extract_document_free(extract_document_t** io_document);
-/* Frees a document. Does nothing if *io_document is NULL. Always sets
-*io_document to NULL.
-*/
+typedef struct extract_t extract_t;
+/* State for processing a document. */
 
 
-int extract_intermediate_to_document(
-        extract_buffer_t*       buffer,
-        int                     autosplit,
-        extract_document_t**    o_document
+int extract_begin(extract_t** pextract);
+/* Creates a new extract_t* for use by other extact_*() functions. */
+
+
+int extract_read_intermediate(
+        extract_t*          extract,
+        extract_buffer_t*   buffer,
+        int                 autosplit
         );
-/* Reads intermediate format from buffer, into a document.
+/* Reads XML specification of spans and images from <buffer> and adds to
+<extract>.
 
-buffer;
-    Source of intermediate format data.
-autosplit:
-    If true, we split spans when the y coordinate changes, in order to stress
-    the joining algorithms.
-o_document:
-    Out-param: *o_document is set to internal data populated with pages from
-    intermediate format. Each page will have spans, but no lines or paragraphs;
-    use extract_document_join() to create lines and paragraphs.
-
-    *o_document should be freed with extract_document_free().
-
-Returns with *o_document set. On error *o_document=NULL.
-*/
+(Makes internal calls to extract_span_begin(), extract_add_image() etc.) */
 
 
-int extract_document_join(extract_document_t* document);
-/* Finds lines and paragraphs in document.
-
-document:
-    Should have spans, but no lines or paragraphs, e.g. from
-    extract_intermediate_to_document().
-    
-Returns with document containing lines and paragraphs.
-*/
+int extract_page_begin(extract_t*  extract);
+/* Must be called before extract_span_begin(). */
 
 
-int extract_document_to_docx_content(
-        extract_document_t* document,
-        int                 spacing,
-        int                 rotation,
-        int                 images,
-        char**              o_content,
-        size_t*             o_content_length
+int extract_span_begin(
+        extract_t*  extract,
+        const char* font_name,
+        int         font_bold,
+        int         font_italic,
+        int         wmode,
+        double      ctm_a,
+        double      ctm_b,
+        double      ctm_c,
+        double      ctm_d,
+        double      ctm_e,
+        double      ctm_f,
+        double      trm_a,
+        double      trm_b,
+        double      trm_c,
+        double      trm_d,
+        double      trm_e,
+        double      trm_f
         );
-/* Reads from document and converts into docx content for embedding inside the
-word/document.xml item within the .docx.
-
-document:
-    Should contain paragraphs e.g. from extract_document_join().
-spacing:
-    If non-zero, we add extra vertical space between paragraphs.
-rotation:
-    If non-zero we output rotated text inside a rotated drawing. Otherwise
-    output text is always horizontal.
-images:
-    If non-zero we include images.
-o_content:
-    Out param: set to point to zero-terminated text in buffer from malloc().
-o_content_length:
-    Out-param: set to length of returned string.
-
-On error *o_content=NULL and *o_content_length=0.
+/* Starts a new span. 
+extract
+    As passed to earlier call to extract_begin().
+font_name
+    .
+font_bold
+    0 or 1.
+font_italic
+    0 or 1.
+wmode
+    0 or 1.
+ctm_*
+    Matrix values.
+trm_*
+    Matrix values.
 */
 
 
-int extract_docx_content_to_docx(
-        const char*             content,
-        size_t                  content_length,
-        extract_document_t*     document,
-        extract_buffer_t*       buffer
+int extract_add_char(
+        extract_t*  extract,
+        double      x,
+        double      y,
+        unsigned    ucs,
+        double      adv,
+        int         autosplit
         );
-/* Writes a .docx file to an extract_buffer_t.
-
-Uses internal template docx.
-
-content:
-    E.g. from extract_document_to_docx_content().
-content_length:
-    Length of content.
-document:
-    Information about any images in <document> will be included in the
-    generated .docx file. <content> should contain references to these
-    images.
-buffer:
-    Where to write the zipped docx contents.
+/* Appends specified character to current span.
+extract
+    As passed to earlier call to extract_begin().
+autosplit
+x
+y
+    Position on page.
+ucs
+    Unicode value.
+adv
+    Advance of this character.
+autosplit
+    If non-zero, we do additional splitting to stress the join algorithm.
 */
 
 
-int extract_docx_content_to_docx_template(
-        const char*         content,
-        size_t              content_length,
-        extract_document_t* document,
-        const char*         path_template,
-        const char*         path_out,
-        int                 preserve_dir
+int extract_span_end(extract_t* extract);
+/* Must be called before starting a new span or ending current page. */
+
+
+typedef void (*extract_image_data_free)(void* image_data);
+/* Callback for freeing image data. See extract_add_image(). */
+
+
+int extract_add_image(
+        extract_t*  extract,
+        const char*             type,
+        double                  x,
+        double                  y,
+        double                  w,
+        double                  h,
+        char*                   data,
+        size_t                  data_size,
+        extract_image_data_free data_free
         );
-/* Creates a new .docx file using a provided template document.
+/* Adds an image to the current page.
+
+type
+    E.g. 'png'. Is copied so need to persist after we return.
+x y w h
+    Location and size of image.
+data data_size
+    The raw image data.
+data_free
+    If not NULL, extract code will call data_free(data) when it has finished
+    with <data>. Otherwise the lifetime of <data> is the responsibility of the
+    caller and it must persist for at least the lifetime of <extract>.
+*/
+
+
+int extract_page_end(extract_t* extract);
+/* Must be called to finish page started by extract_page_begin(). */
+
+
+int extract_process(
+        extract_t*  extract,
+        int         spacing,
+        int         rotation,
+        int         images
+        );
+/* Evaluates all un-processed pages to generate docx data and frees internal
+page data (individual spans, lines, paragraphs etc). E.g. call this after
+extract_page_end() to reduce internal data use. */
+
+
+int extract_write(extract_t* extract, extract_buffer_t* buffer);
+/* Writes docx archive to buffer. The docx archive will contain text and images
+from extract_process().
+
+Uses an internal template docx archive. */
+
+
+int extract_write_content(extract_t* extract, extract_buffer_t* buffer);
+/* Writes docx xml for paragraphs into buffer.
+
+(This is the xml containing paragraphs of text that is inserted into
+the template word/document.xml object within the docx zip archive by
+extract_write()). */
+
+
+int extract_write_template(
+        extract_t*  extract, 
+        const char* path_template,
+        const char* path_out,
+        int         preserve_dir
+        );
+/* Like extract_write() but uses a provided template document.
 
 Uses the 'zip' and 'unzip' commands internally.
 
-content:
-    E.g. from extract_document_to_docx_content().
-content_length:
-    Length of content.
+extract:
+    .
 path_template:
-    Name of .docx file to use as a template.
-preserve_dir:
-    If true, we don't delete the temporary directory <path_out>.dir containing
-    unzipped .docx content.
+    Name of docx file to use as a template.
 path_out:
-    Name of .docx file to create. Must not contain single-quote, double quote,
+    Name of docx file to create. Must not contain single-quote, double quote,
     space or ".." sequence - these will force EINVAL error because they could
     make internal shell commands unsafe.
+preserve_dir:
+    If true, we don't delete the temporary directory <path_out>.dir containing
 */
 
 
-int extract_intermediate_to_docx(
-        extract_buffer_t*   buffer_in,
-        int                 autosplit,
-        int                 spacing,
-        int                 rotation,
-        int                 images,
-        extract_buffer_t*   buffer_out
-        );
-/* Converts intermediate format into .docx.
-
-buffer_in
-    Source of intermediate format data.
-autosplit
-    If true, we split spans when the y coordinate changes, in order to stress
-    the joining algorithms.
-spacing
-    If non-zero, we add extra vertical space between paragraphs.
-rotation
-    If non-zero we output rotated text inside a rotated drawing. Otherwise
-    output text is always horizontal.
-images
-    If non-zero we include images.
-buffer_out
-    Where to write the zipped docx contents.
-
-*/
+void extract_end( extract_t** pextract);
+/* Frees all data associated with *pextract and sets *pextract to NULL. */
 
 
-void extract_end(void);
-/* Cleans up internal state that can look like a memory leak when running under
-Memento or valgrind. */
+void extract_internal_end(void);
+/* Cleans up internal singelton state that can look like a memory leak when
+running under Memento or valgrind. */
 
 
 #endif

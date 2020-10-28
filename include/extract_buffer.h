@@ -27,7 +27,8 @@ data:
 bytes:
     Number of bytes transferred.
 o_actual:
-    Optional out-param, set to actual number of bytes read.
+    Optional out-param, set to actual number of bytes read. If we return zero
+    this will always be <numbytes>; otherwise will be less than <numbytes>.
 
 Implemented in extract_buffer_impl.h.
 */
@@ -48,8 +49,10 @@ data:
 bytes:
     Number of bytes to copy.
 out_actual:
-    Optional out-param, set to actual number of bytes read. Can be negative if
-    internal cache-flush using fn_write() fails or returns EOF.
+    Optional out-param, set to actual number of bytes written. If we return
+    zero this will always be <numbytes>; otherwise will be less than <numbytes>
+    and can even be negative if internal cache-flush using fn_write() fails or
+    returns EOF.
 
 Implemented in extract_buffer_impl.h.
 */
@@ -207,7 +210,24 @@ o_buffer:
 */
 
 
+typedef struct
+{
+    extract_buffer_t*   buffer;
+    char*               data;
+    size_t              alloc_size;
+    size_t              data_size;
+} extract_buffer_expanding_t;
+/* A write buffer that writes to an automatically-growing contiguous area of
+memory. */
+
+int extract_buffer_expanding_create(extract_buffer_expanding_t* buffer_expanding);
+/* Initialises buffer_expanding. buffer_expanding->buffer can be passed to
+extract_buffer_*() functions, and after buffer_close(), the written data is
+available in buffer_expanding->data..+data_size, which will have been allocated
+by extract_realloc(). */
+
 /* Include implementations of inline-functions. */
+
 
 #include "extract_buffer_impl.h"
 

@@ -321,6 +321,11 @@ int extract_buffer_write_internal(
     int e = -1;
     size_t pos = 0;    /* Number of bytes written so far. */
     
+    if (!buffer->fn_write) {
+        errno = EINVAL;
+        return -1;
+    }
+    
     /* In each iteration we either write to cache, or use buffer->fn_write()
     directly or flush the cache. */
     for(;;) {
@@ -400,4 +405,53 @@ int extract_buffer_write_internal(
     if (o_actual) *o_actual = pos;
     if (e == 0 && pos != numbytes) e = +1; /* EOF. */
     return e;
+}
+
+
+static int expanding_memory_buffer_write(void* handle, const void* source, size_t numbytes, size_t* o_actual)
+{
+    extract_buffer_expanding_t*  ebe = handle;
+    if ((char*) source >= ebe->data && (char*) source < ebe->data + ebe->alloc_size) {
+        /* Data is from our cache, so nothing to copy. */
+        assert((size_t) ((char*) source - ebe->data) == ebe->data_size);
+        assert((size_t) ((char*) source - ebe->data + numbytes) <= ebe->alloc_size);
+        ebe->data_size += numbytes;
+    }
+    else {
+        /* Data is external, so copy into our buffer. We will have already been
+        called to flush the cache. */
+        if (extract_realloc2(&ebe->data, ebe->alloc_size, ebe->data_size + numbytes)) return -1;
+        ebe->alloc_size = ebe->data_size + numbytes;
+        memcpy(ebe->data + ebe->data_size, source, numbytes);
+        ebe->data_size += numbytes;
+    }
+    *o_actual = numbytes;
+    return 0;
+}
+
+static int expanding_memory_buffer_cache(void* handle, void** o_cache, size_t* o_numbytes)
+{
+    extract_buffer_expanding_t*  ebe = handle;
+    size_t  delta = 4096;
+    if (extract_realloc2(&ebe->data, ebe->alloc_size, ebe->data_size + delta)) return -1;
+    ebe->alloc_size = ebe->data_size + delta;
+    *o_cache = ebe->data + ebe->data_size;
+    *o_numbytes = delta;
+    return 0;
+}
+
+int extract_buffer_expanding_create(extract_buffer_expanding_t* ebe)
+{
+    ebe->data = NULL;
+    ebe->data_size = 0;
+    ebe->alloc_size = 0;
+    if (extract_buffer_open(
+            ebe,
+            NULL /*fn_read*/,
+            expanding_memory_buffer_write,
+            expanding_memory_buffer_cache,
+            NULL /*fn_close*/,
+            &ebe->buffer
+            )) return -1;
+    return 0;
 }

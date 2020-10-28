@@ -1,15 +1,18 @@
 # Example commands:
 #
 #   make
-#   make tests
+#   make test
 #       Runs all tests.
 #
-#   make test
-#       Runs regression tests.
+#   make test-exe
+#       Runs exe regression tests. These use $(gs) and $(mutool) to generate
+#       intermediate data about pdf content, then uses $(exe) to convert to
+#       docx.
 #
 #   make test-mutool
-#       Runs mutool regression tests. This is used by mupdf's extract-test with
-#       extract being a git submodule.
+#       Runs mutool regression tests. This uses $(mutool_e) to convert
+#       directly from pdf to docx. We require that $(mutool_e) was built with
+#       extract=yes.
 #
 #   make test-buffer test-misc test-src
 #       Runs unit tests etc.
@@ -61,8 +64,10 @@ endif
 # submodule) we set things differently, pointing $(mutool) to within the mupdf
 # tree and assuming that ghostpdl is checked out next to mupdf.
 #
-gs      = ../ghostpdl/debug-bin/gs
-mutool  = ../mupdf/build/debug-extract/mutool
+gs          = ../ghostpdl/debug-bin/gs
+mutool      = ../mupdf/build/debug-extract/mutool
+mutool_e    = $(mutool)
+libbacktrace= ../libbacktrace/.libs
 
 we_are_mupdf_thirdparty = $(findstring /mupdf/thirdparty/extract, $(abspath .))
 ifneq ($(we_are_mupdf_thirdparty),)
@@ -71,10 +76,14 @@ ifneq ($(we_are_mupdf_thirdparty),)
     gs = ../../../ghostpdl/debug-bin/gs
 endif
 
+$(warning gs=$(gs))
+$(warning mutool=$(mutool))
+$(warning mutool_e=$(mutool_e))
+
 # Default target - run all tests.
 #
-tests: test-buffer test-misc test-src test
-
+test: test-buffer test-misc test-src test-exe test-mutool
+	@echo $@: passed
 
 # Define the main test targets.
 #
@@ -84,9 +93,13 @@ pdfs_generated = $(patsubst test/%, test/generated/%, $(pdfs))
 # Generate targets that check all combinations of mu/gs and the various
 # rotate/autosplit options of extract-exe.
 #
-tests_exe :=  \
-        $(patsubst %, %.intermediate-mu.xml, $(pdfs_generated)) \
-        $(patsubst %, %.intermediate-gs.xml, $(pdfs_generated)) \
+tests_exe :=
+ifneq ($(mutool),)
+    tests_exe := $(tests_exe) $(patsubst %, %.intermediate-mu.xml, $(pdfs_generated))
+endif
+ifneq ($(gs),)
+    tests_exe := $(tests_exe) $(patsubst %, %.intermediate-gs.xml, $(pdfs_generated))
+endif
 
 tests_exe := \
         $(patsubst %, %.extract.docx,                   $(tests_exe)) \
@@ -101,22 +114,24 @@ tests_exe := $(patsubst %, %.diff, $(tests_exe))
 # uses rotate=true and spacing=true, so we diff with reference directory
 # ...pdf.intermediate-mu.xml.extract-rotate-spacing.docx.dir.ref
 #
-tests_mutool := \
-        $(patsubst %, %.mutool.docx.diff, $(pdfs_generated)) \
-        $(patsubst %, %.mutool-norotate.docx.diff, $(pdfs_generated)) \
+ifneq ($(mutool_e),)
+    tests_mutool := \
+            $(patsubst %, %.mutool.docx.diff, $(pdfs_generated)) \
+            $(patsubst %, %.mutool-norotate.docx.diff, $(pdfs_generated)) \
 
+endif
 #$(warning $(pdfs_generated_intermediate_docx_diffs))
 #$(warning $(tests))
 
-test: $(tests_exe) $(tests_mutool)
-
 test-exe: $(tests_exe)
+	@echo $@: passed
 
 # Checks output of mutool conversion from .pdf to .docx. Requires that mutool
 # was built with extract as a third-party library. As of 2020-10-16 this
 # requires mupdf/thirdparty/extract e.g. as a softlink to extract checkout.
 #
 test-mutool: $(tests_mutool)
+	@echo $@: passed
 
 
 # Main executable.
@@ -130,6 +145,7 @@ exe_src = \
         src/docx_template.c \
         src/extract-exe.c \
         src/extract.c \
+        src/join.c \
         src/mem.c \
         src/outf.c \
         src/xml.c src/zip.c \
@@ -150,8 +166,11 @@ $(exe): $(exe_obj)
 run_exe = $(exe)
 ifeq ($(build),memento)
     ifeq ($(uname),Linux)
-        #run_exe = MEMENTO_ABORT_ON_LEAK=1 LD_LIBRARY_PATH=../libbacktrace/.libs $(exe)
-        run_exe = LD_LIBRARY_PATH=../libbacktrace/.libs $(exe)
+        run_exe = LD_LIBRARY_PATH=$(libbacktrace) MEMENTO_ABORT_ON_LEAK=1 MEMENTO_HIDE_MULTIPLE_REALLOCS=1 $(exe)
+        #run_exe = LD_LIBRARY_PATH=../libbacktrace/.libs $(exe)
+    endif
+    ifeq ($(uname),OpenBSD)
+        run_exe = MEMENTO_ABORT_ON_LEAK=1 $(exe)
     endif
 endif
 
@@ -174,7 +193,7 @@ test/generated/%.pdf.intermediate-gs.xml: test/%.pdf $(gs)
 %.extract.docx: % $(exe)
 	@echo
 	@echo == Generating docx with extract.exe
-	$(run_exe) -v 1 -r 0 -i $< -o $@
+	$(run_exe) -r 0 -i $< -o $@
 
 %.extract-rotate.docx: % $(exe) Makefile
 	@echo
@@ -223,17 +242,17 @@ test/generated/%.extract-template.docx.diff: test/generated/%.extract-template.d
 	mv $@- $@
 
 # Converts .pdf directly to .docx using mutool.
-test/generated/%.pdf.mutool.docx: test/%.pdf $(mutool)
+test/generated/%.pdf.mutool.docx: test/%.pdf $(mutool_e)
 	@echo
 	@echo == Converting .pdf directly to .docx using mutool.
 	@mkdir -p test/generated
-	$(mutool) convert -o $@ $<
+	$(mutool_e) convert -o $@ $<
 
-test/generated/%.pdf.mutool-norotate.docx: test/%.pdf $(mutool)
+test/generated/%.pdf.mutool-norotate.docx: test/%.pdf $(mutool_e)
 	@echo
 	@echo == Converting .pdf directly to .docx using mutool.
 	@mkdir -p test/generated
-	$(mutool) convert -O rotation=no,spacing=yes -o $@ $<
+	$(mutool_e) convert -O rotation=no,spacing=yes -o $@ $<
 
 # Compares .docx from mutool with reference .docx.
 #
@@ -255,15 +274,18 @@ test/generated/%.pdf.mutool-norotate.docx.diff: test/generated/%.pdf.mutool-noro
 # Valgrind test
 #
 valgrind: $(exe) test/generated/Python2.pdf.intermediate-mu.xml
-	 valgrind --leak-check=full $(exe) -h -r 1 -s 0 -i test/generated/Python2.pdf.intermediate-mu.xml -o test/generated/valgrind-out.docx
+	valgrind --leak-check=full $(exe) -h -r 1 -s 0 -i test/generated/Python2.pdf.intermediate-mu.xml -o test/generated/valgrind-out.docx
+	@echo $@: passed
 
 # Memento tests.
 #
 ifeq ($(build),memento)
 msqueeze: $(exe) test/generated/Python2.pdf.intermediate-mu.xml
 	MEMENTO_SQUEEZEAT=1 $(run_exe) --alloc-exp-min 0 -r 1 -s 0 -i test/generated/Python2.pdf.intermediate-mu.xml -o test/generated/msqueeze-out.docx 2>&1 | src/memento.py -q 1 -o msqueeze-raw
+	@echo $@: passed
 mfailat: $(exe) test/generated/Python2.pdf.intermediate-mu.xml
-	MEMENTO_FAILAT=61463 $(run_exe) --alloc-min-block-size 0 -r 1 -s 0 -i test/generated/Python2.pdf.intermediate-mu.xml -o test/generated/msqueeze-out.docx
+	MEMENTO_FAILAT=61463 $(run_exe) --alloc-exp-min 0 -r 1 -s 0 -i test/generated/Python2.pdf.intermediate-mu.xml -o test/generated/msqueeze-out.docx
+	@echo $@: passed
 endif
 
 
@@ -294,11 +316,15 @@ $(exe_buffer_test): $(exe_buffer_test_obj)
 test-buffer: $(exe_buffer_test)
 	@echo
 	@echo == Running test-buffer
+	mkdir -p test/generated
 	./$<
+	@echo $@: passed
 test-buffer-valgrind: $(exe_buffer_test)
 	@echo
 	@echo == Running test-buffer with valgrind
+	mkdir -p test/generated
 	valgrind --leak-check=full ./$<
+	@echo $@: passed
 
 
 # Misc unit test.
@@ -308,6 +334,7 @@ exe_misc_test_src = \
         src/alloc.c \
         src/astring.c \
         src/buffer.c \
+        src/mem.c \
         src/misc-test.c \
         src/outf.c \
         src/xml.c \
@@ -323,17 +350,21 @@ test-misc: $(exe_misc_test)
 	@echo
 	@echo == Running test-misc
 	./$<
+	@echo $@: passed
 
 # Source code check.
 #
 test-src:
 	@echo
 	@echo == Checking for use of ssize_t in source.
-	if PAGER= git grep -wn ssize_t src include; then false; else true; fi
+	if grep -wn ssize_t src/*.c src/*.h include/*.h; then false; else true; fi
 	@echo == Checking for use of strdup in source.
-	if PAGER= git grep -wn strdup `ls -d src/*|grep -v src/memento.h` include; then false; else true; fi
+	if grep -wn strdup `ls -d src/*.c src/*.h|grep -v src/memento.h` include; then false; else true; fi
 	@echo == Checking for use of bzero in source.
-	if PAGER= git grep -wn bzero src include; then false; else true; fi
+	if grep -wn bzero src/*.c src/*.h include/*.h; then false; else true; fi
+	@echo Checking for variables defined inside for-loop '(...)'.
+	if egrep -wn 'for *[(] *[a-zA-Z0-9]+ [a-zA-Z0-9]' src/*.c src/*.h; then false; else true; fi
+	@echo $@: passed
 
 # Compile rule. We always include src/docx_template.c as a prerequisite in case
 # code #includes docx_template.h.

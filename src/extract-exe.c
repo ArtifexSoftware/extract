@@ -44,6 +44,7 @@ static int arg_next_int(char** argv, int argc, int* i, int* out)
 
 int main(int argc, char** argv)
 {
+    int e = -1;
     const char* docx_out_path       = NULL;
     const char* input_path          = NULL;
     const char* docx_template_path  = NULL;
@@ -54,39 +55,38 @@ int main(int argc, char** argv)
     int         autosplit           = 0;
     int         images              = 1;
     int         alloc_stats         = 0;
+    int         i;
 
-    extract_document_t* document = NULL;
-    char*               content = NULL;
-    size_t              content_length = 0;
-    extract_buffer_t*   intermediate = NULL;
     extract_buffer_t*   out_buffer = NULL;
-
-    int e = -1;
+    extract_buffer_t*   intermediate = NULL;
+    extract_t*          extract = NULL;
     
-    for (int i=1; i<argc; ++i) {
+    for (i=1; i<argc; ++i) {
         const char* arg = argv[i];
         if (!strcmp(arg, "-h") || !strcmp(arg, "--help")) {
             printf(
-                    "Converts intermediate data from mupdf or gs into a .docx file.\n"
+                    "Converts intermediate data from mupdf or gs into a docx file.\n"
                     "\n"
                     "We require a file containing XML output from one of these commands:\n"
                     "    mutool draw -F xmltext ...\n"
                     "    gs -sDEVICE=txtwrite -dTextFormat=4 ...\n"
                     "\n"
-                    "We also requires a template .docx file.\n"
+                    "We also requires a template docx file.\n"
                     "\n"
                     "Args:\n"
+                    "    --alloc-exp-min <bytes>\n"
+                    "        Internal: set exponential allocation with minimum alloc size.\n"
                     "    --autosplit 0|1\n"
                     "        If 1, we initially split spans when y coordinate changes. This\n"
                     "        stresses our handling of spans when input is from mupdf.\n"
                     "    -i <intermediate-path>\n"
                     "        Path of XML file containing intermediate text spans.\n"
                     "    -o <docx-path>\n"
-                    "        If specified, we generate the specified .docx file.\n"
+                    "        If specified, we generate the specified docx file.\n"
                     "    --o-content <path>\n"
-                    "        If specified, we write raw .docx content to <path>; this is the\n"
+                    "        If specified, we write raw docx content to <path>; this is the\n"
                     "        text that we embed inside the template word/document.xml file\n"
-                    "        when generating the .docx file.\n"
+                    "        when generating the docx file.\n"
                     "    -p 0|1\n"
                     "        If 1 and -t <docx-template> is specified, we preserve the\n"
                     "        uncompressed <docx-path>.lib/ directory.\n"
@@ -113,7 +113,7 @@ int main(int argc, char** argv)
         else if (!strcmp(arg, "--alloc-exp-min")) {
             int size;
             if (arg_next_int(argv, argc, &i, &size)) goto end;
-            outf0("Calling alloc_set_min_alloc_size(%i)", size);
+            outf("Calling alloc_set_min_alloc_size(%i)", size);
             extract_alloc_exp_min(size);
         }
         else if (!strcmp(arg, "--autosplit")) {
@@ -169,103 +169,50 @@ int main(int argc, char** argv)
         goto end;
     }
     
-    if (!content_path && docx_out_path && !docx_template_path) {
-        outf("calling extract_intermediate_to_docx()");
-        if (extract_buffer_open_file(docx_out_path, 1 /*writable*/, &out_buffer)) goto end;
-        if (extract_intermediate_to_docx(
-                intermediate,
-                autosplit,
-                spacing,
-                rotation,
-                images,
-                out_buffer
-                )) {
-            goto end;
-        }
+    if (extract_begin(&extract)) goto end;
+    if (extract_read_intermediate(extract, intermediate, autosplit)) goto end;
+    if (extract_process(extract, spacing, rotation, images)) goto end;
+    
+    if (content_path) {
+        if (extract_buffer_open_file(content_path, 1 /*writable*/, &out_buffer)) goto end;
+        if (extract_write_content(extract, out_buffer)) goto end;
+        if (extract_buffer_close(&out_buffer)) goto end;
     }
-    else {
-        if (extract_intermediate_to_document(intermediate, autosplit, &document)) {
-            printf("Failed to read 'raw' output from: %s\n", input_path);
-            goto end;
-        }
-
-        if (extract_document_join(document)) {
-            printf("Failed to join spans into lines and paragraphs.\n");
-            goto end;
-        }
-
-        if (extract_document_to_docx_content(document, spacing, rotation, images, &content, &content_length)) {
-            printf("Failed to create docx content.\n");
-            goto end;
-        }
-
-        if (content_path) {
-            FILE* f;
-            printf("Writing content to: %s\n", content_path);
-            f = fopen(content_path, "w");
-            if (!f) {
-                printf("Failed to create content file: %s\n", content_path);
+    if (docx_out_path) {
+        if (docx_template_path) {
+            if (extract_write_template(
+                    extract,
+                    docx_template_path,
+                    docx_out_path,
+                    preserve_dir
+                    )) {
+                printf("Failed to create docx file: %s\n", docx_out_path);
                 goto end;
             }
-            if (fwrite(content, content_length, 1 /*nmemb*/, f) != 1) {
-                printf("Failed to write to content file: %s\n", content_path);
-                fclose(f);
-                errno = EIO;
+        }
+        else {
+            if (extract_buffer_open_file(docx_out_path, 1 /*writable*/, &out_buffer)) goto end;
+            if (extract_write(extract, out_buffer)) {
+                printf("Failed to create docx file: %s\n", docx_out_path);
                 goto end;
             }
-            fclose(f);
-        }
-
-        if (docx_out_path) {
-            printf("Creating .docx file: %s\n", docx_out_path);
-            if (docx_template_path) {
-                printf("Using template: %s\n", docx_template_path);
-                if (extract_docx_content_to_docx_template(
-                        content,
-                        content_length,
-                        document,
-                        docx_template_path,
-                        docx_out_path,
-                        preserve_dir
-                        )) {
-                    printf("Failed to create .docx file: %s\n", docx_out_path);
-                    goto end;
-                }
-            }
-            else {
-                /* We could use extract_docx_content_to_docx(), but
-                instead test with extract_buffer_open_file() and
-                extract_docx_content_to_docx_buffer(). */
-                if (extract_buffer_open_file(docx_out_path, 1 /*writable*/, &out_buffer)) goto end;
-
-                if (extract_docx_content_to_docx(
-                        content,
-                        content_length,
-                        document,
-                        out_buffer
-                        )) {
-                    printf("Failed to create .docx file: %s\n", docx_out_path);
-                    goto end;
-                }
-                if (extract_buffer_close(&out_buffer)) goto end;
-            }
+            if (extract_buffer_close(&out_buffer)) goto end;
         }
     }
 
     e = 0;
     end:
 
-    extract_free(&content);
-    extract_document_free(&document);
     extract_buffer_close(&intermediate);
     extract_buffer_close(&out_buffer);
+    extract_end(&extract);
 
     if (e) {
         printf("Failed (errno=%i): %s\n", errno, strerror(errno));
         return 1;
     }
     
-    extract_end();
+    extract_internal_end();
     
     if (alloc_stats) {
         printf("Alloc stats: num_malloc=%i num_realloc=%i num_free=%i num_libc_realloc=%i\n",

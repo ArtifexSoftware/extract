@@ -36,10 +36,10 @@ static int s_read(void* handle, void* destination, size_t bytes, size_t* o_actua
 /* Does a randomised short read. */
 {
     mem_t* r = handle;
+    size_t n = 91;
     assert(bytes > 0);
     r->num_calls_read += 1;
     assert(r->pos <= r->bytes);
-    size_t n = 91;
     if (n > bytes) n = bytes;
     if (n > r->bytes - r->pos) n = r->bytes - r->pos;
     if (n) n = rand_int((int) n-1) + 1;
@@ -53,9 +53,10 @@ static int s_read_cache(void* handle, void** o_cache, size_t* o_numbytes)
 /* Returns a cache with randomised size. */
 {
     mem_t* r = handle;
+    int n;
     r->num_calls_cache += 1;
     *o_cache = r->cache;
-    int n = (int) (r->bytes - r->pos);
+    n = (int) (r->bytes - r->pos);
     if (n > (int) sizeof(r->cache)) n = sizeof(r->cache);
     if (n) n = rand_int( n - 1) + 1;
     memcpy(r->cache, r->data + r->pos, n);
@@ -95,15 +96,17 @@ static void test_read(void)
     /* Create read buffer with randomised content. */
     int len = 12345;
     mem_t r;
+    char* out_buffer;
+    int out_pos;
+    int its;
+    int e;
     extract_buffer_t* buffer;
     s_create_read_buffer(len, &r, &buffer);
         
     /* Repeatedly read from read-buffer until we get EOF, and check we read the
     original content. */
-    char* out_buffer;
     if (extract_malloc(&out_buffer, len)) abort();
-    int out_pos = 0;
-    int its;
+    out_pos = 0;
     for (its=0;; ++its) {
         size_t actual;
         int n = rand_int(120)+1;
@@ -120,7 +123,7 @@ static void test_read(void)
             its, r.num_calls_read, r.num_calls_write, r.num_calls_cache);
     extract_free(&out_buffer);
     out_buffer = NULL;
-    int e = extract_buffer_close(&buffer);
+    e = extract_buffer_close(&buffer);
     assert(!e);
     
     outf("Read test passed.\n");
@@ -131,8 +134,8 @@ static int s_write(void* handle, const void* source, size_t bytes, size_t* o_act
 /* Does a randomised short write. */
 {
     mem_t* r = handle;
-    r->num_calls_write += 1;
     int n = 61;
+    r->num_calls_write += 1;
     if (n > (int) bytes) n = (int) bytes;
     if (n > (int) (r->bytes - r->pos)) n = (int) (r->bytes - r->pos);
     assert(n);
@@ -148,10 +151,11 @@ static int s_write_cache(void* handle, void** o_cache, size_t* o_numbytes)
 /* Returns a cache with randomised size. */
 {
     mem_t* r = handle;
+    int n;
     r->num_calls_cache += 1;
     assert(r->bytes >= r->pos);
     *o_cache = r->cache;
-    int n = (int) (r->bytes - r->pos);
+    n = (int) (r->bytes - r->pos);
     if (n > (int) sizeof(r->cache)) n = sizeof(r->cache);
     if (n) n = rand_int( n - 1) + 1;
     *o_cache = r->cache;
@@ -190,17 +194,19 @@ static void test_write(void)
     size_t len = 12345;
     mem_t r;
     extract_buffer_t* buffer;
+    char* out_buffer;
+    unsigned i;
+    size_t out_pos = 0;
+    int its;
+    int e;
+    
     s_create_write_buffer(len, &r, &buffer);
     
     /* Write to read-buffer, and check it contains the original content. */
-    char* out_buffer;
     if (extract_malloc(&out_buffer, len)) abort();
-    unsigned i;
     for (i=0; i<len; ++i) {
-        out_buffer[i] = 'a' + (char) rand_int(26);
+        out_buffer[i] = (char) ('a' + rand_int(26));
     }
-    size_t out_pos = 0;
-    int its;
     for (its=0;; ++its) {
         size_t actual;
         size_t n = rand_int(12)+1;
@@ -215,7 +221,7 @@ static void test_write(void)
     extract_free(&out_buffer);
     outf("its=%i num_calls_read=%i num_calls_write=%i num_calls_cache=%i",
             its, r.num_calls_read, r.num_calls_write, r.num_calls_cache);
-    int e = extract_buffer_close(&buffer);
+    e = extract_buffer_close(&buffer);
     assert(!e);
     outf("Write test passed.\n");
 }
@@ -225,10 +231,12 @@ static void test_file(void)
     /* Check we can write 3 bytes to file. */
     extract_buffer_t* file_buffer;
     if (extract_buffer_open_file("test/generated/buffer-file", 1 /*writable*/, &file_buffer)) abort();
+    
     {
         size_t  n;
+        int e;
         errno = 0;
-        int e = extract_buffer_write(file_buffer, "foo", 3, &n);
+        e = extract_buffer_write(file_buffer, "foo", 3, &n);
         if (e == 0 && n == 3) {}
         else {
             outf("extract_buffer_write() returned e=%i errno=%i n=%zi", e, errno, n);
@@ -240,11 +248,12 @@ static void test_file(void)
     /* Check we get back expected short reads and EOF when reading from 3-byte
     file created above. */
     if (extract_buffer_open_file("test/generated/buffer-file", 0 /*writable*/, &file_buffer)) abort();
+    
     {
         size_t  n;
-        errno = 0;
         char    buffer[10];
         int     e;
+        errno = 0;
         e = extract_buffer_read(file_buffer, buffer, 2, &n);
         if (e == 0 && n == 2) {}
         else {
@@ -265,6 +274,22 @@ static void test_file(void)
         }
     }
     if (extract_buffer_close(&file_buffer)) abort();
+    
+    /* Check writing to read-only file buffer fails. */
+    {
+        int e;
+        char text[] = "hello world";
+        size_t  actual;
+        if (extract_buffer_open_file("test/generated/buffer-file", 0 /*writable*/, &file_buffer)) {
+            abort();
+        }
+        
+        e = extract_buffer_write(file_buffer, text, sizeof(text)-1, &actual);
+        outf("extract_buffer_write() on read buffer returned e=%i actual=%zi", e, actual);
+        if (e != -1 || errno != EINVAL) abort();
+        if (extract_buffer_close(&file_buffer)) abort();
+    }
+    
     outf("file buffer tests passed.\n");
 }
 

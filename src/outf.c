@@ -13,10 +13,11 @@ void outf_verbose_set(int verbose)
 }
 
 void (outf)(
-        int level,
-        const char* file, int line,
+        int         level,
+        const char* file,
+        int         line,
         const char* fn,
-        int ln,
+        int         ln,
         const char* format,
         ...
         )

@@ -11,9 +11,6 @@
 #include <errno.h>
 #include <limits.h>
 #include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 
 typedef struct
@@ -233,13 +230,18 @@ int extract_zip_write_file(
     return e;
 }
 
-int extract_zip_close(extract_zip_t* zip)
+int extract_zip_close(extract_zip_t** pzip)
 {
-    int e = -1;
-    
-    size_t pos = extract_buffer_pos(zip->buffer);
-    size_t len = 0;
-    int i;
+    int     e = -1;
+    size_t  pos;
+    size_t  len;
+    int     i;
+    extract_zip_t*  zip = *pzip;
+    if (!zip) {
+        return 0;
+    }
+    pos = extract_buffer_pos(zip->buffer);
+    len = 0;
     
     /* Write Central directory file headers, freeing data as we go. */
     for (i=0; i<zip->cd_files_num; ++i) {
@@ -287,7 +289,7 @@ int extract_zip_close(extract_zip_t* zip)
     else if (zip->eof)  e = +1;
     else e = 0;
     
-    extract_free(&zip);
+    extract_free(pzip);
     
     return e;
 }

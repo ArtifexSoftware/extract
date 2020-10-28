@@ -7,7 +7,7 @@
 typedef struct
 {
     char*   chars;      /* NULL or zero-terminated. */
-    int     chars_num;  /* Length of string pointed to by .chars. */
+    size_t  chars_num;  /* Length of string pointed to by .chars. */
 } extract_astring_t;
 
 void extract_astring_init(extract_astring_t* string);
