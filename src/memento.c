@@ -954,8 +954,8 @@ static void Memento_storeDetails(Memento_BlkHeader *head, int type)
     if (count)
         memcpy(&details->stack, &stack[skip], count * sizeof(void *));
 
-    details->type = type;
-    details->count = count;
+    details->type = (char) type;
+    details->count = (char) count;
     details->sequence = memento.sequence;
     details->next = NULL;
     VALGRIND_MAKE_MEM_DEFINED(&head->details_tail, sizeof(head->details_tail));
@@ -1433,10 +1433,10 @@ int Memento_listBlocksNested(void)
     /* Now, calculate tree */
     for (b = memento.used.head; b; b = b->next) {
         char *p = MEMBLK_TOBLK(b);
-        int end = (b->rawsize < MEMENTO_PTRSEARCH ? b->rawsize : MEMENTO_PTRSEARCH);
+        int end = (int) (b->rawsize < MEMENTO_PTRSEARCH ? b->rawsize : MEMENTO_PTRSEARCH);
         VALGRIND_MAKE_MEM_DEFINED(p, end);
-        end -= sizeof(void *)-1;
-        for (i = MEMENTO_SEARCH_SKIP; i < end; i += sizeof(void *)) {
+        end -= (int) sizeof(void *)-1;
+        for (i = MEMENTO_SEARCH_SKIP; i < end; i += (int) sizeof(void *)) {
             void *q = *(void **)(&p[i]);
             void **r;
             /* Do trivial checks on pointer */
@@ -1650,7 +1650,7 @@ void Memento_fin(void)
         fprintf(stderr, "MEMENTO_NEXTPATTERN=%d\n", memento.nextPattern);
     }
     if (Memento_nonLeakBlocksLeaked() && getenv("MEMENTO_ABORT_ON_LEAK")) {
-        fprintf(stderr, "Calling abort() because blocks were leaked and MEMENTO_ABORT_ON_LEAK is set");
+        fprintf(stderr, "Calling abort() because blocks were leaked and MEMENTO_ABORT_ON_LEAK is set.\n");
         abort();
     }
 }
@@ -1678,7 +1678,7 @@ static int read_number(const char *text, int *out, int *relative, char **end)
         *relative = 0;
     }
     errno = 0;
-    *out = strtol(text, end, 0 /*base*/);
+    *out = (int) strtol(text, end, 0 /*base*/);
     if (errno || *end == text) {
         fprintf(stderr, "Failed to parse number at start of '%s'.\n", text);
         return -1;
@@ -2044,7 +2044,7 @@ static int squeeze(void)
         int timeout = 30 * 1000 * 1000; /* time out in microseconds! */
         while (waitpid(pid, &status, WNOHANG) == 0) {
             nanosleep(&tm, NULL);
-            timeout -= (tm.tv_nsec/1000);
+            timeout -= (int) (tm.tv_nsec/1000);
             tm.tv_nsec *= 2;
             if (tm.tv_nsec > 999999999)
                 tm.tv_nsec = 999999999;
@@ -2460,7 +2460,7 @@ int Memento_checkBytePointerOrNull(void *blk)
         return 0;
     Memento_checkPointerOrNull(blk);
 
-    i = *(unsigned int *)blk;
+    i = (unsigned char) *(unsigned int *)blk;
 
     if (i == MEMENTO_PREFILL_UBYTE)
         fprintf(stderr, "Prefill value found - buffer underrun?\n");
