@@ -105,12 +105,12 @@ int extract_span_end(extract_t* extract);
 /* Must be called before starting a new span or ending current page. */
 
 
-typedef void (*extract_image_data_free)(void* image_data);
+typedef void (*extract_image_data_free)(void* handle, void* image_data);
 /* Callback for freeing image data. See extract_add_image(). */
 
 
 int extract_add_image(
-        extract_t*  extract,
+        extract_t*              extract,
         const char*             type,
         double                  x,
         double                  y,
@@ -118,7 +118,8 @@ int extract_add_image(
         double                  h,
         char*                   data,
         size_t                  data_size,
-        extract_image_data_free data_free
+        extract_image_data_free data_free,
+        void*                   data_free_handle
         );
 /* Adds an image to the current page.
 

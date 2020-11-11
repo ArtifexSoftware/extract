@@ -254,22 +254,6 @@ test/generated/%.pdf.mutool-norotate.docx: test/%.pdf $(mutool_e)
 	@mkdir -p test/generated
 	$(mutool_e) convert -O rotation=no,spacing=yes -o $@ $<
 
-# Compares .docx from mutool with reference .docx.
-#
-# As of 2020-10-16, mutool uses rotate=true and
-# spacing=true, so we diff with reference directory
-# ...pdf.intermediate-mu.xml.extract-rotate-spacing.docx.dir.ref
-#
-test/generated/%.pdf.mutool.docx.diff: test/generated/%.pdf.mutool.docx.dir test/%.pdf.intermediate-mu.xml.extract-rotate-spacing.docx.dir.ref
-	@echo
-	@echo == Checking $<
-	diff -ru $^
-
-test/generated/%.pdf.mutool-norotate.docx.diff: test/generated/%.pdf.mutool-norotate.docx.dir test/%.pdf.intermediate-mu.xml.extract.docx.dir.ref
-	@echo
-	@echo == Checking $<
-	diff -ru $^
-
 
 # Valgrind test
 #

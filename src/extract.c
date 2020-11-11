@@ -235,7 +235,7 @@ static void extract_images_free(images_t* images)
         extract_free(&image->name);
         extract_free(&image->id);
         if (image->data_free) {
-            image->data_free(image->data);
+            image->data_free(image->data_free_handle, image->data);
         }
         extract_free(&images->images[i]);
     }
@@ -557,6 +557,11 @@ int extract_begin(extract_t** pextract)
     return e;
 }
 
+static void image_free_fn(void* handle, void* image_data)
+{
+    (void) handle;
+    free(image_data);
+}
 
 int extract_read_intermediate(extract_t* extract, extract_buffer_t* buffer, int autosplit)
 {
@@ -707,7 +712,8 @@ int extract_read_intermediate(extract_t* extract, extract_buffer_t* buffer, int 
                             0 /*h*/,
                             image_data,
                             image_data_size,
-                            free
+                            image_free_fn,
+                            NULL
                             ))
                     {
                         goto end;
@@ -967,7 +973,8 @@ int extract_add_image(
         double                  h,
         char*                   data,
         size_t                  data_size,
-        extract_image_data_free data_free
+        extract_image_data_free data_free,
+        void*                   data_free_handle
         )
 {
     int e = -1;
@@ -983,6 +990,7 @@ int extract_add_image(
     image_temp.data = data;
     image_temp.data_size = data_size;
     image_temp.data_free = data_free;
+    image_temp.data_free_handle = data_free_handle;
     if (extract_strdup(type, &image_temp.type)) goto end;
     if (extract_asprintf(&image_temp.id, "rId%i", extract->image_n) < 0) goto end;
     if (extract_asprintf(&image_temp.name, "image%i.%s", extract->image_n, image_temp.type) < 0) goto end;

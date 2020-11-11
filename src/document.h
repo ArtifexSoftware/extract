@@ -101,6 +101,7 @@ typedef struct
     size_t  data_size;
     
     extract_image_data_free data_free;
+    void*                   data_free_handle;
     
 } image_t;
 /* Information about an image. <type> is as passed to extract_add_image();
