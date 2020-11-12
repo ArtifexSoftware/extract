@@ -32,6 +32,7 @@ def main():
         else:
             raise Exception(f'unrecognised arg: {arg}')
     
+    openbsd = os.uname()[0] == 'OpenBSD'
     n = None
     segv = 0
     leaks = 0
@@ -43,7 +44,14 @@ def main():
         if m:
             if not m.group(2):
                 # Start of squeeze.
-                assert n is None, f'n={n} line={line!r}'
+                
+                if not openbsd:
+                    # Looks like memento's forked processes might terminate
+                    # before they get to output the 'Memory squeezing @ <N>
+                    # complete' line.
+                    #
+                    assert n is None, f'n={n} line={line!r}'
+                
                 n = int(m.group(1))
                 if n % quiet == 0:
                     sys.stdout.write(line)
