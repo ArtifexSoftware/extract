@@ -270,6 +270,11 @@ msqueeze: $(exe) test/generated/Python2.pdf.intermediate-mu.xml
 mfailat: $(exe) test/generated/Python2.pdf.intermediate-mu.xml
 	MEMENTO_FAILAT=61463 $(run_exe) --alloc-exp-min 0 -r 1 -s 0 -i test/generated/Python2.pdf.intermediate-mu.xml -o test/generated/msqueeze-out.docx
 	@echo $@: passed
+mutool_memento_extract = ../../build/memento-extract/mutool
+msqueeze-mutool:
+	MEMENTO_SQUEEZEAT=1 $(mutool_memento_extract) convert -o test/generated/text_graphic_image.pdf.mutool.docx test/text_graphic_image.pdf 2>&1 | src/memento.py -q 1 -o msqueeze-raw
+msqueeze-mutool2:
+	MEMENTO_SQUEEZEAT=1 $(mutool_memento_extract) convert -o test/generated/Python2.pdf.mutool.docx test/Python2.pdf 2>&1 | src/memento.py -q 1 -o msqueeze-raw
 endif
 
 
