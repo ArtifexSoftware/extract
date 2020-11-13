@@ -263,8 +263,10 @@ int Memento_checkIntPointerOrNull(void *blk);
 void Memento_startLeaking(void);
 void Memento_stopLeaking(void);
 
+/* Returns number of alloc events so far. */
 int Memento_sequence(void);
 
+/* Returns non-zero if our process was forked by Memento squeeze. */
 int Memento_squeezing(void);
 
 void Memento_fin(void);
