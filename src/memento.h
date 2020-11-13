@@ -263,7 +263,7 @@ int Memento_checkIntPointerOrNull(void *blk);
 void Memento_startLeaking(void);
 void Memento_stopLeaking(void);
 
-/* Returns number of alloc events so far. */
+/* Returns number of allocation events so far. */
 int Memento_sequence(void);
 
 /* Returns non-zero if our process was forked by Memento squeeze. */
@@ -276,21 +276,24 @@ void Memento_bt(void);
 #ifdef MEMENTO
 
 #ifndef COMPILING_MEMENTO_C
-#define malloc  Memento_malloc
-#define free    Memento_free
-#define realloc Memento_realloc
-#define calloc  Memento_calloc
-#define strdup  Memento_strdup
-#define asprintf Memento_asprintf
+#define malloc    Memento_malloc
+#define free      Memento_free
+#define realloc   Memento_realloc
+#define calloc    Memento_calloc
+#define strdup    Memento_strdup
+#define asprintf  Memento_asprintf
 #define vasprintf Memento_vasprintf
 #endif
 
 #else
 
-#define Memento_malloc  MEMENTO_UNDERLYING_MALLOC
-#define Memento_free    MEMENTO_UNDERLYING_FREE
-#define Memento_realloc MEMENTO_UNDERLYING_REALLOC
-#define Memento_calloc  MEMENTO_UNDERLYING_CALLOC
+#define Memento_malloc    MEMENTO_UNDERLYING_MALLOC
+#define Memento_free      MEMENTO_UNDERLYING_FREE
+#define Memento_realloc   MEMENTO_UNDERLYING_REALLOC
+#define Memento_calloc    MEMENTO_UNDERLYING_CALLOC
+#define Memento_strdup    strdup
+#define Memento_asprintf  asprintf
+#define Memento_vasprintf vasprintf
 
 #define Memento_checkBlock(A)              0
 #define Memento_checkAllMemory()           0
