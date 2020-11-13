@@ -47,7 +47,7 @@ else ifeq ($(build),debug-opt)
     flags_link      += -g -O2
     flags_compile   += -g -O2
 else ifeq ($(build),memento)
-    flags_link      += -g
+    flags_link      += -g -dl
     ifeq ($(uname),OpenBSD)
         flags_link += -L /usr/local/lib -l execinfo
     endif
