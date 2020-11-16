@@ -348,7 +348,7 @@ test-src:
 	@echo == Checking for use of ssize_t in source.
 	if grep -wn ssize_t src/*.c src/*.h include/*.h; then false; else true; fi
 	@echo == Checking for use of strdup in source.
-	if grep -wn strdup `ls -d src/*.c src/*.h|grep -v src/memento.h` include; then false; else true; fi
+	if grep -wn strdup `ls -d src/*.c src/*.h|grep -v src/memento.` include; then false; else true; fi
 	@echo == Checking for use of bzero in source.
 	if grep -wn bzero src/*.c src/*.h include/*.h; then false; else true; fi
 	@echo Checking for variables defined inside for-loop '(...)'.
