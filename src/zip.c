@@ -1,4 +1,5 @@
-#include "alloc.h"
+#include "../include/extract_alloc.h"
+
 #include "mem.h"
 #include "memento.h"
 #include "outf.h"
@@ -53,7 +54,9 @@ int extract_zip_open(extract_buffer_t* buffer, extract_zip_t** o_zip)
 {
     int e = -1;
     extract_zip_t* zip;
-    if (extract_malloc(&zip, sizeof(*zip))) goto end;
+    extract_alloc_t* alloc = extract_buffer_alloc(buffer);
+    
+    if (extract_malloc(alloc, &zip, sizeof(*zip))) goto end;
     
     zip->cd_files = NULL;
     zip->cd_files_num = 0;
@@ -76,14 +79,14 @@ int extract_zip_open(extract_buffer_t* buffer, extract_zip_t** o_zip)
     0100644:0.  (0100644 is S_IFREG (regular file) plus rw-r-r. See stat(2) for
     details.) */
     zip->file_attr_external = (0100644 << 16) + 0;
-    if (extract_strdup("Artifex", &zip->archive_comment)) goto end;
+    if (extract_strdup(alloc, "Artifex", &zip->archive_comment)) goto end;
     
     e = 0;
     
     end:
     if (e) {
-        if (zip) extract_free(&zip->archive_comment);
-        extract_free(&zip);
+        if (zip) extract_free(alloc, &zip->archive_comment);
+        extract_free(alloc, &zip);
         *o_zip = NULL;
     }
     else {
@@ -156,14 +159,15 @@ static int s_write_string(extract_zip_t* zip, const char* text)
 
 
 int extract_zip_write_file(
-        extract_zip_t* zip,
-        const void* data,
-        size_t data_length,
-        const char* name
+        extract_zip_t*  zip,
+        const void*     data,
+        size_t          data_length,
+        const char*     name
         )
 {
     int e = -1;
     extract_zip_cd_file_t* cd_file = NULL;
+    extract_alloc_t* alloc = extract_buffer_alloc(zip->buffer);
     
     if (data_length > INT_MAX) {
         assert(0);
@@ -172,6 +176,7 @@ int extract_zip_write_file(
     }
     /* Create central directory file header for later. */
     if (extract_realloc2(
+            alloc,
             &zip->cd_files,
             sizeof(extract_zip_cd_file_t) * zip->cd_files_num,
             sizeof(extract_zip_cd_file_t) * (zip->cd_files_num+1)
@@ -184,7 +189,7 @@ int extract_zip_write_file(
     cd_file->crc_sum = (int32_t) crc32(crc32(0, NULL, 0), data, (int) data_length);
     cd_file->size_compressed = (int) data_length;
     cd_file->size_uncompressed = (int) data_length;
-    if (extract_strdup(name, &cd_file->name)) goto end;
+    if (extract_strdup(alloc, name, &cd_file->name)) goto end;
     cd_file->offset = (int) extract_buffer_pos(zip->buffer);
     cd_file->attr_internal = zip->file_attr_internal;
     cd_file->attr_external = zip->file_attr_external;
@@ -220,7 +225,7 @@ int extract_zip_write_file(
     if (e) {
         /* Leave zip->cd_files_num unchanged, so calling extract_zip_close()
         will write out any earlier files. Free cd_file->name to avoid leak. */
-        if (cd_file) extract_free(&cd_file->name);
+        if (cd_file) extract_free(alloc, &cd_file->name);
     }
     else {
         /* cd_files[zip->cd_files_num] is valid. */
@@ -237,9 +242,11 @@ int extract_zip_close(extract_zip_t** pzip)
     size_t  len;
     int     i;
     extract_zip_t*  zip = *pzip;
+    extract_alloc_t* alloc;
     if (!zip) {
         return 0;
     }
+    alloc = extract_buffer_alloc(zip->buffer);
     pos = extract_buffer_pos(zip->buffer);
     len = 0;
     
@@ -268,9 +275,9 @@ int extract_zip_close(extract_zip_t** pzip)
         s_write_string(zip, cd_file->name);                     /* File name */
         s_write(zip, extra, sizeof(extra)-1);                   /* Extra field */
         len += extract_buffer_pos(zip->buffer) - pos2;
-        extract_free(&cd_file->name);
+        extract_free(alloc, &cd_file->name);
     }
-    extract_free(&zip->cd_files);
+    extract_free(alloc, &zip->cd_files);
     
     /* Write End of central directory record. */
     s_write_uint32(zip, 0x06054b50);
@@ -283,13 +290,13 @@ int extract_zip_close(extract_zip_t** pzip)
     
     s_write_uint16(zip, (uint16_t) strlen(zip->archive_comment));  /* Comment length (n) */
     s_write_string(zip, zip->archive_comment);
-    extract_free(&zip->archive_comment);
+    extract_free(alloc, &zip->archive_comment);
     
     if (zip->errno_)    e = -1;
     else if (zip->eof)  e = +1;
     else e = 0;
     
-    extract_free(pzip);
+    extract_free(alloc, pzip);
     
     return e;
 }

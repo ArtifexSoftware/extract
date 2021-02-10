@@ -12,12 +12,12 @@ typedef struct
 
 void extract_astring_init(extract_astring_t* string);
 
-void extract_astring_free(extract_astring_t* string);
+void extract_astring_free(extract_alloc_t* alloc, extract_astring_t* string);
 
-int extract_astring_catl(extract_astring_t* string, const char* s, size_t s_len);
+int extract_astring_catl(extract_alloc_t* alloc, extract_astring_t* string, const char* s, size_t s_len);
 
-int extract_astring_catc(extract_astring_t* string, char c);
+int extract_astring_catc(extract_alloc_t* alloc, extract_astring_t* string, char c);
 
-int extract_astring_cat(extract_astring_t* string, const char* s);
+int extract_astring_cat(extract_alloc_t* alloc, extract_astring_t* string, const char* s);
 
 #endif

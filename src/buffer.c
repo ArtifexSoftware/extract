@@ -1,6 +1,6 @@
 #include "../include/extract_buffer.h"
+#include "../include/extract_alloc.h"
 
-#include "alloc.h"
 #include "memento.h"
 #include "outf.h"
 
@@ -16,6 +16,7 @@ struct extract_buffer_t
     /* First member must be extract_buffer_cache_t - required by inline
     implementations of extract_buffer_read() and extract_buffer_write(). */
     extract_buffer_cache_t  cache;
+    extract_alloc_t*        alloc;
     void*                   handle;
     extract_buffer_fn_read  fn_read;
     extract_buffer_fn_write fn_write;
@@ -25,7 +26,14 @@ struct extract_buffer_t
 };
 
 
+extract_alloc_t* extract_buffer_alloc(extract_buffer_t* buffer)
+{
+    return buffer->alloc;
+}
+
+
 int extract_buffer_open(
+        extract_alloc_t*        alloc, 
         void*                   handle,
         extract_buffer_fn_read  fn_read,
         extract_buffer_fn_write fn_write,
@@ -36,8 +44,9 @@ int extract_buffer_open(
 {
     int e = -1;
     extract_buffer_t* buffer;
-    if (extract_malloc(&buffer, sizeof(*buffer))) goto end;
+    if (extract_malloc(alloc, &buffer, sizeof(*buffer))) goto end;
     
+    buffer->alloc = alloc;
     buffer->handle = handle;
     buffer->fn_read = fn_read;
     buffer->fn_write = fn_write;
@@ -51,7 +60,7 @@ int extract_buffer_open(
     
     end:
     if (e) {
-        extract_free(&buffer);
+        extract_free(alloc, &buffer);
     }
     else {
         *o_buffer = buffer;
@@ -137,7 +146,7 @@ int extract_buffer_close(extract_buffer_t** p_buffer)
     if (buffer->fn_close) buffer->fn_close(buffer->handle);
     e = 0;
     end:
-    extract_free(&buffer);
+    extract_free(buffer->alloc, &buffer);
     *p_buffer = NULL;
     return e;
 }
@@ -152,6 +161,7 @@ static int s_simple_cache(void* handle, void** o_cache, size_t* o_numbytes)
 }
 
 int extract_buffer_open_simple(
+        extract_alloc_t*        alloc,
         const void*             data,
         size_t                  numbytes,
         void*                   handle,
@@ -160,10 +170,11 @@ int extract_buffer_open_simple(
         )
 {
     extract_buffer_t* buffer;
-    if (extract_malloc(&buffer, sizeof(*buffer))) return -1;
+    if (extract_malloc(alloc, &buffer, sizeof(*buffer))) return -1;
     
     /* We need cast away the const here. data[] will be written-to if caller
     uses us as a write buffer. */
+    buffer->alloc = alloc;
     buffer->cache.cache = (void*) data;
     buffer->cache.numbytes = numbytes;
     buffer->cache.pos = 0;
@@ -214,7 +225,7 @@ static void s_file_close(void* handle)
     fclose(file);
 }
 
-int extract_buffer_open_file(const char* path, int writable, extract_buffer_t** o_buffer)
+int extract_buffer_open_file(extract_alloc_t* alloc, const char* path, int writable, extract_buffer_t** o_buffer)
 {
     int e = -1;
     FILE* file = fopen(path, (writable) ? "wb" : "rb");
@@ -224,6 +235,7 @@ int extract_buffer_open_file(const char* path, int writable, extract_buffer_t** 
     }
     
     if (extract_buffer_open(
+            alloc,
             file /*handle*/,
             writable ? NULL : s_file_read,
             writable ? s_file_write : NULL,
@@ -410,9 +422,16 @@ int extract_buffer_write_internal(
 
 static int expanding_memory_buffer_write(void* handle, const void* source, size_t numbytes, size_t* o_actual)
 {
+    /* We realloc our memory region as required. For efficiency, we also use
+    any currently-unused region of our memory buffer as an extract_buffer
+    cache. So we can be called either to 'flush the cache' (in which case we
+    don't actually copy any data) or to accept data from somewhere else (in
+    which case we need to increase the size of our memory region. */
     extract_buffer_expanding_t*  ebe = handle;
     if ((char*) source >= ebe->data && (char*) source < ebe->data + ebe->alloc_size) {
-        /* Data is from our cache, so nothing to copy. */
+        /* Source is inside our memory region so we are being called by
+        extract_buffer_write_internal() to re-populate the cache. We don't
+        actually have to copy anything. */
         assert((size_t) ((char*) source - ebe->data) == ebe->data_size);
         assert((size_t) ((char*) source - ebe->data + numbytes) <= ebe->alloc_size);
         ebe->data_size += numbytes;
@@ -420,7 +439,7 @@ static int expanding_memory_buffer_write(void* handle, const void* source, size_
     else {
         /* Data is external, so copy into our buffer. We will have already been
         called to flush the cache. */
-        if (extract_realloc2(&ebe->data, ebe->alloc_size, ebe->data_size + numbytes)) return -1;
+        if (extract_realloc2(ebe->buffer->alloc, &ebe->data, ebe->alloc_size, ebe->data_size + numbytes)) return -1;
         ebe->alloc_size = ebe->data_size + numbytes;
         memcpy(ebe->data + ebe->data_size, source, numbytes);
         ebe->data_size += numbytes;
@@ -433,19 +452,20 @@ static int expanding_memory_buffer_cache(void* handle, void** o_cache, size_t* o
 {
     extract_buffer_expanding_t*  ebe = handle;
     size_t  delta = 4096;
-    if (extract_realloc2(&ebe->data, ebe->alloc_size, ebe->data_size + delta)) return -1;
+    if (extract_realloc2(ebe->buffer->alloc, &ebe->data, ebe->alloc_size, ebe->data_size + delta)) return -1;
     ebe->alloc_size = ebe->data_size + delta;
     *o_cache = ebe->data + ebe->data_size;
     *o_numbytes = delta;
     return 0;
 }
 
-int extract_buffer_expanding_create(extract_buffer_expanding_t* ebe)
+int extract_buffer_expanding_create(extract_alloc_t* alloc, extract_buffer_expanding_t* ebe)
 {
     ebe->data = NULL;
     ebe->data_size = 0;
     ebe->alloc_size = 0;
     if (extract_buffer_open(
+            alloc,
             ebe,
             NULL /*fn_read*/,
             expanding_memory_buffer_write,

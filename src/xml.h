@@ -28,11 +28,11 @@ void extract_xml_tag_init(extract_xml_tag_t* tag);
 /* Initialises tag. Will cause leak if tag contains data - in this case call
 extract_xml_tag_free(). */
 
-void extract_xml_tag_free(extract_xml_tag_t* tag);
+void extract_xml_tag_free(extract_alloc_t* alloc, extract_xml_tag_t* tag);
 /* Frees tag and then calls extract_xml_tag_init(). */
 
 
-int extract_xml_pparse_init(extract_buffer_t* buffer, const char* first_line);
+int extract_xml_pparse_init(extract_alloc_t* alloc, extract_buffer_t* buffer, const char* first_line);
 /* extract_xml_pparse_*(): simple XML 'pull' parser.
 
 extract_xml_pparse_init() merely consumes the initial '<'. Thereafter

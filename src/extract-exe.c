@@ -1,8 +1,8 @@
 /* Command-line programme for extract_ API. */
 
 #include "../include/extract.h"
+#include "../include/extract_alloc.h"
 
-#include "alloc.h"
 #include "memento.h"
 #include "outf.h"
 
@@ -41,6 +41,11 @@ static int arg_next_int(char** argv, int argc, int* i, int* out)
     return 0;
 }
 
+static void* s_realloc(void* state, void* prev, size_t size)
+{
+    assert(state == (void*) 123);
+    return realloc(prev, size);
+}
 
 int main(int argc, char** argv)
 {
@@ -57,9 +62,16 @@ int main(int argc, char** argv)
     int         alloc_stats         = 0;
     int         i;
 
+    extract_alloc_t*    alloc = NULL;
     extract_buffer_t*   out_buffer = NULL;
     extract_buffer_t*   intermediate = NULL;
     extract_t*          extract = NULL;
+    
+    /* Create an allocator so we test the allocation code. */
+    if (extract_alloc_create(s_realloc, (void*) 123, &alloc))
+    {
+        assert(0);
+    }
     
     for (i=1; i<argc; ++i) {
         const char* arg = argv[i];
@@ -114,7 +126,7 @@ int main(int argc, char** argv)
             int size;
             if (arg_next_int(argv, argc, &i, &size)) goto end;
             outf("Calling alloc_set_min_alloc_size(%i)", size);
-            extract_alloc_exp_min(size);
+            extract_exp_min(extract, size);
         }
         else if (!strcmp(arg, "--autosplit")) {
             if (arg_next_int(argv, argc, &i, &autosplit)) goto end;
@@ -164,17 +176,17 @@ int main(int argc, char** argv)
         goto end;
     }
     
-    if (extract_buffer_open_file(input_path, 0 /*writable*/, &intermediate)) {
+    if (extract_buffer_open_file(alloc, input_path, 0 /*writable*/, &intermediate)) {
         printf("Failed to open intermediate file: %s\n", input_path);
         goto end;
     }
     
-    if (extract_begin(&extract)) goto end;
+    if (extract_begin(alloc, &extract)) goto end;
     if (extract_read_intermediate(extract, intermediate, autosplit)) goto end;
     if (extract_process(extract, spacing, rotation, images)) goto end;
     
     if (content_path) {
-        if (extract_buffer_open_file(content_path, 1 /*writable*/, &out_buffer)) goto end;
+        if (extract_buffer_open_file(alloc, content_path, 1 /*writable*/, &out_buffer)) goto end;
         if (extract_write_content(extract, out_buffer)) goto end;
         if (extract_buffer_close(&out_buffer)) goto end;
     }
@@ -191,7 +203,7 @@ int main(int argc, char** argv)
             }
         }
         else {
-            if (extract_buffer_open_file(docx_out_path, 1 /*writable*/, &out_buffer)) goto end;
+            if (extract_buffer_open_file(alloc, docx_out_path, 1 /*writable*/, &out_buffer)) goto end;
             if (extract_write(extract, out_buffer)) {
                 printf("Failed to create docx file: %s\n", docx_out_path);
                 goto end;
@@ -215,13 +227,18 @@ int main(int argc, char** argv)
     extract_internal_end();
     
     if (alloc_stats) {
+        extract_alloc_stats_t* stats = extract_alloc_stats(alloc);
         printf("Alloc stats: num_malloc=%i num_realloc=%i num_free=%i num_libc_realloc=%i\n",
-                extract_alloc_info.num_malloc,
-                extract_alloc_info.num_realloc,
-                extract_alloc_info.num_free,
-                extract_alloc_info.num_libc_realloc
+                stats->num_malloc,
+                stats->num_realloc,
+                stats->num_free,
+                stats->num_libc_realloc
                 );
     }
+    
+    extract_alloc_destroy(&alloc);
+    assert(alloc == NULL);    
+
     printf("Finished.\n");
     return 0;
 }

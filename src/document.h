@@ -64,11 +64,11 @@ typedef struct
 char_t* span_char_last(span_t* span);
 /* Returns last character in span. */
 
-int span_append_c(span_t* span, int c);
+int span_append_c(extract_alloc_t* alloc, span_t* span, int c);
 /* Appends new char_t to an span_t with .ucs=c and all other
 fields zeroed. */
 
-const char* span_string(span_t* span);
+const char* span_string(extract_alloc_t* alloc, span_t* span);
 /* Returns static string containing info about span_t. */
 
 typedef struct
@@ -145,6 +145,6 @@ typedef struct
     int         imagetypes_num;
 } images_t;
 
-int extract_document_join(document_t* document);
+int extract_document_join(extract_alloc_t* alloc, document_t* document);
 
 #endif

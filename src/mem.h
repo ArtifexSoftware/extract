@@ -6,9 +6,9 @@
 
 void extract_bzero(void *b, size_t len);
 
-int extract_vasprintf(char** out, const char* format, va_list va);
-int extract_asprintf(char** out, const char* format, ...);
+int extract_vasprintf(extract_alloc_t* alloc, char** out, const char* format, va_list va);
+int extract_asprintf(extract_alloc_t* alloc, char** out, const char* format, ...);
 
-int extract_strdup(const char* s, char** o_out);
+int extract_strdup(extract_alloc_t* alloc, const char* s, char** o_out);
 
 #endif

@@ -1,6 +1,6 @@
 #include "../include/extract.h"
+#include "../include/extract_alloc.h"
 
-#include "alloc.h"
 #include "astring.h"
 #include "document.h"
 #include "docx.h"
@@ -40,7 +40,7 @@ static void char_init(char_t* item)
 }
 
 
-const char* span_string(span_t* span)
+const char* span_string(extract_alloc_t* alloc, span_t* span)
 {
     static extract_astring_t ret = {0};
     double x0 = 0;
@@ -50,7 +50,7 @@ const char* span_string(span_t* span)
     int c0 = 0;
     int c1 = 0;
     int i;
-    extract_astring_free(&ret);
+    extract_astring_free(alloc, &ret);
     if (!span) {
         /* This frees our internal data, and is used by extract_internal_end().
         */
@@ -77,7 +77,7 @@ const char* span_string(span_t* span)
                 span->wmode,
                 span->chars_num
                 );
-        extract_astring_cat(&ret, buffer);
+        extract_astring_cat(alloc, &ret, buffer);
         for (i=0; i<span->chars_num; ++i) {
             snprintf(
                     buffer,
@@ -87,22 +87,23 @@ const char* span_string(span_t* span)
                     span->chars[i].x,
                     span->chars[i].adv
                     );
-            extract_astring_cat(&ret, buffer);
+            extract_astring_cat(alloc, &ret, buffer);
         }
     }
-    extract_astring_cat(&ret, ": ");
-    extract_astring_catc(&ret, '"');
+    extract_astring_cat(alloc, &ret, ": ");
+    extract_astring_catc(alloc, &ret, '"');
     for (i=0; i<span->chars_num; ++i) {
-        extract_astring_catc(&ret, (char) span->chars[i].ucs);
+        extract_astring_catc(alloc, &ret, (char) span->chars[i].ucs);
     }
-    extract_astring_catc(&ret, '"');
+    extract_astring_catc(alloc, &ret, '"');
     return ret.chars;
 }
 
-int span_append_c(span_t* span, int c)
+int span_append_c(extract_alloc_t* alloc, span_t* span, int c)
 {
     char_t* item;
     if (extract_realloc2(
+            alloc,
             &span->chars,
             sizeof(*span->chars) * span->chars_num,
             sizeof(*span->chars) * (span->chars_num + 1)
@@ -154,7 +155,7 @@ span_t* line_span_first(line_t* line)
     return line->spans[0];
 }
 
-static void page_free(page_t* page)
+static void page_free(extract_alloc_t* alloc, page_t* page)
 {
     int s;
     if (!page) return;
@@ -162,62 +163,63 @@ static void page_free(page_t* page)
     for (s=0; s<page->spans_num; ++s) {
         span_t* span = page->spans[s];
         if (span) {
-            extract_free(&span->chars);
-            extract_free(&span->font_name);
+            extract_free(alloc, &span->chars);
+            extract_free(alloc, &span->font_name);
         }
-        extract_free(&span);
+        extract_free(alloc, &span);
     }
-    extract_free(&page->spans);
+    extract_free(alloc, &page->spans);
 
     {
         int l;
         for (l=0; l<page->lines_num; ++l) {
             line_t* line = page->lines[l];
-            extract_free(&line->spans);
-            extract_free(&line);
+            extract_free(alloc, &line->spans);
+            extract_free(alloc, &line);
             /* We don't free line->spans->chars[] because already freed via
             page->spans. */
         }
     }
-    extract_free(&page->lines);
+    extract_free(alloc, &page->lines);
 
     {
         int p;
         for (p=0; p<page->paragraphs_num; ++p) {
             paragraph_t* paragraph = page->paragraphs[p];
-            if (paragraph) extract_free(&paragraph->lines);
-            extract_free(&paragraph);
+            if (paragraph) extract_free(alloc, &paragraph->lines);
+            extract_free(alloc, &paragraph);
         }
     }
-    extract_free(&page->paragraphs);
+    extract_free(alloc, &page->paragraphs);
     
     {
         int i;
         for (i=0; i<page->images_num; ++i) {
-            extract_free(&page->images[i].data);
-            extract_free(&page->images[i].type);
-            extract_free(&page->images[i].id);
-            extract_free(&page->images[i].name);
+            extract_free(alloc, &page->images[i].data);
+            extract_free(alloc, &page->images[i].type);
+            extract_free(alloc, &page->images[i].id);
+            extract_free(alloc, &page->images[i].name);
         }
     }
-    extract_free(&page->images);
+    extract_free(alloc, &page->images);
 }
 
-static span_t* page_span_append(page_t* page)
+static span_t* page_span_append(extract_alloc_t* alloc, page_t* page)
 /* Appends new empty span_ to an page_t; returns NULL with errno set on error.
 */
 {
     span_t* span;
-    if (extract_malloc(&span, sizeof(*span))) return NULL;
+    if (extract_malloc(alloc, &span, sizeof(*span))) return NULL;
     span->font_name = NULL;
     span->chars = NULL;
     span->chars_num = 0;
     if (extract_realloc2(
+            alloc,
             &page->spans,
             sizeof(*page->spans) * page->spans_num,
             sizeof(*page->spans) * (page->spans_num + 1)
             )) {
-        extract_free(&span);
+        extract_free(alloc, &span);
         return NULL;
     }
     page->spans[page->spans_num] = span;
@@ -226,27 +228,27 @@ static span_t* page_span_append(page_t* page)
 }
 
 
-static void extract_images_free(images_t* images)
+static void extract_images_free(extract_alloc_t* alloc, images_t* images)
 {
     int i;
     for (i=0; i<images->images_num; ++i) {
         image_t*    image = &images->images[i];
-        extract_free(&image->type);
-        extract_free(&image->name);
-        extract_free(&image->id);
+        extract_free(alloc, &image->type);
+        extract_free(alloc, &image->name);
+        extract_free(alloc, &image->id);
         if (image->data_free) {
             image->data_free(image->data_free_handle, image->data);
         }
-        extract_free(&images->images[i]);
+        extract_free(alloc, &images->images[i]);
     }
-    extract_free(&images->images);
-    extract_free(&images->imagetypes);
+    extract_free(alloc, &images->images);
+    extract_free(alloc, &images->imagetypes);
     images->images_num = 0;
     images->imagetypes_num = 0;
 }
 
 
-static int extract_document_images(document_t* document, images_t* o_images)
+static int extract_document_images(extract_alloc_t* alloc, document_t* document, images_t* o_images)
 /* Moves image_t's from document->page[] to *o_images.
 
 On return document->page[].images* will be NULL etc.
@@ -262,6 +264,7 @@ On return document->page[].images* will be NULL etc.
         for (i=0; i<page->images_num; ++i) {
             image_t* image;
             if (extract_realloc2(
+                    alloc,
                     &images.images,
                     sizeof(image_t) * images.images_num,
                     sizeof(image_t) * (images.images_num + 1)
@@ -284,6 +287,7 @@ On return document->page[].images* will be NULL etc.
                 }
                 if (it == images.imagetypes_num) {
                     if (extract_realloc2(
+                            alloc,
                             &images.imagetypes,
                             sizeof(char*) * images.imagetypes_num,
                             sizeof(char*) * (images.imagetypes_num + 1)
@@ -303,7 +307,7 @@ On return document->page[].images* will be NULL etc.
             image->data = NULL;
             image->data_size = 0;
         }
-        extract_free(&page->images);
+        extract_free(alloc, &page->images);
         page->images_num = 0;
     }
     e = 0;
@@ -316,7 +320,7 @@ On return document->page[].images* will be NULL etc.
     return e;
 }
 
-static void extract_document_free(document_t* document)
+static void extract_document_free(extract_alloc_t* alloc, document_t* document)
 {
     int p;
     if (!document) {
@@ -324,10 +328,10 @@ static void extract_document_free(document_t* document)
     }
     for (p=0; p<document->pages_num; ++p) {
         page_t* page = document->pages[p];
-        page_free(page);
-        extract_free(&page);
+        page_free(alloc, page);
+        extract_free(alloc, &page);
     }
-    extract_free(&document->pages);
+    extract_free(alloc, &document->pages);
     document->pages = NULL;
     document->pages_num = 0;
 }
@@ -398,7 +402,7 @@ static void s_document_init(document_t* document)
 }
 
 
-static int page_span_end_clean(page_t* page)
+static int page_span_end_clean(extract_alloc_t* alloc, page_t* page)
 /* Does preliminary processing of the end of the last span in a page; intended
 to be called as we load span information.
 
@@ -494,12 +498,12 @@ char_t into a new span_t. */
                 span_string2(span)
                 );
         {
-            span_t* span2 = page_span_append(page);
+            span_t* span2 = page_span_append(alloc, page);
             if (!span2) goto end;
             *span2 = *span;
-            if (extract_strdup(span->font_name, &span2->font_name)) goto end;
+            if (extract_strdup(alloc, span->font_name, &span2->font_name)) goto end;
             span2->chars_num = 1;
-            if (extract_malloc(&span2->chars, sizeof(char_t) * span2->chars_num)) goto end;
+            if (extract_malloc(alloc, &span2->chars, sizeof(char_t) * span2->chars_num)) goto end;
             span2->chars[0] = char_[-1];
             span->chars_num -= 1;
         }
@@ -513,6 +517,8 @@ char_t into a new span_t. */
 
 struct extract_t
 {
+    extract_alloc_t*    alloc;
+    
     document_t          document;
     
     int                 num_spans_split;
@@ -538,12 +544,19 @@ struct extract_t
 
 
 
-int extract_begin(extract_t** pextract)
+int extract_begin(
+        extract_alloc_t*    alloc,
+        extract_t**         pextract
+        )
 {
     int e = -1;
     extract_t*  extract;
-    if (extract_malloc(&extract, sizeof(*extract))) goto end;
+    
+    /* Use a temporary extract_alloc_t to allocate space for the extract_t. */
+    if (extract_malloc(alloc, &extract, sizeof(*extract))) goto end;
+    
     extract_bzero(extract, sizeof(*extract));
+    extract->alloc = alloc;
     s_document_init(&extract->document);
     
     /* Start at 10 because template document might use some low-numbered IDs.
@@ -574,7 +587,7 @@ int extract_read_intermediate(extract_t* extract, extract_buffer_t* buffer, int 
     extract_xml_tag_t   tag;
     extract_xml_tag_init(&tag);
 
-    if (extract_xml_pparse_init(buffer, NULL /*first_line*/)) {
+    if (extract_xml_pparse_init(extract->alloc, buffer, NULL /*first_line*/)) {
         outf("Failed to read start of intermediate data: %s", strerror(errno));
         goto end;
     }
@@ -672,7 +685,7 @@ int extract_read_intermediate(extract_t* extract, extract_buffer_t* buffer, int 
                     const char* c;
                     size_t      i;
                     if (extract_xml_tag_attributes_find_size(&tag, "datasize", &image_data_size)) goto end;
-                    if (extract_malloc(&image_data, image_data_size)) goto end;
+                    if (extract_malloc(extract->alloc, &image_data, image_data_size)) goto end;
                     c = tag.text.chars;
                     for(i=0;;) {
                         int byte = 0;
@@ -801,7 +814,7 @@ int extract_read_intermediate(extract_t* extract, extract_buffer_t* buffer, int 
                     if (extract_add_char(extract, x, y, ucs, adv, autosplit)) goto end;
                 }
 
-                extract_xml_tag_free(&tag);
+                extract_xml_tag_free(extract->alloc, &tag);
             }
         }
         if (extract_page_end(extract)) goto end;
@@ -818,8 +831,8 @@ int extract_read_intermediate(extract_t* extract, extract_buffer_t* buffer, int 
     ret = 0;
 
     end:
-    extract_xml_tag_free(&tag);
-    extract_free(&image_data);
+    extract_xml_tag_free(extract->alloc, &tag);
+    extract_free(extract->alloc, &image_data);
     
     return ret;
 }
@@ -850,7 +863,7 @@ int extract_span_begin(
     span_t* span;
     assert(extract->document.pages_num > 0);
     page = extract->document.pages[extract->document.pages_num-1];
-    span = page_span_append(page);
+    span = page_span_append(extract->alloc, page);
     if (!span) goto end;
     span->ctm.a = ctm_a;
     span->ctm.b = ctm_b;
@@ -867,7 +880,7 @@ int extract_span_begin(
     {
         const char* ff = strchr(font_name, '+');
         const char* f = (ff) ? ff+1 : font_name;
-        if (extract_strdup(f, &span->font_name)) goto end;
+        if (extract_strdup(extract->alloc, f, &span->font_name)) goto end;
         span->font_bold = font_bold ? 1 : 0;
         span->font_italic = font_italic ? 1 : 0;
         span->wmode = wmode ? 1 : 0;
@@ -914,12 +927,12 @@ int extract_add_char(
             /* Create new span. */
             span_t* span0 = span;
             extract->num_spans_autosplit += 1;
-            span = page_span_append(page);
+            span = page_span_append(extract->alloc, page);
             if (!span) goto end;
             *span = *span0;
             span->chars = NULL;
             span->chars_num = 0;
-            if (extract_strdup(span0->font_name, &span->font_name)) goto end;
+            if (extract_strdup(extract->alloc, span0->font_name, &span->font_name)) goto end;
         }
         span->ctm.e = e;
         span->ctm.f = f;
@@ -927,7 +940,7 @@ int extract_add_char(
                 char_pre_y, offset_y);
     }
     
-    if (span_append_c(span, 0 /*c*/)) goto end;
+    if (span_append_c(extract->alloc, span, 0 /*c*/)) goto end;
     char_ = &span->chars[ span->chars_num-1];
     
     char_->pre_x = x - extract->span_offset_x;
@@ -944,7 +957,7 @@ int extract_add_char(
 
     {
         int page_spans_num_old = page->spans_num;
-        if (page_span_end_clean(page)) goto end;
+        if (page_span_end_clean(extract->alloc, page)) goto end;
         span = page->spans[page->spans_num-1];  /* fixme: unnecessary. */
         if (page->spans_num != page_spans_num_old) {
             extract->num_spans_split += 1;
@@ -965,7 +978,7 @@ int extract_span_end(extract_t* extract)
 
 
 int extract_add_image(
-        extract_t*  extract,
+        extract_t*              extract,
         const char*             type,
         double                  x,
         double                  y,
@@ -991,11 +1004,12 @@ int extract_add_image(
     image_temp.data_size = data_size;
     image_temp.data_free = data_free;
     image_temp.data_free_handle = data_free_handle;
-    if (extract_strdup(type, &image_temp.type)) goto end;
-    if (extract_asprintf(&image_temp.id, "rId%i", extract->image_n) < 0) goto end;
-    if (extract_asprintf(&image_temp.name, "image%i.%s", extract->image_n, image_temp.type) < 0) goto end;
+    if (extract_strdup(extract->alloc, type, &image_temp.type)) goto end;
+    if (extract_asprintf(extract->alloc, &image_temp.id, "rId%i", extract->image_n) < 0) goto end;
+    if (extract_asprintf(extract->alloc, &image_temp.name, "image%i.%s", extract->image_n, image_temp.type) < 0) goto end;
     
     if (extract_realloc2(
+            extract->alloc,
             &page->images,
             sizeof(image_t) * page->images_num,
             sizeof(image_t) * (page->images_num + 1)
@@ -1010,20 +1024,20 @@ int extract_add_image(
     end:
     
     if (e) {
-        extract_free(&image_temp.type);
-        extract_free(&image_temp.data);
-        extract_free(&image_temp.id);
-        extract_free(&image_temp.name);
+        extract_free(extract->alloc, &image_temp.type);
+        extract_free(extract->alloc, &image_temp.data);
+        extract_free(extract->alloc, &image_temp.id);
+        extract_free(extract->alloc, &image_temp.name);
     }
     
     return e;
 }
 
-int extract_page_begin(extract_t*  extract)
+int extract_page_begin(extract_t* extract)
 {
     /* Appends new empty page_t to an extract->document. */
     page_t* page;
-    if (extract_malloc(&page, sizeof(page_t))) return -1;
+    if (extract_malloc(extract->alloc, &page, sizeof(page_t))) return -1;
     page->spans = NULL;
     page->spans_num = 0;
     page->lines = NULL;
@@ -1033,11 +1047,12 @@ int extract_page_begin(extract_t*  extract)
     page->images = NULL;
     page->images_num = 0;
     if (extract_realloc2(
+            extract->alloc,
             &extract->document.pages,
             sizeof(page_t*) * extract->document.pages_num + 1,
             sizeof(page_t*) * (extract->document.pages_num + 1)
             )) {
-        extract_free(&page);
+        extract_free(extract->alloc, &page);
         return -1;
     }
     extract->document.pages[extract->document.pages_num] = page;
@@ -1062,6 +1077,7 @@ int extract_process(
     int e = -1;
     
     if (extract_realloc2(
+            extract->alloc,
             &extract->contentss,
             sizeof(*extract->contentss) * extract->contentss_num,
             sizeof(*extract->contentss) * (extract->contentss_num + 1)
@@ -1069,9 +1085,10 @@ int extract_process(
     extract_astring_init(&extract->contentss[extract->contentss_num]);
     extract->contentss_num += 1;
     
-    if (extract_document_join(&extract->document)) goto end;
+    if (extract_document_join(extract->alloc, &extract->document)) goto end;
     
     if (extract_document_to_docx_content(
+            extract->alloc,
             &extract->document,
             spacing,
             rotation,
@@ -1079,15 +1096,15 @@ int extract_process(
             &extract->contentss[extract->contentss_num - 1]
             )) goto end;
     
-    if (extract_document_images(&extract->document, &extract->images)) goto end;
+    if (extract_document_images(extract->alloc, &extract->document, &extract->images)) goto end;
     
     {
         int i;
         for (i=0; i<extract->document.pages_num; ++i) {
-            page_free(extract->document.pages[i]);
-            extract_free(&extract->document.pages[i]);
+            page_free(extract->alloc, extract->document.pages[i]);
+            extract_free(extract->alloc, &extract->document.pages[i]);
         }
-        extract_free(&extract->document.pages);
+        extract_free(extract->alloc, &extract->document.pages);
         extract->document.pages_num = 0;
     }
     
@@ -1107,9 +1124,10 @@ int extract_write(extract_t* extract, extract_buffer_t* buffer)
     if (extract_zip_open(buffer, &zip)) goto end;
     for (i=0; i<docx_template_items_num; ++i) {
         const docx_template_item_t* item = &docx_template_items[i];
-        extract_free(&text2);
+        extract_free(extract->alloc, &text2);
         outf("i=%i item->name=%s", i, item->name);
         if (extract_docx_content_item(
+                extract->alloc,
                 extract->contentss,
                 extract->contentss_num,
                 &extract->images,
@@ -1128,8 +1146,8 @@ int extract_write(extract_t* extract, extract_buffer_t* buffer)
     
     for (i=0; i<extract->images.images_num; ++i) {
         image_t* image = &extract->images.images[i];
-        extract_free(&text2);
-        if (extract_asprintf(&text2, "word/media/%s", image->name) < 0) goto end;
+        extract_free(extract->alloc, &text2);
+        if (extract_asprintf(extract->alloc, &text2, "word/media/%s", image->name) < 0) goto end;
         if (extract_zip_write_file(zip, image->data, image->data_size, text2)) goto end;
     }
     
@@ -1140,7 +1158,7 @@ int extract_write(extract_t* extract, extract_buffer_t* buffer)
     
     end:
     if (e) outf("failed: %s", strerror(errno));
-    extract_free(&text2);
+    extract_free(extract->alloc, &text2);
     extract_zip_close(&zip);
     
     return e;
@@ -1168,6 +1186,7 @@ int extract_write_template(
         )
 {
     return extract_docx_write_template(
+            extract->alloc,
             extract->contentss,
             extract->contentss_num,
             &extract->images,
@@ -1181,20 +1200,25 @@ void extract_end(extract_t** pextract)
 {
     extract_t* extract = *pextract;
     if (!extract) return;
-    extract_document_free(&extract->document);
+    extract_document_free(extract->alloc, &extract->document);
     
     {
         int i;
         for (i=0; i<extract->contentss_num; ++i) {
-            extract_astring_free(&extract->contentss[i]);
+            extract_astring_free(extract->alloc, &extract->contentss[i]);
         }
-        extract_free(&extract->contentss);
+        extract_free(extract->alloc, &extract->contentss);
     }
-    extract_images_free(&extract->images);
-    extract_free(pextract);
+    extract_images_free(extract->alloc, &extract->images);
+    extract_free(extract->alloc, pextract);
 }
 
 void extract_internal_end(void)
 {
-    span_string(NULL);
+    span_string(NULL, NULL);
+}
+
+void extract_exp_min(extract_t* extract, size_t size)
+{
+    extract_alloc_exp_min(extract->alloc, size);
 }

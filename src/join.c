@@ -1,6 +1,6 @@
 #include "../include/extract.h"
+#include "../include/extract_alloc.h"
 
-#include "alloc.h"
 #include "astring.h"
 #include "document.h"
 #include "mem.h"
@@ -90,16 +90,16 @@ static double span_angle(span_t* span)
 }
 
 /* Returns static string containing brief info about span_t. */
-static const char* span_string2(span_t* span)
+static const char* span_string2(extract_alloc_t* alloc, span_t* span)
 {
     static extract_astring_t ret = {0};
     int i;
-    extract_astring_free(&ret);
-    extract_astring_catc(&ret, '"');
+    extract_astring_free(alloc, &ret);
+    extract_astring_catc(alloc, &ret, '"');
     for (i=0; i<span->chars_num; ++i) {
-        extract_astring_catc(&ret, (char) span->chars[i].ucs);
+        extract_astring_catc(alloc, &ret, (char) span->chars[i].ucs);
     }
-    extract_astring_catc(&ret, '"');
+    extract_astring_catc(alloc, &ret, '"');
     return ret.chars;
 }
 
@@ -112,39 +112,40 @@ static double line_angle(line_t* line)
 }
 
 /* Returns static string containing brief info about line_t. */
-static const char* line_string2(line_t* line)
+static const char* line_string2(extract_alloc_t* alloc, line_t* line)
 {
     static extract_astring_t ret = {0};
     char    buffer[256];
     int i;
-    extract_astring_free(&ret);
+    extract_astring_free(alloc, &ret);
     snprintf(buffer, sizeof(buffer), "line x=%f y=%f spans_num=%i:",
             line->spans[0]->chars[0].x,
             line->spans[0]->chars[0].y,
             line->spans_num
             );
-    extract_astring_cat(&ret, buffer);
+    extract_astring_cat(alloc, &ret, buffer);
     for (i=0; i<line->spans_num; ++i) {
-        extract_astring_cat(&ret, " ");
-        extract_astring_cat(&ret, span_string2(line->spans[i]));
+        extract_astring_cat(alloc, &ret, " ");
+        extract_astring_cat(alloc, &ret, span_string2(alloc, line->spans[i]));
     }
     return ret.chars;
 }
 
 /* Array of pointers to lines that are aligned and adjacent to each other so as
 to form a paragraph. */
-static const char* paragraph_string(paragraph_t* paragraph)
+static const char* paragraph_string(extract_alloc_t* alloc, paragraph_t* paragraph)
 {
     static extract_astring_t ret = {0};
-    extract_astring_free(&ret);
-    extract_astring_cat(&ret, "paragraph: ");
+    extract_astring_free(alloc, &ret);
+    extract_astring_cat(alloc, &ret, "paragraph: ");
     if (paragraph->lines_num) {
-        extract_astring_cat(&ret, line_string2(paragraph->lines[0]));
+        extract_astring_cat(alloc, &ret, line_string2(alloc, paragraph->lines[0]));
         if (paragraph->lines_num > 1) {
-            extract_astring_cat(&ret, "..");
+            extract_astring_cat(alloc, &ret, "..");
             extract_astring_cat(
+                    alloc,
                     &ret,
-                    line_string2(paragraph->lines[paragraph->lines_num-1])
+                    line_string2(alloc, paragraph->lines[paragraph->lines_num-1])
                     );
         }
     }
@@ -239,10 +240,11 @@ On exit:
     undefined.
 */
 static int make_lines(
-        span_t**    spans,
-        int         spans_num,
-        line_t***   o_lines,
-        int*        o_lines_num
+        extract_alloc_t*    alloc,
+        span_t**            spans,
+        int                 spans_num,
+        line_t***           o_lines,
+        int*                o_lines_num
         )
 {
     int ret = -1;
@@ -254,16 +256,16 @@ static int make_lines(
     int         a;
     int         num_compatible;
     int         num_joins;
-    if (extract_malloc(&lines, sizeof(*lines) * lines_num)) goto end;
+    if (extract_malloc(alloc, &lines, sizeof(*lines) * lines_num)) goto end;
 
     /* Ensure we can clean up after error. */
     for (a=0; a<lines_num; ++a) {
         lines[a] = NULL;
     }
     for (a=0; a<lines_num; ++a) {
-        if (extract_malloc(&lines[a], sizeof(line_t))) goto end;
+        if (extract_malloc(alloc, &lines[a], sizeof(line_t))) goto end;
         lines[a]->spans_num = 0;
-        if (extract_malloc(&lines[a]->spans, sizeof(span_t*) * 1)) goto end;
+        if (extract_malloc(alloc, &lines[a]->spans, sizeof(span_t*) * 1)) goto end;
         lines[a]->spans_num = 1;
         lines[a]->spans[0] = spans[a];
         outfx("initial line a=%i: %s", a, line_string(lines[a]));
@@ -296,7 +298,7 @@ static int make_lines(
                 a,
                 angle_a * 180/pi,
                 matrix_string(&span_a->ctm),
-                line_string2(line_a)
+                line_string2(alloc, line_a)
                 );
 
         for (b=0; b<lines_num; ++b) {
@@ -315,8 +317,8 @@ static int make_lines(
                         nearest_line_b,
                         nearest_adv
                         );
-                outf("    line_a=%s", line_string2(line_a));
-                outf("    line_b=%s", line_string2(line_b));
+                outf("    line_a=%s", line_string2(alloc, line_a));
+                outf("    line_b=%s", line_string2(alloc, line_b));
             }
             if (!lines_are_compatible(line_a, line_b, angle_a, 0*verbose)) {
                 if (verbose) outf("not compatible");
@@ -411,10 +413,11 @@ static int make_lines(
                                 nearest_adv,
                                 average_adv
                                 );
-                        outf("    a: %s", span_string(span_a));
-                        outf("    b: %s", span_string(span_b));
+                        outf("    a: %s", span_string(alloc, span_a));
+                        outf("    b: %s", span_string(alloc, span_b));
                     }
                     if (extract_realloc2(
+                            alloc,
                             &span_a->chars,
                             sizeof(char_t) * span_a->chars_num,
                             sizeof(char_t) * (span_a->chars_num + 1)
@@ -428,8 +431,8 @@ static int make_lines(
 
                 if (verbose) {
                     outf("Joining spans a=%i b=%i:", a, b);
-                    outf("    %s", span_string2(span_a));
-                    outf("    %s", span_string2(span_b));
+                    outf("    %s", span_string2(alloc, span_a));
+                    outf("    %s", span_string2(alloc, span_b));
                 }
                 if (0) {
                     /* Show details about what we're joining. */
@@ -443,8 +446,8 @@ static int make_lines(
                             nearest_adv,
                             average_adv
                             );
-                    outf("a: %s", span_string(span_a));
-                    outf("b: %s", span_string(span_b));
+                    outf("a: %s", span_string(alloc, span_a));
+                    outf("b: %s", span_string(alloc, span_b));
                 }
             }
 
@@ -454,10 +457,11 @@ static int make_lines(
 
             if (verbose) {
                 outf("Joining spans a=%i b=%i:", a, b);
-                outf("    %s", span_string2(span_a));
-                outf("    %s", span_string2(span_b));
+                outf("    %s", span_string2(alloc, span_a));
+                outf("    %s", span_string2(alloc, span_b));
             }
             if (extract_realloc2(
+                    alloc,
                     &line_a->spans,
                     sizeof(span_t*) * line_a->spans_num,
                     sizeof(span_t*) * (line_a->spans_num + nearest_line->spans_num)
@@ -471,8 +475,8 @@ static int make_lines(
             line_a->spans_num += nearest_line->spans_num;
 
             /* Ensure that we ignore nearest_line from now on. */
-            extract_free(&nearest_line->spans);
-            extract_free(&nearest_line);
+            extract_free(alloc, &nearest_line->spans);
+            extract_free(alloc, &nearest_line);
             outfx("setting line[b=%i] to NULL", b);
             lines[b] = NULL;
 
@@ -505,6 +509,7 @@ static int make_lines(
         lines_num_old = lines_num;
         lines_num = to;
         if (extract_realloc2(
+                alloc,
                 &lines,
                 sizeof(line_t*) * lines_num_old,
                 sizeof(line_t*) * lines_num
@@ -529,11 +534,11 @@ static int make_lines(
         /* Free everything. */
         if (lines) {
             for (a=0; a<lines_num; ++a) {
-                if (lines[a])   extract_free(&lines[a]->spans);
-                extract_free(&lines[a]);
+                if (lines[a])   extract_free(alloc, &lines[a]->spans);
+                extract_free(alloc, &lines[a]);
             }
         }
-        extract_free(&lines);
+        extract_free(alloc, &lines);
     }
     return ret;
 }
@@ -652,10 +657,11 @@ On exit:
     are undefined.
 */
 static int make_paragraphs(
-        line_t**        lines,
-        int                     lines_num,
-        paragraph_t***  o_paragraphs,
-        int*                    o_paragraphs_num
+        extract_alloc_t*    alloc, 
+        line_t**            lines,
+        int                 lines_num,
+        paragraph_t***      o_paragraphs,
+        int*                o_paragraphs_num
         )
 {
     int ret = -1;
@@ -665,16 +671,16 @@ static int make_paragraphs(
 
     /* Start off with an paragraph_t for each line_t. */
     int paragraphs_num = lines_num;
-    if (extract_malloc(&paragraphs, sizeof(*paragraphs) * paragraphs_num)) goto end;
+    if (extract_malloc(alloc, &paragraphs, sizeof(*paragraphs) * paragraphs_num)) goto end;
     /* Ensure we can clean up after error when setting up. */
     for (a=0; a<paragraphs_num; ++a) {
         paragraphs[a] = NULL;
     }
     /* Set up initial paragraphs. */
     for (a=0; a<paragraphs_num; ++a) {
-        if (extract_malloc(&paragraphs[a], sizeof(paragraph_t))) goto end;
+        if (extract_malloc(alloc, &paragraphs[a], sizeof(paragraph_t))) goto end;
         paragraphs[a]->lines_num = 0;
-        if (extract_malloc(&paragraphs[a]->lines, sizeof(line_t*) * 1)) goto end;
+        if (extract_malloc(alloc, &paragraphs[a]->lines, sizeof(line_t*) * 1)) goto end;
         paragraphs[a]->lines_num = 1;
         paragraphs[a]->lines[0] = lines[a];
     }
@@ -737,16 +743,16 @@ static int make_paragraphs(
                             by - ay,
                             distance
                             );
-                    outf("    line_a=%s", line_string2(line_a));
-                    outf("    line_b=%s", line_string2(line_b));
+                    outf("    line_a=%s", line_string2(alloc, line_a));
+                    outf("    line_b=%s", line_string2(alloc, line_b));
                 }
                 if (distance > 0) {
                     if (nearest_paragraph_distance == -1
                             || distance < nearest_paragraph_distance) {
                         if (verbose) {
                             outf("updating nearest. distance=%f:", distance);
-                            outf("    line_a=%s", line_string2(line_a));
-                            outf("    line_b=%s", line_string2(line_b));
+                            outf("    line_a=%s", line_string2(alloc, line_a));
+                            outf("    line_b=%s", line_string2(alloc, line_b));
                         }
                         nearest_paragraph_distance = distance;
                         nearest_paragraph_b = b;
@@ -778,8 +784,8 @@ static int make_paragraphs(
                             nearest_paragraph_distance,
                             line_b_size
                             );
-                    outf("    %s", paragraph_string(paragraph_a));
-                    outf("    %s", paragraph_string(nearest_paragraph));
+                    outf("    %s", paragraph_string(alloc, paragraph_a));
+                    outf("    %s", paragraph_string(alloc, nearest_paragraph));
                     outf("paragraph_a ctm=%s",
                             matrix_string(&paragraph_a->lines[0]->spans[0]->ctm)
                             );
@@ -798,7 +804,7 @@ static int make_paragraphs(
                     /* Insert space before joining adjacent lines. */
                     char_t* c_prev;
                     char_t* c;
-                    if (span_append_c(line_span_last(line_a), ' ')) goto end;
+                    if (span_append_c(alloc, line_span_last(line_a), ' ')) goto end;
                     c_prev = &a_span->chars[ a_span->chars_num-2];
                     c = &a_span->chars[ a_span->chars_num-1];
                     c->x = c_prev->x + c_prev->adv * a_span->ctm.a;
@@ -807,6 +813,7 @@ static int make_paragraphs(
 
                 a_lines_num_new = paragraph_a->lines_num + nearest_paragraph->lines_num;
                 if (extract_realloc2(
+                        alloc,
                         &paragraph_a->lines,
                         sizeof(line_t*) * paragraph_a->lines_num,
                         sizeof(line_t*) * a_lines_num_new
@@ -821,8 +828,8 @@ static int make_paragraphs(
                 paragraph_a->lines_num = a_lines_num_new;
 
                 /* Ensure that we skip nearest_paragraph in future. */
-                extract_free(&nearest_paragraph->lines);
-                extract_free(&nearest_paragraph);
+                extract_free(alloc, &nearest_paragraph->lines);
+                extract_free(alloc, &nearest_paragraph);
                 paragraphs[nearest_paragraph_b] = NULL;
 
                 num_joins += 1;
@@ -864,6 +871,7 @@ static int make_paragraphs(
         paragraphs_num_old = paragraphs_num;
         paragraphs_num = to;
         if (extract_realloc2(
+                alloc,
                 &paragraphs,
                 sizeof(paragraph_t*) * paragraphs_num_old,
                 sizeof(paragraph_t*) * paragraphs_num
@@ -896,16 +904,16 @@ static int make_paragraphs(
     if (ret) {
         if (paragraphs) {
             for (a=0; a<paragraphs_num; ++a) {
-                if (paragraphs[a])   extract_free(&paragraphs[a]->lines);
-                extract_free(&paragraphs[a]);
+                if (paragraphs[a])   extract_free(alloc, &paragraphs[a]->lines);
+                extract_free(alloc, &paragraphs[a]);
             }
         }
-        extract_free(&paragraphs);
+        extract_free(alloc, &paragraphs);
     }
     return ret;
 }
 
-int extract_document_join(document_t* document)
+int extract_document_join(extract_alloc_t* alloc, document_t* document)
 {
     int ret = -1;
 
@@ -919,6 +927,7 @@ int extract_document_join(document_t* document)
         outf("processing page %i: num_spans=%i", p, page->spans_num);
 
         if (make_lines(
+                alloc,
                 page->spans,
                 page->spans_num,
                 &page->lines,
@@ -926,6 +935,7 @@ int extract_document_join(document_t* document)
                 )) goto end;
 
         if (make_paragraphs(
+                alloc,
                 page->lines,
                 page->lines_num,
                 &page->paragraphs,

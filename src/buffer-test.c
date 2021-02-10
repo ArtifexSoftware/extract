@@ -1,6 +1,6 @@
 #include "../include/extract_buffer.h"
+#include "../include/extract_alloc.h"
 
-#include "alloc.h"
 #include "mem.h"
 #include "memento.h"
 #include "outf.h"
@@ -23,13 +23,14 @@ called, and read/write functions that do random short reads and writes. */
 
 typedef struct
 {
-    char*   data;
-    size_t  bytes;  /* Size of data[]. */
-    size_t  pos;    /* Current position in data[]. */
-    char    cache[137];
-    int     num_calls_cache;
-    int     num_calls_read;
-    int     num_calls_write;
+    extract_alloc_t*    alloc;
+    char*               data;
+    size_t              bytes;  /* Size of data[]. */
+    size_t              pos;    /* Current position in data[]. */
+    char                cache[137];
+    int                 num_calls_cache;
+    int                 num_calls_read;
+    int                 num_calls_write;
 } mem_t;
 
 static int s_read(void* handle, void* destination, size_t bytes, size_t* o_actual)
@@ -69,25 +70,26 @@ static int s_read_cache(void* handle, void** o_cache, size_t* o_numbytes)
 static void s_read_buffer_close(void* handle)
 {
     mem_t* r = handle;
-    extract_free(&r->data);
+    extract_free(r->alloc, &r->data);
 }
 
-static void s_create_read_buffer(int bytes, mem_t* r, extract_buffer_t** o_buffer)
+static void s_create_read_buffer(extract_alloc_t* alloc, int bytes, mem_t* r, extract_buffer_t** o_buffer)
 /* Creates extract_buffer_t that reads from randomised data using randomised
 short reads and cache with randomised sizes. */
 {
     int i;
     int e;
-    if (extract_malloc(&r->data, bytes)) abort();
+    if (extract_malloc(alloc, &r->data, bytes)) abort();
     for (i=0; i<bytes; ++i) {
         r->data[i] = (char) rand();
     }
+    r->alloc = alloc;
     r->bytes = bytes;
     r->pos = 0;
     r->num_calls_cache = 0;
     r->num_calls_read = 0;
     r->num_calls_write = 0;
-    e = extract_buffer_open(r, s_read, NULL /*write*/, s_read_cache, s_read_buffer_close, o_buffer);
+    e = extract_buffer_open(alloc, r, s_read, NULL /*write*/, s_read_cache, s_read_buffer_close, o_buffer);
     assert(!e);
 }
 
@@ -101,11 +103,11 @@ static void test_read(void)
     int its;
     int e;
     extract_buffer_t* buffer;
-    s_create_read_buffer(len, &r, &buffer);
+    s_create_read_buffer(NULL /*alloc*/, len, &r, &buffer);
         
     /* Repeatedly read from read-buffer until we get EOF, and check we read the
     original content. */
-    if (extract_malloc(&out_buffer, len)) abort();
+    if (extract_malloc(r.alloc, &out_buffer, len)) abort();
     out_pos = 0;
     for (its=0;; ++its) {
         size_t actual;
@@ -121,7 +123,7 @@ static void test_read(void)
     assert(!memcmp(out_buffer, r.data, len));
     outf("its=%i num_calls_read=%i num_calls_write=%i num_calls_cache=%i",
             its, r.num_calls_read, r.num_calls_write, r.num_calls_cache);
-    extract_free(&out_buffer);
+    extract_free(r.alloc, &out_buffer);
     out_buffer = NULL;
     e = extract_buffer_close(&buffer);
     assert(!e);
@@ -168,22 +170,23 @@ static void s_write_buffer_close(void* handle)
 {
     mem_t* mem = handle;
     outf("*** freeing mem->data=%p", mem->data);
-    extract_free(&mem->data);
+    extract_free(mem->alloc, &mem->data);
 }
 
-static void s_create_write_buffer(size_t bytes, mem_t* r, extract_buffer_t** o_buffer)
+static void s_create_write_buffer(extract_alloc_t* alloc, size_t bytes, mem_t* r, extract_buffer_t** o_buffer)
 /* Creates extract_buffer_t that reads from randomised data using randomised
 short reads and cache with randomised sizes. */
 {
     int e;
-    if (extract_malloc(&r->data, bytes+1)) abort();
+    if (extract_malloc(alloc, &r->data, bytes+1)) abort();
     extract_bzero(r->data, bytes);
+    r->alloc = alloc;
     r->bytes = bytes;
     r->pos = 0;
     r->num_calls_cache = 0;
     r->num_calls_read = 0;
     r->num_calls_write = 0;
-    e = extract_buffer_open(r, NULL /*read*/, s_write, s_write_cache, s_write_buffer_close, o_buffer);
+    e = extract_buffer_open(r->alloc, r, NULL /*read*/, s_write, s_write_cache, s_write_buffer_close, o_buffer);
     assert(!e);
 }
 
@@ -200,10 +203,10 @@ static void test_write(void)
     int its;
     int e;
     
-    s_create_write_buffer(len, &r, &buffer);
+    s_create_write_buffer(NULL /*alloc*/, len, &r, &buffer);
     
     /* Write to read-buffer, and check it contains the original content. */
-    if (extract_malloc(&out_buffer, len)) abort();
+    if (extract_malloc(r.alloc, &out_buffer, len)) abort();
     for (i=0; i<len; ++i) {
         out_buffer[i] = (char) ('a' + rand_int(26));
     }
@@ -218,7 +221,7 @@ static void test_write(void)
     }
     assert(out_pos == len);
     assert(!memcmp(out_buffer, r.data, len));
-    extract_free(&out_buffer);
+    extract_free(r.alloc, &out_buffer);
     outf("its=%i num_calls_read=%i num_calls_write=%i num_calls_cache=%i",
             its, r.num_calls_read, r.num_calls_write, r.num_calls_cache);
     e = extract_buffer_close(&buffer);
@@ -230,7 +233,7 @@ static void test_file(void)
 {
     /* Check we can write 3 bytes to file. */
     extract_buffer_t* file_buffer;
-    if (extract_buffer_open_file("test/generated/buffer-file", 1 /*writable*/, &file_buffer)) abort();
+    if (extract_buffer_open_file(NULL /*alloc*/, "test/generated/buffer-file", 1 /*writable*/, &file_buffer)) abort();
     
     {
         size_t  n;
@@ -247,7 +250,7 @@ static void test_file(void)
     
     /* Check we get back expected short reads and EOF when reading from 3-byte
     file created above. */
-    if (extract_buffer_open_file("test/generated/buffer-file", 0 /*writable*/, &file_buffer)) abort();
+    if (extract_buffer_open_file(NULL /*alloc*/, "test/generated/buffer-file", 0 /*writable*/, &file_buffer)) abort();
     
     {
         size_t  n;
@@ -280,7 +283,7 @@ static void test_file(void)
         int e;
         char text[] = "hello world";
         size_t  actual;
-        if (extract_buffer_open_file("test/generated/buffer-file", 0 /*writable*/, &file_buffer)) {
+        if (extract_buffer_open_file(NULL /*alloc*/, "test/generated/buffer-file", 0 /*writable*/, &file_buffer)) {
             abort();
         }
         

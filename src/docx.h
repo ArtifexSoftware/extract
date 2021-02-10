@@ -6,6 +6,7 @@
 /* Things for creating docx files. */
 
 int extract_document_to_docx_content(
+        extract_alloc_t*    alloc,
         document_t*         document,
         int                 spacing,
         int                 rotation,
@@ -21,6 +22,7 @@ word/document.xml. */
 
 
 int extract_docx_write_template(
+        extract_alloc_t*    alloc, 
         extract_astring_t*  contentss,
         int                 contentss_num,
         images_t*           images,
@@ -52,6 +54,7 @@ preserve_dir
 
 
 int extract_docx_content_item(
+        extract_alloc_t*    alloc,
         extract_astring_t*  contentss,
         int                 contentss_num,
         images_t*           images,

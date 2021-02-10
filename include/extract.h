@@ -1,6 +1,7 @@
 #ifndef ARITFEX_EXTRACT_H
 #define ARITFEX_EXTRACT_H
 
+#include "extract_alloc.h"
 #include "extract_buffer.h"
 
 
@@ -21,8 +22,13 @@ typedef struct extract_t extract_t;
 /* State for processing a document. */
 
 
-int extract_begin(extract_t** pextract);
-/* Creates a new extract_t* for use by other extact_*() functions. */
+int extract_begin(
+        extract_alloc_t*    alloc,
+        extract_t**         pextract
+        );
+/* Creates a new extract_t* for use by other extract_*() functions. All
+allocation will be done with <alloc> (which can be NULL in which case we use
+malloc/free, or from extract_alloc_create()). */
 
 
 int extract_read_intermediate(
@@ -197,5 +203,10 @@ void extract_internal_end(void);
 /* Cleans up internal singelton state that can look like a memory leak when
 running under Memento or valgrind. */
 
+void extract_exp_min(extract_t* extract, size_t size);
+/* If size is non-zero, sets minimum actual allocation size, and we only
+allocate in powers of two times this size. This is an attempt to improve speed
+with memento squeeze. Default is 0 (every call to extract_realloc() calls
+realloc(). */
 
 #endif
