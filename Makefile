@@ -89,7 +89,7 @@ $(warning mutool_e=$(mutool_e))
 
 # Default target - run all tests.
 #
-test: test-buffer test-misc test-src test-exe test-mutool test-gs
+test: test-buffer test-misc test-src test-exe test-mutool test-gs test-gs-fpp
 	@echo $@: passed
 
 # Define the main test targets.
@@ -152,6 +152,23 @@ test-mutool: $(tests_mutool)
 test-gs: $(tests_gs)
 	@echo $@: passed
 
+# Check behaviour of gs when writing file-per-page.
+#
+test-gs-fpp: $(gs_e)
+	@echo
+	@echo == Testing gs file-page-page
+	rm test/generated/text_graphic_image.pdf.gs.*.docx || true
+	$(gs_e) -sDEVICE=docxwrite -o test/generated/Python2.pdf.gs.%i.docx test/Python2.pdf
+	rm test/generated/text_graphic_image.pdf.gs.*.docx || true
+	$(gs_e) -sDEVICE=docxwrite -o test/generated/zlib.3.pdf.gs.%i.docx test/zlib.3.pdf
+	rm test/generated/text_graphic_image.pdf.gs.*.docx || true
+	$(gs_e) -sDEVICE=docxwrite -o test/generated/text_graphic_image.pdf.gs.%i.docx test/text_graphic_image.pdf
+	@echo Checking for correct number of generated files.
+	ls -l test/generated/*.pdf.gs.*.docx
+	ls test/generated/text_graphic_image.pdf.gs.*.docx | wc -l | grep '^ *1$$'
+	ls test/generated/Python2.pdf.gs.*.docx | wc -l | grep '^ *1$$'
+	ls test/generated/zlib.3.pdf.gs.*.docx | wc -l | grep '^ *2$$'
+	
 
 # Main executable.
 #
@@ -280,6 +297,11 @@ test/generated/%.pdf.gs.docx: test/%.pdf $(gs_e)
 	@mkdir -p test/generated
 	$(gs_e) -sDEVICE=docxwrite -o $@ $<
 
+test/generated/%.pdf.gs.?.docx: test/%.pdf $(gs_e)
+	@echo
+	@echo == Converting .pdf directly to .docx using gs, file per page.
+	rm $@
+	
 
 # Valgrind test
 #
