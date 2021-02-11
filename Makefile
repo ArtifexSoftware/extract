@@ -14,6 +14,11 @@
 #       directly from pdf to docx. We require that $(mutool_e) was built with
 #       extract=yes.
 #
+#   make test-gs
+#       Runs gs regression tests. This uses $(gs_e) to convert
+#       directly from pdf to docx. We require that $(gs_e) was built with
+#       --with-extract-dir=...
+#
 #   make test-buffer test-misc test-src
 #       Runs unit tests etc.
 #
@@ -64,7 +69,8 @@ endif
 # submodule) we set things differently, pointing $(mutool) to within the mupdf
 # tree and assuming that ghostpdl is checked out next to mupdf.
 #
-gs          = ../ghostpdl/debug-bin/gs
+gs          = ../../../ghostpdl/debug-bin/gs
+gs_e        = ../../../ghostpdl/debug-extract-bin/gs
 mutool      = ../mupdf/build/debug-extract/mutool
 mutool_e    = $(mutool)
 libbacktrace= ../libbacktrace/.libs
@@ -77,12 +83,13 @@ ifneq ($(we_are_mupdf_thirdparty),)
 endif
 
 $(warning gs=$(gs))
+$(warning gs_e=$(gs_e))
 $(warning mutool=$(mutool))
 $(warning mutool_e=$(mutool_e))
 
 # Default target - run all tests.
 #
-test: test-buffer test-misc test-src test-exe test-mutool
+test: test-buffer test-misc test-src test-exe test-mutool test-gs
 	@echo $@: passed
 
 # Define the main test targets.
@@ -120,6 +127,11 @@ ifneq ($(mutool_e),)
             $(patsubst %, %.mutool-norotate.docx.diff, $(pdfs_generated)) \
 
 endif
+ifneq ($(gs_e),)
+    tests_gs := \
+            $(patsubst %, %.gs.docx.diff, $(pdfs_generated)) \
+
+endif
 #$(warning $(pdfs_generated_intermediate_docx_diffs))
 #$(warning $(tests))
 
@@ -127,10 +139,17 @@ test-exe: $(tests_exe)
 	@echo $@: passed
 
 # Checks output of mutool conversion from .pdf to .docx. Requires that mutool
-# was built with extract as a third-party library. As of 2020-10-16 this
-# requires mupdf/thirdparty/extract e.g. as a softlink to extract checkout.
+# was built with extract as a third-party library.
 #
 test-mutool: $(tests_mutool)
+	@echo $@: passed
+
+# Checks output of gs conversion from .pdf to .docx. Requires that mutool
+# was built with extract as a third-party library. As of 2021-02-10 this
+# requires, for example ghostpdl/extract being a link to an extract checkout
+# and configuring with --with-extract-dir=extract.
+#
+test-gs: $(tests_gs)
 	@echo $@: passed
 
 
@@ -253,6 +272,13 @@ test/generated/%.pdf.mutool-norotate.docx: test/%.pdf $(mutool_e)
 	@echo == Converting .pdf directly to .docx using mutool.
 	@mkdir -p test/generated
 	$(mutool_e) convert -O rotation=no,spacing=yes -o $@ $<
+
+# Converts .pdf directly to .docx using gs.
+test/generated/%.pdf.gs.docx: test/%.pdf $(gs_e)
+	@echo
+	@echo == Converting .pdf directly to .docx using gs.
+	@mkdir -p test/generated
+	$(gs_e) -sDEVICE=docxwrite -o $@ $<
 
 
 # Valgrind test
