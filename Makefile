@@ -88,7 +88,7 @@ endif
 
 ifneq ($(gs),)
 ifeq ($(wildcard $(gs)),)
-    $(error mutool does not exist: $(gs))
+    $(error gs does not exist: $(gs))
 endif
 $(warning gs=$(gs))
 endif
