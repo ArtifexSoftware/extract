@@ -124,17 +124,17 @@ tests_exe := \
 
 tests_exe := $(patsubst %, %.diff, $(tests_exe))
 
-# Targets that test direct conversion with mutool. As of 2020-10-16, mutool
-# uses rotate=true and spacing=true, so we diff with reference directory
-# ...pdf.intermediate-mu.xml.extract-rotate-spacing.docx.dir.ref
-#
 ifneq ($(mutool),)
+# Targets that test direct conversion with mutool.
+#
     tests_mutool := \
             $(patsubst %, %.mutool.docx.diff, $(pdfs_generated)) \
             $(patsubst %, %.mutool-norotate.docx.diff, $(pdfs_generated)) \
 
 endif
 ifneq ($(gs),)
+# Targets that test direct conversion with gs.
+#
     tests_gs := \
             $(patsubst %, %.gs.docx.diff, $(pdfs_generated)) \
             test_gs_fpp
@@ -259,27 +259,35 @@ test/generated/%.pdf.intermediate-gs.xml: test/%.pdf $(gs)
 	@echo == Generating docx using src/template.docx with extract.exe
 	$(run_exe) -r 0 -i $< -t src/template.docx -o $@
 
-test/generated/%.docx.diff: test/generated/%.docx.dir test/%.docx.dir.ref
+test/generated/%.docx.diff: test/generated/%.docx.dir/ test/%.docx.dir.ref/
 	@echo
 	@echo == Checking $<
 	diff -ru $^
 
 # This checks that -t src/template.docx gives identical results.
 #
-test/generated/%.extract-template.docx.diff: test/generated/%.extract-template.docx.dir test/%.extract.docx.dir.ref
+test/generated/%.extract-template.docx.diff: test/generated/%.extract-template.docx.dir/ test/%.extract.docx.dir.ref/
 	@echo
 	@echo == Checking $<
 	diff -ru $^
 
 # Unzips .docx into .docx.dir/ directory.
-%.docx.dir: %.docx
+%.docx.dir/: %.docx
 	@echo
 	@echo == Extracting .docx into directory.
 	@rm -r $@ 2>/dev/null || true
 	unzip -q -d $@ $<
 
+# Uses zip to create .docx file by zipping up a directory. Useful to recreate
+# .docx from reference directory test/*.docx.dir.ref.
+%.docx: %
+	@echo
+	@echo == Zipping directory into .docx file.
+	@rm -r $@ 2>/dev/null || true
+	cd $< && zip -r ../$(notdir $@) .
+
 # Prettifies each .xml file within .docx.dir/ directory.
-%.docx.dir.pretty: %.docx.dir
+%.docx.dir.pretty: %.docx.dir/
 	@rm -r $@ $@- 2>/dev/null || true
 	cp -pr $< $@-
 	./src/docx_template_build.py --docx-pretty $@-
@@ -296,19 +304,20 @@ test/generated/%.pdf.mutool-norotate.docx: test/%.pdf $(mutool)
 	@echo
 	@echo == Converting .pdf directly to .docx using mutool.
 	@mkdir -p test/generated
-	$(mutool) convert -O rotation=no,spacing=yes -o $@ $<
+	$(mutool) convert -O rotation=no -o $@ $<
+
+test/generated/%.pdf.mutool-spacing.docx: test/%.pdf $(mutool)
+	@echo
+	@echo == Converting .pdf directly to .docx using mutool.
+	@mkdir -p test/generated
+	$(mutool) convert -O spacing=yes -o $@ $<
 
 # Converts .pdf directly to .docx using gs.
 test/generated/%.pdf.gs.docx: test/%.pdf $(gs)
 	@echo
 	@echo == Converting .pdf directly to .docx using gs.
 	@mkdir -p test/generated
-	$(gs_e) -sDEVICE=docxwrite -o $@ $<
-
-test/generated/%.pdf.gs.?.docx: test/%.pdf $(gs)
-	@echo
-	@echo == Converting .pdf directly to .docx using gs, file per page.
-	rm $@
+	$(gs) -sDEVICE=docxwrite -o $@ $<
 	
 
 # Valgrind test
