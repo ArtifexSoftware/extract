@@ -364,12 +364,6 @@ static point_t multiply_matrix_point(matrix_t m, point_t p)
     return p;
 }
 
-typedef struct
-{
-    point_t min;
-    point_t max;
-} rectangle_t;
-
 static int s_matrix_read(const char* text, matrix_t* matrix)
 {
     int n;
@@ -972,7 +966,15 @@ int extract_add_char(
 
 int extract_span_end(extract_t* extract)
 {
-    (void) extract;
+    page_t* page = extract->document.pages[extract->document.pages_num-1];
+    span_t* span = page->spans[page->spans_num - 1];
+    if (span->chars_num == 0) {
+        /* Calling code called extract_span_begin() then extract_span_end()
+        without any call to extract_add_char(). Our joining code assumes that
+        all spans are non-empty, so we need to delete this span. */
+        extract_free(extract->alloc, &page->spans[page->spans_num - 1]);
+        page->spans_num -= 1;
+    }
     return 0;
 }
 
