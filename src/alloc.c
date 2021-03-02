@@ -104,7 +104,12 @@ int (extract_realloc2)(extract_alloc_t* alloc, void** pptr, size_t oldsize, size
 
 void (extract_free)(extract_alloc_t* alloc, void** pptr)
 {
-    (alloc) ? alloc->realloc_fn(alloc->realloc_state, *pptr, 0) : free(*pptr);
+    if (alloc) {
+        (void)alloc->realloc_fn(alloc->realloc_state, *pptr, 0);
+    }
+    else {
+        free(*pptr);
+    }
     *pptr = NULL;
     if (alloc)  alloc->stats.num_free += 1;
 }
