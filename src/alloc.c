@@ -105,7 +105,7 @@ int (extract_realloc2)(extract_alloc_t* alloc, void** pptr, size_t oldsize, size
 void (extract_free)(extract_alloc_t* alloc, void** pptr)
 {
     if (alloc) {
-        (void)alloc->realloc_fn(alloc->realloc_state, *pptr, 0);
+        (void) alloc->realloc_fn(alloc->realloc_state, *pptr, 0);
     }
     else {
         free(*pptr);

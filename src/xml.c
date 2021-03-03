@@ -9,7 +9,13 @@
 #include <errno.h>
 #include <float.h>
 #include <limits.h>
-#include <stdint.h>
+
+#ifdef _MSC_VER
+    #include "compat_stdint.h"
+#else
+    #include <stdint.h>
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 

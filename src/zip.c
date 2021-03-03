@@ -11,7 +11,12 @@
 #include <assert.h>
 #include <errno.h>
 #include <limits.h>
-#include <stdint.h>
+
+#ifdef _MSC_VER
+    #include "compat_stdint.h"
+#else
+    #include <stdint.h>
+#endif
 
 
 typedef struct

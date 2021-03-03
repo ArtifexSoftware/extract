@@ -5,6 +5,10 @@
 
 #include <stddef.h>
 
+/* Work around MSVS issues with our use of 'inline'. */
+#ifdef _MSC_VER
+    #include "extract_compat_inline.h"
+#endif
 
 /* Reading and writing abstractions.
 
