@@ -6,6 +6,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifdef _MSC_VER
+    #include "compat_va_copy.h"
+#endif
+
 
 void extract_bzero(void *b, size_t len)
 {

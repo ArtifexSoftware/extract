@@ -12,6 +12,7 @@
 
 #ifdef _MSC_VER
     #include "compat_stdint.h"
+    #include "compat_strtoll.h"
 #else
     #include <stdint.h>
 #endif
