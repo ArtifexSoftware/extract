@@ -101,7 +101,10 @@ test: test-buffer test-misc test-src test-exe test-mutool test-gs
 
 # Define the main test targets.
 #
-pdfs = test/Python2.pdf test/zlib.3.pdf test/text_graphic_image.pdf
+# test/Python2clipped.pdf is same as test/Python2.pdf except it as a modified
+# MediaBox that excludes some glyphs.
+#
+pdfs = test/Python2.pdf test/Python2clipped.pdf test/zlib.3.pdf test/text_graphic_image.pdf
 pdfs_generated = $(patsubst test/%, test/generated/%, $(pdfs))
 
 # Generate targets that check all combinations of mu/gs and the various
@@ -138,7 +141,11 @@ ifneq ($(gs),)
     tests_gs := \
             $(patsubst %, %.gs.docx.diff, $(pdfs_generated)) \
             test_gs_fpp
+    
+    # We don't yet do clipping with gs so exclude Python2clipped.pdf.*:
+    tests_gs := $(filter-out test/generated/Python2clipped.pdf.%, $(tests_gs))
 
+    #$(warning tests_gs: $(tests_gs))
 endif
 #$(warning $(pdfs_generated_intermediate_docx_diffs))
 #$(warning $(tests))
@@ -271,7 +278,9 @@ test/generated/%.extract-template.docx.diff: test/generated/%.extract-template.d
 	@echo == Checking $<
 	diff -ru $^
 
-# Unzips .docx into .docx.dir/ directory.
+# Unzips .docx into .docx.dir/ directory. Note that we requires a trailing '/'
+# in target.
+#
 %.docx.dir/: %.docx
 	@echo
 	@echo == Extracting .docx into directory.
@@ -298,19 +307,19 @@ test/generated/%.pdf.mutool.docx: test/%.pdf $(mutool)
 	@echo
 	@echo == Converting .pdf directly to .docx using mutool.
 	@mkdir -p test/generated
-	$(mutool) convert -o $@ $<
+	$(mutool) convert -O mediabox-clip=yes -o $@ $<
 
 test/generated/%.pdf.mutool-norotate.docx: test/%.pdf $(mutool)
 	@echo
 	@echo == Converting .pdf directly to .docx using mutool.
 	@mkdir -p test/generated
-	$(mutool) convert -O rotation=no -o $@ $<
+	$(mutool) convert -O mediabox-clip=yes,rotation=no -o $@ $<
 
 test/generated/%.pdf.mutool-spacing.docx: test/%.pdf $(mutool)
 	@echo
 	@echo == Converting .pdf directly to .docx using mutool.
 	@mkdir -p test/generated
-	$(mutool) convert -O spacing=yes -o $@ $<
+	$(mutool) convert -O mediabox-clip=yes,spacing=yes -o $@ $<
 
 # Converts .pdf directly to .docx using gs.
 test/generated/%.pdf.gs.docx: test/%.pdf $(gs)
