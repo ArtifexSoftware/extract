@@ -166,6 +166,11 @@ def main():
             # compiler.
             #
             text = re.sub('([<][^/])', '"\n                "\\1', text)
+
+            # Remove name of document creator.
+            #
+            for tag in 'dc:creator', 'cp:lastModifiedBy':
+                text = re.sub(f'[<]{tag}[>][^<]*[<]/{tag}[>]', f'<{tag}></{tag}>', text)
             
             out_c.write(f'    {{\n')
             out_c.write(f'        "{name}",\n')
