@@ -7,6 +7,8 @@
 #include "docx_template.h"
 #include "mem.h"
 #include "memento.h"
+#include "odt.h"
+#include "odt_template.h"
 #include "outf.h"
 #include "xml.h"
 #include "zip.h"
@@ -257,7 +259,7 @@ On return document->page[].images* will be NULL etc.
     int e = -1;
     int p;
     images_t   images = {0};
-    outf("images.images_num=%i", images.images_num);
+    outf("extract_document_images(): images.images_num=%i", images.images_num);
     for (p=0; p<document->pages_num; ++p) {
         page_t* page = document->pages[p];
         int i;
@@ -534,17 +536,27 @@ struct extract_t
     int                 contentss_num;
     
     images_t            images;
-};
 
+    extract_format_t    format;
+    extract_odt_styles_t odt_styles;
+};
 
 
 int extract_begin(
         extract_alloc_t*    alloc,
+        extract_format_t    format,
         extract_t**         pextract
         )
 {
     int e = -1;
     extract_t*  extract;
+    
+    if (format != extract_format_ODT && format != extract_format_DOCX)
+    {
+        outf0("Invalid format=%i\n", format);
+        errno = EINVAL;
+        return -1;
+    }
     
     /* Use a temporary extract_alloc_t to allocate space for the extract_t. */
     if (extract_malloc(alloc, &extract, sizeof(*extract))) goto end;
@@ -557,12 +569,15 @@ int extract_begin(
     */
     extract->image_n = 10;
     
+    extract->format = format;
+    
     e = 0;
     
     end:
     *pextract = (e) ? NULL : extract;
     return e;
 }
+
 
 static void image_free_fn(void* handle, void* image_data)
 {
@@ -986,7 +1001,7 @@ int extract_add_image(
         double                  y,
         double                  w,
         double                  h,
-        char*                   data,
+        void*                   data,
         size_t                  data_size,
         extract_image_data_free data_free,
         void*                   data_free_handle
@@ -996,12 +1011,11 @@ int extract_add_image(
     page_t* page = extract->document.pages[extract->document.pages_num-1];
     image_t image_temp = {0};
     
-    (void) x;
-    (void) y;
-    (void) w;
-    (void) h;
-    
     extract->image_n += 1;
+    image_temp.x = x;
+    image_temp.y = y;
+    image_temp.w = w;
+    image_temp.h = h;
     image_temp.data = data;
     image_temp.data_size = data_size;
     image_temp.data_free = data_free;
@@ -1089,15 +1103,37 @@ int extract_process(
     
     if (extract_document_join(extract->alloc, &extract->document)) goto end;
     
-    if (extract_document_to_docx_content(
-            extract->alloc,
-            &extract->document,
-            spacing,
-            rotation,
-            images,
-            &extract->contentss[extract->contentss_num - 1]
-            )) goto end;
-    
+    if (extract->format == extract_format_ODT)
+    {
+        if (extract_document_to_odt_content(
+                extract->alloc,
+                &extract->document,
+                spacing,
+                rotation,
+                images,
+                &extract->contentss[extract->contentss_num - 1],
+                &extract->odt_styles
+                )) goto end;
+    }
+    else if (extract->format == extract_format_DOCX)
+    {
+        if (extract_document_to_docx_content(
+                extract->alloc,
+                &extract->document,
+                spacing,
+                rotation,
+                images,
+                &extract->contentss[extract->contentss_num - 1]
+                )) goto end;
+    }
+    else
+    {
+        outf0("Invalid format=%i", extract->format);
+        assert(0);
+        errno = EINVAL;
+        return 1;
+    }
+
     if (extract_document_images(extract->alloc, &extract->document, &extract->images)) goto end;
     
     {
@@ -1124,33 +1160,75 @@ int extract_write(extract_t* extract, extract_buffer_t* buffer)
     int             i;
     
     if (extract_zip_open(buffer, &zip)) goto end;
-    for (i=0; i<docx_template_items_num; ++i) {
-        const docx_template_item_t* item = &docx_template_items[i];
-        extract_free(extract->alloc, &text2);
-        outf("i=%i item->name=%s", i, item->name);
-        if (extract_docx_content_item(
-                extract->alloc,
-                extract->contentss,
-                extract->contentss_num,
-                &extract->images,
-                item->name,
-                item->text,
-                &text2
-                )) {
-            goto end;
+    if (extract->format == extract_format_ODT)
+    {
+        for (i=0; i<odt_template_items_num; ++i) {
+            const odt_template_item_t* item = &odt_template_items[i];
+            extract_free(extract->alloc, &text2);
+            outf("i=%i item->name=%s", i, item->name);
+            if (extract_odt_content_item(
+                    extract->alloc,
+                    extract->contentss,
+                    extract->contentss_num,
+                    &extract->odt_styles,
+                    &extract->images,
+                    item->name,
+                    item->text,
+                    &text2
+                    ))
+            {
+                goto end;
+            }
+            {
+                const char* text3 = (text2) ? text2 : item->text;
+                if (extract_zip_write_file(zip, text3, strlen(text3), item->name)) goto end;
+            }
         }
-        
-        {
-            const char* text3 = (text2) ? text2 : item->text;
-            if (extract_zip_write_file(zip, text3, strlen(text3), item->name)) goto end;
+        outf0("extract->images.images_num=%i", extract->images.images_num);
+        for (i=0; i<extract->images.images_num; ++i) {
+            image_t* image = &extract->images.images[i];
+            extract_free(extract->alloc, &text2);
+            if (extract_asprintf(extract->alloc, &text2, "Pictures/%s", image->name) < 0) goto end;
+            if (extract_zip_write_file(zip, image->data, image->data_size, text2)) goto end;
         }
     }
-    
-    for (i=0; i<extract->images.images_num; ++i) {
-        image_t* image = &extract->images.images[i];
-        extract_free(extract->alloc, &text2);
-        if (extract_asprintf(extract->alloc, &text2, "word/media/%s", image->name) < 0) goto end;
-        if (extract_zip_write_file(zip, image->data, image->data_size, text2)) goto end;
+    else if (extract->format == extract_format_DOCX)
+    {
+        for (i=0; i<docx_template_items_num; ++i) {
+            const docx_template_item_t* item = &docx_template_items[i];
+            extract_free(extract->alloc, &text2);
+            outf("i=%i item->name=%s", i, item->name);
+            if (extract_docx_content_item(
+                    extract->alloc,
+                    extract->contentss,
+                    extract->contentss_num,
+                    &extract->images,
+                    item->name,
+                    item->text,
+                    &text2
+                    ))
+            {
+                goto end;
+            }
+
+            {
+                const char* text3 = (text2) ? text2 : item->text;
+                if (extract_zip_write_file(zip, text3, strlen(text3), item->name)) goto end;
+            }
+        }
+        for (i=0; i<extract->images.images_num; ++i) {
+            image_t* image = &extract->images.images[i];
+            extract_free(extract->alloc, &text2);
+            if (extract_asprintf(extract->alloc, &text2, "word/media/%s", image->name) < 0) goto end;
+            if (extract_zip_write_file(zip, image->data, image->data_size, text2)) goto end;
+        }
+    }
+    else
+    {
+        outf0("Invalid format=%i", extract->format);
+        assert(0);
+        errno = EINVAL;
+        return 1;
     }
     
     if (extract_zip_close(&zip)) goto end;
@@ -1180,6 +1258,14 @@ int extract_write_content(extract_t* extract, extract_buffer_t* buffer)
     return 0;
 }
 
+static int string_ends_with(const char* string, const char* end)
+{
+    size_t string_len = strlen(string);
+    size_t end_len = strlen(end);
+    if (end_len > string_len) return 0;
+    return memcmp(string + string_len - end_len, end, end_len) == 0;
+}
+
 int extract_write_template(
         extract_t*  extract, 
         const char* path_template,
@@ -1187,15 +1273,31 @@ int extract_write_template(
         int         preserve_dir
         )
 {
-    return extract_docx_write_template(
-            extract->alloc,
-            extract->contentss,
-            extract->contentss_num,
-            &extract->images,
-            path_template,
-            path_out,
-            preserve_dir
-            );
+    if (string_ends_with(path_out, ".odt"))
+    {
+        return extract_odt_write_template(
+                extract->alloc,
+                extract->contentss,
+                extract->contentss_num,
+                &extract->odt_styles,
+                &extract->images,
+                path_template,
+                path_out,
+                preserve_dir
+                );
+    }
+    else
+    {
+        return extract_docx_write_template(
+                extract->alloc,
+                extract->contentss,
+                extract->contentss_num,
+                &extract->images,
+                path_template,
+                path_out,
+                preserve_dir
+                );
+    }
 }
 
 void extract_end(extract_t** pextract)
@@ -1223,4 +1325,13 @@ void extract_internal_end(void)
 void extract_exp_min(extract_t* extract, size_t size)
 {
     extract_alloc_exp_min(extract->alloc, size);
+}
+
+double extract_matrices_to_font_size(matrix_t* ctm, matrix_t* trm)
+{
+    double font_size = matrix_expansion(*trm)
+            * matrix_expansion(*ctm);
+    /* Round font_size to nearest 0.01. */
+    font_size = (double) (int) (font_size * 100.0f + 0.5f) / 100.0f;
+    return font_size;
 }

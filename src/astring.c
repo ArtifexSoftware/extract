@@ -1,8 +1,11 @@
 #include "../include/extract_alloc.h"
 
 #include "astring.h"
+#include "mem.h"
 #include "memento.h"
 
+#include <assert.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -37,5 +40,35 @@ int extract_astring_catc(extract_alloc_t* alloc, extract_astring_t* string, char
 int extract_astring_cat(extract_alloc_t* alloc, extract_astring_t* string, const char* s)
 {
     return extract_astring_catl(alloc, string, s, strlen(s));
+}
+
+int extract_astring_catf(extract_alloc_t* alloc, extract_astring_t* string, const char* format, ...)
+{
+    char* buffer = NULL;
+    int e;
+    va_list va;
+    va_start(va, format);
+    e = extract_vasprintf(alloc, &buffer, format, va);
+    va_end(va);
+    if (e < 0) return e;
+    e = extract_astring_cat(alloc, string, buffer);
+    extract_free(alloc, &buffer);
+    return e;
+}
+
+int extract_astring_truncate(extract_astring_t* content, int len)
+{
+    assert((size_t) len <= content->chars_num);
+    content->chars_num -= len;
+    content->chars[content->chars_num] = 0;
+    return 0;
+}
+
+int astring_char_truncate_if(extract_astring_t* content, char c)
+{
+    if (content->chars_num && content->chars[content->chars_num-1] == c) {
+        extract_astring_truncate(content, 1);
+    }
+    return 0;
 }
 

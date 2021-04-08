@@ -15,12 +15,13 @@ docx_paragraph_finish(). */
 #include "mem.h"
 #include "memento.h"
 #include "outf.h"
+#include "sys.h"
+#include "text.h"
 #include "zip.h"
 
 #include <assert.h>
 #include <errno.h>
 #include <math.h>
-#include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -81,30 +82,6 @@ static int extract_docx_run_finish(extract_alloc_t* alloc, extract_astring_t* co
     return extract_astring_cat(alloc, content, "</w:t></w:r>");
 }
 
-static int extract_docx_char_append_string(extract_alloc_t* alloc, extract_astring_t* content, const char* text)
-{
-    return extract_astring_cat(alloc, content, text);
-}
-
-static int extract_docx_char_append_stringf(extract_alloc_t* alloc, extract_astring_t* content, const char* format, ...)
-{
-    char* buffer = NULL;
-    int e;
-    va_list va;
-    va_start(va, format);
-    e = extract_vasprintf(alloc, &buffer, format, va);
-    va_end(va);
-    if (e < 0) return e;
-    e = extract_astring_cat(alloc, content, buffer);
-    extract_free(alloc, &buffer);
-    return e;
-}
-
-static int extract_docx_char_append_char(extract_alloc_t* alloc, extract_astring_t* content, char c)
-{
-    return extract_astring_catc(alloc, content, c);
-}
-
 static int extract_docx_paragraph_empty(extract_alloc_t* alloc, extract_astring_t* content)
 /* Append an empty paragraph to *content. */
 {
@@ -131,33 +108,15 @@ static int extract_docx_paragraph_empty(extract_alloc_t* alloc, extract_astring_
 }
 
 
-/* Removes last <len> chars. */
-static int docx_char_truncate(extract_astring_t* content, int len)
-{
-    assert((size_t) len <= content->chars_num);
-    content->chars_num -= len;
-    content->chars[content->chars_num] = 0;
-    return 0;
-}
-
 static int extract_docx_char_truncate_if(extract_astring_t* content, char c)
 /* Removes last char if it is <c>. */
 {
     if (content->chars_num && content->chars[content->chars_num-1] == c) {
-        docx_char_truncate(content, 1);
+        extract_astring_truncate(content, 1);
     }
     return 0;
 }
 
-
-static double matrices_to_font_size(matrix_t* ctm, matrix_t* trm)
-{
-    double font_size = matrix_expansion(*trm)
-            * matrix_expansion(*ctm);
-    /* Round font_size to nearest 0.01. */
-    font_size = (double) (int) (font_size * 100.0f + 0.5f) / 100.0f;
-    return font_size;
-}
 
 typedef struct
 {
@@ -193,7 +152,7 @@ font. */
             span_t* span = line->spans[s];
             double font_size_new;
             state->ctm_prev = &span->ctm;
-            font_size_new = matrices_to_font_size(&span->ctm, &span->trm);
+            font_size_new = extract_matrices_to_font_size(&span->ctm, &span->trm);
             if (!state->font_name
                     || strcmp(span->font_name, state->font_name)
                     || span->font_bold != state->font_bold
@@ -224,39 +183,39 @@ font. */
                 if (0) {}
 
                 /* Escape XML special characters. */
-                else if (c == '<')  extract_docx_char_append_string(alloc, content, "&lt;");
-                else if (c == '>')  extract_docx_char_append_string(alloc, content, "&gt;");
-                else if (c == '&')  extract_docx_char_append_string(alloc, content, "&amp;");
-                else if (c == '"')  extract_docx_char_append_string(alloc, content, "&quot;");
-                else if (c == '\'') extract_docx_char_append_string(alloc, content, "&apos;");
+                else if (c == '<')  extract_astring_cat(alloc, content, "&lt;");
+                else if (c == '>')  extract_astring_cat(alloc, content, "&gt;");
+                else if (c == '&')  extract_astring_cat(alloc, content, "&amp;");
+                else if (c == '"')  extract_astring_cat(alloc, content, "&quot;");
+                else if (c == '\'') extract_astring_cat(alloc, content, "&apos;");
 
                 /* Expand ligatures. */
                 else if (c == 0xFB00) {
-                    if (extract_docx_char_append_string(alloc, content, "ff")) goto end;
+                    if (extract_astring_cat(alloc, content, "ff")) goto end;
                 }
                 else if (c == 0xFB01) {
-                    if (extract_docx_char_append_string(alloc, content, "fi")) goto end;
+                    if (extract_astring_cat(alloc, content, "fi")) goto end;
                 }
                 else if (c == 0xFB02) {
-                    if (extract_docx_char_append_string(alloc, content, "fl")) goto end;
+                    if (extract_astring_cat(alloc, content, "fl")) goto end;
                 }
                 else if (c == 0xFB03) {
-                    if (extract_docx_char_append_string(alloc, content, "ffi")) goto end;
+                    if (extract_astring_cat(alloc, content, "ffi")) goto end;
                 }
                 else if (c == 0xFB04) {
-                    if (extract_docx_char_append_string(alloc, content, "ffl")) goto end;
+                    if (extract_astring_cat(alloc, content, "ffl")) goto end;
                 }
 
                 /* Output ASCII verbatim. */
                 else if (c >= 32 && c <= 127) {
-                    if (extract_docx_char_append_char(alloc, content, (char) c)) goto end;
+                    if (extract_astring_catc(alloc, content, (char) c)) goto end;
                 }
 
                 /* Escape all other characters. */
                 else {
                     char    buffer[32];
                     snprintf(buffer, sizeof(buffer), "&#x%x;", c);
-                    if (extract_docx_char_append_string(alloc, content, buffer)) goto end;
+                    if (extract_astring_cat(alloc, content, buffer)) goto end;
                 }
             }
             /* Remove any trailing '-' at end of line. */
@@ -282,63 +241,63 @@ static int extract_document_append_image(
         )
 /* Write reference to image into docx content. */
 {
-    extract_docx_char_append_string(alloc, content, "\n");
-    extract_docx_char_append_string(alloc, content, "     <w:p>\n");
-    extract_docx_char_append_string(alloc, content, "       <w:r>\n");
-    extract_docx_char_append_string(alloc, content, "         <w:rPr>\n");
-    extract_docx_char_append_string(alloc, content, "           <w:noProof/>\n");
-    extract_docx_char_append_string(alloc, content, "         </w:rPr>\n");
-    extract_docx_char_append_string(alloc, content, "         <w:drawing>\n");
-    extract_docx_char_append_string(alloc, content, "           <wp:inline distT=\"0\" distB=\"0\" distL=\"0\" distR=\"0\" wp14:anchorId=\"7057A832\" wp14:editId=\"466EB3FB\">\n");
-    extract_docx_char_append_string(alloc, content, "             <wp:extent cx=\"2933700\" cy=\"2200275\"/>\n");
-    extract_docx_char_append_string(alloc, content, "             <wp:effectExtent l=\"0\" t=\"0\" r=\"0\" b=\"9525\"/>\n");
-    extract_docx_char_append_string(alloc, content, "             <wp:docPr id=\"1\" name=\"Picture 1\"/>\n");
-    extract_docx_char_append_string(alloc, content, "             <wp:cNvGraphicFramePr>\n");
-    extract_docx_char_append_string(alloc, content, "               <a:graphicFrameLocks xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" noChangeAspect=\"1\"/>\n");
-    extract_docx_char_append_string(alloc, content, "             </wp:cNvGraphicFramePr>\n");
-    extract_docx_char_append_string(alloc, content, "             <a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\">\n");
-    extract_docx_char_append_string(alloc, content, "               <a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">\n");
-    extract_docx_char_append_string(alloc, content, "                 <pic:pic xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">\n");
-    extract_docx_char_append_string(alloc, content, "                   <pic:nvPicPr>\n");
-    extract_docx_char_append_string(alloc, content, "                     <pic:cNvPr id=\"1\" name=\"Picture 1\"/>\n");
-    extract_docx_char_append_string(alloc, content, "                     <pic:cNvPicPr>\n");
-    extract_docx_char_append_string(alloc, content, "                       <a:picLocks noChangeAspect=\"1\" noChangeArrowheads=\"1\"/>\n");
-    extract_docx_char_append_string(alloc, content, "                     </pic:cNvPicPr>\n");
-    extract_docx_char_append_string(alloc, content, "                   </pic:nvPicPr>\n");
-    extract_docx_char_append_string(alloc, content, "                   <pic:blipFill>\n");
-    extract_docx_char_append_stringf(alloc, content,"                     <a:blip r:embed=\"%s\">\n", image->id);
-    extract_docx_char_append_string(alloc, content, "                       <a:extLst>\n");
-    extract_docx_char_append_string(alloc, content, "                         <a:ext uri=\"{28A0092B-C50C-407E-A947-70E740481C1C}\">\n");
-    extract_docx_char_append_string(alloc, content, "                           <a14:useLocalDpi xmlns:a14=\"http://schemas.microsoft.com/office/drawing/2010/main\" val=\"0\"/>\n");
-    extract_docx_char_append_string(alloc, content, "                         </a:ext>\n");
-    extract_docx_char_append_string(alloc, content, "                       </a:extLst>\n");
-    extract_docx_char_append_string(alloc, content, "                     </a:blip>\n");
-    //extract_docx_char_append_string(alloc, content, "                     <a:srcRect/>\n");
-    extract_docx_char_append_string(alloc, content, "                     <a:stretch>\n");
-    extract_docx_char_append_string(alloc, content, "                       <a:fillRect/>\n");
-    extract_docx_char_append_string(alloc, content, "                     </a:stretch>\n");
-    extract_docx_char_append_string(alloc, content, "                   </pic:blipFill>\n");
-    extract_docx_char_append_string(alloc, content, "                   <pic:spPr bwMode=\"auto\">\n");
-    extract_docx_char_append_string(alloc, content, "                     <a:xfrm>\n");
-    extract_docx_char_append_string(alloc, content, "                       <a:off x=\"0\" y=\"0\"/>\n");
-    extract_docx_char_append_string(alloc, content, "                       <a:ext cx=\"2933700\" cy=\"2200275\"/>\n");
-    extract_docx_char_append_string(alloc, content, "                     </a:xfrm>\n");
-    extract_docx_char_append_string(alloc, content, "                     <a:prstGeom prst=\"rect\">\n");
-    extract_docx_char_append_string(alloc, content, "                       <a:avLst/>\n");
-    extract_docx_char_append_string(alloc, content, "                     </a:prstGeom>\n");
-    extract_docx_char_append_string(alloc, content, "                     <a:noFill/>\n");
-    extract_docx_char_append_string(alloc, content, "                     <a:ln>\n");
-    extract_docx_char_append_string(alloc, content, "                       <a:noFill/>\n");
-    extract_docx_char_append_string(alloc, content, "                     </a:ln>\n");
-    extract_docx_char_append_string(alloc, content, "                   </pic:spPr>\n");
-    extract_docx_char_append_string(alloc, content, "                 </pic:pic>\n");
-    extract_docx_char_append_string(alloc, content, "               </a:graphicData>\n");
-    extract_docx_char_append_string(alloc, content, "             </a:graphic>\n");
-    extract_docx_char_append_string(alloc, content, "           </wp:inline>\n");
-    extract_docx_char_append_string(alloc, content, "         </w:drawing>\n");
-    extract_docx_char_append_string(alloc, content, "       </w:r>\n");
-    extract_docx_char_append_string(alloc, content, "     </w:p>\n");
-    extract_docx_char_append_string(alloc, content, "\n");
+    extract_astring_cat(alloc, content, "\n");
+    extract_astring_cat(alloc, content, "     <w:p>\n");
+    extract_astring_cat(alloc, content, "       <w:r>\n");
+    extract_astring_cat(alloc, content, "         <w:rPr>\n");
+    extract_astring_cat(alloc, content, "           <w:noProof/>\n");
+    extract_astring_cat(alloc, content, "         </w:rPr>\n");
+    extract_astring_cat(alloc, content, "         <w:drawing>\n");
+    extract_astring_cat(alloc, content, "           <wp:inline distT=\"0\" distB=\"0\" distL=\"0\" distR=\"0\" wp14:anchorId=\"7057A832\" wp14:editId=\"466EB3FB\">\n");
+    extract_astring_cat(alloc, content, "             <wp:extent cx=\"2933700\" cy=\"2200275\"/>\n");
+    extract_astring_cat(alloc, content, "             <wp:effectExtent l=\"0\" t=\"0\" r=\"0\" b=\"9525\"/>\n");
+    extract_astring_cat(alloc, content, "             <wp:docPr id=\"1\" name=\"Picture 1\"/>\n");
+    extract_astring_cat(alloc, content, "             <wp:cNvGraphicFramePr>\n");
+    extract_astring_cat(alloc, content, "               <a:graphicFrameLocks xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" noChangeAspect=\"1\"/>\n");
+    extract_astring_cat(alloc, content, "             </wp:cNvGraphicFramePr>\n");
+    extract_astring_cat(alloc, content, "             <a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\">\n");
+    extract_astring_cat(alloc, content, "               <a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">\n");
+    extract_astring_cat(alloc, content, "                 <pic:pic xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">\n");
+    extract_astring_cat(alloc, content, "                   <pic:nvPicPr>\n");
+    extract_astring_cat(alloc, content, "                     <pic:cNvPr id=\"1\" name=\"Picture 1\"/>\n");
+    extract_astring_cat(alloc, content, "                     <pic:cNvPicPr>\n");
+    extract_astring_cat(alloc, content, "                       <a:picLocks noChangeAspect=\"1\" noChangeArrowheads=\"1\"/>\n");
+    extract_astring_cat(alloc, content, "                     </pic:cNvPicPr>\n");
+    extract_astring_cat(alloc, content, "                   </pic:nvPicPr>\n");
+    extract_astring_cat(alloc, content, "                   <pic:blipFill>\n");
+    extract_astring_catf(alloc, content,"                     <a:blip r:embed=\"%s\">\n", image->id);
+    extract_astring_cat(alloc, content, "                       <a:extLst>\n");
+    extract_astring_cat(alloc, content, "                         <a:ext uri=\"{28A0092B-C50C-407E-A947-70E740481C1C}\">\n");
+    extract_astring_cat(alloc, content, "                           <a14:useLocalDpi xmlns:a14=\"http://schemas.microsoft.com/office/drawing/2010/main\" val=\"0\"/>\n");
+    extract_astring_cat(alloc, content, "                         </a:ext>\n");
+    extract_astring_cat(alloc, content, "                       </a:extLst>\n");
+    extract_astring_cat(alloc, content, "                     </a:blip>\n");
+    //extract_astring_cat(alloc, content, "                     <a:srcRect/>\n");
+    extract_astring_cat(alloc, content, "                     <a:stretch>\n");
+    extract_astring_cat(alloc, content, "                       <a:fillRect/>\n");
+    extract_astring_cat(alloc, content, "                     </a:stretch>\n");
+    extract_astring_cat(alloc, content, "                   </pic:blipFill>\n");
+    extract_astring_cat(alloc, content, "                   <pic:spPr bwMode=\"auto\">\n");
+    extract_astring_cat(alloc, content, "                     <a:xfrm>\n");
+    extract_astring_cat(alloc, content, "                       <a:off x=\"0\" y=\"0\"/>\n");
+    extract_astring_cat(alloc, content, "                       <a:ext cx=\"2933700\" cy=\"2200275\"/>\n");
+    extract_astring_cat(alloc, content, "                     </a:xfrm>\n");
+    extract_astring_cat(alloc, content, "                     <a:prstGeom prst=\"rect\">\n");
+    extract_astring_cat(alloc, content, "                       <a:avLst/>\n");
+    extract_astring_cat(alloc, content, "                     </a:prstGeom>\n");
+    extract_astring_cat(alloc, content, "                     <a:noFill/>\n");
+    extract_astring_cat(alloc, content, "                     <a:ln>\n");
+    extract_astring_cat(alloc, content, "                       <a:noFill/>\n");
+    extract_astring_cat(alloc, content, "                     </a:ln>\n");
+    extract_astring_cat(alloc, content, "                   </pic:spPr>\n");
+    extract_astring_cat(alloc, content, "                 </pic:pic>\n");
+    extract_astring_cat(alloc, content, "               </a:graphicData>\n");
+    extract_astring_cat(alloc, content, "             </a:graphic>\n");
+    extract_astring_cat(alloc, content, "           </wp:inline>\n");
+    extract_astring_cat(alloc, content, "         </w:drawing>\n");
+    extract_astring_cat(alloc, content, "       </w:r>\n");
+    extract_astring_cat(alloc, content, "     </w:p>\n");
+    extract_astring_cat(alloc, content, "\n");
     return 0;
 }
 
@@ -362,63 +321,63 @@ static int extract_document_output_rotated_paragraphs(
     int e = 0;
     int p;
     outf("x,y=%ik,%ik = %i,%i", x/1000, y/1000, x, y);
-    extract_docx_char_append_string(alloc, content, "\n");
-    extract_docx_char_append_string(alloc, content, "\n");
-    extract_docx_char_append_string(alloc, content, "<w:p>\n");
-    extract_docx_char_append_string(alloc, content, "  <w:r>\n");
-    extract_docx_char_append_string(alloc, content, "    <mc:AlternateContent>\n");
-    extract_docx_char_append_string(alloc, content, "      <mc:Choice Requires=\"wps\">\n");
-    extract_docx_char_append_string(alloc, content, "        <w:drawing>\n");
-    extract_docx_char_append_string(alloc, content, "          <wp:anchor distT=\"0\" distB=\"0\" distL=\"0\" distR=\"0\" simplePos=\"0\" relativeHeight=\"0\" behindDoc=\"0\" locked=\"0\" layoutInCell=\"1\" allowOverlap=\"1\" wp14:anchorId=\"53A210D1\" wp14:editId=\"2B7E8016\">\n");
-    extract_docx_char_append_string(alloc, content, "            <wp:simplePos x=\"0\" y=\"0\"/>\n");
-    extract_docx_char_append_string(alloc, content, "            <wp:positionH relativeFrom=\"page\">\n");
-    extract_docx_char_append_stringf(alloc, content,"              <wp:posOffset>%i</wp:posOffset>\n", x);
-    extract_docx_char_append_string(alloc, content, "            </wp:positionH>\n");
-    extract_docx_char_append_string(alloc, content, "            <wp:positionV relativeFrom=\"page\">\n");
-    extract_docx_char_append_stringf(alloc, content,"              <wp:posOffset>%i</wp:posOffset>\n", y);
-    extract_docx_char_append_string(alloc, content, "            </wp:positionV>\n");
-    extract_docx_char_append_stringf(alloc, content,"            <wp:extent cx=\"%i\" cy=\"%i\"/>\n", w, h);
-    extract_docx_char_append_string(alloc, content, "            <wp:effectExtent l=\"381000\" t=\"723900\" r=\"371475\" b=\"723900\"/>\n");
-    extract_docx_char_append_string(alloc, content, "            <wp:wrapNone/>\n");
-    extract_docx_char_append_stringf(alloc, content,"            <wp:docPr id=\"%i\" name=\"Text Box %i\"/>\n", text_box_id, text_box_id);
-    extract_docx_char_append_string(alloc, content, "            <wp:cNvGraphicFramePr/>\n");
-    extract_docx_char_append_string(alloc, content, "            <a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\">\n");
-    extract_docx_char_append_string(alloc, content, "              <a:graphicData uri=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\">\n");
-    extract_docx_char_append_string(alloc, content, "                <wps:wsp>\n");
-    extract_docx_char_append_string(alloc, content, "                  <wps:cNvSpPr txBox=\"1\"/>\n");
-    extract_docx_char_append_string(alloc, content, "                  <wps:spPr>\n");
-    extract_docx_char_append_stringf(alloc, content,"                    <a:xfrm rot=\"%i\">\n", rot);
-    extract_docx_char_append_string(alloc, content, "                      <a:off x=\"0\" y=\"0\"/>\n");
-    extract_docx_char_append_string(alloc, content, "                      <a:ext cx=\"3228975\" cy=\"2286000\"/>\n");
-    extract_docx_char_append_string(alloc, content, "                    </a:xfrm>\n");
-    extract_docx_char_append_string(alloc, content, "                    <a:prstGeom prst=\"rect\">\n");
-    extract_docx_char_append_string(alloc, content, "                      <a:avLst/>\n");
-    extract_docx_char_append_string(alloc, content, "                    </a:prstGeom>\n");
+    extract_astring_cat(alloc, content, "\n");
+    extract_astring_cat(alloc, content, "\n");
+    extract_astring_cat(alloc, content, "<w:p>\n");
+    extract_astring_cat(alloc, content, "  <w:r>\n");
+    extract_astring_cat(alloc, content, "    <mc:AlternateContent>\n");
+    extract_astring_cat(alloc, content, "      <mc:Choice Requires=\"wps\">\n");
+    extract_astring_cat(alloc, content, "        <w:drawing>\n");
+    extract_astring_cat(alloc, content, "          <wp:anchor distT=\"0\" distB=\"0\" distL=\"0\" distR=\"0\" simplePos=\"0\" relativeHeight=\"0\" behindDoc=\"0\" locked=\"0\" layoutInCell=\"1\" allowOverlap=\"1\" wp14:anchorId=\"53A210D1\" wp14:editId=\"2B7E8016\">\n");
+    extract_astring_cat(alloc, content, "            <wp:simplePos x=\"0\" y=\"0\"/>\n");
+    extract_astring_cat(alloc, content, "            <wp:positionH relativeFrom=\"page\">\n");
+    extract_astring_catf(alloc, content,"              <wp:posOffset>%i</wp:posOffset>\n", x);
+    extract_astring_cat(alloc, content, "            </wp:positionH>\n");
+    extract_astring_cat(alloc, content, "            <wp:positionV relativeFrom=\"page\">\n");
+    extract_astring_catf(alloc, content,"              <wp:posOffset>%i</wp:posOffset>\n", y);
+    extract_astring_cat(alloc, content, "            </wp:positionV>\n");
+    extract_astring_catf(alloc, content,"            <wp:extent cx=\"%i\" cy=\"%i\"/>\n", w, h);
+    extract_astring_cat(alloc, content, "            <wp:effectExtent l=\"381000\" t=\"723900\" r=\"371475\" b=\"723900\"/>\n");
+    extract_astring_cat(alloc, content, "            <wp:wrapNone/>\n");
+    extract_astring_catf(alloc, content,"            <wp:docPr id=\"%i\" name=\"Text Box %i\"/>\n", text_box_id, text_box_id);
+    extract_astring_cat(alloc, content, "            <wp:cNvGraphicFramePr/>\n");
+    extract_astring_cat(alloc, content, "            <a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\">\n");
+    extract_astring_cat(alloc, content, "              <a:graphicData uri=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\">\n");
+    extract_astring_cat(alloc, content, "                <wps:wsp>\n");
+    extract_astring_cat(alloc, content, "                  <wps:cNvSpPr txBox=\"1\"/>\n");
+    extract_astring_cat(alloc, content, "                  <wps:spPr>\n");
+    extract_astring_catf(alloc, content,"                    <a:xfrm rot=\"%i\">\n", rot);
+    extract_astring_cat(alloc, content, "                      <a:off x=\"0\" y=\"0\"/>\n");
+    extract_astring_cat(alloc, content, "                      <a:ext cx=\"3228975\" cy=\"2286000\"/>\n");
+    extract_astring_cat(alloc, content, "                    </a:xfrm>\n");
+    extract_astring_cat(alloc, content, "                    <a:prstGeom prst=\"rect\">\n");
+    extract_astring_cat(alloc, content, "                      <a:avLst/>\n");
+    extract_astring_cat(alloc, content, "                    </a:prstGeom>\n");
 
     /* Give box a solid background. */
     if (0) {
-        extract_docx_char_append_string(alloc, content, "                    <a:solidFill>\n");
-        extract_docx_char_append_string(alloc, content, "                      <a:schemeClr val=\"lt1\"/>\n");
-        extract_docx_char_append_string(alloc, content, "                    </a:solidFill>\n");
+        extract_astring_cat(alloc, content, "                    <a:solidFill>\n");
+        extract_astring_cat(alloc, content, "                      <a:schemeClr val=\"lt1\"/>\n");
+        extract_astring_cat(alloc, content, "                    </a:solidFill>\n");
         }
 
     /* Draw line around box. */
     if (0) {
-        extract_docx_char_append_string(alloc, content, "                    <a:ln w=\"175\">\n");
-        extract_docx_char_append_string(alloc, content, "                      <a:solidFill>\n");
-        extract_docx_char_append_string(alloc, content, "                        <a:prstClr val=\"black\"/>\n");
-        extract_docx_char_append_string(alloc, content, "                      </a:solidFill>\n");
-        extract_docx_char_append_string(alloc, content, "                    </a:ln>\n");
+        extract_astring_cat(alloc, content, "                    <a:ln w=\"175\">\n");
+        extract_astring_cat(alloc, content, "                      <a:solidFill>\n");
+        extract_astring_cat(alloc, content, "                        <a:prstClr val=\"black\"/>\n");
+        extract_astring_cat(alloc, content, "                      </a:solidFill>\n");
+        extract_astring_cat(alloc, content, "                    </a:ln>\n");
     }
 
-    extract_docx_char_append_string(alloc, content, "                  </wps:spPr>\n");
-    extract_docx_char_append_string(alloc, content, "                  <wps:txbx>\n");
-    extract_docx_char_append_string(alloc, content, "                    <w:txbxContent>");
+    extract_astring_cat(alloc, content, "                  </wps:spPr>\n");
+    extract_astring_cat(alloc, content, "                  <wps:txbx>\n");
+    extract_astring_cat(alloc, content, "                    <w:txbxContent>");
 
     #if 0
     if (0) {
         /* Output inline text describing the rotation. */
-        extract_docx_char_append_stringf(content, "<w:p>\n"
+        extract_astring_catf(content, "<w:p>\n"
                 "<w:r><w:rPr><w:rFonts w:ascii=\"OpenSans\" w:hAnsi=\"OpenSans\"/><w:sz w:val=\"20.000000\"/><w:szCs w:val=\"15.000000\"/></w:rPr><w:t xml:space=\"preserve\">*** rotate: %f rad, %f deg. rot=%i</w:t></w:r>\n"
                 "</w:p>\n",
                 rotate,
@@ -434,50 +393,50 @@ static int extract_document_output_rotated_paragraphs(
         if (extract_document_to_docx_content_paragraph(alloc, state, paragraph, content)) goto end;
     }
 
-    extract_docx_char_append_string(alloc, content, "\n");
-    extract_docx_char_append_string(alloc, content, "                    </w:txbxContent>\n");
-    extract_docx_char_append_string(alloc, content, "                  </wps:txbx>\n");
-    extract_docx_char_append_string(alloc, content, "                  <wps:bodyPr rot=\"0\" spcFirstLastPara=\"0\" vertOverflow=\"overflow\" horzOverflow=\"overflow\" vert=\"horz\" wrap=\"square\" lIns=\"91440\" tIns=\"45720\" rIns=\"91440\" bIns=\"45720\" numCol=\"1\" spcCol=\"0\" rtlCol=\"0\" fromWordArt=\"0\" anchor=\"t\" anchorCtr=\"0\" forceAA=\"0\" compatLnSpc=\"1\">\n");
-    extract_docx_char_append_string(alloc, content, "                    <a:prstTxWarp prst=\"textNoShape\">\n");
-    extract_docx_char_append_string(alloc, content, "                      <a:avLst/>\n");
-    extract_docx_char_append_string(alloc, content, "                    </a:prstTxWarp>\n");
-    extract_docx_char_append_string(alloc, content, "                    <a:noAutofit/>\n");
-    extract_docx_char_append_string(alloc, content, "                  </wps:bodyPr>\n");
-    extract_docx_char_append_string(alloc, content, "                </wps:wsp>\n");
-    extract_docx_char_append_string(alloc, content, "              </a:graphicData>\n");
-    extract_docx_char_append_string(alloc, content, "            </a:graphic>\n");
-    extract_docx_char_append_string(alloc, content, "          </wp:anchor>\n");
-    extract_docx_char_append_string(alloc, content, "        </w:drawing>\n");
-    extract_docx_char_append_string(alloc, content, "      </mc:Choice>\n");
+    extract_astring_cat(alloc, content, "\n");
+    extract_astring_cat(alloc, content, "                    </w:txbxContent>\n");
+    extract_astring_cat(alloc, content, "                  </wps:txbx>\n");
+    extract_astring_cat(alloc, content, "                  <wps:bodyPr rot=\"0\" spcFirstLastPara=\"0\" vertOverflow=\"overflow\" horzOverflow=\"overflow\" vert=\"horz\" wrap=\"square\" lIns=\"91440\" tIns=\"45720\" rIns=\"91440\" bIns=\"45720\" numCol=\"1\" spcCol=\"0\" rtlCol=\"0\" fromWordArt=\"0\" anchor=\"t\" anchorCtr=\"0\" forceAA=\"0\" compatLnSpc=\"1\">\n");
+    extract_astring_cat(alloc, content, "                    <a:prstTxWarp prst=\"textNoShape\">\n");
+    extract_astring_cat(alloc, content, "                      <a:avLst/>\n");
+    extract_astring_cat(alloc, content, "                    </a:prstTxWarp>\n");
+    extract_astring_cat(alloc, content, "                    <a:noAutofit/>\n");
+    extract_astring_cat(alloc, content, "                  </wps:bodyPr>\n");
+    extract_astring_cat(alloc, content, "                </wps:wsp>\n");
+    extract_astring_cat(alloc, content, "              </a:graphicData>\n");
+    extract_astring_cat(alloc, content, "            </a:graphic>\n");
+    extract_astring_cat(alloc, content, "          </wp:anchor>\n");
+    extract_astring_cat(alloc, content, "        </w:drawing>\n");
+    extract_astring_cat(alloc, content, "      </mc:Choice>\n");
 
     /* This fallback is copied from a real Word document. Not sure
     whether it works - both Libreoffice and Word use the above
     choice. */
-    extract_docx_char_append_string(alloc, content, "      <mc:Fallback>\n");
-    extract_docx_char_append_string(alloc, content, "        <w:pict>\n");
-    extract_docx_char_append_string(alloc, content, "          <v:shapetype w14:anchorId=\"53A210D1\" id=\"_x0000_t202\" coordsize=\"21600,21600\" o:spt=\"202\" path=\"m,l,21600r21600,l21600,xe\">\n");
-    extract_docx_char_append_string(alloc, content, "            <v:stroke joinstyle=\"miter\"/>\n");
-    extract_docx_char_append_string(alloc, content, "            <v:path gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n");
-    extract_docx_char_append_string(alloc, content, "          </v:shapetype>\n");
-    extract_docx_char_append_stringf(alloc, content,"          <v:shape id=\"Text Box %i\" o:spid=\"_x0000_s1026\" type=\"#_x0000_t202\" style=\"position:absolute;margin-left:71.25pt;margin-top:48.75pt;width:254.25pt;height:180pt;rotation:-2241476fd;z-index:251659264;visibility:visible;mso-wrap-style:square;mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;mso-position-horizontal-relative:text;mso-position-vertical:absolute;mso-position-vertical-relative:text;v-text-anchor:top\" o:gfxdata=\"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&#10;bFBLBQYAAAAABAAEAPMAAAC8BQAAAAA=&#10;\" fillcolor=\"white [3201]\" strokeweight=\".5pt\">\n", text_box_id);
-    extract_docx_char_append_string(alloc, content, "            <v:textbox>\n");
-    extract_docx_char_append_string(alloc, content, "              <w:txbxContent>");
+    extract_astring_cat(alloc, content, "      <mc:Fallback>\n");
+    extract_astring_cat(alloc, content, "        <w:pict>\n");
+    extract_astring_cat(alloc, content, "          <v:shapetype w14:anchorId=\"53A210D1\" id=\"_x0000_t202\" coordsize=\"21600,21600\" o:spt=\"202\" path=\"m,l,21600r21600,l21600,xe\">\n");
+    extract_astring_cat(alloc, content, "            <v:stroke joinstyle=\"miter\"/>\n");
+    extract_astring_cat(alloc, content, "            <v:path gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n");
+    extract_astring_cat(alloc, content, "          </v:shapetype>\n");
+    extract_astring_catf(alloc, content,"          <v:shape id=\"Text Box %i\" o:spid=\"_x0000_s1026\" type=\"#_x0000_t202\" style=\"position:absolute;margin-left:71.25pt;margin-top:48.75pt;width:254.25pt;height:180pt;rotation:-2241476fd;z-index:251659264;visibility:visible;mso-wrap-style:square;mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;mso-position-horizontal-relative:text;mso-position-vertical:absolute;mso-position-vertical-relative:text;v-text-anchor:top\" o:gfxdata=\"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&#10;bFBLBQYAAAAABAAEAPMAAAC8BQAAAAA=&#10;\" fillcolor=\"white [3201]\" strokeweight=\".5pt\">\n", text_box_id);
+    extract_astring_cat(alloc, content, "            <v:textbox>\n");
+    extract_astring_cat(alloc, content, "              <w:txbxContent>");
 
     for (p=paragraph_begin; p<paragraph_end; ++p) {
         paragraph_t* paragraph = page->paragraphs[p];
         if (extract_document_to_docx_content_paragraph(alloc, state, paragraph, content)) goto end;
     }
 
-    extract_docx_char_append_string(alloc, content, "\n");
-    extract_docx_char_append_string(alloc, content, "\n");
-    extract_docx_char_append_string(alloc, content, "              </w:txbxContent>\n");
-    extract_docx_char_append_string(alloc, content, "            </v:textbox>\n");
-    extract_docx_char_append_string(alloc, content, "          </v:shape>\n");
-    extract_docx_char_append_string(alloc, content, "        </w:pict>\n");
-    extract_docx_char_append_string(alloc, content, "      </mc:Fallback>\n");
-    extract_docx_char_append_string(alloc, content, "    </mc:AlternateContent>\n");
-    extract_docx_char_append_string(alloc, content, "  </w:r>\n");
-    extract_docx_char_append_string(alloc, content, "</w:p>");
+    extract_astring_cat(alloc, content, "\n");
+    extract_astring_cat(alloc, content, "\n");
+    extract_astring_cat(alloc, content, "              </w:txbxContent>\n");
+    extract_astring_cat(alloc, content, "            </v:textbox>\n");
+    extract_astring_cat(alloc, content, "          </v:shape>\n");
+    extract_astring_cat(alloc, content, "        </w:pict>\n");
+    extract_astring_cat(alloc, content, "      </mc:Fallback>\n");
+    extract_astring_cat(alloc, content, "    </mc:AlternateContent>\n");
+    extract_astring_cat(alloc, content, "  </w:r>\n");
+    extract_astring_cat(alloc, content, "</w:p>");
     e = 0;
     end:
     return e;
@@ -689,137 +648,6 @@ int extract_document_to_docx_content(
 }
 
 
-
-static int systemf(extract_alloc_t* alloc, const char* format, ...)
-/* Like system() but takes printf-style format and args. Also, if we return +ve
-we set errno to EIO. */
-{
-    int e;
-    char* command;
-    va_list va;
-    va_start(va, format);
-    e = extract_vasprintf(alloc, &command, format, va);
-    va_end(va);
-    if (e < 0) return e;
-    outf("running: %s", command);
-    e = system(command);
-    extract_free(alloc, &command);
-    if (e > 0) {
-        errno = EIO;
-    }
-    return e;
-}
-
-static int read_all(extract_alloc_t* alloc, FILE* in, char** o_out)
-/* Reads until eof into zero-terminated malloc'd buffer. */
-{
-    size_t  len = 0;
-    size_t  delta = 128;
-    for(;;) {
-        size_t n;
-        if (extract_realloc2(alloc, o_out, len, len + delta + 1)) {
-            extract_free(alloc, o_out);
-            return -1;
-        }
-        n = fread(*o_out + len, 1 /*size*/, delta /*nmemb*/, in);
-        len += n;
-        if (feof(in)) {
-            (*o_out)[len] = 0;
-            return 0;
-        }
-        if (ferror(in)) {
-            /* It's weird that fread() and ferror() don't set errno. */
-            errno = EIO;
-            extract_free(alloc, o_out);
-            return -1;
-        }
-    }
-}
-
-static int read_all_path(extract_alloc_t* alloc, const char* path, char** o_text)
-/* Reads entire file into zero-terminated malloc'd buffer. */
-{
-    int e = -1;
-    FILE* f = NULL;
-    f = fopen(path, "rb");
-    if (!f) goto end;
-    if (read_all(alloc, f, o_text)) goto end;
-    e = 0;
-    end:
-    if (f) fclose(f);
-    if (e) extract_free(alloc, &o_text);
-    return e;
-}
-
-static int write_all(const void* data, size_t data_size, const char* path)
-{
-    int e = -1;
-    FILE* f = fopen(path, "w");
-    if (!f) goto end;
-    if (fwrite(data, data_size, 1 /*nmemb*/, f) != 1) goto end;
-    e = 0;
-    end:
-    if (f) fclose(f);
-    return e;
-}
-
-static int extract_docx_content_insert(
-        extract_alloc_t*    alloc,
-        const char*         original,
-        const char*         mid_begin_name,
-        const char*         mid_end_name,
-        extract_astring_t*  contentss,
-        int                 contentss_num,
-        char**              o_out
-        )
-/* Creates a string consisting of <original> with all strings in <contentss>
-inserted into <original>'s <mid_begin_name>...<mid_end_name> region, and
-appends this string to *o_out. */
-{
-    int e = -1;
-    const char* mid_begin;
-    const char* mid_end;
-    extract_astring_t   out;
-    extract_astring_init(&out);
-    
-    mid_begin = strstr(original, mid_begin_name);
-    if (!mid_begin) {
-        outf("error: could not find '%s' in docx content",
-                mid_begin_name);
-        errno = ESRCH;
-        goto end;
-    }
-    mid_begin += strlen(mid_begin_name);
-    
-    mid_end = strstr(mid_begin, mid_end_name);
-    if (!mid_end) {
-        outf("error: could not find '%s' in docx content",
-                mid_end_name);
-        errno = ESRCH;
-        goto end;
-    }
-
-    if (extract_astring_catl(alloc, &out, original, mid_begin - original)) goto end;
-    {
-        int i;
-        for (i=0; i<contentss_num; ++i) {
-            if (extract_astring_catl(alloc, &out, contentss[i].chars, contentss[i].chars_num)) goto end;
-        }
-    }
-    if (extract_astring_cat(alloc, &out, mid_end)) goto end;
-    
-    *o_out = out.chars;
-    out.chars = NULL;
-    e = 0;
-    
-    end:
-    if (e) {
-        extract_astring_free(alloc, &out);
-        *o_out = NULL;
-    }
-    return e;
-}
-
 static int s_find_mid(const char* text, const char* begin, const char* end, const char** o_begin, const char** o_end)
 /* Sets *o_begin to end of first occurrence of <begin> in <text>, and *o_end to
 beginning of first occurtence of <end> in <text>. */
@@ -906,9 +734,10 @@ int extract_docx_content_item(
     }
     else if (!strcmp(name, "word/document.xml")) {
         /* Insert paragraphs content. */
-        if (extract_docx_content_insert(
+        if (extract_content_insert(
                 alloc,
                 text,
+                NULL /*single*/,
                 "<w:body>",
                 "</w:body>",
                 contentss,
@@ -933,46 +762,6 @@ int extract_docx_content_item(
 
         
 
-static int check_path_shell_safe(const char* path)
-/* Returns -1 with errno=EINVAL if <path> contains sequences that could make it
-unsafe in shell commands. */
-{
-    if (0
-            || strstr(path, "..")
-            || strchr(path, '\'')
-            || strchr(path, '"')
-            || strchr(path, ' ')
-            ) {
-        errno = EINVAL;
-        return -1;
-    }
-    return 0;
-}
-
-static int remove_directory(extract_alloc_t* alloc, const char* path)
-{
-    if (check_path_shell_safe(path)) {
-        outf("path_out is unsafe: %s", path);
-        return -1;
-    }
-    return systemf(alloc, "rm -r '%s'", path);
-}
-
-#ifdef _WIN32
-#include <direct.h>
-static int s_mkdir(const char* path, int mode)
-{
-    (void) mode;
-    return _mkdir(path);
-}
-#else
-static int s_mkdir(const char* path, int mode)
-{
-    return mkdir(path, mode);
-}
-#endif
-
-
 int extract_docx_write_template(
         extract_alloc_t*    alloc,
         extract_astring_t*  contentss,
@@ -994,24 +783,24 @@ int extract_docx_write_template(
     assert(path_out);
     assert(path_template);
     
-    if (check_path_shell_safe(path_out)) {
+    if (extract_check_path_shell_safe(path_out)) {
         outf("path_out is unsafe: %s", path_out);
         goto end;
     }
 
     outf("images->images_num=%i", images->images_num);
     if (extract_asprintf(alloc, &path_tempdir, "%s.dir", path_out) < 0) goto end;
-    if (systemf(alloc, "rm -r '%s' 2>/dev/null", path_tempdir) < 0) goto end;
+    if (extract_systemf(alloc, "rm -r '%s' 2>/dev/null", path_tempdir) < 0) goto end;
 
-    if (s_mkdir(path_tempdir, 0777)) {
+    if (extract_mkdir(path_tempdir, 0777)) {
         outf("Failed to create directory: %s", path_tempdir);
         goto end;
     }
 
     outf("Unzipping template document '%s' to tempdir: %s",
             path_template, path_tempdir);
-    e = systemf(alloc, "unzip -q -d '%s' '%s'", path_tempdir, path_template);
-    if (e) {
+    if (extract_systemf(alloc, "unzip -q -d '%s' '%s'", path_tempdir, path_template))
+    {
         outf("Failed to unzip %s into %s",
                 path_template, path_tempdir);
         goto end;
@@ -1034,7 +823,7 @@ int extract_docx_write_template(
             extract_free(alloc, &text);
             extract_free(alloc, &text2);
             if (extract_asprintf(alloc, &path, "%s/%s", path_tempdir, name) < 0) goto end;
-            if (read_all_path(alloc, path, &text)) goto end;
+            if (extract_read_all_path(alloc, path, &text)) goto end;
             
             if (extract_docx_content_item(
                     alloc,
@@ -1045,9 +834,10 @@ int extract_docx_write_template(
                     text,
                     &text2
                     )) goto end;
+
             {
                 const char* text3 = (text2) ? text2 : text;
-                if (write_all(text3, strlen(text3), path)) goto end;
+                if (extract_write_all(text3, strlen(text3), path)) goto end;
             }
         }
     }
@@ -1055,21 +845,21 @@ int extract_docx_write_template(
     /* Copy images into <path_tempdir>/media/. */
     extract_free(alloc, &path);
     if (extract_asprintf(alloc, &path, "%s/word/media", path_tempdir) < 0) goto end;
-    if (s_mkdir(path, 0777)) goto end;
+    if (extract_mkdir(path, 0777)) goto end;
     
     for (i=0; i<images->images_num; ++i) {
         image_t* image = &images->images[i];
         extract_free(alloc, &path);
         if (extract_asprintf(alloc, &path, "%s/word/media/%s", path_tempdir, image->name) < 0) goto end;
-        if (write_all(image->data, image->data_size, path)) goto end;
+        if (extract_write_all(image->data, image->data_size, path)) goto end;
     }
     
     outf("Zipping tempdir to create %s", path_out);
     {
         const char* path_out_leaf = strrchr(path_out, '/');
         if (!path_out_leaf) path_out_leaf = path_out;
-        e = systemf(alloc, "cd '%s' && zip -q -r -D '../%s' .", path_tempdir, path_out_leaf);
-        if (e) {
+        if (extract_systemf(alloc, "cd '%s' && zip -q -r -D '../%s' .", path_tempdir, path_out_leaf))
+        {
             outf("Zip command failed to convert '%s' directory into output file: %s",
                     path_tempdir, path_out);
             goto end;
@@ -1077,7 +867,7 @@ int extract_docx_write_template(
     }
 
     if (!preserve_dir) {
-        if (remove_directory(alloc, path_tempdir)) goto end;
+        if (extract_remove_directory(alloc, path_tempdir)) goto end;
     }
 
     e = 0;

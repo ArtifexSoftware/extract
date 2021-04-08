@@ -97,7 +97,11 @@ typedef struct
     char*   type;   /* jpg, png etc. */
     char*   name;   /* Name of image file within docx. */
     char*   id;     /* ID of image within docx. */
-    char*   data;
+    double  x;
+    double  y;
+    double  w;
+    double  h;
+    void*   data;
     size_t  data_size;
     
     extract_image_data_free data_free;
@@ -146,5 +150,8 @@ typedef struct
 } images_t;
 
 int extract_document_join(extract_alloc_t* alloc, document_t* document);
+
+double extract_matrices_to_font_size(matrix_t* ctm, matrix_t* trm);
+
 
 #endif

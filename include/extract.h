@@ -22,8 +22,16 @@ typedef struct extract_t extract_t;
 /* State for processing a document. */
 
 
+typedef enum
+{
+    extract_format_ODT,
+    extract_format_DOCX
+} extract_format_t;
+
+
 int extract_begin(
         extract_alloc_t*    alloc,
+        extract_format_t    format,
         extract_t**         pextract
         );
 /* Creates a new extract_t* for use by other extract_*() functions. All
@@ -122,7 +130,7 @@ int extract_add_image(
         double                  y,
         double                  w,
         double                  h,
-        char*                   data,
+        void*                   data,
         size_t                  data_size,
         extract_image_data_free data_free,
         void*                   data_free_handle

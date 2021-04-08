@@ -133,6 +133,10 @@ ifneq ($(mutool),)
     tests_mutool := \
             $(patsubst %, %.mutool.docx.diff, $(pdfs_generated)) \
             $(patsubst %, %.mutool-norotate.docx.diff, $(pdfs_generated)) \
+            $(patsubst %, %.mutool.odt.diff, $(pdfs_generated)) \
+
+    tests_mutool_odt := \
+            $(patsubst %, %.mutool.odt.diff, $(pdfs_generated)) \
 
 endif
 ifneq ($(gs),)
@@ -153,16 +157,22 @@ endif
 test-exe: $(tests_exe)
 	@echo $@: passed
 
-# Checks output of mutool conversion from .pdf to .docx. Requires that mutool
-# was built with extract as a third-party library.
+# Checks output of mutool conversion from .pdf to .docx/.odt. Requires that
+# mutool was built with extract as a third-party library.
 #
 test-mutool: $(tests_mutool)
 	@echo $@: passed
 
-# Checks output of gs conversion from .pdf to .docx. Requires that mutool
-# was built with extract as a third-party library. As of 2021-02-10 this
-# requires, for example ghostpdl/extract being a link to an extract checkout
-# and configuring with --with-extract-dir=extract.
+# Checks output of mutool conversion from .pdf to .odt. Requires that mutool
+# was built with extract as a third-party library.
+#
+test-mutool-odt: $(tests_mutool_odt)
+	@echo $@: passed
+
+# Checks output of gs conversion from .pdf to .docx. Requires that gs was built
+# with extract as a third-party library. As of 2021-02-10 this requires, for
+# example ghostpdl/extract being a link to an extract checkout and configuring
+# with --with-extract-dir=extract.
 #
 test-gs: $(tests_gs)
 	@echo $@: passed
@@ -198,8 +208,13 @@ exe_src = \
         src/extract.c \
         src/join.c \
         src/mem.c \
+        src/odt.c \
+        src/odt_template.c \
         src/outf.c \
-        src/xml.c src/zip.c \
+        src/sys.c \
+        src/text.c \
+        src/xml.c \
+        src/zip.c \
 
 ifeq ($(build),memento)
     exe_src += src/memento.c
@@ -225,6 +240,13 @@ ifeq ($(build),memento)
     endif
 endif
 
+ifeq ($(create_ref),yes)
+# Special rule for populating .ref directories with current output. Useful to
+# initialise references outputs for new output type.
+#
+test/%.odt.dir.ref/: test/generated/%.odt.dir/
+	rsync -ai $< $@
+endif
 
 # Rules that make the various intermediate targets required by $(tests).
 #
@@ -244,29 +266,34 @@ test/generated/%.pdf.intermediate-gs.xml: test/%.pdf $(gs)
 %.extract.docx: % $(exe)
 	@echo
 	@echo == Generating docx with extract.exe
-	$(run_exe) -r 0 -i $< -o $@
+	$(run_exe) -r 0 -i $< -f docx -o $@
+
+%.extract.odt: % $(exe)
+	@echo
+	@echo == Generating odt with extract.exe
+	$(run_exe) -r 0 -i $< -f odt -o $@
 
 %.extract-rotate.docx: % $(exe) Makefile
 	@echo
 	@echo == Generating docx with rotation with extract.exe
-	$(run_exe) -r 1 -s 0 -i $< -o $@
+	$(run_exe) -r 1 -s 0 -i $< -f docx -o $@
 
 %.extract-rotate-spacing.docx: % $(exe) Makefile
 	@echo
 	@echo == Generating docx with rotation with extract.exe
-	$(run_exe) -r 1 -s 1 -i $< -o $@
+	$(run_exe) -r 1 -s 1 -i $< -f docx -o $@
 
 %.extract-autosplit.docx: % $(exe)
 	@echo
 	@echo == Generating docx with autosplit with extract.exe
-	$(run_exe) -r 0 -i $< --autosplit 1 -o $@
+	$(run_exe) -r 0 -i $< -f docx --autosplit 1 -o $@
 
 %.extract-template.docx: % $(exe)
 	@echo
 	@echo == Generating docx using src/template.docx with extract.exe
-	$(run_exe) -r 0 -i $< -t src/template.docx -o $@
+	$(run_exe) -r 0 -i $< -f docx -t src/template.docx -o $@
 
-test/generated/%.docx.diff: test/generated/%.docx.dir/ test/%.docx.dir.ref/
+test/generated/%.diff: test/generated/%.dir/ test/%.dir.ref/
 	@echo
 	@echo == Checking $<
 	diff -ru $^
@@ -278,14 +305,28 @@ test/generated/%.extract-template.docx.diff: test/generated/%.extract-template.d
 	@echo == Checking $<
 	diff -ru $^
 
-# Unzips .docx into .docx.dir/ directory. Note that we requires a trailing '/'
-# in target.
+# Unzips .docx into .docx.dir/ directory, and prettyfies the .xml files.
 #
-%.docx.dir/: %.docx
+# Note that we requires a trailing '/' in target.
+#
+%.docx.dir/: %.docx .ALWAYS
 	@echo
 	@echo == Extracting .docx into directory.
 	@rm -r $@ 2>/dev/null || true
 	unzip -q -d $@ $<
+
+# Unzips .odt into .odt.dir/ directory, and prettyfies the .xml files.
+#
+# Note that we requires a trailing '/' in target.
+#
+%.odt.dir/: %.odt
+	@echo
+	@echo == Extracting .odt into directory.
+	@rm -r $@ 2>/dev/null || true
+	unzip -q -d $@ $<
+
+%.xml.pretty.xml: %.xml
+	xmllint --format $< > $@
 
 # Uses zip to create .docx file by zipping up a directory. Useful to recreate
 # .docx from reference directory test/*.docx.dir.ref.
@@ -299,7 +340,7 @@ test/generated/%.extract-template.docx.diff: test/generated/%.extract-template.d
 %.docx.dir.pretty: %.docx.dir/
 	@rm -r $@ $@- 2>/dev/null || true
 	cp -pr $< $@-
-	./src/docx_template_build.py --docx-pretty $@-
+	./src/docx_template_build.py --pretty $@-
 	mv $@- $@
 
 # Converts .pdf directly to .docx using mutool.
@@ -328,6 +369,13 @@ test/generated/%.pdf.gs.docx: test/%.pdf $(gs)
 	@mkdir -p test/generated
 	$(gs) -sDEVICE=docxwrite -o $@ $<
 	
+# Converts .pdf directly to .odt using mutool.
+test/generated/%.pdf.mutool.odt: test/%.pdf $(mutool)
+	@echo
+	@echo == Converting .pdf directly to .odt using mutool.
+	@mkdir -p test/generated
+	$(mutool) convert -o $@ $<
+
 
 # Valgrind test
 #
@@ -432,7 +480,7 @@ test-src:
 # Compile rule. We always include src/docx_template.c as a prerequisite in case
 # code #includes docx_template.h.
 #
-src/build/%.c-$(build).o: src/%.c src/docx_template.c
+src/build/%.c-$(build).o: src/%.c src/docx_template.c src/odt_template.c 
 	@mkdir -p src/build
 	$(CC) -c $(flags_compile) -o $@ $<
 
@@ -444,7 +492,13 @@ src/build/%.c-$(build).o: src/%.c src/docx_template.c
 src/docx_template.c: src/docx_template_build.py .ALWAYS
 	@echo
 	@echo == Building $@
-	./src/docx_template_build.py -i src/template.docx -o src/docx_template
+	./src/docx_template_build.py -i src/template.docx -n docx -o src/docx_template
+
+src/odt_template.c: src/docx_template_build.py .ALWAYS
+	@echo
+	@echo == Building $@
+	./src/docx_template_build.py -i src/template.odt -n odt -o src/odt_template
+
 .ALWAYS:
 .PHONY: .ALWAYS
 

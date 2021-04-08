@@ -1,6 +1,8 @@
 #ifndef EXTRACT_MEM_H
 #define EXTRACT_MEM_H
 
+#include "../include/extract_alloc.h"
+
 #include <stdarg.h>
 #include <string.h>
 

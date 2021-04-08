@@ -60,6 +60,8 @@ int main(int argc, char** argv)
     int         autosplit           = 0;
     int         images              = 1;
     int         alloc_stats         = 0;
+    int         format              = -1;
+    int         odt                 = 0;
     int         i;
 
     extract_alloc_t*    alloc = NULL;
@@ -91,6 +93,8 @@ int main(int argc, char** argv)
                     "    --autosplit 0|1\n"
                     "        If 1, we initially split spans when y coordinate changes. This\n"
                     "        stresses our handling of spans when input is from mupdf.\n"
+                    "    -f odt | docx\n"
+                    "        Sets output format. Required.\n"
                     "    -i <intermediate-path>\n"
                     "        Path of XML file containing intermediate text spans.\n"
                     "    -o <docx-path>\n"
@@ -110,7 +114,7 @@ int main(int argc, char** argv)
                     "        vertical space between paragraphs that had different ctm matrices\n"
                     "        in the original document.\n"
                     "    -t <docx-template>\n"
-                    "        If specified we use <docx-template> as template. Otheerwise we use"
+                    "        If specified we use <docx-template> as template. Otheerwise we use\n"
                     "        an internal template.\n"
                     "    -v <verbose>\n"
                     "        Set verbose level.\n"
@@ -131,11 +135,26 @@ int main(int argc, char** argv)
         else if (!strcmp(arg, "--autosplit")) {
             if (arg_next_int(argv, argc, &i, &autosplit)) goto end;
         }
+        else if (!strcmp(arg, "-f")) {
+            const char* format_name;
+            if (arg_next_string(argv, argc, &i, &format_name)) goto end;
+            if (!strcmp(format_name, "odt")) format = extract_format_ODT;
+            else if (!strcmp(format_name, "docx")) format = extract_format_DOCX;
+            else
+            {
+                printf("-f value should be 'odt' or 'docx', not '%s'.\n", format_name);
+                errno = EINVAL;
+                goto end;
+            }
+        }
         else if (!strcmp(arg, "-i")) {
             if (arg_next_string(argv, argc, &i, &input_path)) goto end;
         }
         else if (!strcmp(arg, "-o")) {
             if (arg_next_string(argv, argc, &i, &docx_out_path)) goto end;
+        }
+        else if (!strcmp(arg, "--odt")) {
+            odt = 1;
         }
         else if (!strcmp(arg, "--o-content")) {
             if (arg_next_string(argv, argc, &i, &content_path)) goto end;
@@ -169,6 +188,13 @@ int main(int argc, char** argv)
 
         assert(i < argc);
     }
+    
+    if (format == -1)
+    {
+        printf("'-f odt | docx' must be specified\n");
+        errno = EINVAL;
+        goto end;
+    }
 
     if (!input_path) {
         printf("-i <input-path> not specified.\n");
@@ -181,8 +207,9 @@ int main(int argc, char** argv)
         goto end;
     }
     
-    if (extract_begin(alloc, &extract)) goto end;
+    if (extract_begin(alloc, format, &extract)) goto end;
     if (extract_read_intermediate(extract, intermediate, autosplit)) goto end;
+    
     if (extract_process(extract, spacing, rotation, images)) goto end;
     
     if (content_path) {
