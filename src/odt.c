@@ -642,11 +642,11 @@ int extract_document_to_odt_content(
         
         }
         
-        outf0("images=%i", images);
+        outf("images=%i", images);
         if (images)
         {
             int i;
-            outf0("page->images_num=%i", page->images_num);
+            outf("page->images_num=%i", page->images_num);
             for (i=0; i<page->images_num; ++i)
             {
                 extract_document_append_image(alloc, content, &page->images[i]);

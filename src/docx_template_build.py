@@ -47,24 +47,23 @@ def read(path, encoding):
             return raw.decode(encoding)
         return raw
 
-def write(text, path):
+def write(text, path, encoding):
     '''
     Writes text to file.
     '''
     parent = os.path.dirname(path)
     if parent:
         os.makedirs(parent, exist_ok=True)
-    with open(path, 'w') as f:
-        f.write(text)
+    with open(path, 'wb') as f:
+        f.write(text.encode(encoding))
 
-def write_if_diff(text, path):
+def write_if_diff(text, path, encoding):
     if os.path.isfile(path):
-        with open(path) as f:
-            old = f.read()
+        old = read(path, encoding)
         if old == text:
             return
     print(f'Updating path={path} because contents have changed')
-    write(text, path)
+    write(text, path, encoding)
 
 def check_path_safe(path):
     '''
@@ -214,7 +213,7 @@ def main():
     out_c.write(f'int {infix}_template_items_num = {num_items};\n')
     
     out_c = out_c.getvalue()
-    write_if_diff(out_c, f'{path_out}.c')
+    write_if_diff(out_c, f'{path_out}.c', 'utf-8')
     
     out_h = io.StringIO()
     out_h.write(f'#ifndef EXTRACT_{infix.upper()}_TEMPLATE_H\n')
@@ -234,7 +233,7 @@ def main():
     out_h.write(f'\n')
     out_h.write(f'\n')
     out_h.write(f'#endif\n')
-    write_if_diff(out_h.getvalue(), f'{path_out}.h')
+    write_if_diff(out_h.getvalue(), f'{path_out}.h', 'utf-8')
     #os.system(f'rm -r "{path_temp}"')
     
 if __name__ == '__main__':
