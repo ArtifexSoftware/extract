@@ -61,7 +61,6 @@ int main(int argc, char** argv)
     int         images              = 1;
     int         alloc_stats         = 0;
     int         format              = -1;
-    int         odt                 = 0;
     int         i;
 
     extract_alloc_t*    alloc = NULL;
@@ -152,9 +151,6 @@ int main(int argc, char** argv)
         }
         else if (!strcmp(arg, "-o")) {
             if (arg_next_string(argv, argc, &i, &docx_out_path)) goto end;
-        }
-        else if (!strcmp(arg, "--odt")) {
-            odt = 1;
         }
         else if (!strcmp(arg, "--o-content")) {
             if (arg_next_string(argv, argc, &i, &content_path)) goto end;

@@ -425,9 +425,8 @@ static int extract_document_output_rotated_paragraphs(
 {
     int e = 0;
     int p;
-    outf("rotated paragraphs: rotation_rad=%f (x y)=(%i %i) (w h)=(%i %i)", rotation_rad, x_pt, y_pt, w_pt, h_pt);
-    
     double pt_to_inch = 1/72.0;
+    outf("rotated paragraphs: rotation_rad=%f (x y)=(%i %i) (w h)=(%i %i)", rotation_rad, x_pt, y_pt, w_pt, h_pt);
     
     // https://docs.oasis-open.org/office/OpenDocument/v1.3/cs02/part3-schema/OpenDocument-v1.3-cs02-part3-schema.html#attribute-draw_transform
     // says rotation is in degrees, but we seem to require -radians.
