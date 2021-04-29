@@ -10,7 +10,7 @@
 
 /* Support for creating zip file content.
 
-Content is uncompressed.
+Content is compressed using deflate.
 
 Unless otherwise stated, all functions return 0 on success or -1 with errno
 set.
@@ -22,6 +22,8 @@ typedef struct extract_zip_t extract_zip_t;
 
 int extract_zip_open(extract_buffer_t* buffer, extract_zip_t** o_zip);
 /* Creates an extract_zip_t that writes to specified buffer.
+
+We reuse <buffer>'s allocator for zlib's allocation needs.
 
 buffer:
     Destination for zip file content.

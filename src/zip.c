@@ -6,7 +6,6 @@
 #include "zip.h"
 
 #include <zlib.h>
-/* For crc32(). */
 
 #include <assert.h>
 #include <errno.h>
@@ -43,6 +42,8 @@ struct extract_zip_t
     after every small output operation. */
     int                     errno_;
     int                     eof;
+    uint16_t                compression_method;
+    int                     compress_level;
     
     /* Defaults for various values in zip file headers etc. */
     uint16_t                mtime;
@@ -68,6 +69,8 @@ int extract_zip_open(extract_buffer_t* buffer, extract_zip_t** o_zip)
     zip->buffer = buffer;
     zip->errno_ = 0;
     zip->eof = 0;
+    zip->compression_method = Z_DEFLATED;
+    zip->compress_level = Z_DEFAULT_COMPRESSION;
     
     /* We could maybe convert current date/time to the ms-dos format required
     here, but using zeros doesn't seem to make a difference to Word etc. */
@@ -115,7 +118,127 @@ static int s_native_little_endinesss(void)
     abort();
 }
 
+
+/* Allocation fns for zlib. */
+
+static void* s_zalloc(void* opaque, unsigned items, unsigned size)
+{
+    extract_zip_t*  zip = opaque;
+    extract_alloc_t* alloc = extract_buffer_alloc(zip->buffer);
+    void* ptr;
+    int e = extract_malloc(alloc, &ptr, items*size);
+    if (e) return NULL;
+    return ptr;
+}
+
+static void s_zfree(void* opaque, void* ptr)
+{
+    extract_zip_t*  zip = opaque;
+    extract_alloc_t* alloc = extract_buffer_alloc(zip->buffer);
+    extract_free(alloc, &ptr);
+}
+
+
+static int s_write_compressed(
+        extract_zip_t* zip,
+        const void* data,
+        size_t data_length,
+        size_t* o_compressed_length
+        )
+/* Uses zlib to write raw deflate compressed data to zip->buffer. */
+{
+    int ze;
+    z_stream    zstream;
+    if (zip->errno_)    return -1;
+    if (zip->eof)       return +1;
+    
+    zstream.zalloc = s_zalloc;
+    zstream.zfree = s_zfree;
+    zstream.opaque = zip;
+    
+    /* We need to write raw deflate data, so we use deflateInit2() with -ve
+    windowBits. The values we use are deflateInit()'s defaults. */
+    ze = deflateInit2(
+            &zstream,
+            zip->compress_level,
+            Z_DEFLATED,
+            -15 /*windowBits*/,
+            8 /*memLevel*/,
+            Z_DEFAULT_STRATEGY
+            );
+    if (ze != Z_OK)
+    {
+        errno = (ze == Z_MEM_ERROR) ? ENOMEM : EINVAL;
+        zip->errno_ = errno;
+        outf("deflateInit2() failed ze=%i", ze);
+        return -1;
+    }
+    
+    /* Set zstream to read from specified data. */
+    zstream.next_in = (void*) data;
+    zstream.avail_in = (unsigned) data_length;
+    
+    /* We increment *o_compressed_length gradually so that if we return an
+    error, we still indicate how many butes of compressed data have been
+    written. */
+    if (o_compressed_length)
+    {
+        *o_compressed_length = 0;
+    }
+    
+    for(;;)
+    {
+        /* todo: write an extract_buffer_cache() function so we can write
+        directly into output buffer if it has a fn_cache. */
+        unsigned char   buffer[1024];
+        zstream.next_out = &buffer[0];
+        zstream.avail_out = sizeof(buffer);
+        ze = deflate(&zstream, zstream.avail_in ? Z_NO_FLUSH : Z_FINISH);
+        if (ze != Z_STREAM_END && ze != Z_OK)
+        {
+            outf("deflate() failed ze=%i", ze);
+            errno = EIO;
+            zip->errno_ = errno;
+            return -1;
+        }
+        {
+            /* Send the new compressed data to buffer. */
+            size_t  bytes_written;
+            int e = extract_buffer_write(zip->buffer, buffer, zstream.next_out - buffer, &bytes_written);
+            if (o_compressed_length)
+            {
+                *o_compressed_length += bytes_written;
+            }
+            if (e)
+            {
+                if (e == -1)    zip->errno_ = errno;
+                if (e ==  +1)   zip->eof = 1;
+                outf("extract_buffer_write() failed e=%i errno=%i", e, errno);
+                return e;
+            }
+        }
+        if (ze == Z_STREAM_END)
+        {
+            break;
+        }
+    }
+    ze = deflateEnd(&zstream);
+    if (ze != Z_OK)
+    {
+        outf("deflateEnd() failed ze=%i", ze);
+        errno = EIO;
+        zip->errno_ = errno;
+        return -1;
+    }
+    if (o_compressed_length)
+    {
+        assert(*o_compressed_length == (size_t) zstream.total_out);
+    }
+    return 0;
+}
+
 static int s_write(extract_zip_t* zip, const void* data, size_t data_length)
+/* Writes uncompressed data to zip->buffer. */
 {
     size_t actual;
     int e;
@@ -192,33 +315,66 @@ int extract_zip_write_file(
     cd_file->mtime = zip->mtime;
     cd_file->mdate = zip->mtime;
     cd_file->crc_sum = (int32_t) crc32(crc32(0, NULL, 0), data, (int) data_length);
-    cd_file->size_compressed = (int) data_length;
     cd_file->size_uncompressed = (int) data_length;
+    if (zip->compression_method == 0)
+    {
+        cd_file->size_compressed = cd_file->size_uncompressed;
+    }
     if (extract_strdup(alloc, name, &cd_file->name)) goto end;
     cd_file->offset = (int) extract_buffer_pos(zip->buffer);
     cd_file->attr_internal = zip->file_attr_internal;
     cd_file->attr_external = zip->file_attr_external;
     if (!cd_file->name) goto end;
     
-    /* Write local file header. */
+    /* Write local file header. If we are using compression, we set bit 3 of
+    General purpose bit flag and write zeros for crc-32, compressed size and
+    uncompressed size; then we write the actual values in data descriptor after
+    the compressed data. */
     {
         const char extra_local[] = "";  /* Modify for testing. */
+        uint16_t general_purpose_bit_flag = zip->general_purpose_bit_flag;
+        if (zip->compression_method)    general_purpose_bit_flag |= 8;
         s_write_uint32(zip, 0x04034b50);
         s_write_uint16(zip, zip->version_extract);          /* Version needed to extract (minimum). */
-        s_write_uint16(zip, zip->general_purpose_bit_flag); /* General purpose bit flag */
-        s_write_uint16(zip, 0);                             /* Compression method */
+        s_write_uint16(zip, general_purpose_bit_flag);      /* General purpose bit flag */
+        s_write_uint16(zip, zip->compression_method);       /* Compression method */
         s_write_uint16(zip, cd_file->mtime);                /* File last modification time */
         s_write_uint16(zip, cd_file->mdate);                /* File last modification date */
-        s_write_uint32(zip, cd_file->crc_sum);              /* CRC-32 of uncompressed data */
-        s_write_uint32(zip, cd_file->size_compressed);      /* Compressed size */
-        s_write_uint32(zip, cd_file->size_uncompressed);    /* Uncompressed size */
+        if (zip->compression_method)
+        {
+            s_write_uint32(zip, 0);                         /* CRC-32 of uncompressed data */
+            s_write_uint32(zip, 0);                         /* Compressed size */
+            s_write_uint32(zip, 0);                         /* Uncompressed size */
+        }
+        else
+        {
+            s_write_uint32(zip, cd_file->crc_sum);          /* CRC-32 of uncompressed data */
+            s_write_uint32(zip, cd_file->size_compressed);  /* Compressed size */
+            s_write_uint32(zip, cd_file->size_uncompressed);/* Uncompressed size */
+        }
         s_write_uint16(zip, (uint16_t) strlen(name));       /* File name length (n) */
         s_write_uint16(zip, sizeof(extra_local)-1);         /* Extra field length (m) */
         s_write_string(zip, cd_file->name);                 /* File name */
         s_write(zip, extra_local, sizeof(extra_local)-1);   /* Extra field */
     }
-    /* Write the (uncompressed) data. */
-    s_write(zip, data, data_length);
+    
+    if (zip->compression_method)
+    {
+        /* Write compressed data. */
+        size_t  data_length_compressed;
+        s_write_compressed(zip, data, data_length, &data_length_compressed);
+        cd_file->size_compressed = (int) data_length_compressed;
+        
+        /* Write data descriptor. */
+        s_write_uint32(zip, 0x08074b50);                    /* Data descriptor signature */
+        s_write_uint32(zip, cd_file->crc_sum);              /* CRC-32 of uncompressed data */
+        s_write_uint32(zip, cd_file->size_compressed);      /* Compressed size */
+        s_write_uint32(zip, cd_file->size_uncompressed);    /* Uncompressed size */
+    }
+    else
+    {
+        s_write(zip, data, data_length);
+    }
     
     if (zip->errno_)    e = -1;
     else if (zip->eof)  e = +1;
@@ -264,7 +420,7 @@ int extract_zip_close(extract_zip_t** pzip)
         s_write_uint16(zip, zip->version_creator);              /* Version made by, copied from command-line zip. */
         s_write_uint16(zip, zip->version_extract);              /* Version needed to extract (minimum). */
         s_write_uint16(zip, zip->general_purpose_bit_flag);     /* General purpose bit flag */
-        s_write_uint16(zip, 0);                                 /* Compression method */
+        s_write_uint16(zip, zip->compression_method);           /* Compression method */
         s_write_uint16(zip, cd_file->mtime);                    /* File last modification time */
         s_write_uint16(zip, cd_file->mdate);                    /* File last modification date */
         s_write_uint32(zip, cd_file->crc_sum);                  /* CRC-32 of uncompressed data */
