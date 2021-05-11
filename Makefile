@@ -374,7 +374,7 @@ test/generated/%.pdf.mutool.odt: test/%.pdf $(mutool)
 	@echo
 	@echo == Converting .pdf directly to .odt using mutool.
 	@mkdir -p test/generated
-	$(mutool) convert -o $@ $<
+	$(mutool) convert -O mediabox-clip=no -o $@ $<
 
 
 # Valgrind test
