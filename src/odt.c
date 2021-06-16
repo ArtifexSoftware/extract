@@ -318,51 +318,7 @@ font. */
             {
                 char_t* char_ = &span->chars[si];
                 int c = char_->ucs;
-
-                if (0) {}
-
-                /* Escape XML special characters. */
-                else if (c == '<')  extract_astring_cat(alloc, content, "&lt;");
-                else if (c == '>')  extract_astring_cat(alloc, content, "&gt;");
-                else if (c == '&')  extract_astring_cat(alloc, content, "&amp;");
-                else if (c == '"')  extract_astring_cat(alloc, content, "&quot;");
-                else if (c == '\'') extract_astring_cat(alloc, content, "&apos;");
-
-                /* Expand ligatures. */
-                else if (c == 0xFB00)
-                {
-                    if (extract_astring_cat(alloc, content, "ff")) goto end;
-                }
-                else if (c == 0xFB01)
-                {
-                    if (extract_astring_cat(alloc, content, "fi")) goto end;
-                }
-                else if (c == 0xFB02)
-                {
-                    if (extract_astring_cat(alloc, content, "fl")) goto end;
-                }
-                else if (c == 0xFB03)
-                {
-                    if (extract_astring_cat(alloc, content, "ffi")) goto end;
-                }
-                else if (c == 0xFB04)
-                {
-                    if (extract_astring_cat(alloc, content, "ffl")) goto end;
-                }
-
-                /* Output ASCII verbatim. */
-                else if (c >= 32 && c <= 127)
-                {
-                    if (extract_astring_catc(alloc, content, (char) c)) goto end;
-                }
-
-                /* Escape all other characters. */
-                else
-                {
-                    char    buffer[32];
-                    snprintf(buffer, sizeof(buffer), "&#x%x;", c);
-                    if (extract_astring_cat(alloc, content, buffer)) goto end;
-                }
+                if (extract_astring_cat_xmlc(alloc, content, c)) goto end;
             }
             /* Remove any trailing '-' at end of line. */
             if (astring_char_truncate_if(content, '-')) goto end;

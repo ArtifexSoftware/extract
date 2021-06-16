@@ -6,6 +6,7 @@
 
 #include <assert.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -72,3 +73,66 @@ int astring_char_truncate_if(extract_astring_t* content, char c)
     return 0;
 }
 
+int extract_astring_cat_xmlc(extract_alloc_t* alloc, extract_astring_t* string, int c)
+{
+    int ret = -1;
+    
+    if (0) {}
+
+    /* Escape XML special characters. */
+    else if (c == '<')  extract_astring_cat(alloc, string, "&lt;");
+    else if (c == '>')  extract_astring_cat(alloc, string, "&gt;");
+    else if (c == '&')  extract_astring_cat(alloc, string, "&amp;");
+    else if (c == '"')  extract_astring_cat(alloc, string, "&quot;");
+    else if (c == '\'') extract_astring_cat(alloc, string, "&apos;");
+
+    /* Expand ligatures. */
+    else if (c == 0xFB00)
+    {
+        if (extract_astring_cat(alloc, string, "ff")) goto end;
+    }
+    else if (c == 0xFB01)
+    {
+        if (extract_astring_cat(alloc, string, "fi")) goto end;
+    }
+    else if (c == 0xFB02)
+    {
+        if (extract_astring_cat(alloc, string, "fl")) goto end;
+    }
+    else if (c == 0xFB03)
+    {
+        if (extract_astring_cat(alloc, string, "ffi")) goto end;
+    }
+    else if (c == 0xFB04)
+    {
+        if (extract_astring_cat(alloc, string, "ffl")) goto end;
+    }
+
+    /* Output ASCII verbatim. */
+    else if (c >= 32 && c <= 127)
+    {
+        if (extract_astring_catc(alloc, string, (char) c)) goto end;
+    }
+
+    /* Escape all other characters. */
+    else
+    {
+        char    buffer[32];
+        if (c < 32
+                && (c != 0x9 && c != 0xa && c != 0xd)
+                )
+        {
+            /* Illegal xml character; see
+            https://www.w3.org/TR/xml/#charsets. We replace with
+            0xfffd, the unicode replacement character. */
+            c = 0xfffd;
+        }
+        snprintf(buffer, sizeof(buffer), "&#x%x;", c);
+        if (extract_astring_cat(alloc, string, buffer)) goto end;
+    }
+    
+    ret = 0;
+    
+    end:
+    return ret;
+}
