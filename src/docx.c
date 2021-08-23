@@ -155,16 +155,16 @@ font. */
             font_size_new = extract_matrices_to_font_size(&span->ctm, &span->trm);
             if (!state->font_name
                     || strcmp(span->font_name, state->font_name)
-                    || span->font_bold != state->font_bold
-                    || span->font_italic != state->font_italic
+                    || span->flags.font_bold != state->font_bold
+                    || span->flags.font_italic != state->font_italic
                     || font_size_new != state->font_size
                     ) {
                 if (state->font_name) {
                     if (extract_docx_run_finish(alloc, content)) goto end;
                 }
                 state->font_name = span->font_name;
-                state->font_bold = span->font_bold;
-                state->font_italic = span->font_italic;
+                state->font_bold = span->flags.font_bold;
+                state->font_italic = span->flags.font_italic;
                 state->font_size = font_size_new;
                 if (extract_docx_run_start(
                         alloc,

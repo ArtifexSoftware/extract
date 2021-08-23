@@ -54,7 +54,7 @@ typedef struct
         unsigned font_bold      : 1;
         unsigned font_italic    : 1;
         unsigned wmode          : 1;
-    };
+    } flags;
     
     char_t*     chars;
     int         chars_num;

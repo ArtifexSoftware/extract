@@ -76,7 +76,7 @@ const char* span_string(extract_alloc_t* alloc, span_t* span)
                 span->font_name,
                 span->trm.a,
                 span->trm.d,
-                span->wmode,
+                span->flags.wmode,
                 span->chars_num
                 );
         extract_astring_cat(alloc, &ret, buffer);
@@ -430,7 +430,7 @@ char_t into a new span_t. */
     font_size = matrix_expansion(span->trm)
             * matrix_expansion(span->ctm);
 
-    if (span->wmode) {
+    if (span->flags.wmode) {
         dir.x = 0;
         dir.y = 1;
     }
@@ -890,9 +890,9 @@ int extract_span_begin(
         const char* ff = strchr(font_name, '+');
         const char* f = (ff) ? ff+1 : font_name;
         if (extract_strdup(extract->alloc, f, &span->font_name)) goto end;
-        span->font_bold = font_bold ? 1 : 0;
-        span->font_italic = font_italic ? 1 : 0;
-        span->wmode = wmode ? 1 : 0;
+        span->flags.font_bold = font_bold ? 1 : 0;
+        span->flags.font_italic = font_italic ? 1 : 0;
+        span->flags.wmode = wmode ? 1 : 0;
         extract->span_offset_x = 0;
         extract->span_offset_y = 0;
     }

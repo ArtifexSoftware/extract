@@ -182,7 +182,7 @@ static int lines_are_compatible(
 {
     if (a == b) return 0;
     if (!a->spans || !b->spans) return 0;
-    if (line_span_first(a)->wmode != line_span_first(b)->wmode) {
+    if (line_span_first(a)->flags.wmode != line_span_first(b)->flags.wmode) {
         return 0;
     }
     if (matrix_cmp4(
