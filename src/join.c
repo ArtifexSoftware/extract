@@ -923,7 +923,7 @@ int extract_document_join(extract_alloc_t* alloc, document_t* document)
     */
     int p;
     for (p=0; p<document->pages_num; ++p) {
-        page_t* page = document->pages[p];
+        extract_page_t* page = document->pages[p];
         outf("processing page %i: num_spans=%i", p, page->spans_num);
 
         if (make_lines(

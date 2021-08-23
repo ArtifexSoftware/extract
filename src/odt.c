@@ -364,7 +364,7 @@ static int extract_document_append_image(
 
 static int extract_document_output_rotated_paragraphs(
         extract_alloc_t*    alloc,
-        page_t*             page,
+        extract_page_t*     page,
         int                 paragraph_begin,
         int                 paragraph_end,
         double              rotation_rad,
@@ -444,7 +444,7 @@ int extract_document_to_odt_content(
     /* Write paragraphs into <content>. */
     for (p=0; p<document->pages_num; ++p)
     {
-        page_t* page = document->pages[p];
+        extract_page_t* page = document->pages[p];
         int p;
         content_state_t state;
         state.font_name = NULL;
