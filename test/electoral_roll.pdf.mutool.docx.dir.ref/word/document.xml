@@ -1,0 +1,2918 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex" xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex" xmlns:cx2="http://schemas.microsoft.com/office/drawing/2015/10/21/chartex" xmlns:cx3="http://schemas.microsoft.com/office/drawing/2016/5/9/chartex" xmlns:cx4="http://schemas.microsoft.com/office/drawing/2016/5/10/chartex" xmlns:cx5="http://schemas.microsoft.com/office/drawing/2016/5/11/chartex" xmlns:cx6="http://schemas.microsoft.com/office/drawing/2016/5/12/chartex" xmlns:cx7="http://schemas.microsoft.com/office/drawing/2016/5/13/chartex" xmlns:cx8="http://schemas.microsoft.com/office/drawing/2016/5/14/chartex" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:aink="http://schemas.microsoft.com/office/drawing/2016/ink" xmlns:am3d="http://schemas.microsoft.com/office/drawing/2017/model3d" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex" xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid" xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml" xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 w16se w16cid w16 w16cex wp14"><w:body>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-Bold" w:hAnsi="Arial-Bold"/><w:b/><w:sz w:val="19.300000"/><w:szCs w:val="14.475000"/></w:rPr><w:t xml:space="preserve">Section No &amp; Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-Unicode-MS-Bold" w:hAnsi="Arial-Unicode-MS-Bold"/><w:b/><w:sz w:val="16.400000"/><w:szCs w:val="12.300000"/></w:rPr><w:t xml:space="preserve">11</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-Bold" w:hAnsi="Arial-Bold"/><w:b/><w:sz w:val="19.300000"/><w:szCs w:val="14.475000"/></w:rPr><w:t xml:space="preserve"></w:t></w:r>
+</w:p>
+    <w:tbl>
+        <w:tblLayout w:type="autofit"/>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 1 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Male</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000001</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">n</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 2 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">5 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Male</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000002</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 3 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">5 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Male</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000003</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">0</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Joh</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">No</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">: Age</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">:</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">55</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No :</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">John</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Age</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">:</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">63</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No :</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">John</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Age</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">:</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">33</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 4 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000004</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">:</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Female</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 5 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">8 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Male</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000005</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 6 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">5 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Female</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000006</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">3 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 23</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Jane</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">4 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Age : 22</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">John</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">No</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">:</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Husband&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">5 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 62</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Jane</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 7 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">2 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Female</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000007</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 8 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">3 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Male</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000008</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 9 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">3 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Female</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000009</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Husband&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">6 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 80</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Jane</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">6 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 61</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">John</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Husband&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">6 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 54</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Jane</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 10 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">3 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Female</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000010</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 11 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">5 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Male</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000011</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 12 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">8 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Female</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">LQK0000012</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">7 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 20</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Jane</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">7 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 49</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">John</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">8 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 41</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Jane</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 13 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">2 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Female</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000013</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 14 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">04 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Female</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000014</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 15 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">04 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Male</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000015</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Husband&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">9 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 28</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Jane</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Husband&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 45</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Jane</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 43</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">John</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 16 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">04 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Female</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000016</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 17 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">19-B </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Female</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000017</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 18 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">26 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Female</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000018</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 23</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Jane</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 46</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Jane</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 22</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Jane</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 19 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">33 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Male</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000019</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">n</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 20 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">43 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Male</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000020</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 21 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">45 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Male</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000021</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 29</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Joh</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 25</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">John</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 47</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">John</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 22 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">47 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Female</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000022</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 23 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">51 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Male</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000023</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 24 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">55 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Female</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000024</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 20</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Jane</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Mother&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 24</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">John</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 21</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Jane</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 25 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">78 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Male</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000025</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">n</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 26 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">78 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Female</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000026</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 27 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">94 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Male</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000027</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 41</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Joh</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Husband&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 35</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Jane</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 59</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">John</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 28 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">95 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Female</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000028</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 29 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">95 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Female</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000029</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve"> 30 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">01 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Sex : Male</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="15.900000"/><w:szCs w:val="11.925000"/></w:rPr><w:t xml:space="preserve">NEL0000030</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Doe</w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Husband&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 33</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Jane</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Husband&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 28</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Jane</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Name : </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Father&apos;s </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/><w:sz w:val="14.300000"/><w:szCs w:val="10.725000"/></w:rPr><w:t xml:space="preserve">: </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">Name </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">2 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman-Italic" w:hAnsi="Times-New-Roman-Italic"/><w:i/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">House No : Age : 45</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">John</w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="2"/>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+        </w:tr>
+    </w:tbl>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="14.100000"/><w:szCs w:val="10.575000"/></w:rPr><w:t xml:space="preserve">S-Shifted, E-Expired, M-Missing, Q- Disqualification, R-Duplicate </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-New-Roman" w:hAnsi="Times-New-Roman"/><w:sz w:val="16.000000"/><w:szCs w:val="12.000000"/></w:rPr><w:t xml:space="preserve">Page 3 of 33 Age as on 01-01-2016 Issued By Electoral Registration Officer</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve">Electoral</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve">Roll,</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve">2016</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve">of</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve">Assembly</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve">Constituency</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve"></w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve">VIKASPURI,</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve">  </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve">(GEN)</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve">NCT</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve">of</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="19.500000"/><w:szCs w:val="14.625000"/></w:rPr><w:t xml:space="preserve">Delhi </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-Bold" w:hAnsi="Times-Bold"/><w:b/><w:sz w:val="20.300000"/><w:szCs w:val="15.225000"/></w:rPr><w:t xml:space="preserve">Part No - xxx</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="16.400000"/><w:szCs w:val="12.300000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.400000"/><w:szCs w:val="12.300000"/></w:rPr><w:t xml:space="preserve">VIKAS</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="16.400000"/><w:szCs w:val="12.300000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.400000"/><w:szCs w:val="12.300000"/></w:rPr><w:t xml:space="preserve">PURI,</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="16.400000"/><w:szCs w:val="12.300000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="NotoSans" w:hAnsi="NotoSans"/><w:sz w:val="16.400000"/><w:szCs w:val="12.300000"/></w:rPr><w:t xml:space="preserve">DELHI </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="LiberationSans-Bold" w:hAnsi="LiberationSans-Bold"/><w:b/><w:sz w:val="19.300000"/><w:szCs w:val="14.475000"/></w:rPr><w:t xml:space="preserve">(This PDF file has been edited)</w:t></w:r>
+</w:p></w:body></w:document>

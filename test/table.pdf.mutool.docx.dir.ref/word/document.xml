@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex" xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex" xmlns:cx2="http://schemas.microsoft.com/office/drawing/2015/10/21/chartex" xmlns:cx3="http://schemas.microsoft.com/office/drawing/2016/5/9/chartex" xmlns:cx4="http://schemas.microsoft.com/office/drawing/2016/5/10/chartex" xmlns:cx5="http://schemas.microsoft.com/office/drawing/2016/5/11/chartex" xmlns:cx6="http://schemas.microsoft.com/office/drawing/2016/5/12/chartex" xmlns:cx7="http://schemas.microsoft.com/office/drawing/2016/5/13/chartex" xmlns:cx8="http://schemas.microsoft.com/office/drawing/2016/5/14/chartex" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:aink="http://schemas.microsoft.com/office/drawing/2016/ink" xmlns:am3d="http://schemas.microsoft.com/office/drawing/2017/model3d" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex" xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid" xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml" xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 w16se w16cid w16 w16cex wp14"><w:body>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="30.000000"/><w:szCs w:val="22.500000"/></w:rPr><w:t xml:space="preserve">2 Quantifying Fuel-Saving Opportunities from Specific Driving Behavior Changes </w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="21.960000"/><w:szCs w:val="16.470000"/></w:rPr><w:t xml:space="preserve">2.1 </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve">Savings from Improving Individual Driving Profiles</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="21.960000"/><w:szCs w:val="16.470000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldItalicMT" w:hAnsi="Arial-BoldItalicMT"/><w:b/><w:i/><w:sz w:val="21.960000"/><w:szCs w:val="16.470000"/></w:rPr><w:t xml:space="preserve">2.1.1 Drive Profile Subsample from Real-World Travel Survey </w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="TimesNewRomanPSMT" w:hAnsi="TimesNewRomanPSMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve">The interim report (Gonder et al. 2010) included results from detailed analyses on five cycles selected from a large set of real-world global positioning system (GPS) travel data collected in 2006 as part of a study by the Texas Transportation Institute and the Texas Department of Transportation (Ojah and Pearson 2008). The cycles were selected to reflect a range of kinetic intensity (KI) values. (KI represents a ratio of characteristic acceleration to aerodynamic speed and has been shown to be a useful drive cycle classification parameter [O&#x2019;Keefe et al. 2007].)  To determine the maximum possible cycle improvement fuel savings, the real-world cycles were converted into equivalent &#x201c;ideal&#x201d; cycles using the following steps:  </w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="TimesNewRomanPSMT" w:hAnsi="TimesNewRomanPSMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve">1.</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="TimesNewRomanPSMT" w:hAnsi="TimesNewRomanPSMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve">Calculate the trip distance of each sample trip. </w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="TimesNewRomanPSMT" w:hAnsi="TimesNewRomanPSMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve">2.</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="TimesNewRomanPSMT" w:hAnsi="TimesNewRomanPSMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve">Eliminate stop-and-go and idling within each trip.  </w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="TimesNewRomanPSMT" w:hAnsi="TimesNewRomanPSMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve">3.</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="TimesNewRomanPSMT" w:hAnsi="TimesNewRomanPSMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve">Set the acceleration rate to 3 mph/s.  </w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="TimesNewRomanPSMT" w:hAnsi="TimesNewRomanPSMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve">4.</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="TimesNewRomanPSMT" w:hAnsi="TimesNewRomanPSMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve">Set the cruising speed to 40 mph. </w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="TimesNewRomanPSMT" w:hAnsi="TimesNewRomanPSMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve">5.</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="TimesNewRomanPSMT" w:hAnsi="TimesNewRomanPSMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve">Continue cruising at 40 mph until the trip distance is reached. </w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="TimesNewRomanPSMT" w:hAnsi="TimesNewRomanPSMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve">To compare vehicle simulations over each real-world cycle and its corresponding ideal cycle, a midsize conventional vehicle model from a previous NREL study was used (Earleywine et al. 2010). The results indicated a fuel savings potential of roughly 60% for the drive profiles with either very high or very low KI and of 30%&#x2013;40% for the cycles with moderate KI values.  </w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="TimesNewRomanPSMT" w:hAnsi="TimesNewRomanPSMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve">Table 2-1 takes the analysis of these five cycles from the interim report a step further by examining the impact of the optimization steps one at a time in isolation. As indicated by other simulations from the interim report (Gonder et al. 2010), acceleration rate reductions can deliver some small fuel savings, but avoiding accelerations and decelerations (accel/decel) altogether saves larger amounts of fuel. This suggests that driving style improvements should focus on reducing the number of stops in high KI cycles, and not just the rate of accelerating out of a stop. </w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">Table 2-1. Simulated fuel savings from isolated cycle improvements </w:t></w:r>
+</w:p>
+    <w:tbl>
+        <w:tblLayout w:type="autofit"/>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">Cycle Name </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">KI (1/km) </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">Distance (mi) </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:gridSpan w:val="4"/>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">Percent Fuel Savings </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">Improved Speed </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">Decreased Accel </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">Eliminate Stops </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">Decreased Idle </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">2012_2 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">3.30 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">1.3 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">5.9% </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">9.5% </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">29.2% </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">17.4% </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">2145_1 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">0.68 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">11.2 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">2.4% </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">0.1% </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">9.5% </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">2.7% </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">4234_1 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">0.59 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">58.7 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">8.5% </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">1.3% </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">8.5% </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">3.3% </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">2032_2 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">0.17 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">57.8 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">21.7% </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">0.3% </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">2.7% </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">1.2% </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">4171_1 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">0.07 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">173.9 </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">58.1% </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">1.6% </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">2.1% </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="20.040000"/><w:szCs w:val="15.030000"/></w:rPr><w:t xml:space="preserve">0.5% </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+    </w:tbl>
+
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="21.960000"/><w:szCs w:val="16.470000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="TimesNewRomanPSMT" w:hAnsi="TimesNewRomanPSMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve">Figure 2-1 extends the analysis from eliminating stops for the five example cycles and examines the additional benefit from avoiding slow-and-go driving below various speed thresholds. </w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="TimesNewRomanPSMT" w:hAnsi="TimesNewRomanPSMT"/><w:sz w:val="24.000000"/><w:szCs w:val="18.000000"/></w:rPr><w:t xml:space="preserve">3  </w:t></w:r>
+</w:p></w:body></w:document>

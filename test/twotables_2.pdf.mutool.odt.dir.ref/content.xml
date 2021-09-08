@@ -1,0 +1,1084 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-content xmlns:css3t="http://www.w3.org/TR/css3-text/" xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0" xmlns:officeooo="http://openoffice.org/2009/office" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:tableooo="http://openoffice.org/2009/table" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:rpt="http://openoffice.org/2005/report" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:drawooo="http://openoffice.org/2010/draw" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" office:version="1.3"><office:scripts/><office:font-face-decls><style:font-face style:name="Liberation Serif" svg:font-family="&apos;Liberation Serif&apos;" style:font-family-generic="roman" style:font-pitch="variable"/><style:font-face style:name="Liberation Sans" svg:font-family="&apos;Liberation Sans&apos;" style:font-family-generic="swiss" style:font-pitch="variable"/><style:font-face style:name="Unifont" svg:font-family="Unifont" style:font-family-generic="system" style:font-pitch="variable"/></office:font-face-decls><office:automatic-styles><style:style style:name="T12" style:family="text"><style:text-properties style:font-name="Helvetica-Bold" fo:font-size="11.28pt" fo:font-weight="bold" fo:font-style="normal" /></style:style><style:style style:name="T11" style:family="text"><style:text-properties style:font-name="Helvetica-Bold" fo:font-size="10.35pt" fo:font-weight="bold" fo:font-style="normal" /></style:style><style:style style:name="T13" style:family="text"><style:text-properties style:font-name="Helvetica" fo:font-size="10.35pt" fo:font-weight="normal" fo:font-style="normal" /></style:style><style:style style:name="T14" style:family="text"><style:text-properties style:font-name="Helvetica" fo:font-size="9.42pt" fo:font-weight="normal" fo:font-style="normal" /></style:style><style:style style:name="gr1" style:family="graphic">
+<style:graphic-properties draw:stroke="none" svg:stroke-color="#000000" draw:fill="none" draw:fill-color="#ffffff" fo:min-height="1.9898in" style:run-through="foreground" style:wrap="run-through" style:number-wrapped-paragraphs="no-limit" style:vertical-pos="from-top" style:vertical-rel="paragraph" style:horizontal-pos="from-left" style:horizontal-rel="paragraph" />
+<style:paragraph-properties style:writing-mode="lr-tb"/>
+</style:style>
+<style:style style:name="fr1" style:family="graphic" style:parent-style-name="Graphics">
+<style:graphic-properties fo:margin-left="0in" fo:margin-right="0in" fo:margin-top="0in" fo:margin-bottom="0in" style:vertical-pos="top" style:vertical-rel="baseline" fo:background-color="transparent" draw:fill="none" draw:fill-color="#ffffff" fo:padding="0in" fo:border="none" style:mirror="none" fo:clip="rect(0in, 0in, 0in, 0in)" draw:luminance="0%" draw:contrast="0%" draw:red="0%" draw:green="0%" draw:blue="0%" draw:gamma="100%" draw:color-inversion="false" draw:image-opacity="100%" draw:color-mode="standard"/>
+</style:style>
+</office:automatic-styles>
+<style:style style:name="extract.table" style:family="table"/>
+<style:style style:name="extract.table.column" style:family="table-column"/>
+<office:body><office:text><text:sequence-decls><text:sequence-decl text:display-outline-level="0" text:name="Illustration"/><text:sequence-decl text:display-outline-level="0" text:name="Table"/><text:sequence-decl text:display-outline-level="0" text:name="Text"/><text:sequence-decl text:display-outline-level="0" text:name="Drawing"/><text:sequence-decl text:display-outline-level="0" text:name="Figure"/></text:sequence-decls><text:p text:style-name="Standard"/>
+
+<text:p><text:span text:style-name="T11">Table 6 : DISTRIBUTION (%) OF HOUSEHOLDS BY LITERACY STATUS OF  MALE HEAD OF THE HOUSEHOLD </text:span></text:p>
+    <table:table text:style-name="extract.table" table:name="extract.table.1">
+        <table:table-columns>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+        </table:table-columns>
+        <table:table-row>
+            <table:table-cell>
+
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="2">
+
+
+<text:p><text:span text:style-name="T12">n </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-columns-spanned="6">
+
+
+<text:p><text:span text:style-name="T11">Literacy Status </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">State</text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">Illiterate</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">Read &amp; Write</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">1-4 std.</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">5-8 std.</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">9-12 std.</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">College</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Kerala</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">7.2</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">0.5</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">25.3</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">20.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">41.5</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">5.5</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Tamil Nadu</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">21.4</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2.3</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">8.8</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">35.5</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">25.8</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">6.2</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Karnataka</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2399</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">37.4</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2.8</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">12.5</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">18.3</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">23.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">5.8</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Andhra Pradesh</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">54.0</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">1.7</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">8.4</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">13.2</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">18.8</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">3.9</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Maharashtra</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">22.0</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">0.9</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">17.3</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">20.3</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">32.6</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">7.0</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Gujarat</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2390</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">28.6</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">0.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">14.4</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">23.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">26.9</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">6.8</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Madhya Pradesh</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2402</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">29.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">3.4</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">8.5</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">35.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">13.3</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">10.6</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Orissa</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2405</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">33.2</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">1.0</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">10.4</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">25.7</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">21.2</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">8.5</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">West Bengal</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2293</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">41.7</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">4.4</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">13.2</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">17.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">21.2</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2.4</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Uttar Pradesh</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">35.3</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">4.5</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">23.3</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">27.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">7.6</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">Pooled</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">23889</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">30.9</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">1.9</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">12.3</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">23.2</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">25.2</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">6.4</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+    </table:table>
+
+
+<text:p><text:span text:style-name="T11">Table 7 : DISTRIBUTION (%) OF HOUSEHOLDS BY LITERACY STATUS OF  ADULT WOMEN </text:span></text:p>
+    <table:table text:style-name="extract.table" table:name="extract.table.2">
+        <table:table-columns>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+        </table:table-columns>
+        <table:table-row>
+            <table:table-cell>
+
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="2">
+
+
+<text:p><text:span text:style-name="T11">n</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-columns-spanned="6">
+
+
+<text:p><text:span text:style-name="T11">Literacy Status</text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">State</text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">Illiterate</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">Read &amp; Write</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">1-4 std.</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">5-8 std.</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">9-12 std.</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">College</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Kerala</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">8.8</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">0.3</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">20.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">17.0</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">45.6</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">8.2</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Tamil Nadu</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">29.9</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">1.5</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">8.5</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">33.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">22.3</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">4.8</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Karnataka</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2399</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">47.9</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2.5</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">10.2</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">18.8</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">18.4</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2.3</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Andhra Pradesh</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">66.4</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">0.7</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">6.8</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">12.9</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">11.4</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">1.8</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Maharashtra</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">41.3</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">0.6</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">14.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">20.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">21.6</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2.2</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Gujarat</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2390</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">57.6</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">0.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">10.3</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">16.5</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">12.9</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2.7</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Madhya Pradesh</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2402</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">58.7</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2.2</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">6.6</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">24.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">5.3</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">3.0</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Orissa</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2405</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">50.0</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">0.9</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">8.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">21.9</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">15.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">4.0</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">West Bengal</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2293</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">49.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">4.8</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">11.2</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">16.8</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">17.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">1.1</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Uttar Pradesh</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">67.3</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2.0</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">3.1</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">17.2</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">7.7</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2.7</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">Pooled</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">23889</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">47.7</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">1.5</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">9.9</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">19.9</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">17.8</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T11">3.3</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+    </table:table>
+
+
+<text:p><text:span text:style-name="T14">NNMB                                                                       75                                 Rural-Third Repeat Survey 2011-12 </text:span></text:p></office:text></office:body></office:document-content>

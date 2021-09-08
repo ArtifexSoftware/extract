@@ -6,13 +6,30 @@
 <style:style style:name="fr1" style:family="graphic" style:parent-style-name="Graphics">
 <style:graphic-properties fo:margin-left="0in" fo:margin-right="0in" fo:margin-top="0in" fo:margin-bottom="0in" style:vertical-pos="top" style:vertical-rel="baseline" fo:background-color="transparent" draw:fill="none" draw:fill-color="#ffffff" fo:padding="0in" fo:border="none" style:mirror="none" fo:clip="rect(0in, 0in, 0in, 0in)" draw:luminance="0%" draw:contrast="0%" draw:red="0%" draw:green="0%" draw:blue="0%" draw:gamma="100%" draw:color-inversion="false" draw:image-opacity="100%" draw:color-mode="standard"/>
 </style:style>
-</office:automatic-styles><office:body><office:text><text:sequence-decls><text:sequence-decl text:display-outline-level="0" text:name="Illustration"/><text:sequence-decl text:display-outline-level="0" text:name="Table"/><text:sequence-decl text:display-outline-level="0" text:name="Text"/><text:sequence-decl text:display-outline-level="0" text:name="Drawing"/><text:sequence-decl text:display-outline-level="0" text:name="Figure"/></text:sequence-decls><text:p text:style-name="Standard"/>
+</office:automatic-styles>
+<style:style style:name="extract.table" style:family="table"/>
+<style:style style:name="extract.table.column" style:family="table-column"/>
+<office:body><office:text><text:sequence-decls><text:sequence-decl text:display-outline-level="0" text:name="Illustration"/><text:sequence-decl text:display-outline-level="0" text:name="Table"/><text:sequence-decl text:display-outline-level="0" text:name="Text"/><text:sequence-decl text:display-outline-level="0" text:name="Drawing"/><text:sequence-decl text:display-outline-level="0" text:name="Figure"/></text:sequence-decls><text:p text:style-name="Standard"/>
 <text:p text:style-name="Standard">
-<draw:frame text:anchor-type="paragraph" draw:z-index="5" draw:name="Shape1" draw:style-name="gr1" draw:text-style-name="Standard" svg:width="3.164382in" svg:height="1.031016in" draw:transform="rotate (-3.045849) translate (6.752333in 6.939861in)">
+<draw:frame text:anchor-type="paragraph" draw:z-index="5" draw:name="Shape1" draw:style-name="gr1" draw:text-style-name="Standard" svg:width="3.225657in" svg:height="4.214730in" draw:transform="rotate (-3.045849) translate (6.752333in 6.939861in)">
 <draw:text-box>
 
 
-<text:p><text:span text:style-name="T11">There was one who was famed for the number of things    He </text:span><text:span text:style-name="T12">forgot </text:span><text:span text:style-name="T11">when he entered the ship: His umbrella, his watch, all his jewels and rings,    And the clothes he had bought for the trip. He had </text:span><text:span text:style-name="T13">forty-two</text:span><text:span text:style-name="T11"> boxes, all carefully packed,    With his name painted clearly on each: But, since he omitted to mention the fact,    They were all left behind on the beach.</text:span></text:p>
+<text:p><text:span text:style-name="T11">There was one who was famed for the number of things</text:span></text:p>
+
+<text:p><text:span text:style-name="T11">   He </text:span><text:span text:style-name="T12">forgot </text:span><text:span text:style-name="T11">when he entered the ship:</text:span></text:p>
+
+<text:p><text:span text:style-name="T11">His umbrella, his watch, all his jewels and rings,</text:span></text:p>
+
+<text:p><text:span text:style-name="T11">   And the clothes he had bought for the trip.</text:span></text:p>
+
+<text:p><text:span text:style-name="T11">He had </text:span><text:span text:style-name="T13">forty-two </text:span><text:span text:style-name="T11"> boxes, all carefully packed,</text:span></text:p>
+
+<text:p><text:span text:style-name="T11">   With his name painted clearly on each:</text:span></text:p>
+
+<text:p><text:span text:style-name="T11">But, since he omitted to mention the fact,</text:span></text:p>
+
+<text:p><text:span text:style-name="T11">   They were all left behind on the beach.</text:span></text:p>
 </draw:text-box>
 </draw:frame>
 </text:p>

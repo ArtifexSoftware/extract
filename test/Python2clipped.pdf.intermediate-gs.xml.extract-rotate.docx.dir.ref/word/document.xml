@@ -131,12 +131,12 @@
           <wp:anchor distT="0" distB="0" distL="0" distR="0" simplePos="0" relativeHeight="0" behindDoc="0" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="53A210D1" wp14:editId="2B7E8016">
             <wp:simplePos x="0" y="0"/>
             <wp:positionH relativeFrom="page">
-              <wp:posOffset>1630060</wp:posOffset>
+              <wp:posOffset>1589281</wp:posOffset>
             </wp:positionH>
             <wp:positionV relativeFrom="page">
-              <wp:posOffset>825686</wp:posOffset>
+              <wp:posOffset>-3913872</wp:posOffset>
             </wp:positionV>
-            <wp:extent cx="4204294" cy="5742838"/>
+            <wp:extent cx="4018010" cy="10484350"/>
             <wp:effectExtent l="381000" t="723900" r="371475" b="723900"/>
             <wp:wrapNone/>
             <wp:docPr id="2" name="Text Box 2"/>
@@ -158,11 +158,39 @@
                     <w:txbxContent>
 
 <w:p>
-<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">There was one who was famed for the number of things     He  His umbrella, his watch, all his jewels and rings, </w:t></w:r>
-<w:r><w:rPr><w:rFonts w:ascii="CourierNewPS-BoldMT" w:hAnsi="CourierNewPS-BoldMT"/><w:b/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">forgot  </w:t></w:r>
-<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">    And the clothes he had bought for the trip. when he entered the ship: He had      </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">There was one who was famed for the number of things</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">   He </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPS-BoldMT" w:hAnsi="CourierNewPS-BoldMT"/><w:b/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">forgot </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">when he entered the ship:</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">His umbrella, his watch, all his jewels and rings,</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">   And the clothes he had bought for the trip.</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">He had </w:t></w:r>
 <w:r><w:rPr><w:rFonts w:ascii="CourierNewPS-ItalicMT" w:hAnsi="CourierNewPS-ItalicMT"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">forty-two </w:t></w:r>
-<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">With his name painted clearly on each: But, since he omitted to mention the fact,     They were all left behind on the beach.  boxes, all carefully packed,</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve"> boxes, all carefully packed,</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">   With his name painted clearly on each:</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">But, since he omitted to mention the fact,</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">   They were all left behind on the beach.</w:t></w:r>
 </w:p>
                     </w:txbxContent>
                   </wps:txbx>
@@ -189,11 +217,39 @@
               <w:txbxContent>
 
 <w:p>
-<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">There was one who was famed for the number of things     He  His umbrella, his watch, all his jewels and rings, </w:t></w:r>
-<w:r><w:rPr><w:rFonts w:ascii="CourierNewPS-BoldMT" w:hAnsi="CourierNewPS-BoldMT"/><w:b/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">forgot  </w:t></w:r>
-<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">    And the clothes he had bought for the trip. when he entered the ship: He had      </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">There was one who was famed for the number of things</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">   He </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPS-BoldMT" w:hAnsi="CourierNewPS-BoldMT"/><w:b/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">forgot </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">when he entered the ship:</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">His umbrella, his watch, all his jewels and rings,</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">   And the clothes he had bought for the trip.</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">He had </w:t></w:r>
 <w:r><w:rPr><w:rFonts w:ascii="CourierNewPS-ItalicMT" w:hAnsi="CourierNewPS-ItalicMT"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">forty-two </w:t></w:r>
-<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">With his name painted clearly on each: But, since he omitted to mention the fact,     They were all left behind on the beach.  boxes, all carefully packed,</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve"> boxes, all carefully packed,</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">   With his name painted clearly on each:</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">But, since he omitted to mention the fact,</w:t></w:r>
+</w:p>
+
+<w:p>
+<w:r><w:rPr><w:rFonts w:ascii="CourierNewPSMT" w:hAnsi="CourierNewPSMT"/><w:sz w:val="14.860000"/><w:szCs w:val="11.145000"/></w:rPr><w:t xml:space="preserve">   They were all left behind on the beach.</w:t></w:r>
 </w:p>
 
               </w:txbxContent>

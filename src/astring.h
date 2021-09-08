@@ -24,7 +24,7 @@ int extract_astring_catf(extract_alloc_t* alloc, extract_astring_t* string, cons
 int extract_astring_truncate(extract_astring_t* content, int len);
 /* Removes last <len> chars. */
 
-int astring_char_truncate_if(extract_astring_t* content, char c);
+int extract_astring_char_truncate_if(extract_astring_t* content, char c);
 /* Removes last char if it is <c>. */
 
 int extract_astring_cat_xmlc(extract_alloc_t* alloc, extract_astring_t* string, int c);

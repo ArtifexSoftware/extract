@@ -1,0 +1,2211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-content xmlns:css3t="http://www.w3.org/TR/css3-text/" xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0" xmlns:officeooo="http://openoffice.org/2009/office" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:tableooo="http://openoffice.org/2009/table" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:rpt="http://openoffice.org/2005/report" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:drawooo="http://openoffice.org/2010/draw" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" office:version="1.3"><office:scripts/><office:font-face-decls><style:font-face style:name="Liberation Serif" svg:font-family="&apos;Liberation Serif&apos;" style:font-family-generic="roman" style:font-pitch="variable"/><style:font-face style:name="Liberation Sans" svg:font-family="&apos;Liberation Sans&apos;" style:font-family-generic="swiss" style:font-pitch="variable"/><style:font-face style:name="Unifont" svg:font-family="Unifont" style:font-family-generic="system" style:font-pitch="variable"/></office:font-face-decls><office:automatic-styles><style:style style:name="T11" style:family="text"><style:text-properties style:font-name="TimesNewRomanPSMT" fo:font-size="9.43pt" fo:font-weight="normal" fo:font-style="normal" /></style:style><style:style style:name="T12" style:family="text"><style:text-properties style:font-name="ArialNarrow-Bold" fo:font-size="12.25pt" fo:font-weight="bold" fo:font-style="normal" /></style:style><style:style style:name="T13" style:family="text"><style:text-properties style:font-name="ArialNarrow-Bold" fo:font-size="8.47pt" fo:font-weight="bold" fo:font-style="normal" /></style:style><style:style style:name="T14" style:family="text"><style:text-properties style:font-name="ArialNarrow" fo:font-size="8.47pt" fo:font-weight="normal" fo:font-style="normal" /></style:style><style:style style:name="T15" style:family="text"><style:text-properties style:font-name="ArialMT" fo:font-size="9.43pt" fo:font-weight="normal" fo:font-style="normal" /></style:style><style:style style:name="gr1" style:family="graphic">
+<style:graphic-properties draw:stroke="none" svg:stroke-color="#000000" draw:fill="none" draw:fill-color="#ffffff" fo:min-height="1.9898in" style:run-through="foreground" style:wrap="run-through" style:number-wrapped-paragraphs="no-limit" style:vertical-pos="from-top" style:vertical-rel="paragraph" style:horizontal-pos="from-left" style:horizontal-rel="paragraph" />
+<style:paragraph-properties style:writing-mode="lr-tb"/>
+</style:style>
+<style:style style:name="fr1" style:family="graphic" style:parent-style-name="Graphics">
+<style:graphic-properties fo:margin-left="0in" fo:margin-right="0in" fo:margin-top="0in" fo:margin-bottom="0in" style:vertical-pos="top" style:vertical-rel="baseline" fo:background-color="transparent" draw:fill="none" draw:fill-color="#ffffff" fo:padding="0in" fo:border="none" style:mirror="none" fo:clip="rect(0in, 0in, 0in, 0in)" draw:luminance="0%" draw:contrast="0%" draw:red="0%" draw:green="0%" draw:blue="0%" draw:gamma="100%" draw:color-inversion="false" draw:image-opacity="100%" draw:color-mode="standard"/>
+</style:style>
+</office:automatic-styles>
+<style:style style:name="extract.table" style:family="table"/>
+<style:style style:name="extract.table.column" style:family="table-column"/>
+<office:body><office:text><text:sequence-decls><text:sequence-decl text:display-outline-level="0" text:name="Illustration"/><text:sequence-decl text:display-outline-level="0" text:name="Table"/><text:sequence-decl text:display-outline-level="0" text:name="Text"/><text:sequence-decl text:display-outline-level="0" text:name="Drawing"/><text:sequence-decl text:display-outline-level="0" text:name="Figure"/></text:sequence-decls><text:p text:style-name="Standard"/>
+
+<text:p><text:span text:style-name="T11"> </text:span><text:span text:style-name="T12">Rate of Accidental Deaths &amp; Suicides and Population Growth During 1967 to 2013 </text:span><text:span text:style-name="T11"> </text:span></text:p>
+    <table:table text:style-name="extract.table" table:name="extract.table.1">
+        <table:table-columns>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+        </table:table-columns>
+        <table:table-row>
+            <table:table-cell table:number-rows-spanned="50">
+
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="2">
+
+
+<text:p><text:span text:style-name="T13">Sl. No. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="2">
+
+
+<text:p><text:span text:style-name="T13">Year </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="2">
+
+
+<text:p><text:span text:style-name="T13">Population (in Lakh) </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-columns-spanned="2">
+
+
+<text:p><text:span text:style-name="T13">Accidental Deaths </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:table-cell table:number-columns-spanned="2">
+
+
+<text:p><text:span text:style-name="T13">Suicides </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:table-cell table:number-rows-spanned="2">
+
+
+<text:p><text:span text:style-name="T13">Percentage Population growth </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="50">
+
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Incidence </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Rate </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Incidence </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Rate </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">(1) </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">(2) </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">(3) </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">(4) </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">(5) </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">(6) </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">(7) </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">(8) </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1967 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">4999 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">126762 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">25.4 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">38829 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">7.8 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.2 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1968 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">5111 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">126232 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">24.7 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">40688 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">8.0 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.2 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">3. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1969 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">5225 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">130755 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">25.0 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">43633 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">8.4 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.2 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">4. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1970 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">5343 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">139752 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">26.2 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">48428 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">9.1 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.3 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">5. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1971 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">5512 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">105601 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">19.2 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">43675 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">7.9 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">3.2 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">6. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1972 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">5635 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">106184 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">18.8 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">43601 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">7.7 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.2 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">7. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1973 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">5759 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">130654 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">22.7 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">40807 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">7.1 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.2 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">8. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1974 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">5883 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">110624 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">18.8 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">46008 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">7.8 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.2 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">9. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1975 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">6008 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">113016 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">18.8 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">42890 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">7.1 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.1 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1976 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">6136 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">111611 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">18.2 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">41415 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">6.7 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.1 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">11. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1977 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">6258 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">117338 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">18.8 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">39718 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">6.3 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.0 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">12. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1978 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">6384 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">118594 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">18.6 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">40207 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">6.3 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.0 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">13. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1979 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">6510 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">108987 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">16.7 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">38217 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">5.9 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.0 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">14. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1980 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">6636 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">116912 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">17.6 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">41663 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">6.3 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.9 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">15. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1981 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">6840 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">122221 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">17.9 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">40245 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">5.9 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">3.1 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">16. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1982 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">7052 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">125993 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">17.9 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">44732 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">6.3 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">3.1 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">17. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1983 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">7204 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">128576 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">17.8 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">46579 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">6.5 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.2 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">18. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1984 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">7356 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">134628 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">18.3 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">50571 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">6.9 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.1 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">19. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1985 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">7509 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">139657 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">18.6 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">52811 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">7.0 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.1 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">20. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1986 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">7661 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">147023 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">19.2 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">54357 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">7.1 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.0 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">21. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1987 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">7814 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">152314 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">19.5 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">58568 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">7.5 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.0 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">22. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1988 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">7966 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">163522 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">20.5 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">64270 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">8.1 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.9 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">23. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1989 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">8118 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">169066 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">20.8 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">68744 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">8.5 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.9 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">24. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1990 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">8270 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">174401 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">21.1 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">73911 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">8.9 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.9 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">25. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1991 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">8496 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">188003 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">22.1 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">78450 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">9.2 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.7 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">26. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1992 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">8677 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">194910 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">22.5 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">80149 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">9.2 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.1 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">27. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1993 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">8838 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">192357 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">21.8 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">84244 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">9.5 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.9 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">28. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1994 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">8997 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">190435 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">21.2 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">89195 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">9.9 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.8 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">29. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1995 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">9160 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">222487 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">24.3 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">89178 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">9.7 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.8 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">30. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1996 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">9319 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">220094 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">23.6 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">88241 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">9.5 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.7 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">31. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1997 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">9552 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">233903 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">24.5 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">95829 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10.0 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.5 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">32. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1998 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">9709 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">258409 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">26.6 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">104713 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10.8 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.6 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">33. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1999 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">9866 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">271918 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">27.6 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">110587 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">11.2 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.6 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">34. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2000 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10021 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">255883 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">25.5 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">108593 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10.8 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.6 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">35. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2001 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10270 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">271019 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">26.4 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">108506 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10.6 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.5 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">36. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2002 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10506 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">260122 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">24.8 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">110417 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10.5 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.3 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">37. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2003 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10682 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">259625 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">24.3 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">110851 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10.4 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.7 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">38. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2004 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10856 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">277263 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">25.5 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">113697 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10.5 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.6 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">39. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2005 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">11028 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">294175 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">26.7 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">113914 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10.3 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.6 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">40. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2006 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">11198 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">314704 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">28.1 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">118112 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10.5 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.5 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">41. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2007 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">11366 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">340794 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">30.0 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">122637 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10.8 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.5 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">42. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2008 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">11531 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">342309 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">29.7 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">125017 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10.8 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.4 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">43. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2009 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">11694 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">357021 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">30.5 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">127151 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">10.9 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.4 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">44. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2010 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">11858 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">384649 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">32.4 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">134599 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">11.4 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.4 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">45. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2011 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">12102 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">390884 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">32.3 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">135585 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">11.2 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2.1 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">46. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2012 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">12134 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">394982 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">32.6 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">135445 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">11.2 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.0 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">47. </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">2013 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">12288 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">400517 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">32.6 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">134799 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">11.0 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T14">1.0 </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+        </table:table-row>
+    </table:table>
+
+
+<text:p><text:span text:style-name="T15"> (xx) </text:span></text:p></office:text></office:body></office:document-content>

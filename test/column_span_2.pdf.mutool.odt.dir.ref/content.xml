@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-content xmlns:css3t="http://www.w3.org/TR/css3-text/" xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0" xmlns:officeooo="http://openoffice.org/2009/office" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:tableooo="http://openoffice.org/2009/table" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:rpt="http://openoffice.org/2005/report" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:drawooo="http://openoffice.org/2010/draw" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" office:version="1.3"><office:scripts/><office:font-face-decls><style:font-face style:name="Liberation Serif" svg:font-family="&apos;Liberation Serif&apos;" style:font-family-generic="roman" style:font-pitch="variable"/><style:font-face style:name="Liberation Sans" svg:font-family="&apos;Liberation Sans&apos;" style:font-family-generic="swiss" style:font-pitch="variable"/><style:font-face style:name="Unifont" svg:font-family="Unifont" style:font-family-generic="system" style:font-pitch="variable"/></office:font-face-decls><office:automatic-styles><style:style style:name="T17" style:family="text"><style:text-properties style:font-name="Symbol" fo:font-size="11.50pt" fo:font-weight="normal" fo:font-style="normal" /></style:style><style:style style:name="T14" style:family="text"><style:text-properties style:font-name="Symbol" fo:font-size="9.50pt" fo:font-weight="normal" fo:font-style="normal" /></style:style><style:style style:name="T15" style:family="text"><style:text-properties style:font-name="Helvetica-Bold" fo:font-size="11.50pt" fo:font-weight="bold" fo:font-style="normal" /></style:style><style:style style:name="T12" style:family="text"><style:text-properties style:font-name="Helvetica-Bold" fo:font-size="9.50pt" fo:font-weight="bold" fo:font-style="normal" /></style:style><style:style style:name="T11" style:family="text"><style:text-properties style:font-name="Helvetica" fo:font-size="11.50pt" fo:font-weight="normal" fo:font-style="italic" /></style:style><style:style style:name="T18" style:family="text"><style:text-properties style:font-name="Helvetica" fo:font-size="10.00pt" fo:font-weight="normal" fo:font-style="italic" /></style:style><style:style style:name="T13" style:family="text"><style:text-properties style:font-name="Helvetica" fo:font-size="9.50pt" fo:font-weight="normal" fo:font-style="italic" /></style:style><style:style style:name="T16" style:family="text"><style:text-properties style:font-name="Helvetica" fo:font-size="6.70pt" fo:font-weight="normal" fo:font-style="italic" /></style:style><style:style style:name="gr1" style:family="graphic">
+<style:graphic-properties draw:stroke="none" svg:stroke-color="#000000" draw:fill="none" draw:fill-color="#ffffff" fo:min-height="1.9898in" style:run-through="foreground" style:wrap="run-through" style:number-wrapped-paragraphs="no-limit" style:vertical-pos="from-top" style:vertical-rel="paragraph" style:horizontal-pos="from-left" style:horizontal-rel="paragraph" />
+<style:paragraph-properties style:writing-mode="lr-tb"/>
+</style:style>
+<style:style style:name="fr1" style:family="graphic" style:parent-style-name="Graphics">
+<style:graphic-properties fo:margin-left="0in" fo:margin-right="0in" fo:margin-top="0in" fo:margin-bottom="0in" style:vertical-pos="top" style:vertical-rel="baseline" fo:background-color="transparent" draw:fill="none" draw:fill-color="#ffffff" fo:padding="0in" fo:border="none" style:mirror="none" fo:clip="rect(0in, 0in, 0in, 0in)" draw:luminance="0%" draw:contrast="0%" draw:red="0%" draw:green="0%" draw:blue="0%" draw:gamma="100%" draw:color-inversion="false" draw:image-opacity="100%" draw:color-mode="standard"/>
+</style:style>
+</office:automatic-styles>
+<style:style style:name="extract.table" style:family="table"/>
+<style:style style:name="extract.table.column" style:family="table-column"/>
+<office:body><office:text><text:sequence-decls><text:sequence-decl text:display-outline-level="0" text:name="Illustration"/><text:sequence-decl text:display-outline-level="0" text:name="Table"/><text:sequence-decl text:display-outline-level="0" text:name="Text"/><text:sequence-decl text:display-outline-level="0" text:name="Drawing"/><text:sequence-decl text:display-outline-level="0" text:name="Figure"/></text:sequence-decls><text:p text:style-name="Standard"/>
+
+<text:p><text:span text:style-name="T11">The sample size required for each State for various investigations among different target groups of individuals are given below:</text:span></text:p>
+    <table:table text:style-name="extract.table" table:name="extract.table.1">
+        <table:table-columns>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+            <table:table-column table:style-name="extract.table.column"/>
+        </table:table-columns>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T12">Investigations</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T12">No. of HHs</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T12">Age/Sex/Physiological Group</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T12">Prevalence</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T12">C.I*</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T12">Relative Precision</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T12">Sample size per State</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Anthropometry</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="3">
+
+
+<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-columns-spanned="5" table:number-rows-spanned="3">
+
+
+<text:p><text:span text:style-name="T13">                           All the available individuals</text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Clinical Examination</text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">History of morbidity</text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Diet survey</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">1200</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-columns-spanned="5">
+
+
+<text:p><text:span text:style-name="T13">All the individuals partaking meals in the HH</text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell table:number-rows-spanned="2">
+
+
+<text:p><text:span text:style-name="T13">Blood Pressure #</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="2">
+
+
+<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Men (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18yrs)</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="2">
+
+
+<text:p><text:span text:style-name="T13">10%</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="2">
+
+
+<text:p><text:span text:style-name="T13">95%</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="2">
+
+
+<text:p><text:span text:style-name="T13">20%</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">1728</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Women (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18 yrs)</text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">1728</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell table:number-rows-spanned="2">
+
+
+<text:p><text:span text:style-name="T13">Fasting blood glucose</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="2">
+
+
+<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Men (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18 yrs)</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="2">
+
+
+<text:p><text:span text:style-name="T13">5%</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="2">
+
+
+<text:p><text:span text:style-name="T13">95%</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="2">
+
+
+<text:p><text:span text:style-name="T13">20%</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">1825</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Women (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18 yrs)</text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">1825</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell table:number-rows-spanned="2">
+
+
+<text:p><text:span text:style-name="T13">Knowledge &amp; Practices on HTN &amp; DM</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Men (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18 yrs)</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13"></text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13"></text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13"></text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">1728</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">Women (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18 yrs)</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13"></text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13"></text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13"></text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><text:span text:style-name="T13">1728</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+    </table:table>
+
+
+<text:p><text:span text:style-name="T13">*CI: Confidence Interval       # Design effect 2</text:span></text:p>
+
+<text:p><text:span text:style-name="T15">3.4.2. Measurement of blood pressure</text:span></text:p>
+
+<text:p><text:span text:style-name="T11">Earlier studies have revealed that the prevalence of hypertension among the rural</text:span></text:p>
+
+<text:p><text:span text:style-name="T16">3 </text:span><text:span text:style-name="T11">adults of </text:span><text:span text:style-name="T17">&#x2265;</text:span><text:span text:style-name="T11">18 years in the State of Gujarat was 10% which was lowest compared to other NNMB States. Assuming 10% prevalence of hypertension among rural adults, with 95% confidence interval, 20% relative precision and design effect of 2, the sample size computed for each State was 1,728 adults in each gender.</text:span></text:p>
+
+<text:p><text:span text:style-name="T15">3.4.3. Estimation of fasting blood glucose</text:span></text:p>
+
+<text:p><text:span text:style-name="T11">Earlier studies have revealed that the overall prevalence of diabetes among the</text:span></text:p>
+
+<text:p><text:span text:style-name="T16">3 </text:span><text:span text:style-name="T11">rural adults of </text:span><text:span text:style-name="T17">&#x2265;</text:span><text:span text:style-name="T11">18 years was about 5% . Assuming 5% prevalence of diabetes among rural adults, with 95% confidence interval and 20% relative precision, the sample size computed was 1,825 adults in each gender.</text:span></text:p>
+
+<text:p><text:span text:style-name="T15">3.5. Investigations</text:span></text:p>
+
+<text:p><text:span text:style-name="T11">The following investigations were carried out in the selected HHs:</text:span></text:p>
+
+<text:p><text:span text:style-name="T15">3.5.1. Socioeconomic and demographic particulars of households</text:span></text:p>
+
+<text:p><text:span text:style-name="T11">Socioeconomic and demographic particulars, such as age, sex, occupation, annual family income, family size, type of family, literacy level of individuals, information about possession of agricultural land, types of crops raised, their yield during previous year, live stock, type of dwelling, environmental sanitation etc. from all the selected 20 HHs were collected using pretested questionnaires.</text:span></text:p>
+
+<text:p><text:span text:style-name="T18">NNMB 3 RuralThird Repeat Survey 201112</text:span></text:p></office:text></office:body></office:document-content>

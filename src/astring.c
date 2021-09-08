@@ -65,7 +65,7 @@ int extract_astring_truncate(extract_astring_t* content, int len)
     return 0;
 }
 
-int astring_char_truncate_if(extract_astring_t* content, char c)
+int extract_astring_char_truncate_if(extract_astring_t* content, char c)
 {
     if (content->chars_num && content->chars[content->chars_num-1] == c) {
         extract_astring_truncate(content, 1);
