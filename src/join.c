@@ -1057,7 +1057,10 @@ static int make_paragraphs(
                 }
                 /* Join these two paragraph_t's. */
                 a_span = extract_line_span_last(line_a);
-                if (extract_span_char_last(a_span)->ucs == '-') {
+                if (extract_span_char_last(a_span)->ucs == '-'
+                        || extract_span_char_last(a_span)->ucs == 0x2212 /* unicode dash */
+                        )
+                {
                     /* remove trailing '-' at end of prev line. char_t doesn't
                     contain any malloc-heap pointers so this doesn't leak. */
                     a_span->chars_num -= 1;

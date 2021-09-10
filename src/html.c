@@ -96,7 +96,7 @@ static int paragraph_to_html_content(
             for (c=0; c<span->chars_num; ++c)
             {
                 char_t* char_ = &span->chars[c];
-                if (extract_astring_cat_xmlc(alloc, content, char_->ucs)) goto end;
+                if (extract_astring_catc_unicode_xml(alloc, content, char_->ucs)) goto end;
             }
         }
 

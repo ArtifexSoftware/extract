@@ -1,8 +1,8 @@
 #ifndef ARITFEX_EXTRACT_H
 #define ARITFEX_EXTRACT_H
 
-/* Functions for creating docx, odt and html files from information about raw
-characters, images and graphic elements.
+/* Functions for creating docx, odt, html and text files from information about
+raw characters, images and graphic elements.
 
 Unless otherwise stated, all functions return 0 on success or -1 with errno
 set.
@@ -21,8 +21,23 @@ typedef enum
 {
     extract_format_ODT,
     extract_format_DOCX,
-    extract_format_HTML
+    extract_format_HTML,
+    extract_format_TEXT
 } extract_format_t;
+/* Specifies the output document type.
+
+extract_format_ODT
+extract_format_DOCX
+    Uses internal template ODT and DOCX documents.
+
+extract_format_HTML:
+    Uses <p> for paragraphs, and <b> and <i> for bold and italic text.
+
+extract_format_TEXT:
+    Outputs one line per paragraph, encoding text as utf8. Ligatures and and
+    some unicode characters such as dash (0x2212) are converted into ascii
+    equvalents.
+*/
 
 
 int extract_begin(

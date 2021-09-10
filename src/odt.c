@@ -296,7 +296,7 @@ change font. */
             {
                 char_t* char_ = &span->chars[si];
                 int c = char_->ucs;
-                if (extract_astring_cat_xmlc(alloc, content, c)) goto end;
+                if (extract_astring_catc_unicode_xml(alloc, content, c)) goto end;
             }
             /* Remove any trailing '-' at end of line. */
             if (extract_astring_char_truncate_if(content, '-')) goto end;

@@ -637,7 +637,12 @@ int extract_begin(
     int e = -1;
     extract_t*  extract;
     
-    if (format != extract_format_ODT && format != extract_format_DOCX && format != extract_format_HTML)
+    if (1
+            && format != extract_format_ODT
+            && format != extract_format_DOCX
+            && format != extract_format_HTML
+            && format != extract_format_TEXT
+            )
     {
         outf0("Invalid format=%i\n", format);
         errno = EINVAL;
@@ -1659,59 +1664,19 @@ static int paragraphs_to_text_content(
                     /* We encode each character as utf8. */
                     char_t* char_ = &span->chars[c];
                     unsigned cc = char_->ucs;
-                    if (cc < 0x80)
-                    {
-                        if (extract_astring_catc(alloc, text, (char) cc)) return -1;
-                    }
-                    else if (cc < 0x0800)
-                    {
-                        char ccc[2] = 
-                        {
-                            ((cc >> 6) & 0x1f) | 0xc0,
-                            ((cc >> 0) & 0x3f) | 0x80
-                        };
-                        if (extract_astring_catl(alloc, text, ccc, sizeof(ccc))) return -1;
-                    }
-                    else if (cc < 0x10000)
-                    {
-                        char ccc[3] = 
-                        {
-                            ((cc >> 12) & 0x0f) | 0xe0,
-                            ((cc >>  6) & 0x3f) | 0x80,
-                            ((cc >>  0) & 0x3f) | 0x80
-                        };
-                        if (extract_astring_catl(alloc, text, ccc, sizeof(ccc))) return -1;
-                    }
-                    else if (cc < 0x110000)
-                    {
-                        char ccc[4] = 
-                        {
-                            ((cc >> 18) & 0x07) | 0xf0,
-                            ((cc >> 12) & 0x3f) | 0x80,
-                            ((cc >>  6) & 0x3f) | 0x80,
-                            ((cc >>  0) & 0x3f) | 0x80
-                        };
-                        if (extract_astring_catl(alloc, text, ccc, sizeof(ccc))) return -1;
-                    }
-                    else
-                    {
-                        /* Use replacement character. */
-                        char ccc[4] = { 0xef, 0xbf, 0xbd, 0};
-                        if (extract_astring_catl(alloc, text, ccc, sizeof(ccc))) return -1;
-                    }
-                }
-            }
-            if (0 && text->chars_num && l+1 < paragraph->lines_num)
-            {
-                if (text->chars[text->chars_num-1] == '-')   text->chars_num -= 1;
-                else if (text->chars[text->chars_num-1] != ' '
-                        && text->chars[text->chars_num-1] != '/'
-                        )
-                {
-                    extract_astring_catc(alloc, text, ' ');
+                    if (extract_astring_catc_unicode(
+                            alloc,
+                            text,
+                            cc,
+                            0 /*xml*/,
+                            1 /*ascii_ligatures*/,
+                            1 /*ascii_dash*/,
+                            1 /*ascii_apostrophe*/
+                            )) return -1;
                 }
             }
         }
+        if (extract_astring_catc(alloc, text, '\n')) return -1;
     }
     return 0;
 }
@@ -1756,7 +1721,12 @@ static int extract_write_tables_csv(extract_t* extract)
                     }
                     if (have_output) fprintf(f, ",");
                     have_output = 1;
-                    if (paragraphs_to_text_content(extract->alloc, cell->paragraphs, cell->paragraphs_num, &text)) return -1;
+                    if (paragraphs_to_text_content(
+                            extract->alloc,
+                            cell->paragraphs,
+                            cell->paragraphs_num,
+                            &text
+                            )) return -1;
                     /* Reference cvs output trims trailing spaces. */
                     extract_astring_char_truncate_if(&text, ' ');
                     fprintf(f, "\"%s\"", text.chars ? text.chars : "");
@@ -1823,6 +1793,20 @@ int extract_process(
                 images,
                 &extract->contentss[extract->contentss_num - 1]
                 )) goto end;
+    }
+    else if (extract->format == extract_format_TEXT)
+    {
+        int p;
+        for (p=0; p<extract->document.pages_num; ++p)
+        {
+            extract_page_t* page = extract->document.pages[p];
+            if (paragraphs_to_text_content(
+                    extract->alloc,
+                    page->paragraphs,
+                    page->paragraphs_num,
+                    &extract->contentss[extract->contentss_num - 1]
+                    )) goto end;
+        }
     }
     else
     {
@@ -1930,6 +1914,13 @@ int extract_write(extract_t* extract, extract_buffer_t* buffer)
         
     }
     else if (extract->format == extract_format_HTML)
+    {
+        for (i=0; i<extract->contentss_num; ++i)
+        {
+            if (extract_buffer_write(buffer, extract->contentss[i].chars, extract->contentss[i].chars_num, NULL)) goto end;
+        }
+    }
+    else if (extract->format == extract_format_TEXT)
     {
         for (i=0; i<extract->contentss_num; ++i)
         {
