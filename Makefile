@@ -155,9 +155,13 @@ ifneq ($(mutool),)
             $(patsubst %, %.mutool.docx.diff, $(pdfs_generated)) \
             $(patsubst %, %.mutool-norotate.docx.diff, $(pdfs_generated)) \
             $(patsubst %, %.mutool.odt.diff, $(pdfs_generated)) \
+            $(patsubst %, %.mutool.text.diff, $(pdfs_generated)) \
 
     tests_mutool_odt := \
             $(patsubst %, %.mutool.odt.diff, $(pdfs_generated)) \
+
+    tests_mutool_text := \
+            $(patsubst %, %.mutool.text.diff, $(pdfs_generated)) \
 
 endif
 ifneq ($(gs),)
@@ -178,16 +182,19 @@ endif
 test-exe: $(tests_exe)
 	@echo $@: passed
 
-# Checks output of mutool conversion from .pdf to .docx/.odt. Requires that
-# mutool was built with extract as a third-party library.
+# Checks output of mutool conversion from .pdf to .docx/.odt.
 #
 test-mutool: $(tests_mutool)
 	@echo $@: passed
 
-# Checks output of mutool conversion from .pdf to .odt. Requires that mutool
-# was built with extract as a third-party library.
+# Checks output of mutool conversion from .pdf to .odt.
 #
 test-mutool-odt: $(tests_mutool_odt)
+	@echo $@: passed
+
+# Checks output of mutool conversion from .pdf to .text.
+#
+test-mutool-text: $(tests_mutool_text)
 	@echo $@: passed
 
 # Checks output of gs conversion from .pdf to .docx. Requires that gs was built
@@ -257,6 +264,11 @@ test/generated/%.pdf.mutool.cv.html: test/%.pdf $(mutool)
 	$(mutool) convert -O resolution=300 -o $<..png $<
 	EXTRACT_OPENCV_IMAGE_BASE=$< $(mutool_run) convert -F docx -O html -o $@ $<
 
+test/generated/%.pdf.mutool.text.diff: test/generated/%.pdf.mutool.text test/%.pdf.mutool.text.ref
+	@echo
+	@echo == Checking $<
+	diff -u $^
+
 
 # Main executable.
 #
@@ -322,6 +334,8 @@ ifeq (0,1)
 test/%.docx.dir.ref/: test/generated/%.docx.dir/
 	rsync -ai $< $@
 test/%.odt.dir.ref/: test/generated/%.odt.dir/
+	rsync -ai $< $@
+test/%.text.ref: test/generated/%.text
 	rsync -ai $< $@
 
 _update_tables_leafs = $(patsubst test/%, %, $(test_tables_pdfs))
@@ -477,18 +491,19 @@ test/generated/%.pdf.mutool.odt: test/%.pdf $(mutool)
 	@mkdir -p test/generated
 	$(mutool_run) convert -O mediabox-clip=no -o $@ $<
 
-# Converts .pdf directly to .odt using mutool 
+# Converts .pdf directly to .html using mutool 
 test/generated/%.pdf.mutool.html: test/%.pdf $(mutool)
 	@echo
 	@echo == Converting .pdf directly to .html using mutool.
 	@mkdir -p test/generated
 	$(mutool_run) convert -F docx -O html -o $@ $<
 
-#test/generated/%.pdf.mutool.html: test/%.pdf $(mutool)
-#	@echo
-#	@echo == Converting .pdf directly to .html using mutool.
-#	@mkdir -p test/generated
-#	$(mutool_run) convert -F docx -O mediabox-clip=no,html -o $@ $<
+# Converts .pdf directly to .text using mutool 
+test/generated/%.pdf.mutool.text: test/%.pdf $(mutool)
+	@echo
+	@echo == Converting .pdf directly to .text using mutool.
+	@mkdir -p test/generated
+	$(mutool_run) convert -F docx -O text -o $@ $<
 
 # Valgrind test
 #
