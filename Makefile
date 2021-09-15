@@ -307,7 +307,7 @@ exe_obj := $(patsubst src/%.cpp, src/build/%.cpp-$(build).o, $(exe_obj))
 exe_dep = $(exe_obj:.o=.d)
 exe: $(exe)
 $(exe): $(exe_obj)
-	$(CXX) $(flags_link) -o $@ $^ -lz -lm -l opencv_core -l opencv_imgproc -l opencv_imgcodecs
+	$(CXX) $(flags_link) -o $@ $^ -lz -lm
 
 run_exe = $(exe)
 ifeq ($(build),memento)
