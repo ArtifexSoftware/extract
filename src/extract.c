@@ -1348,7 +1348,7 @@ int extract_add_line(
     rect.max.y = s_max(p0.y, p1.y);
     
     outf("%s: width=%f ((%f %f)(%f %f)) rect=%s",
-            __FUNCTION__,
+            extract_FUNCTION,
             width,
             x0, y0, x1, y1,
             extract_rect_string(&rect)
