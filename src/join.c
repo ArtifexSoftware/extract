@@ -673,7 +673,7 @@ static int make_lines(
                 the new extended line_a needs checking again. */
                 a -= 1;
             }
-            outfx("new line is:\n    %s", line_string2(line_a));
+            outfx("num_joins=%i new line is:\n    %s", num_joins, line_string2(line_a));
         }
     }
 
@@ -1106,9 +1106,10 @@ static int make_paragraphs(
 
                 num_joins += 1;
                 outfx(
-                        "have joined paragraph a=%i to snearest_paragraph_b=%i",
+                        "have joined paragraph a=%i to nearest_paragraph_b=%i. num_joins=%i.",
                         a,
-                        nearest_paragraph_b
+                        nearest_paragraph_b,
+                        num_joins
                         );
 
                 if (nearest_paragraph_b > a) {
