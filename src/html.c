@@ -65,7 +65,7 @@ static int paragraph_to_html_content(
         )
 {
     int e = -1;
-    char* endl = (single_line) ? "" : "\n";
+    const char* endl = (single_line) ? "" : "\n";
     int l;
     if (extract_astring_catf(alloc, content, "%s%s<p>", endl, endl)) goto end;
 

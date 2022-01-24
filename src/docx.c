@@ -84,13 +84,14 @@ static int s_docx_paragraph_empty(extract_alloc_t* alloc, extract_astring_t* con
 /* Append an empty paragraph to *content. */
 {
     int e = -1;
+    static char fontname[] = "OpenSans";
     content_state_t content_state = {0};
     if (s_docx_paragraph_start(alloc, content)) goto end;
     /* It seems like our choice of font size here doesn't make any difference
     to the ammount of vertical space, unless we include a non-space
     character. Presumably something to do with the styles in the template
     document. */
-    content_state.font.name = "OpenSans";
+    content_state.font.name = fontname;
     content_state.font.size = 10;
     content_state.font.bold = 0;
     content_state.font.italic = 0;
