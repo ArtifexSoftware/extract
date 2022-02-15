@@ -307,6 +307,8 @@ are no empty spans. */
                     )
             {
                 if (extract_span_append_c(alloc, o_span, char_->ucs))   return -1;
+                /* Coverity warns, but o_span must have at least one item. */
+                /* coverity[var_deref_model] */
                 *extract_span_char_last(o_span) = *char_;
                 char_->ucs = ucs_NONE; /* Mark for removal below, so it is not used again. */
                 break;
@@ -1473,6 +1475,9 @@ y_min..y_max. */
     
     if (table_find_y_range(alloc, all_h, y_min, y_max, &tl_h)) goto end;
     if (table_find_y_range(alloc, all_v, y_min, y_max, &tl_v)) goto end;
+    /* Suppress false coverity warning - qsort() does not dereference null
+    pointer if nmemb is zero. */
+    /* coverity[var_deref_model] */
     qsort(tl_v.tablelines, tl_v.tablelines_num, sizeof(*tl_v.tablelines), tablelines_compare_x);
     
     if (0)

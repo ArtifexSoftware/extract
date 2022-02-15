@@ -170,10 +170,7 @@ static int append_table(extract_alloc_t* alloc, content_state_t* state, table_t*
                 by other cells that extend horizontally and vertically. */
                 continue;
             }
-            if (multiline)
-            {
-                if (extract_astring_cat(alloc, content, "        ")) goto end;
-            }
+            if (extract_astring_cat(alloc, content, "        ")) goto end;
             if (extract_astring_cat(alloc, content, "<td")) goto end;
             
             if (cell->extend_right > 1)

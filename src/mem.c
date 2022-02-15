@@ -25,7 +25,6 @@ int extract_vasprintf(extract_alloc_t* alloc, char** out, const char* format, va
     if (n < 0) return n;
     if (extract_malloc(alloc, out, n + 1)) return -1;
     vsnprintf(*out, n + 1, format, va2);
-    va_end(va2);
     return 0;
 }
 

@@ -1108,6 +1108,8 @@ int extract_add_char(
     }
     
     if (extract_span_append_c(extract->alloc, span, 0 /*c*/)) goto end;
+    /* Coverity warns, but extract_span_append_c() will have appended an item. */
+    /* coverity[var_deref_model] */
     char_ = &span->chars[ span->chars_num-1];
     
     char_->pre_x = x;
@@ -1702,7 +1704,10 @@ static int extract_write_tables_csv(extract_t* extract)
         {
             table_t* table = page->tables[t];
             int y;
-            if (f) fclose(f);
+            if (f) {
+                fclose(f);
+                f = NULL;
+            }
             extract_free(extract->alloc, &path);
             if (extract_asprintf(extract->alloc, &path, extract->tables_csv_format, extract->tables_csv_i) < 0) goto end;
             extract->tables_csv_i += 1;
@@ -1738,6 +1743,7 @@ static int extract_write_tables_csv(extract_t* extract)
                 fprintf(f, "\n");
             }
             fclose(f);
+            f = NULL;
         }
     }
     ret = 0;
