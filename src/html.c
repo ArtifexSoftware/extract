@@ -186,10 +186,7 @@ static int append_table(extract_alloc_t* alloc, content_state_t* state, table_t*
 
             if (paragraphs_to_html_content(alloc, state, cell->paragraphs, cell->paragraphs_num, 1 /* single_line*/, content)) goto end;
             if (extract_astring_cat(alloc, content, "</td>")) goto end;
-            if (multiline)
-            {
-                if (extract_astring_cat(alloc, content, "\n")) goto end;
-            }
+            if (extract_astring_cat(alloc, content, "\n")) goto end;
 
             if (content_state_reset(alloc, state, content)) goto end;
         }

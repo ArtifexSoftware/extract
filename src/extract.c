@@ -1704,10 +1704,6 @@ static int extract_write_tables_csv(extract_t* extract)
         {
             table_t* table = page->tables[t];
             int y;
-            if (f) {
-                fclose(f);
-                f = NULL;
-            }
             extract_free(extract->alloc, &path);
             if (extract_asprintf(extract->alloc, &path, extract->tables_csv_format, extract->tables_csv_i) < 0) goto end;
             extract->tables_csv_i += 1;

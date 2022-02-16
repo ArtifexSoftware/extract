@@ -79,7 +79,7 @@ int extract_content_insert(
     /* As per docs, at least one of <single_name>, <mid_begin_name> and
     <mid_end_name> is non-null, and this ensures that mid_end must not be null.
     */
-    /* coverity [var_deref_model] */
+    /* coverity[var_deref_model] */
     if (extract_astring_cat(alloc, &out, mid_end)) goto end;
     
     *o_out = out.chars;
