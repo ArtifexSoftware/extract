@@ -1109,7 +1109,7 @@ int extract_add_char(
     
     if (extract_span_append_c(extract->alloc, span, 0 /*c*/)) goto end;
     /* Coverity warns, but extract_span_append_c() will have appended an item. */
-    /* coverity[var_deref_model] */
+    /* coverity[var_deref_op] */
     char_ = &span->chars[ span->chars_num-1];
     
     char_->pre_x = x;

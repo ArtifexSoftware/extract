@@ -308,7 +308,7 @@ are no empty spans. */
             {
                 if (extract_span_append_c(alloc, o_span, char_->ucs))   return -1;
                 /* Coverity warns, but o_span must have at least one item. */
-                /* coverity[var_deref_model] */
+                /* coverity[var_deref_op] */
                 *extract_span_char_last(o_span) = *char_;
                 char_->ucs = ucs_NONE; /* Mark for removal below, so it is not used again. */
                 break;
