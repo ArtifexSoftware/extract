@@ -154,13 +154,8 @@ static int append_table(extract_alloc_t* alloc, content_state_t* state, table_t*
     for (y=0; y<table->cells_num_y; ++y)
     {
         /* If 1, we put each <td>...</td> on a separate line. */
-        int multiline = 0;
         int x;
         if (extract_astring_cat(alloc, content, "    <tr>\n")) goto end;
-        if (!multiline)
-        {
-            if (extract_astring_cat(alloc, content, "        ")) goto end;
-        }
         for (x=0; x<table->cells_num_x; ++x)
         {
             cell_t* cell = table->cells[y*table->cells_num_x + x];
@@ -189,10 +184,6 @@ static int append_table(extract_alloc_t* alloc, content_state_t* state, table_t*
             if (extract_astring_cat(alloc, content, "\n")) goto end;
 
             if (content_state_reset(alloc, state, content)) goto end;
-        }
-        if (!multiline)
-        {
-            if (extract_astring_cat(alloc, content, "\n")) goto end;
         }
         if (extract_astring_cat(alloc, content, "    </tr>\n")) goto end;
     }
