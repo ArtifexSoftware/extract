@@ -4,121 +4,175 @@
 
 <table border="1" style="border-collapse:collapse">
     <tr>
-        <td><p><b>Plan Type </p></b></td><td><p><b>County </p></b></td><td><p><b>Plan Name </p></b></td><td><p><b>Totals </p></b></td>
+        <td><p><b>Plan Type </p></b></td>
+        <td><p><b>County </p></b></td>
+        <td><p><b>Plan Name </p></b></td>
+        <td><p><b>Totals </p></b></td>
     </tr>
     <tr>
-        <td rowspan="10"><p><b>GMC </p></b></td><td rowspan="4"><p>Sacramento </p></td><td><p>Anthem Blue Cross </p></td><td><p>164,380 </p></td>
+        <td rowspan="10"><p><b>GMC </p></b></td>
+        <td rowspan="4"><p>Sacramento </p></td>
+        <td><p>Anthem Blue Cross </p></td>
+        <td><p>164,380 </p></td>
     </tr>
     <tr>
-        <td><p>Health Net </p></td><td><p>126,547 </p></td>
+        <td><p>Health Net </p></td>
+        <td><p>126,547 </p></td>
     </tr>
     <tr>
-        <td><p>Kaiser Foundation </p></td><td><p>74,620 </p></td>
+        <td><p>Kaiser Foundation </p></td>
+        <td><p>74,620 </p></td>
     </tr>
     <tr>
-        <td><p>Molina Healthcare </p></td><td><p>59,989 </p></td>
+        <td><p>Molina Healthcare </p></td>
+        <td><p>59,989 </p></td>
     </tr>
     <tr>
-        <td rowspan="5"><p>San Diego </p></td><td><p>Care 1st Health Plan </p></td><td><p>71,831 </p></td>
+        <td rowspan="5"><p>San Diego </p></td>
+        <td><p>Care 1st Health Plan </p></td>
+        <td><p>71,831 </p></td>
     </tr>
     <tr>
-        <td><p>Community Health Group </p></td><td><p>264,639 </p></td>
+        <td><p>Community Health Group </p></td>
+        <td><p>264,639 </p></td>
     </tr>
     <tr>
-        <td><p>Health Net </p></td><td><p>72,404 </p></td>
+        <td><p>Health Net </p></td>
+        <td><p>72,404 </p></td>
     </tr>
     <tr>
-        <td><p>Kaiser </p></td><td><p>50,415 </p></td>
+        <td><p>Kaiser </p></td>
+        <td><p>50,415 </p></td>
     </tr>
     <tr>
-        <td><p>Molina Healthcare </p></td><td><p>206,430 </p></td>
+        <td><p>Molina Healthcare </p></td>
+        <td><p>206,430 </p></td>
     </tr>
     <tr>
-        <td colspan="2"><p><b>Total GMC Enrollment </p></b></td><td><p><b>1,091,255 </p></b></td>
+        <td colspan="2"><p><b>Total GMC Enrollment </p></b></td>
+        <td><p><b>1,091,255 </p></b></td>
     </tr>
     <tr>
-        <td rowspan="23"><p><b>COHS </p></b></td><td><p>Marin </p></td><td rowspan="14"><p>Partnership Health Plan of CA </p></td><td><p>36,006 </p></td>
+        <td rowspan="23"><p><b>COHS </p></b></td>
+        <td><p>Marin </p></td>
+        <td rowspan="14"><p>Partnership Health Plan of CA </p></td>
+        <td><p>36,006 </p></td>
     </tr>
     <tr>
-        <td><p>Mendocino</p></td><td><p>                         37,243 </p></td>
+        <td><p>Mendocino</p></td>
+        <td><p>                         37,243 </p></td>
     </tr>
     <tr>
-        <td><p>Napa </p></td><td><p>28,398 </p></td>
+        <td><p>Napa </p></td>
+        <td><p>28,398 </p></td>
     </tr>
     <tr>
-        <td><p>Solano </p></td><td><p>113,220 </p></td>
+        <td><p>Solano </p></td>
+        <td><p>113,220 </p></td>
     </tr>
     <tr>
-        <td><p>Sonoma </p></td><td><p>112,271 </p></td>
+        <td><p>Sonoma </p></td>
+        <td><p>112,271 </p></td>
     </tr>
     <tr>
-        <td><p>Yolo </p></td><td><p>52,674 </p></td>
+        <td><p>Yolo </p></td>
+        <td><p>52,674 </p></td>
     </tr>
     <tr>
-        <td><p>Del Norte </p></td><td><p>11,242 </p></td>
+        <td><p>Del Norte </p></td>
+        <td><p>11,242 </p></td>
     </tr>
     <tr>
-        <td><p>Humboldt </p></td><td><p>49,911 </p></td>
+        <td><p>Humboldt </p></td>
+        <td><p>49,911 </p></td>
     </tr>
     <tr>
-        <td><p>Lake </p></td><td><p>29,149 </p></td>
+        <td><p>Lake </p></td>
+        <td><p>29,149 </p></td>
     </tr>
     <tr>
-        <td><p>Lassen </p></td><td><p>7,360 </p></td>
+        <td><p>Lassen </p></td>
+        <td><p>7,360 </p></td>
     </tr>
     <tr>
-        <td><p>Modoc </p></td><td><p>2,940 </p></td>
+        <td><p>Modoc </p></td>
+        <td><p>2,940 </p></td>
     </tr>
     <tr>
-        <td><p>Shasta </p></td><td><p>61,763 </p></td>
+        <td><p>Shasta </p></td>
+        <td><p>61,763 </p></td>
     </tr>
     <tr>
-        <td><p>Siskiyou </p></td><td><p>16,715 </p></td>
+        <td><p>Siskiyou </p></td>
+        <td><p>16,715 </p></td>
     </tr>
     <tr>
-        <td><p>Trinity </p></td><td><p>4,542 </p></td>
+        <td><p>Trinity </p></td>
+        <td><p>4,542 </p></td>
     </tr>
     <tr>
-        <td><p>Merced</p></td><td rowspan="3"><p>Central California Alliance for Health</p></td><td><p>                       123,907 </p></td>
+        <td><p>Merced</p></td>
+        <td rowspan="3"><p>Central California Alliance for Health</p></td>
+        <td><p>                       123,907 </p></td>
     </tr>
     <tr>
-        <td><p>Monterey </p></td><td><p>                       147,397 </p></td>
+        <td><p>Monterey </p></td>
+        <td><p>                       147,397 </p></td>
     </tr>
     <tr>
-        <td><p>Santa Cruz</p></td><td><p>                         69,458 </p></td>
+        <td><p>Santa Cruz</p></td>
+        <td><p>                         69,458 </p></td>
     </tr>
     <tr>
-        <td><p>Santa Barbara </p></td><td rowspan="2"><p>CenCal </p></td><td><p>117,609 </p></td>
+        <td><p>Santa Barbara </p></td>
+        <td rowspan="2"><p>CenCal </p></td>
+        <td><p>117,609 </p></td>
     </tr>
     <tr>
-        <td><p>San Luis Obispo </p></td><td><p>55,761 </p></td>
+        <td><p>San Luis Obispo </p></td>
+        <td><p>55,761 </p></td>
     </tr>
     <tr>
-        <td><p>Orange </p></td><td><p>CalOptima </p></td><td><p>783,079 </p></td>
+        <td><p>Orange </p></td>
+        <td><p>CalOptima </p></td>
+        <td><p>783,079 </p></td>
     </tr>
     <tr>
-        <td><p>San Mateo </p></td><td><p>Health Plan of San Mateo </p></td><td><p>113,202 </p></td>
+        <td><p>San Mateo </p></td>
+        <td><p>Health Plan of San Mateo </p></td>
+        <td><p>113,202 </p></td>
     </tr>
     <tr>
-        <td><p>Ventura </p></td><td><p>Gold Coast Health Plan </p></td><td><p>202,217 </p></td>
+        <td><p>Ventura </p></td>
+        <td><p>Gold Coast Health Plan </p></td>
+        <td><p>202,217 </p></td>
     </tr>
     <tr>
-        <td colspan="2"><p><b>Total COHS Enrollment </p></b></td><td><p><b>2,176,064 </p></b></td>
+        <td colspan="2"><p><b>Total COHS Enrollment </p></b></td>
+        <td><p><b>2,176,064 </p></b></td>
     </tr>
     <tr>
-        <td colspan="3"><p><b>Subtotal for Two-Plan, Regional Model, GMC and COHS </p></b></td><td><p><b>10,132,022 </p></b></td>
+        <td colspan="3"><p><b>Subtotal for Two-Plan, Regional Model, GMC and COHS </p></b></td>
+        <td><p><b>10,132,022 </p></b></td>
     </tr>
     <tr>
-        <td rowspan="3"><p><b>PCCM </p></b></td><td><p>Los Angeles </p></td><td><p>AIDS Healthcare Foundation </p></td><td><p>828 </p></td>
+        <td rowspan="3"><p><b>PCCM </p></b></td>
+        <td><p>Los Angeles </p></td>
+        <td><p>AIDS Healthcare Foundation </p></td>
+        <td><p>828 </p></td>
     </tr>
     <tr>
-        <td><p>San Francisco </p></td><td><p>Family Mosaic </p></td><td><p>25 </p></td>
+        <td><p>San Francisco </p></td>
+        <td><p>Family Mosaic </p></td>
+        <td><p>25 </p></td>
     </tr>
     <tr>
-        <td colspan="2"><p><b>Total PHP Enrollment </p></b></td><td><p><b>853 </p></b></td>
+        <td colspan="2"><p><b>Total PHP Enrollment </p></b></td>
+        <td><p><b>853 </p></b></td>
     </tr>
     <tr>
-        <td colspan="3"><p><b>All Models Total Enrollments </p></b></td><td><p><b>10,132,875 </p></b></td>
+        <td colspan="3"><p><b>All Models Total Enrollments </p></b></td>
+        <td><p><b>10,132,875 </p></b></td>
     </tr>
     <tr>
         <td colspan="4"><p>Source:   Data Warehouse 12/14/15 </p></td>

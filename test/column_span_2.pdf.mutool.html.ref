@@ -7,10 +7,18 @@
 
 <table border="1" style="border-collapse:collapse">
     <tr>
-        <td><p><b>Investigations</p></b></td><td><p><b>No. of HHs</p></b></td><td><p><b>Age/Sex/ Physiological Group</p></b></td><td><p><b>Preva lence</p></b></td><td><p><b>C.I*</p></b></td><td><p><b>Relative Precision</p></b></td><td><p><b>Sample size per State</p></b></td>
+        <td><p><b>Investigations</p></b></td>
+        <td><p><b>No. of HHs</p></b></td>
+        <td><p><b>Age/Sex/ Physiological Group</p></b></td>
+        <td><p><b>Preva lence</p></b></td>
+        <td><p><b>C.I*</p></b></td>
+        <td><p><b>Relative Precision</p></b></td>
+        <td><p><b>Sample size per State</p></b></td>
     </tr>
     <tr>
-        <td><p><i>Anthropometry</p></i></td><td rowspan="3"><p><i>2400</p></i></td><td colspan="5" rowspan="3"><p><i>                           All the available individuals</p></i></td>
+        <td><p><i>Anthropometry</p></i></td>
+        <td rowspan="3"><p><i>2400</p></i></td>
+        <td colspan="5" rowspan="3"><p><i>                           All the available individuals</p></i></td>
     </tr>
     <tr>
         <td><p><i>Clinical Examination</p></i></td>
@@ -19,25 +27,52 @@
         <td><p><i>History of morbidity</p></i></td>
     </tr>
     <tr>
-        <td><p><i>Diet survey</p></i></td><td><p><i>1200</p></i></td><td colspan="5"><p><i>All the individuals partaking meals in the HH</p></i></td>
+        <td><p><i>Diet survey</p></i></td>
+        <td><p><i>1200</p></i></td>
+        <td colspan="5"><p><i>All the individuals partaking meals in the HH</p></i></td>
     </tr>
     <tr>
-        <td rowspan="2"><p><i>Blood Pressure #</p></i></td><td rowspan="2"><p><i>2400</p></i></td><td><p><i>Men (</i>&#x2265;<i> 18yrs)</p></i></td><td rowspan="2"><p><i>10%</p></i></td><td rowspan="2"><p><i>95%</p></i></td><td rowspan="2"><p><i>20%</p></i></td><td><p><i>1728</p></i></td>
+        <td rowspan="2"><p><i>Blood Pressure #</p></i></td>
+        <td rowspan="2"><p><i>2400</p></i></td>
+        <td><p><i>Men (</i>&#x2265;<i> 18yrs)</p></i></td>
+        <td rowspan="2"><p><i>10%</p></i></td>
+        <td rowspan="2"><p><i>95%</p></i></td>
+        <td rowspan="2"><p><i>20%</p></i></td>
+        <td><p><i>1728</p></i></td>
     </tr>
     <tr>
-        <td><p><i>Women (</i>&#x2265;<i> 18 yrs)</p></i></td><td><p><i>1728</p></i></td>
+        <td><p><i>Women (</i>&#x2265;<i> 18 yrs)</p></i></td>
+        <td><p><i>1728</p></i></td>
     </tr>
     <tr>
-        <td rowspan="2"><p><i>Fasting blood glucose</p></i></td><td rowspan="2"><p><i>2400</p></i></td><td><p><i>Men (</i>&#x2265;<i> 18 yrs)</p></i></td><td rowspan="2"><p><i>5%</p></i></td><td rowspan="2"><p><i>95%</p></i></td><td rowspan="2"><p><i>20%</p></i></td><td><p><i>1825</p></i></td>
+        <td rowspan="2"><p><i>Fasting blood glucose</p></i></td>
+        <td rowspan="2"><p><i>2400</p></i></td>
+        <td><p><i>Men (</i>&#x2265;<i> 18 yrs)</p></i></td>
+        <td rowspan="2"><p><i>5%</p></i></td>
+        <td rowspan="2"><p><i>95%</p></i></td>
+        <td rowspan="2"><p><i>20%</p></i></td>
+        <td><p><i>1825</p></i></td>
     </tr>
     <tr>
-        <td><p><i>Women (</i>&#x2265;<i> 18 yrs)</p></i></td><td><p><i>1825</p></i></td>
+        <td><p><i>Women (</i>&#x2265;<i> 18 yrs)</p></i></td>
+        <td><p><i>1825</p></i></td>
     </tr>
     <tr>
-        <td rowspan="2"><p><i>Knowledge &amp; Practices on HTN &amp; DM</p></i></td><td><p><i>2400</p></i></td><td><p><i>Men (</i>&#x2265;<i> 18 yrs)</p></i></td><td><p><i>-</p></i></td><td><p><i>-</p></i></td><td><p><i>-</p></i></td><td><p><i>1728</p></i></td>
+        <td rowspan="2"><p><i>Knowledge &amp; Practices on HTN &amp; DM</p></i></td>
+        <td><p><i>2400</p></i></td>
+        <td><p><i>Men (</i>&#x2265;<i> 18 yrs)</p></i></td>
+        <td><p><i>-</p></i></td>
+        <td><p><i>-</p></i></td>
+        <td><p><i>-</p></i></td>
+        <td><p><i>1728</p></i></td>
     </tr>
     <tr>
-        <td><p><i>2400</p></i></td><td><p><i>Women (</i>&#x2265;<i> 18 yrs)</p></i></td><td><p><i>-</p></i></td><td><p><i>-</p></i></td><td><p><i>-</p></i></td><td><p><i>1728</p></i></td>
+        <td><p><i>2400</p></i></td>
+        <td><p><i>Women (</i>&#x2265;<i> 18 yrs)</p></i></td>
+        <td><p><i>-</p></i></td>
+        <td><p><i>-</p></i></td>
+        <td><p><i>-</p></i></td>
+        <td><p><i>1728</p></i></td>
     </tr>
 </table>
 

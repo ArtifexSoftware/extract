@@ -13,28 +13,77 @@
 
 <table border="1" style="border-collapse:collapse">
     <tr>
-        <td><p><b>State </p></b></td><td><p><b>Date </p></b></td><td><p><b>Halt stations </p></b></td><td><p><b>Halt days</p></b></td><td><p><b>Persons directly reached (in lakh)</p></b></td><td><p><b>Persons trained</p></b></td><td><p><b>Persons counseled</p></b></td><td><p><b>Persons tested for HIV</p></b></td>
+        <td><p><b>State </p></b></td>
+        <td><p><b>Date </p></b></td>
+        <td><p><b>Halt stations </p></b></td>
+        <td><p><b>Halt days</p></b></td>
+        <td><p><b>Persons directly reached (in lakh)</p></b></td>
+        <td><p><b>Persons trained</p></b></td>
+        <td><p><b>Persons counseled</p></b></td>
+        <td><p><b>Persons tested for HIV</p></b></td>
     </tr>
     <tr>
-        <td><p>Delhi</p></td><td><p>1.12.2009</p></td><td rowspan="2"><p>8</p></td><td rowspan="2"><p>17</p></td><td rowspan="2"><p>1.29</p></td><td rowspan="2"><p>3,665</p></td><td rowspan="2"><p>2,409</p></td><td rowspan="2"><p>1,000</p></td>
+        <td><p>Delhi</p></td>
+        <td><p>1.12.2009</p></td>
+        <td rowspan="2"><p>8</p></td>
+        <td rowspan="2"><p>17</p></td>
+        <td rowspan="2"><p>1.29</p></td>
+        <td rowspan="2"><p>3,665</p></td>
+        <td rowspan="2"><p>2,409</p></td>
+        <td rowspan="2"><p>1,000</p></td>
     </tr>
     <tr>
-        <td><p>Rajasthan</p></td><td><p>2.12.2009 to 19.12.2009</p></td>
+        <td><p>Rajasthan</p></td>
+        <td><p>2.12.2009 to 19.12.2009</p></td>
     </tr>
     <tr>
-        <td><p>Gujarat</p></td><td><p>20.12.2009 to 3.1.2010</p></td><td><p>6</p></td><td><p>13</p></td><td><p>6.03</p></td><td><p>3,810</p></td><td><p>2,317</p></td><td><p>1,453</p></td>
+        <td><p>Gujarat</p></td>
+        <td><p>20.12.2009 to 3.1.2010</p></td>
+        <td><p>6</p></td>
+        <td><p>13</p></td>
+        <td><p>6.03</p></td>
+        <td><p>3,810</p></td>
+        <td><p>2,317</p></td>
+        <td><p>1,453</p></td>
     </tr>
     <tr>
-        <td><p>Maharashtra</p></td><td><p>4.01.2010 to 1.2.2010</p></td><td><p>13</p></td><td><p>26</p></td><td><p>1.27</p></td><td><p>5,680</p></td><td><p>9,027</p></td><td><p>4,153</p></td>
+        <td><p>Maharashtra</p></td>
+        <td><p>4.01.2010 to 1.2.2010</p></td>
+        <td><p>13</p></td>
+        <td><p>26</p></td>
+        <td><p>1.27</p></td>
+        <td><p>5,680</p></td>
+        <td><p>9,027</p></td>
+        <td><p>4,153</p></td>
     </tr>
     <tr>
-        <td><p>Karnataka </p></td><td><p>2.2.2010 to 22.2.2010</p></td><td><p>11</p></td><td><p>19</p></td><td><p>1.80</p></td><td><p>5,741</p></td><td><p>3,658</p></td><td><p>3,183</p></td>
+        <td><p>Karnataka </p></td>
+        <td><p>2.2.2010 to 22.2.2010</p></td>
+        <td><p>11</p></td>
+        <td><p>19</p></td>
+        <td><p>1.80</p></td>
+        <td><p>5,741</p></td>
+        <td><p>3,658</p></td>
+        <td><p>3,183</p></td>
     </tr>
     <tr>
-        <td><p>Kerala</p></td><td><p>23.2.2010 to 11.3.2010</p></td><td><p>9</p></td><td><p>17</p></td><td><p>1.42</p></td><td><p>3,559</p></td><td><p>2,173</p></td><td><p>855</p></td>
+        <td><p>Kerala</p></td>
+        <td><p>23.2.2010 to 11.3.2010</p></td>
+        <td><p>9</p></td>
+        <td><p>17</p></td>
+        <td><p>1.42</p></td>
+        <td><p>3,559</p></td>
+        <td><p>2,173</p></td>
+        <td><p>855</p></td>
     </tr>
     <tr>
-        <td colspan="2"><p><b>Total</p></b></td><td><p><b>47</p></b></td><td><p><b>92</p></b></td><td><p><b>11.81</p></b></td><td><p><b>22,455</p></b></td><td><p><b>19,584</p></b></td><td><p><b>10,644</p></b></td>
+        <td colspan="2"><p><b>Total</p></b></td>
+        <td><p><b>47</p></b></td>
+        <td><p><b>92</p></b></td>
+        <td><p><b>11.81</p></b></td>
+        <td><p><b>22,455</p></b></td>
+        <td><p><b>19,584</p></b></td>
+        <td><p><b>10,644</p></b></td>
     </tr>
 </table>
 

@@ -16,67 +16,81 @@
 
 <table border="1" style="border-collapse:collapse">
     <tr>
-        <td colspan="2" rowspan="2"><p><b>Sl.No</p></b></td><td colspan="2" rowspan="2"><p><b>SIZE GROUP (HA) </p></b></td><td colspan="2"><p><b>NO. OF HOLDINGS GROWING THE CROP </p></b></td><td colspan="3"><p><b>AREA UNDER THE CROP</p></b></td><td colspan="6"><p><b>AREA UNDER THE CROP TREATED WITH THE  MANURE</p></b></td>
+        <td colspan="2" rowspan="2"><p><b>Sl.No</p></b></td>
+        <td colspan="2" rowspan="2"><p><b>SIZE GROUP (HA) </p></b></td>
+        <td colspan="2"><p><b>NO. OF HOLDINGS GROWING THE CROP </p></b></td>
+        <td colspan="3"><p><b>AREA UNDER THE CROP</p></b></td>
+        <td colspan="6"><p><b>AREA UNDER THE CROP TREATED WITH THE  MANURE</p></b></td>
     </tr>
     <tr>
-        <td><p><b>TOTAL NO.</p></b></td><td><p><b>NO. TREATED WITH THE  MANURE</p></b></td><td><p><b>HYV</p></b></td><td><p><b>OTHERS</p></b></td><td><p><b>TOTAL</p></b></td><td colspan="2"><p><b>HYV</p></b></td><td colspan="2"><p><b>OTHERS</p></b></td><td colspan="2"><p><b>TOTAL</p></b></td>
+        <td><p><b>TOTAL NO.</p></b></td>
+        <td><p><b>NO. TREATED WITH THE  MANURE</p></b></td>
+        <td><p><b>HYV</p></b></td>
+        <td><p><b>OTHERS</p></b></td>
+        <td><p><b>TOTAL</p></b></td>
+        <td colspan="2"><p><b>HYV</p></b></td>
+        <td colspan="2"><p><b>OTHERS</p></b></td>
+        <td colspan="2"><p><b>TOTAL</p></b></td>
     </tr>
     <tr>
-        <td colspan="2"><p><b>(1)</p></b></td><td colspan="2"><p><b>(2)</p></b></td><td><p><b>(3)</p></b></td><td><p><b>(4)</p></b></td><td><p><b>(5)</p></b></td><td><p><b>(6)</p></b></td><td><p><b>(7)</p></b></td><td colspan="2"><p><b>(8)</p></b></td><td colspan="2"><p><b>(9)</p></b></td><td colspan="2"><p><b>(10)</p></b></td>
+        <td colspan="2"><p><b>(1)</p></b></td>
+        <td colspan="2"><p><b>(2)</p></b></td>
+        <td><p><b>(3)</p></b></td>
+        <td><p><b>(4)</p></b></td>
+        <td><p><b>(5)</p></b></td>
+        <td><p><b>(6)</p></b></td>
+        <td><p><b>(7)</p></b></td>
+        <td colspan="2"><p><b>(8)</p></b></td>
+        <td colspan="2"><p><b>(9)</p></b></td>
+        <td colspan="2"><p><b>(10)</p></b></td>
     </tr>
     <tr>
-        <td rowspan="3"><p>1</p></td><td colspan="14" rowspan="3"><p>MARGINAL (BELOW 1.0)</p><p><b>I</b> 39053 0 12142 3322 15464 0 0 0</p><p><b>UI</b> 7429 0 2088 1560 3648 0 0 0</p><p><b>T</b> 46484 0 14230 4882 19112 0 0 0</p></td>
+        <td rowspan="3"><p>1</p></td>
+        <td colspan="14" rowspan="3"><p>MARGINAL (BELOW 1.0)</p><p><b>I</b> 39053 0 12142 3322 15464 0 0 0</p><p><b>UI</b> 7429 0 2088 1560 3648 0 0 0</p><p><b>T</b> 46484 0 14230 4882 19112 0 0 0</p></td>
     </tr>
     <tr>
-        
     </tr>
     <tr>
-        
     </tr>
     <tr>
-        <td rowspan="3"><p>2</p></td><td colspan="14" rowspan="3"><p>SMALL (1.0 - 1.99)</p><p><b>I</b> 20341 0 16685 1631 18316 0 0 0</p><p><b>UI</b> 6854 0 4594 1885 6479 0 0 0</p><p><b>T</b> 27197 0 21279 3516 24795 0 0 0</p></td>
+        <td rowspan="3"><p>2</p></td>
+        <td colspan="14" rowspan="3"><p>SMALL (1.0 - 1.99)</p><p><b>I</b> 20341 0 16685 1631 18316 0 0 0</p><p><b>UI</b> 6854 0 4594 1885 6479 0 0 0</p><p><b>T</b> 27197 0 21279 3516 24795 0 0 0</p></td>
     </tr>
     <tr>
-        
     </tr>
     <tr>
-        
     </tr>
     <tr>
-        <td rowspan="3"><p>3</p></td><td colspan="14" rowspan="3"><p>SEMI-MEDIUM (2.0 - 3.99)</p><p><b>I</b> 20800 0 16991 7643 24634 0 0 0</p><p><b>UI</b> 5856 0 1017 4819 5836 0 0 0</p><p><b>T</b> 26555 0 18008 12462 30470 0 0 0</p></td>
+        <td rowspan="3"><p>3</p></td>
+        <td colspan="14" rowspan="3"><p>SEMI-MEDIUM (2.0 - 3.99)</p><p><b>I</b> 20800 0 16991 7643 24634 0 0 0</p><p><b>UI</b> 5856 0 1017 4819 5836 0 0 0</p><p><b>T</b> 26555 0 18008 12462 30470 0 0 0</p></td>
     </tr>
     <tr>
-        
     </tr>
     <tr>
-        
     </tr>
     <tr>
-        <td rowspan="3"><p>4</p></td><td colspan="14" rowspan="3"><p>MEDIUM (4.0 - 9.99)</p><p><b>I</b> 11986 0 17576 4120 21696 0 0 0</p><p><b>UI</b> 4615 0 1446 6227 7673 0 0 0</p><p><b>T</b> 16312 0 19022 10347 29369 0 0 0</p></td>
+        <td rowspan="3"><p>4</p></td>
+        <td colspan="14" rowspan="3"><p>MEDIUM (4.0 - 9.99)</p><p><b>I</b> 11986 0 17576 4120 21696 0 0 0</p><p><b>UI</b> 4615 0 1446 6227 7673 0 0 0</p><p><b>T</b> 16312 0 19022 10347 29369 0 0 0</p></td>
     </tr>
     <tr>
-        
     </tr>
     <tr>
-        
     </tr>
     <tr>
-        <td rowspan="3"><p>5</p></td><td colspan="14" rowspan="3"><p>LARGE (10 AND ABOVE)</p><p><b>I</b> 2005 0 3671 639 4310 0 0 0</p><p><b>UI</b> 521 0 611 831 1442 0 0 0</p><p><b>T</b> 2485 0 4282 1470 5752 0 0 0</p></td>
+        <td rowspan="3"><p>5</p></td>
+        <td colspan="14" rowspan="3"><p>LARGE (10 AND ABOVE)</p><p><b>I</b> 2005 0 3671 639 4310 0 0 0</p><p><b>UI</b> 521 0 611 831 1442 0 0 0</p><p><b>T</b> 2485 0 4282 1470 5752 0 0 0</p></td>
     </tr>
     <tr>
-        
     </tr>
     <tr>
-        
     </tr>
     <tr>
-        <td rowspan="3"><p>6</p></td><td colspan="14" rowspan="3"><p>ALL GROUPS</p><p><b>I</b> 94185 0 67065 17355 84420 0 0 0</p><p><b>UI</b> 25275 0 9756 15322 25078 0 0 0</p><p><b>T</b> 119033 0 76821 32677 109498 0 0 0</p></td>
+        <td rowspan="3"><p>6</p></td>
+        <td colspan="14" rowspan="3"><p>ALL GROUPS</p><p><b>I</b> 94185 0 67065 17355 84420 0 0 0</p><p><b>UI</b> 25275 0 9756 15322 25078 0 0 0</p><p><b>T</b> 119033 0 76821 32677 109498 0 0 0</p></td>
     </tr>
     <tr>
-        
     </tr>
     <tr>
-        
     </tr>
 </table>
 

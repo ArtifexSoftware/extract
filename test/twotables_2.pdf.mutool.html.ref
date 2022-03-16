@@ -7,43 +7,128 @@
 
 <table border="1" style="border-collapse:collapse">
     <tr>
-        <td></td><td rowspan="2"><p><b>n </p></b></td><td colspan="6"><p><b>Literacy Status </p></b></td>
+        <td></td>
+        <td rowspan="2"><p><b>n </p></b></td>
+        <td colspan="6"><p><b>Literacy Status </p></b></td>
     </tr>
     <tr>
-        <td><p><b>State</p></b></td><td><p><b>Illiterate</p></b></td><td><p><b>Read &amp; Write</p></b></td><td><p><b>1-4 std.</p></b></td><td><p><b>5-8 std.</p></b></td><td><p><b>9-12 std.</p></b></td><td><p><b>College</p></b></td>
+        <td><p><b>State</p></b></td>
+        <td><p><b>Illiterate</p></b></td>
+        <td><p><b>Read &amp; Write</p></b></td>
+        <td><p><b>1-4 std.</p></b></td>
+        <td><p><b>5-8 std.</p></b></td>
+        <td><p><b>9-12 std.</p></b></td>
+        <td><p><b>College</p></b></td>
     </tr>
     <tr>
-        <td><p>Kerala</p></td><td><p>2400</p></td><td><p>7.2</p></td><td><p>0.5</p></td><td><p>25.3</p></td><td><p>20.1</p></td><td><p>41.5</p></td><td><p>5.5</p></td>
+        <td><p>Kerala</p></td>
+        <td><p>2400</p></td>
+        <td><p>7.2</p></td>
+        <td><p>0.5</p></td>
+        <td><p>25.3</p></td>
+        <td><p>20.1</p></td>
+        <td><p>41.5</p></td>
+        <td><p>5.5</p></td>
     </tr>
     <tr>
-        <td><p>Tamil Nadu</p></td><td><p>2400</p></td><td><p>21.4</p></td><td><p>2.3</p></td><td><p>8.8</p></td><td><p>35.5</p></td><td><p>25.8</p></td><td><p>6.2</p></td>
+        <td><p>Tamil Nadu</p></td>
+        <td><p>2400</p></td>
+        <td><p>21.4</p></td>
+        <td><p>2.3</p></td>
+        <td><p>8.8</p></td>
+        <td><p>35.5</p></td>
+        <td><p>25.8</p></td>
+        <td><p>6.2</p></td>
     </tr>
     <tr>
-        <td><p>Karnataka</p></td><td><p>2399</p></td><td><p>37.4</p></td><td><p>2.8</p></td><td><p>12.5</p></td><td><p>18.3</p></td><td><p>23.1</p></td><td><p>5.8</p></td>
+        <td><p>Karnataka</p></td>
+        <td><p>2399</p></td>
+        <td><p>37.4</p></td>
+        <td><p>2.8</p></td>
+        <td><p>12.5</p></td>
+        <td><p>18.3</p></td>
+        <td><p>23.1</p></td>
+        <td><p>5.8</p></td>
     </tr>
     <tr>
-        <td><p>Andhra Pradesh</p></td><td><p>2400</p></td><td><p>54.0</p></td><td><p>1.7</p></td><td><p>8.4</p></td><td><p>13.2</p></td><td><p>18.8</p></td><td><p>3.9</p></td>
+        <td><p>Andhra Pradesh</p></td>
+        <td><p>2400</p></td>
+        <td><p>54.0</p></td>
+        <td><p>1.7</p></td>
+        <td><p>8.4</p></td>
+        <td><p>13.2</p></td>
+        <td><p>18.8</p></td>
+        <td><p>3.9</p></td>
     </tr>
     <tr>
-        <td><p>Maharashtra</p></td><td><p>2400</p></td><td><p>22.0</p></td><td><p>0.9</p></td><td><p>17.3</p></td><td><p>20.3</p></td><td><p>32.6</p></td><td><p>7.0</p></td>
+        <td><p>Maharashtra</p></td>
+        <td><p>2400</p></td>
+        <td><p>22.0</p></td>
+        <td><p>0.9</p></td>
+        <td><p>17.3</p></td>
+        <td><p>20.3</p></td>
+        <td><p>32.6</p></td>
+        <td><p>7.0</p></td>
     </tr>
     <tr>
-        <td><p>Gujarat</p></td><td><p>2390</p></td><td><p>28.6</p></td><td><p>0.1</p></td><td><p>14.4</p></td><td><p>23.1</p></td><td><p>26.9</p></td><td><p>6.8</p></td>
+        <td><p>Gujarat</p></td>
+        <td><p>2390</p></td>
+        <td><p>28.6</p></td>
+        <td><p>0.1</p></td>
+        <td><p>14.4</p></td>
+        <td><p>23.1</p></td>
+        <td><p>26.9</p></td>
+        <td><p>6.8</p></td>
     </tr>
     <tr>
-        <td><p>Madhya Pradesh</p></td><td><p>2402</p></td><td><p>29.1</p></td><td><p>3.4</p></td><td><p>8.5</p></td><td><p>35.1</p></td><td><p>13.3</p></td><td><p>10.6</p></td>
+        <td><p>Madhya Pradesh</p></td>
+        <td><p>2402</p></td>
+        <td><p>29.1</p></td>
+        <td><p>3.4</p></td>
+        <td><p>8.5</p></td>
+        <td><p>35.1</p></td>
+        <td><p>13.3</p></td>
+        <td><p>10.6</p></td>
     </tr>
     <tr>
-        <td><p>Orissa</p></td><td><p>2405</p></td><td><p>33.2</p></td><td><p>1.0</p></td><td><p>10.4</p></td><td><p>25.7</p></td><td><p>21.2</p></td><td><p>8.5</p></td>
+        <td><p>Orissa</p></td>
+        <td><p>2405</p></td>
+        <td><p>33.2</p></td>
+        <td><p>1.0</p></td>
+        <td><p>10.4</p></td>
+        <td><p>25.7</p></td>
+        <td><p>21.2</p></td>
+        <td><p>8.5</p></td>
     </tr>
     <tr>
-        <td><p>West Bengal</p></td><td><p>2293</p></td><td><p>41.7</p></td><td><p>4.4</p></td><td><p>13.2</p></td><td><p>17.1</p></td><td><p>21.2</p></td><td><p>2.4</p></td>
+        <td><p>West Bengal</p></td>
+        <td><p>2293</p></td>
+        <td><p>41.7</p></td>
+        <td><p>4.4</p></td>
+        <td><p>13.2</p></td>
+        <td><p>17.1</p></td>
+        <td><p>21.2</p></td>
+        <td><p>2.4</p></td>
     </tr>
     <tr>
-        <td><p>Uttar Pradesh</p></td><td><p>2400</p></td><td><p>35.3</p></td><td><p>2.1</p></td><td><p>4.5</p></td><td><p>23.3</p></td><td><p>27.1</p></td><td><p>7.6</p></td>
+        <td><p>Uttar Pradesh</p></td>
+        <td><p>2400</p></td>
+        <td><p>35.3</p></td>
+        <td><p>2.1</p></td>
+        <td><p>4.5</p></td>
+        <td><p>23.3</p></td>
+        <td><p>27.1</p></td>
+        <td><p>7.6</p></td>
     </tr>
     <tr>
-        <td><p><b>Pooled</p></b></td><td><p><b>23889</p></b></td><td><p><b>30.9</p></b></td><td><p><b>1.9</p></b></td><td><p><b>12.3</p></b></td><td><p><b>23.2</p></b></td><td><p><b>25.2</p></b></td><td><p><b>6.4</p></b></td>
+        <td><p><b>Pooled</p></b></td>
+        <td><p><b>23889</p></b></td>
+        <td><p><b>30.9</p></b></td>
+        <td><p><b>1.9</p></b></td>
+        <td><p><b>12.3</p></b></td>
+        <td><p><b>23.2</p></b></td>
+        <td><p><b>25.2</p></b></td>
+        <td><p><b>6.4</p></b></td>
     </tr>
 </table>
 
@@ -54,43 +139,128 @@
 
 <table border="1" style="border-collapse:collapse">
     <tr>
-        <td></td><td rowspan="2"><p><b>n</p></b></td><td colspan="6"><p><b>Literacy Status</p></b></td>
+        <td></td>
+        <td rowspan="2"><p><b>n</p></b></td>
+        <td colspan="6"><p><b>Literacy Status</p></b></td>
     </tr>
     <tr>
-        <td><p><b>State</p></b></td><td><p><b>Illiterate</p></b></td><td><p><b>Read &amp; Write</p></b></td><td><p><b>1-4 std.</p></b></td><td><p><b>5-8 std.</p></b></td><td><p><b>9-12 std.</p></b></td><td><p><b>College</p></b></td>
+        <td><p><b>State</p></b></td>
+        <td><p><b>Illiterate</p></b></td>
+        <td><p><b>Read &amp; Write</p></b></td>
+        <td><p><b>1-4 std.</p></b></td>
+        <td><p><b>5-8 std.</p></b></td>
+        <td><p><b>9-12 std.</p></b></td>
+        <td><p><b>College</p></b></td>
     </tr>
     <tr>
-        <td><p>Kerala</p></td><td><p>2400</p></td><td><p>8.8</p></td><td><p>0.3</p></td><td><p>20.1</p></td><td><p>17.0</p></td><td><p>45.6</p></td><td><p>8.2</p></td>
+        <td><p>Kerala</p></td>
+        <td><p>2400</p></td>
+        <td><p>8.8</p></td>
+        <td><p>0.3</p></td>
+        <td><p>20.1</p></td>
+        <td><p>17.0</p></td>
+        <td><p>45.6</p></td>
+        <td><p>8.2</p></td>
     </tr>
     <tr>
-        <td><p>Tamil Nadu</p></td><td><p>2400</p></td><td><p>29.9</p></td><td><p>1.5</p></td><td><p>8.5</p></td><td><p>33.1</p></td><td><p>22.3</p></td><td><p>4.8</p></td>
+        <td><p>Tamil Nadu</p></td>
+        <td><p>2400</p></td>
+        <td><p>29.9</p></td>
+        <td><p>1.5</p></td>
+        <td><p>8.5</p></td>
+        <td><p>33.1</p></td>
+        <td><p>22.3</p></td>
+        <td><p>4.8</p></td>
     </tr>
     <tr>
-        <td><p>Karnataka</p></td><td><p>2399</p></td><td><p>47.9</p></td><td><p>2.5</p></td><td><p>10.2</p></td><td><p>18.8</p></td><td><p>18.4</p></td><td><p>2.3</p></td>
+        <td><p>Karnataka</p></td>
+        <td><p>2399</p></td>
+        <td><p>47.9</p></td>
+        <td><p>2.5</p></td>
+        <td><p>10.2</p></td>
+        <td><p>18.8</p></td>
+        <td><p>18.4</p></td>
+        <td><p>2.3</p></td>
     </tr>
     <tr>
-        <td><p>Andhra Pradesh</p></td><td><p>2400</p></td><td><p>66.4</p></td><td><p>0.7</p></td><td><p>6.8</p></td><td><p>12.9</p></td><td><p>11.4</p></td><td><p>1.8</p></td>
+        <td><p>Andhra Pradesh</p></td>
+        <td><p>2400</p></td>
+        <td><p>66.4</p></td>
+        <td><p>0.7</p></td>
+        <td><p>6.8</p></td>
+        <td><p>12.9</p></td>
+        <td><p>11.4</p></td>
+        <td><p>1.8</p></td>
     </tr>
     <tr>
-        <td><p>Maharashtra</p></td><td><p>2400</p></td><td><p>41.3</p></td><td><p>0.6</p></td><td><p>14.1</p></td><td><p>20.1</p></td><td><p>21.6</p></td><td><p>2.2</p></td>
+        <td><p>Maharashtra</p></td>
+        <td><p>2400</p></td>
+        <td><p>41.3</p></td>
+        <td><p>0.6</p></td>
+        <td><p>14.1</p></td>
+        <td><p>20.1</p></td>
+        <td><p>21.6</p></td>
+        <td><p>2.2</p></td>
     </tr>
     <tr>
-        <td><p>Gujarat</p></td><td><p>2390</p></td><td><p>57.6</p></td><td><p>0.1</p></td><td><p>10.3</p></td><td><p>16.5</p></td><td><p>12.9</p></td><td><p>2.7</p></td>
+        <td><p>Gujarat</p></td>
+        <td><p>2390</p></td>
+        <td><p>57.6</p></td>
+        <td><p>0.1</p></td>
+        <td><p>10.3</p></td>
+        <td><p>16.5</p></td>
+        <td><p>12.9</p></td>
+        <td><p>2.7</p></td>
     </tr>
     <tr>
-        <td><p>Madhya Pradesh</p></td><td><p>2402</p></td><td><p>58.7</p></td><td><p>2.2</p></td><td><p>6.6</p></td><td><p>24.1</p></td><td><p>5.3</p></td><td><p>3.0</p></td>
+        <td><p>Madhya Pradesh</p></td>
+        <td><p>2402</p></td>
+        <td><p>58.7</p></td>
+        <td><p>2.2</p></td>
+        <td><p>6.6</p></td>
+        <td><p>24.1</p></td>
+        <td><p>5.3</p></td>
+        <td><p>3.0</p></td>
     </tr>
     <tr>
-        <td><p>Orissa</p></td><td><p>2405</p></td><td><p>50.0</p></td><td><p>0.9</p></td><td><p>8.1</p></td><td><p>21.9</p></td><td><p>15.1</p></td><td><p>4.0</p></td>
+        <td><p>Orissa</p></td>
+        <td><p>2405</p></td>
+        <td><p>50.0</p></td>
+        <td><p>0.9</p></td>
+        <td><p>8.1</p></td>
+        <td><p>21.9</p></td>
+        <td><p>15.1</p></td>
+        <td><p>4.0</p></td>
     </tr>
     <tr>
-        <td><p>West Bengal</p></td><td><p>2293</p></td><td><p>49.1</p></td><td><p>4.8</p></td><td><p>11.2</p></td><td><p>16.8</p></td><td><p>17.1</p></td><td><p>1.1</p></td>
+        <td><p>West Bengal</p></td>
+        <td><p>2293</p></td>
+        <td><p>49.1</p></td>
+        <td><p>4.8</p></td>
+        <td><p>11.2</p></td>
+        <td><p>16.8</p></td>
+        <td><p>17.1</p></td>
+        <td><p>1.1</p></td>
     </tr>
     <tr>
-        <td><p>Uttar Pradesh</p></td><td><p>2400</p></td><td><p>67.3</p></td><td><p>2.0</p></td><td><p>3.1</p></td><td><p>17.2</p></td><td><p>7.7</p></td><td><p>2.7</p></td>
+        <td><p>Uttar Pradesh</p></td>
+        <td><p>2400</p></td>
+        <td><p>67.3</p></td>
+        <td><p>2.0</p></td>
+        <td><p>3.1</p></td>
+        <td><p>17.2</p></td>
+        <td><p>7.7</p></td>
+        <td><p>2.7</p></td>
     </tr>
     <tr>
-        <td><p><b>Pooled</p></b></td><td><p><b>23889</p></b></td><td><p><b>47.7</p></b></td><td><p><b>1.5</p></b></td><td><p><b>9.9</p></b></td><td><p><b>19.9</p></b></td><td><p><b>17.8</p></b></td><td><p><b>3.3</p></b></td>
+        <td><p><b>Pooled</p></b></td>
+        <td><p><b>23889</p></b></td>
+        <td><p><b>47.7</p></b></td>
+        <td><p><b>1.5</p></b></td>
+        <td><p><b>9.9</p></b></td>
+        <td><p><b>19.9</p></b></td>
+        <td><p><b>17.8</p></b></td>
+        <td><p><b>3.3</p></b></td>
     </tr>
 </table>
 
