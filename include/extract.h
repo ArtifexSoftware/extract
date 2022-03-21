@@ -10,12 +10,12 @@ set.
 
 #include "extract_alloc.h"
 #include "extract_buffer.h"
+#include <float.h>
 
 
 
 typedef struct extract_t extract_t;
 /* Abstract state for processing a document. */
-
 
 typedef enum
 {
@@ -50,7 +50,7 @@ allocation will be done with <alloc> (which can be NULL in which case we use
 malloc/free, or from extract_alloc_create()). */
 
 
-int extract_page_begin(extract_t*  extract);
+int extract_page_begin(extract_t* extract, double minx, double miny, double maxx, double maxy);
 /* Must be called before extract_span_begin(). */
 
 
@@ -73,7 +73,7 @@ int extract_span_begin(
         double      trm_e,
         double      trm_f
         );
-/* Starts a new span. 
+/* Starts a new span.
 extract
     As passed to earlier call to extract_begin().
 font_name
@@ -92,12 +92,16 @@ trm_*
 
 
 int extract_add_char(
-        extract_t*  extract,
-        double      x,
-        double      y,
-        unsigned    ucs,
-        double      adv,
-        int         autosplit
+        extract_t*     extract,
+        double         x,
+        double         y,
+        unsigned       ucs,
+        double         adv,
+        int            autosplit,
+        double         minx,
+        double         miny,
+        double         maxx,
+        double         maxy
         );
 /* Appends specified character to current span.
 extract
@@ -112,6 +116,8 @@ adv
     Advance of this character.
 autosplit
     Ignored as of 2021-07-02.
+minx, miny, maxx, maxy
+    Glyph bbox
 */
 
 
@@ -262,7 +268,7 @@ archive by extract_write()). */
 
 
 int extract_write_template(
-        extract_t*  extract, 
+        extract_t*  extract,
         const char* path_template,
         const char* path_out,
         int         preserve_dir
@@ -288,6 +294,10 @@ preserve_dir:
 
 void extract_end( extract_t** pextract);
 /* Frees all data associated with *pextract and sets *pextract to NULL. */
+
+
+int extract_set_layout_analysis(extract_t* extract, int enable);
+/* Enables/Disables the layout analysis phase. */
 
 
 /* Things below are not generally used. */
@@ -317,5 +327,8 @@ void extract_exp_min(extract_t* extract, size_t size);
 allocate in powers of two times this size. This is an attempt to improve speed
 with memento squeeze. Default is 0 (every call to extract_realloc() calls
 realloc(). */
+
+void extract_analyse(extract_t *extract);
+/* Analyse the structure of the current page. */
 
 #endif
