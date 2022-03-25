@@ -419,12 +419,12 @@
           <wp:anchor distT="0" distB="0" distL="0" distR="0" simplePos="0" relativeHeight="0" behindDoc="0" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="53A210D1" wp14:editId="2B7E8016">
             <wp:simplePos x="0" y="0"/>
             <wp:positionH relativeFrom="page">
-              <wp:posOffset>4254598</wp:posOffset>
+              <wp:posOffset>4265751</wp:posOffset>
             </wp:positionH>
             <wp:positionV relativeFrom="page">
-              <wp:posOffset>-113601</wp:posOffset>
+              <wp:posOffset>-151012</wp:posOffset>
             </wp:positionV>
-            <wp:extent cx="1706041" cy="1989200"/>
+            <wp:extent cx="1569389" cy="1989200"/>
             <wp:effectExtent l="381000" t="723900" r="371475" b="723900"/>
             <wp:wrapNone/>
             <wp:docPr id="4" name="Text Box 4"/>
@@ -446,19 +446,19 @@
                     <w:txbxContent>
 
 <w:p>
-<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve"> a young man of </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">young man of </w:t></w:r>
 <w:r><w:rPr><w:rFonts w:ascii="OpenSans-BoldItalic" w:hAnsi="OpenSans-BoldItalic"/><w:b/><w:i/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">Madras</w:t></w:r>
 <w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">,</w:t></w:r>
 </w:p>
 
 <w:p>
-<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">e balls were </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">balls were </w:t></w:r>
 <w:r><w:rPr><w:rFonts w:ascii="OpenSans-Italic" w:hAnsi="OpenSans-Italic"/><w:i/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">constructed </w:t></w:r>
 <w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">of brass,</w:t></w:r>
 </w:p>
 
 <w:p>
-<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">When jangled together,</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">hen jangled together,</w:t></w:r>
 </w:p>
 
 <w:p>
@@ -498,19 +498,19 @@
               <w:txbxContent>
 
 <w:p>
-<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve"> a young man of </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">young man of </w:t></w:r>
 <w:r><w:rPr><w:rFonts w:ascii="OpenSans-BoldItalic" w:hAnsi="OpenSans-BoldItalic"/><w:b/><w:i/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">Madras</w:t></w:r>
 <w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">,</w:t></w:r>
 </w:p>
 
 <w:p>
-<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">e balls were </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">balls were </w:t></w:r>
 <w:r><w:rPr><w:rFonts w:ascii="OpenSans-Italic" w:hAnsi="OpenSans-Italic"/><w:i/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">constructed </w:t></w:r>
 <w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">of brass,</w:t></w:r>
 </w:p>
 
 <w:p>
-<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">When jangled together,</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">hen jangled together,</w:t></w:r>
 </w:p>
 
 <w:p>
@@ -570,15 +570,15 @@
                     <w:txbxContent>
 
 <w:p>
-<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">A Python, I sho</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">A Python, I sh</w:t></w:r>
 </w:p>
 
 <w:p>
-<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">For it needs a doctor </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">For it needs a docto</w:t></w:r>
 </w:p>
 
 <w:p>
-<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">And has the Measles yearly.</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">And has the Measles yearly</w:t></w:r>
 </w:p>
 
 <w:p>
@@ -661,15 +661,15 @@
               <w:txbxContent>
 
 <w:p>
-<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">A Python, I sho</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">A Python, I sh</w:t></w:r>
 </w:p>
 
 <w:p>
-<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">For it needs a doctor </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">For it needs a docto</w:t></w:r>
 </w:p>
 
 <w:p>
-<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">And has the Measles yearly.</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="OpenSans" w:hAnsi="OpenSans"/><w:sz w:val="20.000000"/><w:szCs w:val="15.000000"/></w:rPr><w:t xml:space="preserve">And has the Measles yearly</w:t></w:r>
 </w:p>
 
 <w:p>
