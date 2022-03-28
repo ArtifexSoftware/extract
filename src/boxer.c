@@ -494,6 +494,74 @@ fail_mid_split:
 }
 
 
+static int
+collate_splits(extract_alloc_t *alloc, split_t **psplit)
+{
+    split_t *split = *psplit;
+    int s;
+    int n = 0;
+    int i;
+    int j;
+    split_t *newsplit;
+
+    /* Recurse into all our children to ensure they are collated.
+     * Count how many children we'll have once we pull all the
+     * children of children that match our type up into us. */
+    for (s = 0; s < split->count; s++)
+    {
+        if (collate_splits(alloc, &split->split[s]))
+        {
+            return -1;
+        }
+        if (split->split[s]->type == split->type)
+        {
+            n += split->split[s]->count;
+        }
+        else
+        {
+            n++;
+        }
+    }
+
+    /* No change in the number of children? Just exit. */
+    if (n == split->count)
+        return 0;
+
+    if (extract_split_alloc(alloc, split->type, n, &newsplit))
+    {
+        return -1;
+    }
+
+    newsplit->weight = split->weight;
+
+    /* Now, run across our children. */
+    i = 0;
+    for (s = 0; s < split->count; s++)
+    {
+        split_t *sub = split->split[s];
+        if (sub->type == split->type)
+        {
+            /* If the type matches, pull the grandchildren into newsplit. */
+            for (j = 0; j < sub->count; j++)
+            {
+                newsplit->split[i++] = sub->split[j];
+                sub->split[j] = NULL;
+            }
+        }
+        else
+        {
+            /* Otherwise just move the child into newsplit. */
+            newsplit->split[i++] = sub;
+            split->split[s] = NULL;
+        }
+    }
+
+    extract_split_free(alloc, psplit);
+    *psplit = newsplit;
+
+    return 0;
+}
+
 int extract_page_analyse(extract_alloc_t *alloc, extract_page_t *page)
 {
     boxer_t *boxer;
@@ -526,6 +594,11 @@ int extract_page_analyse(extract_alloc_t *alloc, extract_page_t *page)
     }
 
     if (analyse_sub(page, subpage, boxer, &page->split, 0))
+    {
+        goto fail;
+    }
+
+    if (collate_splits(boxer->alloc, &page->split))
     {
         goto fail;
     }
