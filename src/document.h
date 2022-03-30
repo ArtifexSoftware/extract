@@ -26,8 +26,8 @@ typedef struct
     point_t max;
 } rect_t;
 
-const rect_t extract_rect_infinite;
-const rect_t extract_rect_empty;
+extern const rect_t extract_rect_infinite;
+extern const rect_t extract_rect_empty;
 
 rect_t extract_rect_intersect(rect_t a, rect_t b);
 
