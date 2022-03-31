@@ -50,7 +50,7 @@ rectlist_append(rectlist_t *list, rect_t *box)
         rect_t *r = &list->list[i];
         rect_t smaller, larger;
         /* We allow ourselves a fudge factor of 4 points when checking for inclusion. */
-        double r_fudge = 4, box_fudge = 4;
+        double r_fudge = 4;
 
         smaller.min.x = r->min.x + r_fudge;
         larger. min.x = r->min.x - r_fudge;
@@ -287,7 +287,7 @@ boxer_subdivide(boxer_t *boxer, boxer_t **boxer1, boxer_t **boxer2)
     rectlist_t *list = boxer->list;
     int num_h = 0, num_v = 0;
     double max_h = 0, max_v = 0;
-    rect_t best_h, best_v;
+    rect_t best_h = {0}, best_v = {0};
     int i;
 
     *boxer1 = NULL;
