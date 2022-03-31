@@ -284,6 +284,7 @@ exe = src/build/extract-$(build).exe
 exe_src = \
         src/alloc.c \
         src/astring.c \
+        src/boxer.c \
         src/buffer.c \
         src/document.c \
         src/docx.c \
@@ -296,6 +297,7 @@ exe_src = \
         src/odt.c \
         src/odt_template.c \
         src/outf.c \
+        src/rect.c \
         src/sys.c \
         src/text.c \
         src/xml.c \
