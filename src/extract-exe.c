@@ -1,5 +1,9 @@
 /* Command-line programme for extract_ API. */
 
+#ifdef _WIN32
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include "../include/extract.h"
 #include "../include/extract_alloc.h"
 
