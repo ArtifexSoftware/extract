@@ -226,7 +226,7 @@ def main():
                 out_c.write(f'"\n')
 
             out_c.write(f'    }},\n')
-            out_c.write(f'    \n')
+            out_c.write(f'\n')
 
     out_c.write(f'}};\n')
     out_c.write(f'\n')
