@@ -326,7 +326,7 @@ On return document->subpage[].images* will be NULL etc.
         int c;
         for (c=0; c<page->subpages_num; ++c)
         {
-            subpage_t* subpage = page->subpages[p];
+            subpage_t* subpage = page->subpages[c];
             int i;
             for (i=0; i<subpage->images_num; ++i)
             {
