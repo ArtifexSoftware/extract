@@ -29,6 +29,15 @@
 #
 #   make build=memento msqueeze
 #       Run memento squeeze test.
+#
+#   Assuming we are in mupdf/thirdparty/extract, and there is a ghostpdl at
+#   the same level as mupdf, with a softlink from ghostpdl to extract:
+#
+#   make test-rebuild-dependent-binaries
+#       Clean/Configure/Rebuild the required mupdf and gs binaries.
+#
+#   make test-build-dependent-binaries
+#       Build the required mupdf and gs binaries.
 
 
 # Build flags.
@@ -173,7 +182,7 @@ ifneq ($(gs),)
     tests_gs := \
             $(patsubst %, %.gs.docx.diff, $(pdfs_generated)) \
             test_gs_fpp
-    
+
     # We don't yet do clipping with gs so exclude Python2clipped.pdf.*:
     tests_gs := $(filter-out test/generated/Python2clipped.pdf.%, $(tests_gs))
 
@@ -227,6 +236,17 @@ test_gs_fpp: $(gs)
 
 
 test-html: $(tests_html)
+
+test-rebuild-dependent-binaries:
+	@echo == Rebuilding gs and mupdf binaries
+	cd ../../../ghostpdl && ./autogen.sh --with-extract-dir=extract && make -j 8 debugclean DEBUGDIRPREFIX=debug-extract- && make -j 8 debug DEBUGDIRPREFIX=debug-extract-
+	cd ../.. && make -j 8 build=debug clean && make -j 8 build=debug
+
+test-build-dependent-binaries:
+	@echo == Building gs and mupdf binaries
+	cd ../../../ghostpdl && make -j 8 debug DEBUGDIRPREFIX=debug-extract-
+	cd ../.. && make -j 8 build=debug
+
 
 ifneq ($(mutool),)
     test_tables_pdfs = \
@@ -493,7 +513,7 @@ test/generated/%.pdf.gs.docx: test/%.pdf $(gs)
 	@echo == Converting .pdf directly to .docx using gs.
 	@mkdir -p test/generated
 	$(gs) -sDEVICE=docxwrite -o $@ $<
-	
+
 # Converts .pdf directly to .odt using mutool.
 test/generated/%.pdf.mutool.odt: test/%.pdf $(mutool)
 	@echo
