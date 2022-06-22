@@ -87,7 +87,7 @@ int extract_astring_catc_unicode(
         )
 {
     int ret = -1;
-    
+
     if (0) {}
 
     /* Escape XML special characters. */
@@ -118,7 +118,7 @@ int extract_astring_catc_unicode(
     {
         if (extract_astring_cat(alloc, string, "ffl")) goto end;
     }
-    
+
     /* Convert some special characters to ascii. */
     else if (ascii_dash && c == 0x2212)
     {
@@ -162,7 +162,7 @@ int extract_astring_catc_unicode(
             }
             else if (c < 0x0800)
             {
-                char cc[2] = 
+                char cc[2] =
                 {
                     (char) (((c >> 6) & 0x1f) | 0xc0),
                     (char) (((c >> 0) & 0x3f) | 0x80)
@@ -171,7 +171,7 @@ int extract_astring_catc_unicode(
             }
             else if (c < 0x10000)
             {
-                char cc[3] = 
+                char cc[3] =
                 {
                     (char) (((c >> 12) & 0x0f) | 0xe0),
                     (char) (((c >>  6) & 0x3f) | 0x80),
@@ -181,7 +181,7 @@ int extract_astring_catc_unicode(
             }
             else if (c < 0x110000)
             {
-                char cc[4] = 
+                char cc[4] =
                 {
                     (char) (((c >> 18) & 0x07) | 0xf0),
                     (char) (((c >> 12) & 0x3f) | 0x80),
@@ -198,9 +198,9 @@ int extract_astring_catc_unicode(
             }
         }
     }
-    
+
     ret = 0;
-    
+
     end:
     return ret;
 }

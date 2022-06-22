@@ -66,11 +66,11 @@ void extract_cell_free(extract_alloc_t* alloc, cell_t** pcell)
     int p;
     cell_t* cell = *pcell;
     if (!cell) return;
-    
+
     outf("cell->lines_num=%i", cell->lines_num);
     outf("cell->paragraphs_num=%i", cell->paragraphs_num);
     extract_lines_free(alloc, &cell->lines, cell->lines_num);
-    
+
     outf("cell=%p cell->paragraphs_num=%i", cell, cell->paragraphs_num);
     for (p=0; p<cell->paragraphs_num; ++p)
     {

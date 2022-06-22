@@ -356,7 +356,7 @@ On entry:
 On exit:
     If we succeed, we return 0, with *o_lines pointing to array of *o_lines_num
     line_t*'s, each pointing to a line_t.
-    
+
     If <rects_num> is zero, each of these line_t's will contain pointers to
     items in <spans>; otherwise each of the line_t's will contain new spans
     which should be freed by the caller (spans are not necessarily wholy inside
@@ -385,7 +385,7 @@ static int make_lines(
     int         num_compatible;
     int         num_joins;
     span_t*     span = NULL;
-    
+
     if (rects_num)
     {
         /* Make <lines> contain new span_t's and char_t's that are inside rects[]. */
@@ -412,7 +412,7 @@ static int make_lines(
             {
                 extract_span_free(alloc, &span);
             }
-            
+
             if (!spans[a]->chars_num)
             {
                 /* All characters in this span are inside table, so remove
@@ -446,7 +446,7 @@ static int make_lines(
             outfx("initial line a=%i: %s", a, line_string(lines[a]));
         }
     }
-    
+
     num_compatible = 0;
 
     /* For each line, look for nearest aligned line, and append if found. */
@@ -459,7 +459,7 @@ static int make_lines(
         line_t* nearest_line = NULL;
         span_t* span_a;
         double angle_a;
-        
+
         line_t* line_a = lines[a];
         if (!line_a) {
             continue;
@@ -580,7 +580,7 @@ static int make_lines(
             {
                 continue;
             }
-            
+
             if (1
                     && extract_span_char_last(span_a)->ucs != ' '
                     && span_char_first(span_b)->ucs != ' '
@@ -903,7 +903,7 @@ On exit:
     are undefined.
 */
 static int make_paragraphs(
-        extract_alloc_t*    alloc, 
+        extract_alloc_t*    alloc,
         line_t**            lines,
         int                 lines_num,
         paragraph_t***      o_paragraphs,
@@ -941,7 +941,7 @@ static int make_paragraphs(
         double angle_a;
         int verbose;
         int b;
-        
+
         paragraph_t* paragraph_a = paragraphs[a];
         if (!paragraph_a) {
             /* This paragraph is empty - already been appended to a different
@@ -1212,7 +1212,7 @@ rects_num is zero. */
             paragraphs,
             paragraphs_num
             )) return -1;
-    
+
     return 0;
 }
 
@@ -1304,17 +1304,17 @@ void extract_cell_init(cell_t* cell)
 
 
 static int table_find_extend(cell_t** cells, int cells_num_x, int cells_num_y)
-{    
+{
     /* Find cell extensions to right and down by looking at cells' .left and
     .above flags.
-    
+
     For example for adjacent cells ABC..., we extend A to include cells BC..
     until we reach a cell with .left set to one.
-    
+
     ABCDE
     FGHIJ
     KLMNO
-    
+
     When looking to extend cell A, we only look at cells in the same column or
     same row, (i.e. in the above example we look at BCDE and FK, and not at
     GHIJ and LMNO).
@@ -1349,7 +1349,7 @@ static int table_find_extend(cell_t** cells, int cells_num_x, int cells_num_y)
                 }
                 cell->extend_down = yy - y;
                 cell->rect.max.y = cells[(yy-1) * cells_num_x + x]->rect.max.y;
-                
+
                 /* Clear .above and .left in enclosed cells. */
                 for (xx = x; xx < x + cell->extend_right; ++xx)
                 {
@@ -1409,7 +1409,7 @@ remove any found text from the page. */
                 &cell->paragraphs_num
                 )) return -1;
     }
-    
+
     /* Append the table we have found to page->tables[]. */
     if (extract_realloc(alloc, &subpage->tables, sizeof(*subpage->tables) * (subpage->tables_num + 1))) goto end;
     if (extract_malloc(alloc, &subpage->tables[subpage->tables_num], sizeof(*subpage->tables[subpage->tables_num]))) goto end;
@@ -1419,7 +1419,7 @@ remove any found text from the page. */
     subpage->tables[subpage->tables_num]->cells_num_x = cells_num_x;
     subpage->tables[subpage->tables_num]->cells_num_y = cells_num_y;
     subpage->tables_num += 1;
-    
+
     if (0)
     {
         /* For debugging. */
@@ -1442,9 +1442,9 @@ remove any found text from the page. */
             }
             fprintf(stderr, "\n");
         }
-        
+
     }
-    
+
     e = 0;
     end:
     return e;
@@ -1459,7 +1459,7 @@ y_min..y_max. */
     tablelines_t* all_v = &subpage->tablelines_vertical;
     int e = -1;
     int i;
-    
+
     /* Find subset of vertical and horizontal lines that are within range
     y_min..y_max, and sort by y coordinate. */
     tablelines_t    tl_h = {NULL, 0};
@@ -1472,14 +1472,14 @@ y_min..y_max. */
     int y;
 
     outf("y=(%f %f)", y_min, y_max);
-    
+
     if (table_find_y_range(alloc, all_h, y_min, y_max, &tl_h)) goto end;
     if (table_find_y_range(alloc, all_v, y_min, y_max, &tl_v)) goto end;
     /* Suppress false coverity warning - qsort() does not dereference null
     pointer if nmemb is zero. */
     /* coverity[var_deref_model] */
     qsort(tl_v.tablelines, tl_v.tablelines_num, sizeof(*tl_v.tablelines), tablelines_compare_x);
-    
+
     if (0)
     {
         /* Show raw lines info. */
@@ -1519,28 +1519,28 @@ y_min..y_max. */
             break;
         }
         cells_num_y += 1;
-        
+
         for (j=0; j<tl_v.tablelines_num; )
         {
             int j_next;
             int ii;
             int jj;
             cell_t* cell;
-            
+
             for (j_next = j+1; j_next<tl_v.tablelines_num; ++j_next)
             {
                 if (tl_v.tablelines[j_next].rect.min.x - tl_v.tablelines[j].rect.min.x > 0.5) break;
             }
             outf("i=%i j=%i tl_v.tablelines[j].rect=%s", i, j, extract_rect_string(&tl_v.tablelines[j].rect));
-            
+
             if (j_next == tl_v.tablelines_num) break;
-                        
+
             if (extract_realloc(alloc, &cells, sizeof(*cells) * (cells_num+1))) goto end;
             if (extract_malloc(alloc, &cells[cells_num], sizeof(*cells[cells_num]))) goto end;
             cell = cells[cells_num];
             cells_num += 1;
             if (i==0)   cells_num_x += 1;
-            
+
             cell->rect.min.x = tl_v.tablelines[j].rect.min.x;
             cell->rect.min.y = tl_h.tablelines[i].rect.min.y;
             cell->rect.max.x = (j_next < tl_v.tablelines_num) ? tl_v.tablelines[j_next].rect.min.x : cell->rect.min.x;
@@ -1553,7 +1553,7 @@ y_min..y_max. */
             cell->lines_num = 0;
             cell->paragraphs = NULL;
             cell->paragraphs_num = 0;
-            
+
             /* Set cell->above if there is a horizontal line above the cell. */
             outf("Looking to set above for i=%i j=%i rect=%s", i, j, extract_rect_string(&cell->rect));
             for (ii = i; ii < i_next; ++ii)
@@ -1570,7 +1570,7 @@ y_min..y_max. */
                     break;
                 }
             }
-            
+
             /* Set cell->left if there is a vertical line to the left of the cell. */
             for (jj = j; jj < j_next; ++jj)
             {
@@ -1586,15 +1586,15 @@ y_min..y_max. */
                     break;
                 }
             }
-            
+
             j = j_next;
         }
-        
+
         i = i_next;
     }
-    
+
     assert(cells_num == cells_num_x * cells_num_y);
-    
+
     /* Remove cols and rows where no cells have .above and .left - these
     will not appear. It also avoids spurious empty columns when table uses
     closely-spaced double lines as separators. */
@@ -1629,7 +1629,7 @@ y_min..y_max. */
             cells_num_x -= 1;
         }
     }
-    
+
     if (cells_num == 0)
     {
         e = 0;
@@ -1637,9 +1637,9 @@ y_min..y_max. */
     }
 
     if (table_find_extend(cells, cells_num_x, cells_num_y)) goto end;
-    
+
     if (table_find_cells_text(alloc, subpage, cells, cells_num_x, cells_num_y)) goto end;
-    
+
     e = 0;
     end:
     extract_free(alloc, &tl_h.tablelines);
@@ -1673,7 +1673,7 @@ Any text found inside tables is removed from page->spans[].
     int ih;
     outf("page->tablelines_horizontal.tablelines_num=%i", subpage->tablelines_horizontal.tablelines_num);
     outf("page->tablelines_vertical.tablelines_num=%i", subpage->tablelines_vertical.tablelines_num);
-    
+
     /* Sort all lines by y coordinate. */
     qsort(
             subpage->tablelines_horizontal.tablelines,
@@ -1687,7 +1687,7 @@ Any text found inside tables is removed from page->spans[].
             sizeof(*subpage->tablelines_vertical.tablelines),
             tablelines_compare_y
             );
-    
+
     if (0)
     {
         /* Show info about lines. */
@@ -1709,7 +1709,7 @@ Any text found inside tables is removed from page->spans[].
                     );
         }
     }
-    
+
     /* Look for completely separate vertical regions that define different
     tables, by looking for vertical gaps between the rects of each
     horizontal/vertical line. */
@@ -1762,10 +1762,10 @@ Any text found inside tables is removed from page->spans[].
         }
         if (tl->rect.max.y > maxy)  maxy = tl->rect.max.y;
     }
-    
+
     /* Find last table. */
     table_find(alloc, subpage, miny - margin, maxy + margin);
-    
+
     return 0;
 }
 
@@ -1845,7 +1845,7 @@ static int extract_join_subpage(
                 );
         return -1;
     }
-    
+
     return 0;
 }
 
@@ -1867,7 +1867,7 @@ int extract_document_join(extract_alloc_t* alloc, document_t* document, int layo
 
         for (c=0; c<page->subpages_num; ++c) {
             subpage_t* subpage = page->subpages[c];
-        
+
             outf("processing page %i, subpage %i: num_spans=%i", p, c, subpage->spans_num);
             if (extract_join_subpage(alloc, subpage)) return -1;
         }

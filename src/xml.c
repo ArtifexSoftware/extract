@@ -408,7 +408,7 @@ int extract_xml_pparse_next(extract_buffer_t* buffer, extract_xml_tag_t* out)
     char    c;
     int     i;
     extract_alloc_t* alloc = extract_buffer_alloc(buffer);
-    
+
     if (0) outf("out is: %s", extract_xml_tag_string(extract_buffer_alloc(buffer), out));
     assert(buffer);
     extract_xml_tag_free(alloc, out);
@@ -512,4 +512,3 @@ int extract_xml_pparse_next(extract_buffer_t* buffer, extract_xml_tag_t* out)
     }
     return ret;
 }
-

@@ -67,11 +67,11 @@ typedef struct
     /* (x,y) before transformation by ctm and trm. */
     double      pre_x;
     double      pre_y;
-    
+
     /* (x,y) after transformation by ctm and trm. */
     double      x;
     double      y;
-    
+
     unsigned    ucs;
     double      adv;
 
@@ -85,15 +85,15 @@ typedef struct
     matrix_t    ctm;
     matrix_t    trm;
     char*       font_name;
-    
+
     /* font size is extract_matrix_cmp4(trm). */
-    
+
     struct {
         unsigned font_bold      : 1;
         unsigned font_italic    : 1;
         unsigned wmode          : 1;
     } flags;
-    
+
     char_t*     chars;
     int         chars_num;
 } span_t;
@@ -151,10 +151,10 @@ typedef struct
     double  h;
     void*   data;
     size_t  data_size;
-    
+
     extract_image_data_free data_free;
     void*                   data_free_handle;
-    
+
 } image_t;
 /* Information about an image. <type> is as passed to extract_add_image();
 <name> and <id> are created to be unique identifiers for use in generated docx
@@ -179,18 +179,18 @@ typedef struct
 typedef struct
 {
     rect_t          rect;
-    
+
     /* If left/above is true, this cell is not obscured by cell to its
     left/above. */
     uint8_t         left;
     uint8_t         above;
-    
+
     /* extend_right and extend_down are 1 for normal cells, 2 for cells which
     extend right/down to cover an additional column/row, 3 to cover two
     additional columns/rows etc. */
     int             extend_right;
     int             extend_down;
-    
+
     /* Contents of this cell. */
     line_t**        lines;
     int             lines_num;
@@ -205,7 +205,7 @@ void extract_cell_free(extract_alloc_t* alloc, cell_t** pcell);
 typedef struct
 {
     point_t     pos;    /* top-left. */
-    
+
     /* Array of cells_num_x*cells_num_y cells; cell (x, y) is:
         cells_num_x * y + x.
     */
@@ -238,7 +238,7 @@ typedef struct
 
     span_t**    spans;
     int         spans_num;
-    
+
     image_t*    images;
     int         images_num;
 
@@ -251,10 +251,10 @@ typedef struct
     int             paragraphs_num;
     /* These refer to items in .lines. Initially empty, then set
     by extract_join(). */
-    
+
     tablelines_t    tablelines_horizontal;
     tablelines_t    tablelines_vertical;
-    
+
     table_t**   tables;
     int         tables_num;
 } subpage_t;

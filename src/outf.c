@@ -26,7 +26,7 @@ void (extract_outf)(
     if (level > extract_outf_verbose) {
         return;
     }
-    
+
     if (ln) {
         fprintf(stderr, "%s:%i:%s: ", file, line, fn);
     }

@@ -128,7 +128,7 @@ static int s_odt_styles_definitions(
             );
     extract_astring_cat(alloc, out, "<style:paragraph-properties style:writing-mode=\"lr-tb\"/>\n");
     extract_astring_cat(alloc, out, "</style:style>\n");
-    
+
     /* Style for images. */
     extract_astring_cat(alloc, out, "<style:style style:name=\"fr1\" style:family=\"graphic\" style:parent-style-name=\"Graphics\">\n");
     extract_astring_cat(alloc, out, "<style:graphic-properties"
@@ -156,8 +156,8 @@ static int s_odt_styles_definitions(
             " draw:color-mode=\"standard\""
             "/>\n");
     extract_astring_cat(alloc, out, "</style:style>\n");
-    
-    
+
+
     if (extract_astring_cat(alloc, out, "</office:automatic-styles>")) return -1;
     return 0;
 }
@@ -308,9 +308,9 @@ change font. */
         if (s_odt_run_finish(alloc, content_state, content)) goto end;
     }
     if (s_odt_paragraph_finish(alloc, content)) goto end;
-    
+
     e = 0;
-    
+
     end:
     return e;
 }
@@ -335,7 +335,7 @@ static int s_odt_append_image(
             );
     extract_astring_cat(alloc, content, "</draw:frame>\n");
     extract_astring_cat(alloc, content, "</text:p>\n");
-    
+
     return 0;
 }
 
@@ -361,13 +361,13 @@ static int s_odt_output_rotated_paragraphs(
     int p;
     double pt_to_inch = 1/72.0;
     outf("rotated paragraphs: rotation_rad=%f (x y)=(%f %f) (w h)=(%f %f)", rotation_rad, x_pt, y_pt, w_pt, h_pt);
-    
+
     // https://docs.oasis-open.org/office/OpenDocument/v1.3/cs02/part3-schema/OpenDocument-v1.3-cs02-part3-schema.html#attribute-draw_transform
     // says rotation is in degrees, but we seem to require -radians.
     //
-    
+
     if (!e) e = extract_astring_cat(alloc, content, "\n");
-    
+
     if (!e) e = extract_astring_cat(alloc, content, "<text:p text:style-name=\"Standard\">\n");
     if (!e) e = extract_astring_catf(alloc, content, "<draw:frame"
             " text:anchor-type=\"paragraph\""
@@ -388,19 +388,19 @@ static int s_odt_output_rotated_paragraphs(
             y_pt * pt_to_inch
             );
     if (!e) e = extract_astring_cat(alloc, content, "<draw:text-box>\n");
-    
+
     for (p=paragraph_begin; p<paragraph_end; ++p)
     {
         paragraph_t* paragraph = subpage->paragraphs[p];
         if (!e) e = s_document_to_odt_content_paragraph(alloc, content_state, paragraph, content, styles);
     }
-    
+
     if (!e) e = extract_astring_cat(alloc, content, "\n");
     if (!e) e = extract_astring_cat(alloc, content, "</draw:text-box>\n");
     if (!e) e = extract_astring_cat(alloc, content, "</draw:frame>\n");
-    
+
     if (!e) e = extract_astring_cat(alloc, content, "</text:p>\n");
-    
+
     return e;
 }
 
@@ -409,7 +409,7 @@ static int s_odt_append_table(extract_alloc_t* alloc, table_t* table, extract_as
 {
     int e = -1;
     int y;
-    
+
     {
         int x;
         static int table_number = 0;
@@ -438,7 +438,7 @@ static int s_odt_append_table(extract_alloc_t* alloc, table_t* table, extract_as
         if (extract_astring_cat(alloc, content,
                 "        <table:table-row>\n"
                 )) goto end;
-        
+
         for (x=0; x<table->cells_num_x; ++x)
         {
             cell_t* cell = table->cells[y*table->cells_num_x + x];
@@ -447,7 +447,7 @@ static int s_odt_append_table(extract_alloc_t* alloc, table_t* table, extract_as
                 if (extract_astring_cat(alloc, content, "            <table:covered-table-cell/>\n")) goto end;
                 continue;
             }
-            
+
             if (extract_astring_cat(alloc, content, "            <table:table-cell")) goto end;
             if (cell->extend_right > 1)
             {
@@ -458,7 +458,7 @@ static int s_odt_append_table(extract_alloc_t* alloc, table_t* table, extract_as
                 if (extract_astring_catf(alloc, content, " table:number-rows-spanned=\"%i\"", cell->extend_down)) goto end;
             }
             if (extract_astring_catf(alloc, content, ">\n")) goto end;
-            
+
             /* Write contents of this cell. */
             {
                 int p;
@@ -482,7 +482,7 @@ static int s_odt_append_table(extract_alloc_t* alloc, table_t* table, extract_as
     }
     if (extract_astring_cat(alloc, content, "    </table:table>\n")) goto end;
     e = 0;
-    
+
     end:
     return e;
 }
@@ -612,7 +612,7 @@ and updates *p. */
             )) goto end;
     *p = p1 - 1;
     e = 0;
-    
+
     end:
     return e;
 }
@@ -644,7 +644,7 @@ static int extract_page_to_odt_content(
         content_state.font.bold = 0;
         content_state.font.italic = 0;
         content_state.ctm_prev = NULL;
-        
+
         for(;;)
         {
             paragraph_t* paragraph = (p == subpage->paragraphs_num) ? NULL : subpage->paragraphs[p];
@@ -654,7 +654,7 @@ static int extract_page_to_odt_content(
             if (!paragraph && !table)   break;
             y_paragraph = (paragraph) ? paragraph->lines[0]->spans[0]->chars[0].y : DBL_MAX;
             y_table = (table) ? table->pos.y : DBL_MAX;
-            
+
             if (paragraph && y_paragraph < y_table)
             {
                 const matrix_t* ctm = &paragraph->lines[0]->spans[0]->ctm;
@@ -697,7 +697,7 @@ static int extract_page_to_odt_content(
                 t += 1;
             }
         }
-        
+
         outf("images=%i", images);
         if (images)
         {
@@ -781,7 +781,7 @@ int extract_odt_content_item(
     extract_astring_t   temp;
     extract_astring_init(&temp);
     *text2 = NULL;
-    
+
     (void) images;
     if (0)
     {}
@@ -803,10 +803,10 @@ int extract_odt_content_item(
                 &text_intermediate
                 )) goto end;
         outf("text_intermediate: %s", text_intermediate);
-        
+
         /* Convert <styles> to text. */
         if (s_odt_styles_definitions(alloc, styles, &styles_definitions)) goto end;
-        
+
         /* To make tables work, we seem to need to specify table and column
         styles, and these can be empty. todo: maybe specify exact sizes based
         on the pdf table and cell dimensions. */
@@ -815,7 +815,7 @@ int extract_odt_content_item(
                 "<style:style style:name=\"extract.table\" style:family=\"table\"/>\n"
                 "<style:style style:name=\"extract.table.column\" style:family=\"table-column\"/>\n"
                 )) goto end;
-        
+
         /* Replace '<office:automatic-styles/>' with text from
         <styles_definitions>. */
         e = extract_content_insert(
@@ -877,7 +877,7 @@ int extract_odt_content_item(
     return e;
 }
 
-        
+
 
 int extract_odt_write_template(
         extract_alloc_t*    alloc,
@@ -899,7 +899,7 @@ int extract_odt_write_template(
 
     assert(path_out);
     assert(path_template);
-    
+
     if (extract_check_path_shell_safe(path_out))
     {
         outf("path_out is unsafe: %s", path_out);
@@ -928,7 +928,7 @@ int extract_odt_write_template(
     /* Might be nice to iterate through all items in path_tempdir, but for now
     we look at just the items that we know extract_odt_content_item() will
     modify. */
-    
+
     {
         const char* names[] =
         {
@@ -944,7 +944,7 @@ int extract_odt_write_template(
             extract_free(alloc, &text2);
             if (extract_asprintf(alloc, &path, "%s/%s", path_tempdir, name) < 0) goto end;
             if (extract_read_all_path(alloc, path, &text)) goto end;
-            
+
             outf("before extract_odt_content_item() styles->styles_num=%i", styles->styles_num);
             if (extract_odt_content_item(
                     alloc,
@@ -960,7 +960,7 @@ int extract_odt_write_template(
                 outf("extract_odt_content_item() failed");
                 goto end;
             }
-            
+
             outf("after extract_odt_content_item styles->styles_num=%i", styles->styles_num);
 
             {
@@ -986,7 +986,7 @@ int extract_odt_write_template(
         if (extract_asprintf(alloc, &path, "%s/Pictures/%s", path_tempdir, image->name) < 0) goto end;
         if (extract_write_all(image->data, image->data_size, path)) goto end;
     }
-    
+
     outf("Zipping tempdir to create %s", path_out);
     {
         const char* path_out_leaf = strrchr(path_out, '/');

@@ -35,7 +35,7 @@ int extract_vasprintf(extract_alloc_t* alloc, char** out, const char* format, va
     }
     vsnprintf(*out, n + 1, format, va2);
     ret = 0;
-    
+
     end:
     va_end(va2);
     return ret;

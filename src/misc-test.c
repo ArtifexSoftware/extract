@@ -24,7 +24,7 @@ static void s_check(
     else {
         ok = (ret == 0 && values_equal);
     }
-    
+
     if (ok) printf("    ok:  ");
     else printf("    fail:");
     printf(" text=%16s", text);
@@ -81,9 +81,9 @@ static void s_check_xml_parse()
             "< bar=>",
             "< =>",
             };
-    
+
     extract_xml_tag_init( &tag);
-    
+
     for (i=0; i<sizeof(texts) / sizeof(texts[0]); ++i)
     {
         const char* text = texts[i];
@@ -103,7 +103,7 @@ static void s_check_xml_parse()
         e = extract_xml_pparse_next( buffer, &tag);
         s_check_e( e, "extract_xml_pparse_next()");
         s_check_e( tag.name ? 0 : 1, "tag.name is not null");
-        
+
         {
             int j;
             for (j=0; j<tag.attributes_num; ++j)
@@ -122,17 +122,17 @@ int main(void)
     s_check_int("-20", -20, 0);
     s_check_int("-20b", 0, EINVAL);
     s_check_int("123456789123", 0, ERANGE);
-    
+
     printf("testing extract_xml_str_to_uint():\n");
     s_check_uint("2", 2, 0);
     s_check_uint("-20", 0, ERANGE);
     s_check_uint("-20b", 0, EINVAL);
     s_check_uint("123456789123", 0, ERANGE);
-    
+
     s_check_xml_parse();
-    
+
     printf("s_num_fails=%i\n", s_num_fails);
-    
+
     if (s_num_fails) {
         printf("Failed\n");
         return 1;

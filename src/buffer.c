@@ -33,7 +33,7 @@ extract_alloc_t* extract_buffer_alloc(extract_buffer_t* buffer)
 
 
 int extract_buffer_open(
-        extract_alloc_t*        alloc, 
+        extract_alloc_t*        alloc,
         void*                   handle,
         extract_buffer_fn_read  fn_read,
         extract_buffer_fn_write fn_write,
@@ -45,7 +45,7 @@ int extract_buffer_open(
     int e = -1;
     extract_buffer_t* buffer;
     if (extract_malloc(alloc, &buffer, sizeof(*buffer))) goto end;
-    
+
     buffer->alloc = alloc;
     buffer->handle = handle;
     buffer->fn_read = fn_read;
@@ -57,7 +57,7 @@ int extract_buffer_open(
     buffer->cache.pos = 0;
     buffer->pos = 0;
     e = 0;
-    
+
     end:
     if (e) {
         extract_free(alloc, &buffer);
@@ -119,7 +119,7 @@ then fn_write returned EOF. */
     buffer->cache.pos = 0;
     e = 0;
     end:
-    
+
     *o_actual = p;
     return e;
 }
@@ -128,11 +128,11 @@ int extract_buffer_close(extract_buffer_t** p_buffer)
 {
     extract_buffer_t* buffer = *p_buffer;
     int e = -1;
-    
+
     if (!buffer) {
         return 0;
     }
-    
+
     if (buffer->cache.cache && buffer->fn_write) {
         /* Flush cache. */
         size_t cache_bytes = buffer->cache.pos;
@@ -171,7 +171,7 @@ int extract_buffer_open_simple(
 {
     extract_buffer_t* buffer;
     if (extract_malloc(alloc, &buffer, sizeof(*buffer))) return -1;
-    
+
     /* We need cast away the const here. data[] will be written-to if caller
     uses us as a write buffer. */
     buffer->alloc = alloc;
@@ -233,7 +233,7 @@ int extract_buffer_open_file(extract_alloc_t* alloc, const char* path, int writa
         outf("failed to open '%s': %s", path, strerror(errno));
         goto end;
     }
-    
+
     if (extract_buffer_open(
             alloc,
             file /*handle*/,
@@ -244,7 +244,7 @@ int extract_buffer_open_file(extract_alloc_t* alloc, const char* path, int writa
             o_buffer
             )) goto end;
     e = 0;
-    
+
     end:
     if (e) {
         if (file) fclose(file);
@@ -266,7 +266,7 @@ int extract_buffer_read_internal(
 {
     int e = -1;
     size_t pos = 0;    /* Number of bytes read so far. */
-    
+
     /* In each iteration we either read from cache, or use buffer->fn_read()
     directly or repopulate the cache. */
     for(;;) {
@@ -315,7 +315,7 @@ int extract_buffer_read_internal(
         }
     }
     e = 0;
-    
+
     end:
     if (o_actual) *o_actual = pos;
     if (e == 0 && pos != numbytes) return +1; /* EOF. */
@@ -332,12 +332,12 @@ int extract_buffer_write_internal(
 {
     int e = -1;
     size_t pos = 0;    /* Number of bytes written so far. */
-    
+
     if (!buffer->fn_write) {
         errno = EINVAL;
         return -1;
     }
-    
+
     /* In each iteration we either write to cache, or use buffer->fn_write()
     directly or flush the cache. */
     for(;;) {
@@ -381,7 +381,7 @@ int extract_buffer_write_internal(
                 }
                 if (ee) goto end;
             }
-            
+
             if (!buffer->fn_cache) {
                 use_write = 1;
             }
@@ -412,7 +412,7 @@ int extract_buffer_write_internal(
         }
     }
     e = 0;
-    
+
     end:
     if (o_actual) *o_actual = pos;
     if (e == 0 && pos != numbytes) e = +1; /* EOF. */
