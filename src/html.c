@@ -72,11 +72,15 @@ static int paragraph_to_html_content(
     for (l=0; l<paragraph->lines_num; ++l)
     {
         line_t* line = paragraph->lines[l];
-        int s;
-        for (s=0; s<line->spans_num; ++s)
+        content_t *spans;
+        for (spans = line->content.next; spans != &line->content; spans = spans->next)
         {
             int c;
-            span_t* span = line->spans[s];
+            span_t *span = (span_t *)spans;
+
+            if (spans->type != content_span)
+                continue;
+
             content_state->ctm_prev = &span->ctm;
             if (span->flags.font_bold != content_state->font.bold)
             {
@@ -198,7 +202,7 @@ static int append_table(extract_alloc_t* alloc, content_state_t* state, table_t*
 static char_t* paragraph_first_char(const paragraph_t* paragraph)
 {
     line_t* line = paragraph->lines[paragraph->lines_num - 1];
-    span_t* span = line->spans[line->spans_num - 1];
+    span_t* span = content_last_span(&line->content);
     return &span->chars[0];
 }
 
@@ -293,7 +297,7 @@ split_to_html(extract_alloc_t *alloc, split_t* split, subpage_t*** ppsubpage, ex
         {
             paragraph_t* paragraph = subpage->paragraphs[p];
             line_t* line = paragraph->lines[0];
-            span_t* span = line->spans[0];
+            span_t* span = content_first_span(&line->content);
             outf0("    p=%i: %s", p, extract_span_string(NULL, span));
         }
     }
@@ -307,7 +311,7 @@ split_to_html(extract_alloc_t *alloc, split_t* split, subpage_t*** ppsubpage, ex
         paragraph_t* paragraph = (p == subpage->paragraphs_num) ? NULL : paragraphs[p];
         table_t* table = (t == subpage->tables_num) ? NULL : subpage->tables[t];
         if (!paragraph && !table) break;
-        y_paragraph = (paragraph) ? paragraph->lines[0]->spans[0]->chars[0].y : DBL_MAX;
+        y_paragraph = (paragraph) ? content_first_span(&paragraph->lines[0]->content)->chars[0].y : DBL_MAX;
         y_table = (table) ? table->pos.y : DBL_MAX;
         outf("p=%i y_paragraph=%f", p, y_paragraph);
         outf("t=%i y_table=%f", t, y_table);

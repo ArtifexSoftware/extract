@@ -267,12 +267,16 @@ change font. */
     for (l=0; l<paragraph->lines_num; ++l)
     {
         line_t* line = paragraph->lines[l];
-        int s;
-        for (s=0; s<line->spans_num; ++s)
+        content_t *spans, *next;
+        for (spans = line->content.next; spans != &line->content; spans = next)
         {
             int si;
-            span_t* span = line->spans[s];
             double font_size_new;
+            span_t* span = (span_t *)spans;
+            next = spans->next;
+            if (spans->type != content_span)
+                continue;
+
             content_state->ctm_prev = &span->ctm;
             font_size_new = extract_matrices_to_font_size(&span->ctm, &span->trm);
             if (!content_state->font.name
@@ -526,10 +530,11 @@ and updates *p. */
         block. This assumes left-to-right text. */
         double rotate0 = rotate;
         const matrix_t* ctm0 = ctm;
+        span_t *first_span = content_first_span(&paragraph->lines[0]->content);
         point_t origin =
         {
-                paragraph->lines[0]->spans[0]->chars[0].x,
-                paragraph->lines[0]->spans[0]->chars[0].y
+                first_span->chars[0].x,
+                first_span->chars[0].y
         };
         matrix_t ctm_inverse = {1, 0, 0, 1, 0, 0};
         double ctm_det = ctm->a*ctm->d - ctm->b*ctm->c;
@@ -549,7 +554,7 @@ and updates *p. */
         for (*p=p0; *p<subpage->paragraphs_num; ++*p)
         {
             paragraph = subpage->paragraphs[*p];
-            ctm = &paragraph->lines[0]->spans[0]->ctm;
+            ctm = &content_first_span(&paragraph->lines[0]->content)->ctm;
             rotate = atan2(ctm->b, ctm->a);
             if (rotate != rotate0)
             {
@@ -651,22 +656,23 @@ static int extract_page_to_odt_content(
             table_t* table = (t == subpage->tables_num) ? NULL : subpage->tables[t];
             double y_paragraph;
             double y_table;
+            span_t *first_span = paragraph ? content_first_span(&paragraph->lines[0]->content) : NULL;
             if (!paragraph && !table)   break;
-            y_paragraph = (paragraph) ? paragraph->lines[0]->spans[0]->chars[0].y : DBL_MAX;
+            y_paragraph = (paragraph) ? first_span->chars[0].y : DBL_MAX;
             y_table = (table) ? table->pos.y : DBL_MAX;
 
             if (paragraph && y_paragraph < y_table)
             {
-                const matrix_t* ctm = &paragraph->lines[0]->spans[0]->ctm;
+                const matrix_t* ctm = &first_span->ctm;
                 double rotate = atan2(ctm->b, ctm->a);
 
                 if (spacing
                         && content_state.ctm_prev
                         && paragraph->lines_num
-                        && paragraph->lines[0]->spans_num
+                        && first_span
                         && extract_matrix_cmp4(
                                 content_state.ctm_prev,
-                                &paragraph->lines[0]->spans[0]->ctm
+                                &first_span->ctm
                                 )
                         )
                 {
@@ -701,11 +707,15 @@ static int extract_page_to_odt_content(
         outf("images=%i", images);
         if (images)
         {
-            int i;
-            outf("subpage->images_num=%i", subpage->images_num);
-            for (i=0; i<subpage->images_num; ++i)
+            content_t *images, *next;
+            outf("subpage->images_num=%i", content_count_images(&subpage->content));
+            for (images = subpage->content.next; images != &subpage->content; images = next)
             {
-                s_odt_append_image(alloc, content, &subpage->images[i]);
+                image_t *image = (image_t *)images;
+                next = images->next;
+                if (images->type != content_image)
+                    continue;
+                s_odt_append_image(alloc, content, image);
             }
         }
     }
@@ -841,7 +851,7 @@ int extract_odt_content_item(
         int i;
         for (i=0; i<images->images_num; ++i)
         {
-            image_t* image = &images->images[i];
+            image_t* image = images->images[i];
             if (!e) e = extract_astring_catf(alloc, &temp, "<manifest:file-entry manifest:full-path=\"Pictures/%s\" manifest:media-type=\"image/%s\"/>\n",
                     image->name,
                     image->type
@@ -981,7 +991,7 @@ int extract_odt_write_template(
     }
     for (i=0; i<images->images_num; ++i)
     {
-        image_t* image = &images->images[i];
+        image_t* image = images->images[i];
         extract_free(alloc, &path);
         if (extract_asprintf(alloc, &path, "%s/Pictures/%s", path_tempdir, image->name) < 0) goto end;
         if (extract_write_all(image->data, image->data_size, path)) goto end;

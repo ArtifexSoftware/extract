@@ -154,8 +154,7 @@ static const char* span_string2(extract_alloc_t* alloc, span_t* span)
 static double line_angle(line_t* line)
 {
     /* All spans in a line must have same angle, so just use the first span. */
-    assert(line->spans_num > 0);
-    return span_angle(line->spans[0]);
+    return span_angle(content_first_span(&line->content));
 }
 
 /* Returns static string containing brief info about line_t. */
@@ -163,17 +162,21 @@ static const char* line_string2(extract_alloc_t* alloc, line_t* line)
 {
     static extract_astring_t ret = {0};
     char    buffer[256];
-    int i;
+    span_t *span = content_first_span(&line->content);
+    int num = content_count_spans(&line->content);
+    content_t *content;
     extract_astring_free(alloc, &ret);
     snprintf(buffer, sizeof(buffer), "line x=%f y=%f spans_num=%i:",
-            line->spans[0]->chars[0].x,
-            line->spans[0]->chars[0].y,
-            line->spans_num
-            );
+             span->chars[0].x,
+             span->chars[0].y,
+             num);
     extract_astring_cat(alloc, &ret, buffer);
-    for (i=0; i<line->spans_num; ++i) {
+    for (content = line->content.next; content != &line->content; content = content->next)
+    {
+        if (content->type != content_span)
+            continue;
         extract_astring_cat(alloc, &ret, " ");
-        extract_astring_cat(alloc, &ret, span_string2(alloc, line->spans[i]));
+        extract_astring_cat(alloc, &ret, span_string2(alloc, (span_t *)content));
     }
     return ret.chars;
 }
@@ -227,38 +230,40 @@ static int lines_are_compatible(
         int     verbose
         )
 {
+    span_t *first_span_a = content_first_span(&a->content);
+    span_t *first_span_b = content_first_span(&b->content);
     if (a == b) return 0;
-    if (!a->spans || !b->spans) return 0;
-    if (s_line_span_first(a)->flags.wmode != s_line_span_first(b)->flags.wmode) {
+    if (!first_span_a || !first_span_b) return 0;
+    if (first_span_a->flags.wmode != first_span_b->flags.wmode) {
         return 0;
     }
     if (extract_matrix_cmp4(
-            &s_line_span_first(a)->ctm,
-            &s_line_span_first(b)->ctm
+            &first_span_a->ctm,
+            &first_span_b->ctm
             )) {
         if (verbose) {
             outf("ctm's differ:");
             outf("    %f %f %f %f %f %f",
-                    s_line_span_first(a)->ctm.a,
-                    s_line_span_first(a)->ctm.b,
-                    s_line_span_first(a)->ctm.c,
-                    s_line_span_first(a)->ctm.d,
-                    s_line_span_first(a)->ctm.e,
-                    s_line_span_first(a)->ctm.f
+                    first_span_a->ctm.a,
+                    first_span_a->ctm.b,
+                    first_span_a->ctm.c,
+                    first_span_a->ctm.d,
+                    first_span_a->ctm.e,
+                    first_span_a->ctm.f
                     );
             outf("    %f %f %f %f %f %f",
-                    s_line_span_first(b)->ctm.a,
-                    s_line_span_first(b)->ctm.b,
-                    s_line_span_first(b)->ctm.c,
-                    s_line_span_first(b)->ctm.d,
-                    s_line_span_first(b)->ctm.e,
-                    s_line_span_first(b)->ctm.f
+                    first_span_b->ctm.a,
+                    first_span_b->ctm.b,
+                    first_span_b->ctm.c,
+                    first_span_b->ctm.d,
+                    first_span_b->ctm.e,
+                    first_span_b->ctm.f
                     );
         }
         return 0;
     }
     {
-        double angle_b = span_angle(s_line_span_first(b));
+        double angle_b = span_angle(first_span_b);
         if (angle_b != angle_a) {
             outfx("%s:%i: angles differ");
             return 0;
@@ -286,7 +291,9 @@ span (including freeing .font_name), because lots of code assumes that there
 are no empty spans. */
 {
     int c;
+    content_t save = *(content_t *)o_span;
     *o_span = *span;
+    *(content_t *)o_span = save; /* Avoid changing prev/next. */
     extract_strdup(alloc, span->font_name, &o_span->font_name);
     o_span->chars = NULL;
     o_span->chars_num = 0;
@@ -350,8 +357,7 @@ We only join spans that are at the same angle and are aligned.
 On entry:
     Original value of *o_lines and *o_lines_num are ignored.
 
-    <spans> points to array of <spans_num> span_t*'s, each pointing to
-    a span_t.
+    <spans> is a list of span_t's.
 
 On exit:
     If we succeed, we return 0, with *o_lines pointing to array of *o_lines_num
@@ -367,8 +373,7 @@ On exit:
 */
 static int make_lines(
         extract_alloc_t*    alloc,
-        span_t**            spans,
-        int*                spans_num,
+        content_t          *spans,
         rect_t*             rects,
         int                 rects_num,
         line_t***           o_lines,
@@ -385,64 +390,79 @@ static int make_lines(
     int         num_compatible;
     int         num_joins;
     span_t*     span = NULL;
+    int         spans_num = content_count_spans(spans); /* For debug only */
 
     if (rects_num)
     {
+        content_t *content, *next;
         /* Make <lines> contain new span_t's and char_t's that are inside rects[]. */
-        for (a=0; a<*spans_num; ++a)
+        for (content = spans->next; content != spans; content = next)
         {
-            if (spans[a]->chars_num == 0)   continue; /* In case used for table, */
-            if (extract_realloc(alloc, &span, sizeof(*span))) goto end;
-            extract_span_init(span);
-            if (s_span_inside_rects(alloc, spans[a], rects, rects_num, span))
+            span_t *candidate = (span_t *)content;
+            next = content->next;
+            if (content->type != content_span)
+                continue;
+            if (candidate->chars_num == 0)   continue; /* In case used for table, */
+            /* Create a new span. */
+            if (content_new_span(alloc, &span)) goto end;
+            /* Extract any chars from candidate that fall inside rects/rect_num, inserting
+             * those chars into span. */
+            if (s_span_inside_rects(alloc, candidate, rects, rects_num, span))
             {
                 goto end;
             }
             if (span->chars_num)
             {
+                /* We populated it with some chars! */
+                /* Extend the list of lines. */
                 if (extract_realloc(alloc, &lines, sizeof(*lines) * (lines_num + 1))) goto end;
+                /* Allocate a new line_t. */
                 if (extract_malloc(alloc, &lines[lines_num], sizeof(line_t))) goto end;
                 lines_num += 1;
-                if (extract_malloc(alloc, &lines[lines_num-1]->spans, sizeof(span_t*) * 1)) goto end;
-                lines[lines_num-1]->spans[0] = span;
-                lines[lines_num-1]->spans_num = 1;
-                span = NULL;
+                content_init(&lines[lines_num-1]->content, content_root);
+                /* Unlink span from where it was, and insert into the new line_t. */
+                content_append_span(&lines[lines_num-1]->content, span);
             }
             else
             {
+                /* No chars found. Bin it. */
                 extract_span_free(alloc, &span);
             }
 
-            if (!spans[a]->chars_num)
+            if (!candidate->chars_num)
             {
                 /* All characters in this span are inside table, so remove
                 entire span, otherwise the same characters will end up being
                 output outside the table also. */
-                extract_span_free(alloc, &spans[a]);
-                memmove(&spans[a], &spans[a+1], sizeof(*spans) * ((*spans_num) - (a+1)));
-                *spans_num -= 1;
-                a -= 1;
+                extract_span_free(alloc, &candidate);
             }
         }
     }
     else
     {
         /* Make <lines> be a copy of <spans>. */
-        lines_num = *spans_num;
+        content_t *content, *next;
+
+        lines_num = content_count_spans(spans);
         if (extract_malloc(alloc, &lines, sizeof(*lines) * lines_num)) goto end;
 
         /* Ensure we can clean up after error. */
         for (a=0; a<lines_num; ++a) {
             lines[a] = NULL;
         }
-        for (a=0; a<lines_num; ++a) {
+        /* Make <lines> contain new span_t's and char_t's that are inside rects[]. */
+        for (a = 0, content = spans->next; content != spans; content = next, a++)
+        {
+            span_t *candidate = (span_t *)content;
+            next = content->next;
+            if (content->type != content_span)
+                continue;
+            /* Allocate a new line_t */
             if (extract_malloc(alloc, &lines[a], sizeof(line_t))) goto end;
-            lines[a]->spans_num = 0;
-            if (extract_malloc(alloc, &lines[a]->spans, sizeof(span_t*) * 1)) goto end;
-            lines[a]->spans_num = 1;
-            lines[a]->spans[0] = spans[a];
-            /* Ensure that spans[] can be safely freed now we've moved it into lines[]. */
-            spans[a] = NULL;
+            /* Initialise it. */
+            content_init(&lines[a]->content, content_root);
+            /* Move spans[a] into it. */
+            content_append_span(&lines[a]->content, candidate);
             outfx("initial line a=%i: %s", a, line_string(lines[a]));
         }
     }
@@ -648,22 +668,17 @@ static int make_lines(
                 outf("    %s", span_string2(alloc, span_a));
                 outf("    %s", span_string2(alloc, span_b));
             }
-            if (extract_realloc2(
-                    alloc,
-                    &line_a->spans,
-                    sizeof(span_t*) * line_a->spans_num,
-                    sizeof(span_t*) * (line_a->spans_num + nearest_line->spans_num)
-                    )) goto end;
+            /* Move all the content from nearest_line to line_a. */
             {
-                int k;
-                for (k=0; k<nearest_line->spans_num; ++k) {
-                    line_a->spans[ line_a->spans_num + k] = nearest_line->spans[k];
+                content_t *content, *next;
+                for (content = nearest_line->content.next; content != &nearest_line->content; content = next)
+                {
+                    next = content->next;
+                    content_append(&line_a->content, content);
                 }
             }
-            line_a->spans_num += nearest_line->spans_num;
 
             /* Ensure that we ignore nearest_line from now on. */
-            extract_free(alloc, &nearest_line->spans);
             extract_free(alloc, &nearest_line);
             outfx("setting line[b=%i] to NULL", b);
             lines[b] = NULL;
@@ -712,7 +727,7 @@ static int make_lines(
     ret = 0;
 
     outf("Turned %i spans into %i lines. num_compatible=%i",
-            *spans_num,
+            spans_num,
             lines_num,
             num_compatible
             );
@@ -725,14 +740,9 @@ static int make_lines(
             for (a=0; a<lines_num; ++a) {
                 if (lines[a])
                 {
-                    int s;
-                    for (s=0; s<lines[a]->spans_num; ++s)
-                    {
-                        extract_span_free(alloc, &lines[a]->spans[s]);
-                    }
-                    extract_free(alloc, &lines[a]->spans);
+                    content_clear(alloc, &lines[a]->content);
+                    extract_free(alloc, &lines[a]);
                 }
-                extract_free(alloc, &lines[a]);
             }
         }
         extract_free(alloc, &lines);
@@ -745,11 +755,16 @@ static int make_lines(
 static double line_font_size_max(line_t* line)
 {
     double  size_max = 0;
-    int i;
-    for (i=0; i<line->spans_num; ++i) {
-        span_t* span = line->spans[i];
-        /* fixme: <size> should be double, which changes some output. */
-        double size = extract_matrix_expansion(span->trm);
+    content_t *content, *next;
+
+    for (content = line->content.next; content != &line->content; content = next) {
+        double size;
+        span_t *span = (span_t *)content;
+        next = content->next;
+        if (content->type != content_span)
+            continue;
+
+        size = extract_matrix_expansion(span->trm);
         if (size > size_max) {
             size_max = size;
         }
@@ -1051,10 +1066,10 @@ static int make_paragraphs(
                     outf("    %s", paragraph_string(alloc, paragraph_a));
                     outf("    %s", paragraph_string(alloc, nearest_paragraph));
                     outf("paragraph_a ctm=%s",
-                            extract_matrix_string(&paragraph_a->lines[0]->spans[0]->ctm)
+                            extract_matrix_string(&content_first_span(&paragraph_a->lines[0]->content)->ctm)
                             );
                     outf("paragraph_a trm=%s",
-                            extract_matrix_string(&paragraph_a->lines[0]->spans[0]->trm)
+                            extract_matrix_string(&content_first_span(&paragraph_a->lines[0]->content)->trm)
                             );
                 }
                 /* Join these two paragraph_t's. */
@@ -1198,8 +1213,7 @@ rects_num is zero. */
 {
     if (make_lines(
             alloc,
-            subpage->spans,
-            &subpage->spans_num,
+            &subpage->content,
             rects,
             rects_num,
             lines,
@@ -1822,7 +1836,7 @@ static int extract_join_subpage(
 /* Finds tables and paragraphs on <page>. */
 {
     /* Find tables on this page first. This will remove text that is within
-    tables from page->spans, so that text doesn't appearing more than once in
+    tables from page->spans, so that text doesn't appear more than once in
     the final output. */
     if (extract_subpage_tables_find(alloc, subpage)) return -1;
 
@@ -1839,7 +1853,7 @@ static int extract_join_subpage(
             ))
     {
         outf0("s_join_subpage_rects failed. subpage->spans_num=%i subpage->lines_num=%i subpage->paragraphs_num=%i",
-                subpage->spans_num,
+                content_count_spans(&subpage->content),
                 subpage->lines_num,
                 subpage->paragraphs_num
                 );
@@ -1868,7 +1882,7 @@ int extract_document_join(extract_alloc_t* alloc, document_t* document, int layo
         for (c=0; c<page->subpages_num; ++c) {
             subpage_t* subpage = page->subpages[c];
 
-            outf("processing page %i, subpage %i: num_spans=%i", p, c, subpage->spans_num);
+            outf("processing page %i, subpage %i: num_spans=%i", p, c, content_count_spans(&subpage->content));
             if (extract_join_subpage(alloc, subpage)) return -1;
         }
     }

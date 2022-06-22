@@ -8,9 +8,65 @@
 #else
     #include <stdint.h>
 #endif
+#include <assert.h>
 
+typedef struct span_t span_t;
+typedef struct image_t image_t;
 
 static const double pi = 3.141592653589793;
+
+/*
+All content is stored as content_t nodes in a doubly linked-list.
+The first node in the list is a 'content_root' node. The last
+node in the list is the same node again.
+
+Thus:
+  Every node in a list (including the root) has next and prev != NULL.
+  The root node in an empty list has next and prev pointing to itself.
+  Any non-root node with prev and next == NULL is not in a list.
+*/
+typedef enum {
+    content_root,
+    content_span,
+    content_image,
+} content_type_t;
+
+typedef struct content_t {
+    content_type_t type;
+    struct content_t *prev;
+    struct content_t *next;
+} content_t;
+
+
+/* Initialise a content_t (just the base struct). */
+void content_init(content_t *content, content_type_t type);
+
+/* Unlink a (non-root) content_t from any list. */
+void content_unlink(content_t *content);
+
+/* Free all the content, from a (root) content_t. */
+void content_clear(extract_alloc_t* alloc, content_t *root);
+
+/* Unlink a span_t from any list. */
+void content_unlink_span(span_t *span);
+
+span_t *content_first_span(content_t *root);
+
+span_t *content_last_span(content_t *root);
+
+int content_count_spans(content_t *root);
+int content_count_images(content_t *root);
+
+int content_new_span(extract_alloc_t *alloc, span_t **pspan);
+
+int content_append_new_span(extract_alloc_t* alloc, content_t *root, span_t **pspan);
+int content_append_new_image(extract_alloc_t* alloc, content_t *root, image_t **pimage);
+
+void content_append(content_t *root, content_t *content);
+
+void content_append_span(content_t *root, span_t *span);
+
+
 
 typedef struct
 {
@@ -80,8 +136,9 @@ typedef struct
 /* A single char in a span.
 */
 
-typedef struct
+struct span_t
 {
+    content_t   base;
     matrix_t    ctm;
     matrix_t    trm;
     char*       font_name;
@@ -96,7 +153,7 @@ typedef struct
 
     char_t*     chars;
     int         chars_num;
-} span_t;
+};
 /* List of chars that have same font and are usually adjacent. */
 
 void extract_span_init(span_t* span);
@@ -118,8 +175,7 @@ const char* extract_span_string(extract_alloc_t* alloc, span_t* span);
 
 typedef struct
 {
-    span_t**    spans;
-    int         spans_num;
+    content_t content;
 } line_t;
 /* List of spans that are aligned on same line. */
 
@@ -140,8 +196,9 @@ typedef struct
 /* List of lines that are aligned and adjacent to each other so as to form a
 paragraph. */
 
-typedef struct
+struct image_t
 {
+    content_t base;
     char*   type;   /* jpg, png etc. */
     char*   name;   /* Name of image file within docx. */
     char*   id;     /* ID of image within docx. */
@@ -155,12 +212,16 @@ typedef struct
     extract_image_data_free data_free;
     void*                   data_free_handle;
 
-} image_t;
+};
 /* Information about an image. <type> is as passed to extract_add_image();
 <name> and <id> are created to be unique identifiers for use in generated docx
 file. */
 
+void extract_image_init(image_t* image);
+
 void extract_image_clear(extract_alloc_t* alloc, image_t* image);
+
+void extract_image_free(extract_alloc_t *alloc, image_t **pimage);
 
 typedef struct
 {
@@ -231,16 +292,12 @@ typedef struct split_t
     struct split_t *split[1];
 } split_t;
 
-
 typedef struct
 {
     rect_t      mediabox;
 
-    span_t**    spans;
-    int         spans_num;
-
-    image_t*    images;
     int         images_num;
+    content_t   content;
 
     line_t**    lines;
     int         lines_num;
@@ -284,7 +341,7 @@ typedef struct
 
 typedef struct
 {
-    image_t*    images;
+    image_t**   images;
     int         images_num;
     char**      imagetypes;
     int         imagetypes_num;
@@ -325,12 +382,18 @@ int extract_subpage_alloc(extract_alloc_t* extract, rect_t mediabox, extract_pag
 void extract_subpage_free(extract_alloc_t* alloc, subpage_t** psubpage);
 /* subpage_t destructor. */
 
-int subpage_span_append(extract_alloc_t* alloc, subpage_t* subpage, span_t* span);
-/* Push span onto the end of subpage. */
-
 int extract_split_alloc(extract_alloc_t* alloc, split_type_t type, int count, split_t** psplit);
 /* Allocate a split_t. */
 
 void extract_split_free(extract_alloc_t* alloc, split_t** psplit);
+
+/* Some helper functions */
+
+/* Return a span_t * pointer to the first element in a content list. */
+static inline span_t *content_head_as_span(content_t *root)
+{
+    assert(root != NULL && root->type == content_root && (root->next == NULL || root->next->type == content_span));
+    return (span_t *)root->next;
+}
 
 #endif

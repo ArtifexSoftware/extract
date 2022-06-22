@@ -131,11 +131,16 @@ font. */
 
     for (l=0; l<paragraph->lines_num; ++l) {
         line_t* line = paragraph->lines[l];
-        int s;
-        for (s=0; s<line->spans_num; ++s) {
+        content_t *spans, *next;
+        for (spans = line->content.next; spans != &line->content; spans = next) {
             int si;
-            span_t* span = line->spans[s];
+            span_t* span = (span_t *)spans;
             double font_size_new;
+
+            next = spans->next;
+            if (spans->type != content_span)
+                continue;
+
             content_state->ctm_prev = &span->ctm;
             font_size_new = extract_matrices_to_font_size(&span->ctm, &span->trm);
             if (!content_state->font.name
@@ -518,9 +523,10 @@ and updates *p. */
         block. This assumes left-to-right text. */
         double rotate0 = rotate;
         const matrix_t* ctm0 = ctm;
+        span_t *first_span = content_head_as_span(&paragraph->lines[0]->content);
         point_t origin = {
-                paragraph->lines[0]->spans[0]->chars[0].x,
-                paragraph->lines[0]->spans[0]->chars[0].y
+                first_span->chars[0].x,
+                first_span->chars[0].y
                 };
         matrix_t ctm_inverse = {1, 0, 0, 1, 0, 0};
         double ctm_det = ctm->a*ctm->d - ctm->b*ctm->c;
@@ -537,7 +543,7 @@ and updates *p. */
 
         for (*p=p0; *p<subpage->paragraphs_num; ++(*p)) {
             paragraph = subpage->paragraphs[*p];
-            ctm = &paragraph->lines[0]->spans[0]->ctm;
+            ctm = &content_head_as_span(&paragraph->lines[0]->content)->ctm;
             rotate = atan2(ctm->b, ctm->a);
             if (rotate != rotate0) {
                 break;
@@ -651,7 +657,7 @@ int extract_document_to_docx_content(
     /* Write paragraphs into <content>. */
     for (p=0; p<document->pages_num; ++p) {
         extract_page_t* page = document->pages[p];
-	int c;
+        int c;
 
         for (c=0; c<page->subpages_num; ++c) {
             subpage_t* subpage = page->subpages[c];
@@ -672,21 +678,22 @@ int extract_document_to_docx_content(
                 table_t* table = (t == subpage->tables_num) ? NULL : subpage->tables[t];
                 double y_paragraph;
                 double y_table;
+                span_t *first_span = paragraph ? content_head_as_span(&paragraph->lines[0]->content) : NULL;
                 if (!paragraph && !table)   break;
-                y_paragraph = (paragraph) ? paragraph->lines[0]->spans[0]->chars[0].y : DBL_MAX;
+                y_paragraph = (paragraph) ? first_span->chars[0].y : DBL_MAX;
                 y_table = (table) ? table->pos.y : DBL_MAX;
 
                 if (paragraph && y_paragraph < y_table) {
-                    const matrix_t* ctm = &paragraph->lines[0]->spans[0]->ctm;
+                    const matrix_t* ctm = &first_span->ctm;
                     double rotate = atan2(ctm->b, ctm->a);
 
                     if (spacing
                         && content_state.ctm_prev
                         && paragraph->lines_num
-                        && paragraph->lines[0]->spans_num
+                        && first_span
                         && extract_matrix_cmp4(
                                 content_state.ctm_prev,
-                                &paragraph->lines[0]->spans[0]->ctm
+                                &first_span->ctm
                                 )
                         ) {
                         /* Extra vertical space between paragraphs that were at
@@ -717,9 +724,12 @@ int extract_document_to_docx_content(
             }
 
             if (images) {
-                int i;
-                for (i=0; i<subpage->images_num; ++i) {
-                    s_docx_append_image(alloc, content, &subpage->images[i]);
+                content_t *images, *next;
+                for (images = subpage->content.next; images != &subpage->content; images = next) {
+                    next = images->next;
+                    if (images->type != content_image)
+                        continue;
+                    s_docx_append_image(alloc, content, (image_t *)images);
                 }
             }
         }
@@ -805,7 +815,7 @@ int extract_docx_content_item(
         if (extract_astring_catl(alloc, &temp, text, end - text)) goto end;
         outf("images.images_num=%i", images->images_num);
         for (j=0; j<images->images_num; ++j) {
-            image_t* image = &images->images[j];
+            image_t* image = images->images[j];
             if (extract_astring_cat(alloc, &temp, "<Relationship Id=\"")) goto end;
             if (extract_astring_cat(alloc, &temp, image->id)) goto end;
             if (extract_astring_cat(alloc, &temp, "\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/image\" Target=\"media/")) goto end;
@@ -931,7 +941,7 @@ int extract_docx_write_template(
     if (extract_mkdir(path, 0777)) goto end;
 
     for (i=0; i<images->images_num; ++i) {
-        image_t* image = &images->images[i];
+        image_t* image = images->images[i];
         extract_free(alloc, &path);
         if (extract_asprintf(alloc, &path, "%s/word/media/%s", path_tempdir, image->name) < 0) goto end;
         if (extract_write_all(image->data, image->data_size, path)) goto end;

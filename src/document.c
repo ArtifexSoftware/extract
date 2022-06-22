@@ -1,42 +1,137 @@
 #include "document.h"
 #include "outf.h"
+#include <assert.h>
 
-
-void extract_span_init(span_t* span)
+void
+content_init(content_t *content, content_type_t type)
 {
-    span->font_name = NULL;
-    span->chars = NULL;
-    span->chars_num = 0;
+    content->type = type;
+    content->next = content->prev = (type == content_root) ? content : NULL;
 }
 
-void extract_span_free(extract_alloc_t* alloc, span_t** pspan)
+void
+content_unlink(content_t *content)
+{
+    if (content == NULL)
+        return;
+    assert(content->type != content_root);
+    if (content->prev == NULL) {
+        assert(content->next == NULL);
+        /* Already unlinked */
+    } else {
+        assert(content->next != content && content->prev != content);
+        content->prev->next = content->next;
+        content->next->prev = content->prev;
+        content->next = content->prev = NULL;
+    }
+}
+
+void content_unlink_span(span_t *span)
+{
+    content_unlink(&span->base);
+}
+
+void extract_span_init(span_t *span)
+{
+    static const span_t blank = { 0 };
+    *span = blank;
+    content_init(&span->base, content_span);
+}
+
+void extract_span_free(extract_alloc_t* alloc, span_t **pspan)
 {
     if (!*pspan) return;
+    content_unlink(&(*pspan)->base);
     extract_free(alloc, &(*pspan)->font_name);
     extract_free(alloc, &(*pspan)->chars);
     extract_free(alloc, pspan);
 }
 
-void extract_spans_free(extract_alloc_t* alloc, span_t*** pspans, int spans_num)
+void extract_image_init(image_t *image)
 {
-    span_t** spans = *pspans;
-    int s;
-    for (s=0; s<spans_num; ++s)
+    static const image_t blank = { 0 };
+    *image = blank;
+    content_init(&image->base, content_image);
+}
+
+void
+content_clear(extract_alloc_t* alloc, content_t *proot)
+{
+    content_t *content, *next;
+
+    assert(proot->type == content_root && proot->next != NULL && proot->prev != NULL);
+    for (content = proot->next; content != proot; content = next)
     {
-        extract_span_free(alloc, &spans[s]);
+        assert(content->type != content_root);
+        next = content->next;
+        switch (content->type)
+        {
+            default:
+            case content_root:
+                assert("This never happens" == NULL);
+                break;
+            case content_span:
+                extract_span_free(alloc, (span_t **)&content);
+                break;
+            case content_image:
+                extract_image_free(alloc, (image_t **)&content);
+                break;
+        }
     }
-    extract_free(alloc, pspans);
+}
+
+int content_count_spans(content_t *root)
+{
+    int n = 0;
+    content_t *s;
+
+    for (s = root->next; s != root; s = s->next)
+        if (s->type == content_span) n++;
+
+    return n;
+}
+
+int content_count_images(content_t *root)
+{
+    int n = 0;
+    content_t *s;
+
+    for (s = root->next; s != root; s = s->next)
+        if (s->type == content_image) n++;
+
+    return n;
+}
+
+span_t *content_first_span(content_t *root)
+{
+    content_t *span;
+    assert(root && root->type == content_root);
+
+    for (span = root->next; span != root; span = span->next)
+    {
+        if (span->type == content_span)
+            return (span_t *)span;
+    }
+    return NULL;
+}
+
+span_t *content_last_span(content_t *root)
+{
+    content_t *span;
+    assert(root && root->type == content_root);
+
+    for (span = root->prev; span != root; span = span->prev)
+    {
+        if (span->type == content_span)
+            return (span_t *)span;
+    }
+    return NULL;
 }
 
 void extract_line_free(extract_alloc_t* alloc, line_t** pline)
 {
     line_t* line = *pline;
-    int s;
-    for (s=0; s<line->spans_num; ++s)
-    {
-        extract_span_free(alloc, &line->spans[s]);
-    }
-    extract_free(alloc, &line->spans);
+    content_clear(alloc, &line->content);
     extract_free(alloc, pline);
 }
 
@@ -59,6 +154,14 @@ void extract_image_clear(extract_alloc_t* alloc, image_t* image)
     if (image->data_free) {
         image->data_free(image->data_free_handle, image->data);
     }
+}
+
+void extract_image_free(extract_alloc_t *alloc, image_t **pimage)
+{
+    if (*pimage == NULL)
+        return;
+    extract_image_clear(alloc, *pimage);
+    extract_free(alloc, pimage);
 }
 
 void extract_cell_free(extract_alloc_t* alloc, cell_t** pcell)

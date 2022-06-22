@@ -364,29 +364,27 @@ extract_span_bbox(span_t *span)
 static int
 extract_subpage_subset(extract_alloc_t *alloc, extract_page_t *page, subpage_t *subpage, rect_t mediabox)
 {
+    content_t *content, *next;
     subpage_t *target;
-    int s;
 
     if (extract_subpage_alloc(alloc, mediabox, page, &target))
     {
         return -1;
     }
 
-    for (s = 0; s < subpage->spans_num; s++)
+    for (content = subpage->content.next; content != &subpage->content; content = next)
     {
-        rect_t bbox;
-        span_t *span = subpage->spans[s];
-        if (!span)
-            continue;
+        next = content->next;
 
-        bbox = extract_span_bbox(span);
+        if (content->type == content_span)
+        {
+            span_t *span = (span_t *)content;
+            rect_t bbox = extract_span_bbox(span);
 
-        if (bbox.min.x >= mediabox.min.x && bbox.min.y >= mediabox.min.y && bbox.max.x <= mediabox.max.x && bbox.max.y <= mediabox.max.y) {
-            if (subpage_span_append(alloc, target, span))
-            {
-                return -1;
+            if (bbox.min.x >= mediabox.min.x && bbox.min.y >= mediabox.min.y && bbox.max.x <= mediabox.max.x && bbox.max.y <= mediabox.max.y) {
+                content_unlink(&span->base);
+                content_append_span(&target->content, span);
             }
-            subpage->spans[s] = NULL;
         }
     }
 
@@ -565,8 +563,8 @@ collate_splits(extract_alloc_t *alloc, split_t **psplit)
 int extract_page_analyse(extract_alloc_t *alloc, extract_page_t *page)
 {
     boxer_t *boxer;
-    int i;
     subpage_t *subpage = page->subpages[0];
+    content_t *content, *next;
 
     /* This code will only work if the page contains a single subpage.
      * This should always be the case if we're called from a page
@@ -583,13 +581,15 @@ int extract_page_analyse(extract_alloc_t *alloc, extract_page_t *page)
 
     boxer = boxer_create(alloc, (rect_t *)&subpage->mediabox);
 
-    for (i = 0; i < subpage->spans_num; i++)
+    for (content = subpage->content.next; content != &subpage->content; content = next)
     {
-        span_t *span = subpage->spans[i];
-        rect_t bbox = extract_span_bbox(span);
-        if (boxer_feed(boxer, &bbox))
+        next = content->next;
+        if (content->type == content_span)
         {
-            goto fail;
+            span_t *span = (span_t *)content;
+            rect_t bbox = extract_span_bbox(span);
+            if (boxer_feed(boxer, &bbox))
+                goto fail;
         }
     }
 
