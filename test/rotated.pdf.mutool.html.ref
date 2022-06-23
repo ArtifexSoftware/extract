@@ -1,5 +1,6 @@
 <html>
 <body>
+<div>
 
 
 <table border="1" style="border-collapse:collapse">
@@ -169,5 +170,6 @@
 </p></b>
 
 <p>NNMB72Rural-ThirdRepeatSurvey2011-12 
-</p></body>
+</p></div>
+</body>
 </html>
