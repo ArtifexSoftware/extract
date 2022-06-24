@@ -126,12 +126,17 @@ static int s_document_to_docx_content_paragraph(
 font. */
 {
     int e = -1;
-    int l;
+    content_t *lines, *next_line;
     if (s_docx_paragraph_start(alloc, content)) goto end;
 
-    for (l=0; l<paragraph->lines_num; ++l) {
-        line_t* line = paragraph->lines[l];
+    for (lines = paragraph->content.next; lines != &paragraph->content; lines = next_line) {
+        line_t *line = (line_t *)lines;
         content_t *spans, *next;
+
+        next_line = lines->next;
+        if (lines->type != content_line)
+            continue;
+
         for (spans = line->content.next; spans != &line->content; spans = next) {
             int si;
             span_t* span = (span_t *)spans;
@@ -523,7 +528,7 @@ and updates *p. */
         block. This assumes left-to-right text. */
         double rotate0 = rotate;
         const matrix_t* ctm0 = ctm;
-        span_t *first_span = content_head_as_span(&paragraph->lines[0]->content);
+        span_t *first_span = content_head_as_span(&content_first_line(&paragraph->content)->content);
         point_t origin = {
                 first_span->chars[0].x,
                 first_span->chars[0].y
@@ -543,7 +548,7 @@ and updates *p. */
 
         for (*p=p0; *p<subpage->paragraphs_num; ++(*p)) {
             paragraph = subpage->paragraphs[*p];
-            ctm = &content_head_as_span(&paragraph->lines[0]->content)->ctm;
+            ctm = &content_head_as_span(&content_first_line(&paragraph->content)->content)->ctm;
             rotate = atan2(ctm->b, ctm->a);
             if (rotate != rotate0) {
                 break;
@@ -551,21 +556,29 @@ and updates *p. */
 
             /* Update <extent>. */
             {
-                int l;
-                for (l=0; l<paragraph->lines_num; ++l) {
-                    line_t* line = paragraph->lines[l];
-                    span_t* span = extract_line_span_last(line);
-                    char_t* char_ = extract_span_char_last(span);
-                    double adv = char_->adv * extract_matrix_expansion(span->trm);
-                    double x = char_->x + adv * cos(rotate);
-                    double y = char_->y + adv * sin(rotate);
+                content_t *lines, *next_line;
+                for (lines = paragraph->content.next; lines != &paragraph->content; lines = next_line) {
+                    line_t *line = (line_t *)lines;
+                    span_t *span;
+                    char_t *char_;
+                    double adv, x, y, dx, dy, xx, yy;
 
-                    double dx = x - origin.x;
-                    double dy = y - origin.y;
+                    next_line = lines->next;
+                    if (lines->type != content_line)
+                        continue;
+
+                    span = extract_line_span_last(line);
+                    char_ = extract_span_char_last(span);
+                    adv = char_->adv * extract_matrix_expansion(span->trm);
+                    x = char_->x + adv * cos(rotate);
+                    y = char_->y + adv * sin(rotate);
+
+                    dx = x - origin.x;
+                    dy = y - origin.y;
 
                     /* Position relative to origin and before box rotation. */
-                    double xx = ctm_inverse.a * dx + ctm_inverse.b * dy;
-                    double yy = ctm_inverse.c * dx + ctm_inverse.d * dy;
+                    xx = ctm_inverse.a * dx + ctm_inverse.b * dy;
+                    yy = ctm_inverse.c * dx + ctm_inverse.d * dy;
                     yy = -yy;
                     if (xx > extent.x) extent.x = xx;
                     if (yy > extent.y) extent.y = yy;
@@ -678,7 +691,8 @@ int extract_document_to_docx_content(
                 table_t* table = (t == subpage->tables_num) ? NULL : subpage->tables[t];
                 double y_paragraph;
                 double y_table;
-                span_t *first_span = paragraph ? content_head_as_span(&paragraph->lines[0]->content) : NULL;
+                line_t *first_line = paragraph ? content_first_line(&paragraph->content) : NULL;
+                span_t *first_span = first_line ? content_head_as_span(&first_line->content) : NULL;
                 if (!paragraph && !table)   break;
                 y_paragraph = (paragraph) ? first_span->chars[0].y : DBL_MAX;
                 y_table = (table) ? table->pos.y : DBL_MAX;
@@ -689,7 +703,7 @@ int extract_document_to_docx_content(
 
                     if (spacing
                         && content_state.ctm_prev
-                        && paragraph->lines_num
+                        && first_line
                         && first_span
                         && extract_matrix_cmp4(
                                 content_state.ctm_prev,

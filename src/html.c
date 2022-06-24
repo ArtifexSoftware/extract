@@ -66,13 +66,19 @@ static int paragraph_to_html_content(
 {
     int e = -1;
     const char* endl = (single_line) ? "" : "\n";
-    int l;
+    content_t *lines, *next_line;
+
     if (extract_astring_catf(alloc, content, "%s%s<p>", endl, endl)) goto end;
 
-    for (l=0; l<paragraph->lines_num; ++l)
+    for (lines = paragraph->content.next; lines != &paragraph->content; lines = next_line)
     {
-        line_t* line = paragraph->lines[l];
+        line_t *line = (line_t *)lines;
         content_t *spans;
+        next_line = lines->next;
+
+        if (lines->type != content_line)
+            continue;
+
         for (spans = line->content.next; spans != &line->content; spans = spans->next)
         {
             int c;
@@ -104,7 +110,7 @@ static int paragraph_to_html_content(
             }
         }
 
-        if (content->chars_num && l+1 < paragraph->lines_num)
+        if (content->chars_num && next_line->type != content_root)
         {
             if (content->chars[content->chars_num-1] == '-')    content->chars_num -= 1;
             else if (content->chars[content->chars_num-1] != ' ')
@@ -198,11 +204,11 @@ static int append_table(extract_alloc_t* alloc, content_state_t* state, table_t*
     return e;
 }
 
-
+/* FIXME: Badly named! first_char_of_last_span_of_paragraph! */
 static char_t* paragraph_first_char(const paragraph_t* paragraph)
 {
-    line_t* line = paragraph->lines[paragraph->lines_num - 1];
-    span_t* span = content_last_span(&line->content);
+    line_t *line = content_last_line(&paragraph->content);
+    span_t *span = content_last_span(&line->content);
     return &span->chars[0];
 }
 
@@ -296,8 +302,8 @@ split_to_html(extract_alloc_t *alloc, split_t* split, subpage_t*** ppsubpage, ex
         for (p=0; p<subpage->paragraphs_num; ++p)
         {
             paragraph_t* paragraph = subpage->paragraphs[p];
-            line_t* line = paragraph->lines[0];
-            span_t* span = content_first_span(&line->content);
+            line_t *line = content_first_line(&paragraph->content);
+            span_t *span = content_first_span(&line->content);
             outf0("    p=%i: %s", p, extract_span_string(NULL, span));
         }
     }
@@ -311,7 +317,7 @@ split_to_html(extract_alloc_t *alloc, split_t* split, subpage_t*** ppsubpage, ex
         paragraph_t* paragraph = (p == subpage->paragraphs_num) ? NULL : paragraphs[p];
         table_t* table = (t == subpage->tables_num) ? NULL : subpage->tables[t];
         if (!paragraph && !table) break;
-        y_paragraph = (paragraph) ? content_first_span(&paragraph->lines[0]->content)->chars[0].y : DBL_MAX;
+        y_paragraph = (paragraph) ? content_first_span(&content_first_line(&paragraph->content)->content)->chars[0].y : DBL_MAX;
         y_table = (table) ? table->pos.y : DBL_MAX;
         outf("p=%i y_paragraph=%f", p, y_paragraph);
         outf("t=%i y_table=%f", t, y_table);

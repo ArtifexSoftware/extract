@@ -186,16 +186,18 @@ to form a paragraph. */
 static const char* paragraph_string(extract_alloc_t* alloc, paragraph_t* paragraph)
 {
     static extract_astring_t ret = {0};
+    line_t *first_line = content_first_line(&paragraph->content);
+    line_t *last_line = content_last_line(&paragraph->content);
     extract_astring_free(alloc, &ret);
     extract_astring_cat(alloc, &ret, "paragraph: ");
-    if (paragraph->lines_num) {
-        extract_astring_cat(alloc, &ret, line_string2(alloc, paragraph->lines[0]));
-        if (paragraph->lines_num > 1) {
+    if (first_line != NULL) {
+        extract_astring_cat(alloc, &ret, line_string2(alloc, first_line));
+        if (first_line != last_line) {
             extract_astring_cat(alloc, &ret, "..");
             extract_astring_cat(
                     alloc,
                     &ret,
-                    line_string2(alloc, paragraph->lines[paragraph->lines_num-1])
+                    line_string2(alloc, last_line)
                     );
         }
     }
@@ -205,15 +207,13 @@ static const char* paragraph_string(extract_alloc_t* alloc, paragraph_t* paragra
 /* Returns first line in paragraph. */
 static line_t* paragraph_line_first(const paragraph_t* paragraph)
 {
-    assert(paragraph->lines_num);
-    return paragraph->lines[0];
+    return content_first_line(&paragraph->content);
 }
 
 /* Returns last line in paragraph. */
 static line_t* paragraph_line_last(const paragraph_t* paragraph)
 {
-    assert(paragraph->lines_num);
-    return paragraph->lines[ paragraph->lines_num-1];
+    return content_last_line(&paragraph->content);
 }
 
 
@@ -376,21 +376,19 @@ static int make_lines(
         content_t          *spans,
         rect_t*             rects,
         int                 rects_num,
-        line_t***           o_lines,
-        int*                o_lines_num
+        content_t          *lines
         )
 {
     int ret = -1;
 
     /* Make a line_t for each span. Then we will join some of these line_t's
     together before returning. */
-    int         lines_num = 0;
-    line_t**    lines = NULL;
     int         a;
     int         num_compatible;
     int         num_joins;
     span_t*     span = NULL;
     int         spans_num = content_count_spans(spans); /* For debug only */
+    content_t  *lit, *next_lit;
 
     if (rects_num)
     {
@@ -413,21 +411,18 @@ static int make_lines(
             }
             if (span->chars_num)
             {
+                line_t *line;
                 /* We populated it with some chars! */
-                /* Extend the list of lines. */
-                if (extract_realloc(alloc, &lines, sizeof(*lines) * (lines_num + 1))) goto end;
-                /* Allocate a new line_t. */
-                if (extract_malloc(alloc, &lines[lines_num], sizeof(line_t))) goto end;
-                lines_num += 1;
-                content_init(&lines[lines_num-1]->content, content_root);
+                if (content_append_new_line(alloc, lines, &line)) goto end;
                 /* Unlink span from where it was, and insert into the new line_t. */
-                content_append_span(&lines[lines_num-1]->content, span);
+                content_append_span(&line->content, span);
             }
             else
             {
                 /* No chars found. Bin it. */
                 extract_span_free(alloc, &span);
             }
+            span = NULL; /* Avoid us freeing on error now ownership has moved. */
 
             if (!candidate->chars_num)
             {
@@ -443,27 +438,17 @@ static int make_lines(
         /* Make <lines> be a copy of <spans>. */
         content_t *content, *next;
 
-        lines_num = content_count_spans(spans);
-        if (extract_malloc(alloc, &lines, sizeof(*lines) * lines_num)) goto end;
-
-        /* Ensure we can clean up after error. */
-        for (a=0; a<lines_num; ++a) {
-            lines[a] = NULL;
-        }
         /* Make <lines> contain new span_t's and char_t's that are inside rects[]. */
         for (a = 0, content = spans->next; content != spans; content = next, a++)
         {
+            line_t *line;
             span_t *candidate = (span_t *)content;
             next = content->next;
             if (content->type != content_span)
                 continue;
-            /* Allocate a new line_t */
-            if (extract_malloc(alloc, &lines[a], sizeof(line_t))) goto end;
-            /* Initialise it. */
-            content_init(&lines[a]->content, content_root);
-            /* Move spans[a] into it. */
-            content_append_span(&lines[a]->content, candidate);
-            outfx("initial line a=%i: %s", a, line_string(lines[a]));
+            if (content_append_new_line(alloc, lines, &line)) goto end;
+            content_append_span(&line->content, candidate);
+            outfx("initial line a=%i: %s", a, line_string(line));
         }
     }
 
@@ -471,7 +456,7 @@ static int make_lines(
 
     /* For each line, look for nearest aligned line, and append if found. */
     num_joins = 0;
-    for (a=0; a<lines_num; ++a) {
+    for (a=0, lit = lines->next; lit != lines; a++, lit = next_lit) {
         int b;
         int verbose = 0;
         int nearest_line_b = -1;
@@ -479,11 +464,12 @@ static int make_lines(
         line_t* nearest_line = NULL;
         span_t* span_a;
         double angle_a;
+        content_t *lit2, *next_lit2;
+        line_t *line_a = (line_t *)lit;
 
-        line_t* line_a = lines[a];
-        if (!line_a) {
+        next_lit = lit->next;
+        if (lit->type != content_line)
             continue;
-        }
 
         if (0 && a < 1) verbose = 1;
         outfx("looking at line_a=%s", line_string2(alloc, line_a));
@@ -497,14 +483,14 @@ static int make_lines(
                 line_string2(alloc, line_a)
                 );
 
-        for (b=0; b<lines_num; ++b) {
-            line_t* line_b = lines[b];
-            if (!line_b) {
+        for (b = 0, lit2 = lines->next; lit2 != lines; b++, lit2 = next_lit2) {
+            line_t *line_b = (line_t *)lit2;
+
+            next_lit2 = lit2->next;
+            if (lit2->type != content_line)
                 continue;
-            }
-            if (b == a) {
+            if (line_a == line_b)
                 continue;
-            }
             if (verbose) {
                 outf("a=%i b=%i: nearest_line_b=%i nearest_adv=%f",
                         a,
@@ -679,56 +665,29 @@ static int make_lines(
             }
 
             /* Ensure that we ignore nearest_line from now on. */
-            extract_free(alloc, &nearest_line);
-            outfx("setting line[b=%i] to NULL", b);
-            lines[b] = NULL;
+            if (next_lit == &nearest_line->base)
+                next_lit = nearest_line->base.next;
+            extract_line_free(alloc, &nearest_line);
 
             num_joins += 1;
 
             if (b > a) {
                 /* We haven't yet tried appending any spans to nearest_line, so
                 the new extended line_a needs checking again. */
-                a -= 1;
+                next_lit = lit;
+                a--;
+            } else {
+                a--; /* b is before a, so a's number needs to move back one. */
             }
             outfx("num_joins=%i new line is:\n    %s", num_joins, line_string2(line_a));
         }
     }
 
-    {
-        /* Remove empty lines left behind after we appended pairs of lines. */
-        int from;
-        int to;
-        int lines_num_old;
-        for (from=0, to=0; from<lines_num; ++from) {
-            if (lines[from]) {
-                outfx("final line from=%i: %s",
-                        from,
-                        lines[from] ? line_string(lines[from]) : "NULL"
-                        );
-                lines[to] = lines[from];
-                to += 1;
-            }
-        }
-        lines_num_old = lines_num;
-        lines_num = to;
-        if (extract_realloc2(
-                alloc,
-                &lines,
-                sizeof(line_t*) * lines_num_old,
-                sizeof(line_t*) * lines_num
-                )) {
-            /* Should always succeed because we're not increasing allocation size. */
-            goto end;
-        }
-    }
-
-    *o_lines = lines;
-    *o_lines_num = lines_num;
     ret = 0;
 
     outf("Turned %i spans into %i lines. num_compatible=%i",
             spans_num,
-            lines_num,
+            content_count_lines(lines),
             num_compatible
             );
 
@@ -736,15 +695,7 @@ static int make_lines(
     if (ret) {
         /* Free everything. */
         extract_span_free(alloc, &span);
-        if (lines) {
-            for (a=0; a<lines_num; ++a) {
-                if (lines[a])
-                {
-                    content_clear(alloc, &lines[a]->content);
-                    extract_free(alloc, &lines[a]);
-                }
-            }
-        }
+        content_clear(alloc, lines);
         extract_free(alloc, &lines);
     }
     return ret;
@@ -919,8 +870,7 @@ On exit:
 */
 static int make_paragraphs(
         extract_alloc_t*    alloc,
-        line_t**            lines,
-        int                 lines_num,
+        content_t*          lines,
         paragraph_t***      o_paragraphs,
         int*                o_paragraphs_num
         )
@@ -929,8 +879,10 @@ static int make_paragraphs(
     int a;
     int num_joins;
     paragraph_t** paragraphs = NULL;
+    content_t *lit, *lit_next;
 
     /* Start off with a paragraph_t for each line_t. */
+    int lines_num = content_count_lines(lines);
     int paragraphs_num = lines_num;
     if (extract_malloc(alloc, &paragraphs, sizeof(*paragraphs) * paragraphs_num)) goto end;
     /* Ensure we can clean up after error when setting up. */
@@ -938,12 +890,14 @@ static int make_paragraphs(
         paragraphs[a] = NULL;
     }
     /* Set up initial paragraphs. */
-    for (a=0; a<paragraphs_num; ++a) {
-        if (extract_malloc(alloc, &paragraphs[a], sizeof(paragraph_t))) goto end;
-        paragraphs[a]->lines_num = 0;
-        if (extract_malloc(alloc, &paragraphs[a]->lines, sizeof(line_t*) * 1)) goto end;
-        paragraphs[a]->lines_num = 1;
-        paragraphs[a]->lines[0] = lines[a];
+    for (a=0, lit = lines->next; lit != lines; a++, lit = lit_next)
+    {
+        lit_next = lit->next;
+        if (lit->type != content_line)
+            continue;
+        if (extract_paragraph_alloc(alloc, &paragraphs[a]))
+            goto end;
+        content_append_line(&paragraphs[a]->content, (line_t *)lit);
     }
 
     /* Now join paragraphs together where possible. */
@@ -964,8 +918,8 @@ static int make_paragraphs(
             continue;
         }
 
-        assert(paragraph_a->lines_num > 0);
         line_a = paragraph_line_last(paragraph_a);
+        assert(line_a != NULL);
         angle_a = line_angle(line_a);
         verbose = 0;
 
@@ -1052,7 +1006,6 @@ static int make_paragraphs(
                 font size of first line in second paragraph, so we'll join them
                 into a single paragraph. */
                 span_t* a_span;
-                int a_lines_num_new;
                 if (verbose) {
                     outf(
                             "joing paragraphs. a=(%f,%f) b=(%f,%f) nearest_paragraph_distance=%f line_b_size=%f",
@@ -1066,10 +1019,10 @@ static int make_paragraphs(
                     outf("    %s", paragraph_string(alloc, paragraph_a));
                     outf("    %s", paragraph_string(alloc, nearest_paragraph));
                     outf("paragraph_a ctm=%s",
-                            extract_matrix_string(&content_first_span(&paragraph_a->lines[0]->content)->ctm)
+                            extract_matrix_string(&content_first_span(&content_first_line(&paragraph_a->content)->content)->ctm)
                             );
                     outf("paragraph_a trm=%s",
-                            extract_matrix_string(&content_first_span(&paragraph_a->lines[0]->content)->trm)
+                            extract_matrix_string(&content_first_span(&content_first_line(&paragraph_a->content)->content)->trm)
                             );
                 }
                 /* Join these two paragraph_t's. */
@@ -1100,25 +1053,11 @@ static int make_paragraphs(
                     c->y = c_prev->y + c_prev->adv * a_span->ctm.c;
                 }
 
-                a_lines_num_new = paragraph_a->lines_num + nearest_paragraph->lines_num;
-                if (extract_realloc2(
-                        alloc,
-                        &paragraph_a->lines,
-                        sizeof(line_t*) * paragraph_a->lines_num,
-                        sizeof(line_t*) * a_lines_num_new
-                        )) goto end;
-                {
-                    int i;
-                    for (i=0; i<nearest_paragraph->lines_num; ++i) {
-                        paragraph_a->lines[paragraph_a->lines_num + i]
-                            = nearest_paragraph->lines[i];
-                    }
-                }
-                paragraph_a->lines_num = a_lines_num_new;
+                /* Join the two paragraphs by moving content from neareast_paragraph to paragraph_a. */
+                content_concat(&paragraph_a->content, &nearest_paragraph->content);
 
                 /* Ensure that we skip nearest_paragraph in future. */
-                extract_free(alloc, &nearest_paragraph->lines);
-                extract_free(alloc, &nearest_paragraph);
+                extract_paragraph_free(alloc, &nearest_paragraph);
                 paragraphs[nearest_paragraph_b] = NULL;
 
                 num_joins += 1;
@@ -1189,8 +1128,7 @@ static int make_paragraphs(
         {
             for (a=0; a<paragraphs_num; ++a)
             {
-                if (paragraphs[a])   extract_free(alloc, &paragraphs[a]->lines);
-                extract_free(alloc, &paragraphs[a]);
+                extract_paragraph_free(alloc, &paragraphs[a]);
             }
         }
         extract_free(alloc, &paragraphs);
@@ -1203,8 +1141,7 @@ static int s_join_subpage_rects(
         subpage_t*          subpage,
         rect_t*             rects,
         int                 rects_num,
-        line_t***           lines,
-        int*                lines_num,
+        content_t          *lines,
         paragraph_t***      paragraphs,
         int*                paragraphs_num
         )
@@ -1216,13 +1153,11 @@ rects_num is zero. */
             &subpage->content,
             rects,
             rects_num,
-            lines,
-            lines_num
+            lines
             )) return -1;
     if (make_paragraphs(
             alloc,
-            *lines,
-            *lines_num,
+            lines,
             paragraphs,
             paragraphs_num
             )) return -1;
@@ -1310,8 +1245,7 @@ void extract_cell_init(cell_t* cell)
     cell->left = 0;
     cell->extend_right = 0;
     cell->extend_down = 0;
-    cell->lines = NULL;
-    cell->lines_num = 0;
+    content_init(&cell->lines, content_root);
     cell->paragraphs = NULL;
     cell->paragraphs_num = 0;
 }
@@ -1418,7 +1352,6 @@ remove any found text from the page. */
                 &cell->rect,
                 1 /*rects_num*/,
                 &cell->lines,
-                &cell->lines_num,
                 &cell->paragraphs,
                 &cell->paragraphs_num
                 )) return -1;
@@ -1563,8 +1496,7 @@ y_min..y_max. */
             cell->left = (j==0);
             cell->extend_right = 1;
             cell->extend_down = 1;
-            cell->lines = NULL;
-            cell->lines_num = 0;
+            content_init(&cell->lines, content_root);
             cell->paragraphs = NULL;
             cell->paragraphs_num = 0;
 
@@ -1847,14 +1779,13 @@ static int extract_join_subpage(
             NULL /*rects*/,
             0 /*rects_num*/,
             &subpage->lines,
-            &subpage->lines_num,
             &subpage->paragraphs,
             &subpage->paragraphs_num
             ))
     {
         outf0("s_join_subpage_rects failed. subpage->spans_num=%i subpage->lines_num=%i subpage->paragraphs_num=%i",
                 content_count_spans(&subpage->content),
-                subpage->lines_num,
+                content_count_lines(&subpage->lines),
                 subpage->paragraphs_num
                 );
         return -1;

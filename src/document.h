@@ -11,6 +11,8 @@
 #include <assert.h>
 
 typedef struct span_t span_t;
+typedef struct line_t line_t;
+typedef struct paragraph_t paragraph_t;
 typedef struct image_t image_t;
 
 static const double pi = 3.141592653589793;
@@ -28,6 +30,7 @@ Thus:
 typedef enum {
     content_root,
     content_span,
+    content_line,
     content_image,
 } content_type_t;
 
@@ -50,22 +53,28 @@ void content_clear(extract_alloc_t* alloc, content_t *root);
 /* Unlink a span_t from any list. */
 void content_unlink_span(span_t *span);
 
-span_t *content_first_span(content_t *root);
+span_t *content_first_span(const content_t *root);
+span_t *content_last_span(const content_t *root);
+line_t *content_first_line(const content_t *root);
+line_t *content_last_line(const content_t *root);
 
-span_t *content_last_span(content_t *root);
-
-int content_count_spans(content_t *root);
 int content_count_images(content_t *root);
+int content_count_spans(content_t *root);
+int content_count_lines(content_t *root);
 
+int content_new_root(extract_alloc_t *alloc, content_t **pcontent);
 int content_new_span(extract_alloc_t *alloc, span_t **pspan);
+int content_new_line(extract_alloc_t *alloc, line_t **pline);
 
 int content_append_new_span(extract_alloc_t* alloc, content_t *root, span_t **pspan);
+int content_append_new_line(extract_alloc_t* alloc, content_t *root, line_t **pline);
 int content_append_new_image(extract_alloc_t* alloc, content_t *root, image_t **pimage);
 
 void content_append(content_t *root, content_t *content);
-
 void content_append_span(content_t *root, span_t *span);
+void content_append_line(content_t *root, line_t *line);
 
+void content_concat(content_t *dst, content_t *src);
 
 
 typedef struct
@@ -161,8 +170,6 @@ void extract_span_init(span_t* span);
 void extract_span_free(extract_alloc_t* alloc, span_t** pspan);
 /* Frees a span_t, returning with *pspan set to NULL. */
 
-void extract_spans_free(extract_alloc_t* alloc, span_t*** pspans, int spans_num);
-
 char_t* extract_span_char_last(span_t* span);
 /* Returns last character in span. */
 
@@ -173,13 +180,17 @@ fields zeroed. */
 const char* extract_span_string(extract_alloc_t* alloc, span_t* span);
 /* Returns static string containing info about span_t. */
 
-typedef struct
+struct line_t
 {
+    content_t base;
     content_t content;
-} line_t;
+};
 /* List of spans that are aligned on same line. */
 
+void extract_line_init(line_t *line);
+
 void extract_line_free(extract_alloc_t* alloc, line_t** pline);
+
 void extract_lines_free(extract_alloc_t* alloc, line_t*** plines, int lines_num);
 
 span_t* extract_line_span_first(line_t* line);
@@ -188,13 +199,16 @@ span_t* extract_line_span_first(line_t* line);
 span_t* extract_line_span_last(line_t* line);
 /* Returns last span in a line. */
 
-typedef struct
+struct paragraph_t
 {
-    line_t**    lines;
-    int         lines_num;
-} paragraph_t;
+    content_t content;
+};
 /* List of lines that are aligned and adjacent to each other so as to form a
 paragraph. */
+
+void extract_paragraph_free(extract_alloc_t* alloc, paragraph_t** pparagraph);
+
+int extract_paragraph_alloc(extract_alloc_t* alloc, paragraph_t** pparagraph);
 
 struct image_t
 {
@@ -253,8 +267,7 @@ typedef struct
     int             extend_down;
 
     /* Contents of this cell. */
-    line_t**        lines;
-    int             lines_num;
+    content_t       lines;
     paragraph_t**   paragraphs;
     int             paragraphs_num;
 } cell_t;
@@ -299,8 +312,7 @@ typedef struct
     int         images_num;
     content_t   content;
 
-    line_t**    lines;
-    int         lines_num;
+    content_t   lines;
     /* These refer to items in .spans. Initially empty, then set by
     extract_join(). */
 

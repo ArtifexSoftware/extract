@@ -186,6 +186,27 @@ span_t* extract_line_span_first(line_t* line)
     return (span_t *)line->content.next;
 }
 
+void extract_paragraph_free(extract_alloc_t* alloc, paragraph_t** pparagraph)
+{
+    paragraph_t *paragraph = *pparagraph;
+
+    if (paragraph == NULL)
+        return;
+
+    content_clear(alloc, &paragraph->content);
+    extract_free(alloc, pparagraph);
+}
+
+int extract_paragraph_alloc(extract_alloc_t* alloc, paragraph_t** pparagraph)
+{
+    if (extract_malloc(alloc, pparagraph, sizeof(paragraph_t)))
+        return -1;
+
+    content_init(&(*pparagraph)->content, content_root);
+
+    return 0;
+}
+
 
 static void table_free(extract_alloc_t* alloc, table_t** ptable)
 {
@@ -209,19 +230,18 @@ void extract_subpage_free(extract_alloc_t* alloc, subpage_t** psubpage)
     if (!subpage) return;
 
     outf0("subpage=%p subpage->spans_num=%i subpage->lines_num=%i",
-          subpage, content_count_spans(&subpage->content), subpage->lines_num);
+          subpage, content_count_spans(&subpage->content), content_count_lines(&subpage->lines));
     content_clear(alloc, &subpage->content);
 
-    extract_lines_free(alloc, &subpage->lines, subpage->lines_num);
+    content_clear(alloc, &subpage->lines);
 
     {
         int p;
         for (p=0; p<subpage->paragraphs_num; ++p) {
-            paragraph_t* paragraph = subpage->paragraphs[p];
             /* We don't call extract_lines_free(&paragraph->lines) because
             these point into the same data as subpage->lines, which we have
             already freed above. */
-            if (paragraph) extract_free(alloc, &paragraph->lines);
+            content_clear(alloc, &subpage->paragraphs[p]->content);
             extract_free(alloc, &subpage->paragraphs[p]);
         }
     }
@@ -283,6 +303,19 @@ void content_append_span(content_t *root, span_t *span)
     content_append(root, &span->base);
 }
 
+void content_append_line(content_t *root, line_t *line)
+{
+    content_append(root, &line->base);
+}
+
+int content_new_root(extract_alloc_t *alloc, content_t **pcontent)
+{
+    if (extract_malloc(alloc, pcontent, sizeof(**pcontent))) return -1;
+    content_init(*pcontent, content_root);
+
+    return 0;
+}
+
 int content_new_span(extract_alloc_t *alloc, span_t **pspan)
 {
     if (extract_malloc(alloc, pspan, sizeof(**pspan))) return -1;
@@ -291,12 +324,28 @@ int content_new_span(extract_alloc_t *alloc, span_t **pspan)
     return 0;
 }
 
+int content_new_line(extract_alloc_t *alloc, line_t **pline)
+{
+    if (extract_malloc(alloc, pline, sizeof(**pline))) return -1;
+    extract_line_init(*pline);
+
+    return 0;
+}
 
 int content_append_new_span(extract_alloc_t* alloc, content_t *root, span_t **pspan)
 /* Appends new empty span content to a content_list_t; returns -1 with errno set on error. */
 {
     if (content_new_span(alloc, pspan)) return -1;
     content_append(root, &(*pspan)->base);
+
+    return 0;
+}
+
+int content_append_new_line(extract_alloc_t* alloc, content_t *root, line_t **pline)
+/* Appends new empty line content to a content_list_t; returns -1 with errno set on error. */
+{
+    if (content_new_line(alloc, pline)) return -1;
+    content_append(root, &(*pline)->base);
 
     return 0;
 }
@@ -1458,8 +1507,7 @@ int extract_subpage_alloc(extract_alloc_t* alloc, rect_t mediabox, extract_page_
     subpage->paragraphs = NULL;
     subpage->paragraphs_num = 0;
     subpage->images_num = 0;
-    subpage->lines = NULL;
-    subpage->lines_num = 0;
+    content_init(&subpage->lines, content_root);
     subpage->tablelines_horizontal.tablelines = NULL;
     subpage->tablelines_horizontal.tablelines_num = 0;
     subpage->tablelines_vertical.tablelines = NULL;
@@ -1780,11 +1828,16 @@ static int paragraphs_to_text_content(
     for (p=0; p<paragraphs_num; ++p)
     {
         paragraph_t* paragraph = paragraphs[p];
-        int l;
-        for (l=0; l<paragraph->lines_num; ++l)
+        content_t *lines, *next_line;
+        for (lines = paragraph->content.next; lines != &paragraph->content; lines = next_line)
         {
-            line_t* line = paragraph->lines[l];
+            line_t *line = (line_t *)lines;
             content_t *content;
+            next_line = lines->next;
+
+            if (lines->type != content_line)
+                continue;
+
             for (content = line->content.next; content != &line->content; content = content->next)
             {
                 span_t* span = (span_t *)content;

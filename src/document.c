@@ -47,6 +47,14 @@ void extract_span_free(extract_alloc_t* alloc, span_t **pspan)
     extract_free(alloc, pspan);
 }
 
+void extract_line_init(line_t *line)
+{
+    static const line_t blank = { 0 };
+    *line = blank;
+    content_init(&line->base, content_line);
+    content_init(&line->content, content_root);
+}
+
 void extract_image_init(image_t *image)
 {
     static const image_t blank = { 0 };
@@ -73,6 +81,9 @@ content_clear(extract_alloc_t* alloc, content_t *proot)
             case content_span:
                 extract_span_free(alloc, (span_t **)&content);
                 break;
+            case content_line:
+                extract_line_free(alloc, (line_t **)&content);
+                break;
             case content_image:
                 extract_image_free(alloc, (image_t **)&content);
                 break;
@@ -80,57 +91,102 @@ content_clear(extract_alloc_t* alloc, content_t *proot)
     }
 }
 
-int content_count_spans(content_t *root)
+static int
+content_count_type(content_t *root, content_type_t type)
 {
     int n = 0;
     content_t *s;
 
     for (s = root->next; s != root; s = s->next)
-        if (s->type == content_span) n++;
+        if (s->type == type) n++;
 
     return n;
+}
+
+int content_count_spans(content_t *root)
+{
+    return content_count_type(root, content_span);
 }
 
 int content_count_images(content_t *root)
 {
-    int n = 0;
-    content_t *s;
-
-    for (s = root->next; s != root; s = s->next)
-        if (s->type == content_image) n++;
-
-    return n;
+    return content_count_type(root, content_image);
 }
 
-span_t *content_first_span(content_t *root)
+int content_count_lines(content_t *root)
 {
-    content_t *span;
+    return content_count_type(root, content_line);
+}
+
+static content_t *
+content_first_of_type(const content_t *root, content_type_t type)
+{
+    content_t *content;
     assert(root && root->type == content_root);
 
-    for (span = root->next; span != root; span = span->next)
+    for (content = root->next; content != root; content = content->next)
     {
-        if (span->type == content_span)
-            return (span_t *)span;
+        if (content->type == type)
+            return content;
     }
     return NULL;
 }
 
-span_t *content_last_span(content_t *root)
+static content_t *
+content_last_of_type(const content_t *root, content_type_t type)
 {
-    content_t *span;
+    content_t *content;
     assert(root && root->type == content_root);
 
-    for (span = root->prev; span != root; span = span->prev)
+    for (content = root->prev; content != root; content = content->prev)
     {
-        if (span->type == content_span)
-            return (span_t *)span;
+        if (content->type == type)
+            return content;
     }
     return NULL;
 }
+
+span_t *content_first_span(const content_t *root)
+{
+    return (span_t *)content_first_of_type(root, content_span);
+}
+
+span_t *content_last_span(const content_t *root)
+{
+    return (span_t *)content_last_of_type(root, content_span);
+}
+
+line_t *content_first_line(const content_t *root)
+{
+    return (line_t *)content_first_of_type(root, content_line);
+}
+
+line_t *content_last_line(const content_t *root)
+{
+    return (line_t *)content_last_of_type(root, content_line);
+}
+
+void
+content_concat(content_t *dst, content_t *src)
+{
+    content_t *walk, *walk_next;
+    assert(dst->type == content_root);
+    if (src == NULL)
+        return;
+    assert(src->type == content_root);
+
+    for (walk = src->next; walk != src; walk = walk_next)
+    {
+        walk_next = walk->next;
+        content_append(dst, walk);
+    }
+}
+
 
 void extract_line_free(extract_alloc_t* alloc, line_t** pline)
 {
     line_t* line = *pline;
+    content_unlink(&(*pline)->base);
     content_clear(alloc, &line->content);
     extract_free(alloc, pline);
 }
@@ -170,18 +226,18 @@ void extract_cell_free(extract_alloc_t* alloc, cell_t** pcell)
     cell_t* cell = *pcell;
     if (!cell) return;
 
-    outf("cell->lines_num=%i", cell->lines_num);
+    outf("cell->lines_num=%i", content_count_lines(&cell->lines));
     outf("cell->paragraphs_num=%i", cell->paragraphs_num);
-    extract_lines_free(alloc, &cell->lines, cell->lines_num);
+    content_clear(alloc, &cell->lines);
 
     outf("cell=%p cell->paragraphs_num=%i", cell, cell->paragraphs_num);
     for (p=0; p<cell->paragraphs_num; ++p)
     {
         paragraph_t* paragraph = cell->paragraphs[p];
-        outf("paragraph->lines_num=%i", paragraph->lines_num);
+        outf("paragraph->lines_num=%i", content_count_lines(&paragraph->content));
         /* We don't attempt to free paragraph->lines[] because they point into
         cell->lines which are already freed. */
-        extract_free(alloc, &paragraph->lines);
+        content_clear(alloc, &paragraph->content);
         extract_free(alloc, &cell->paragraphs[p]);
     }
     extract_free(alloc, &cell->paragraphs);
