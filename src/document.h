@@ -76,6 +76,7 @@ void content_append_line(content_t *root, line_t *line);
 
 void content_concat(content_t *dst, content_t *src);
 
+void content_dump(const content_t *content);
 
 typedef struct
 {

@@ -1,6 +1,7 @@
 #include "document.h"
 #include "outf.h"
 #include <assert.h>
+#include <stdio.h>
 
 void
 content_init(content_t *content, content_type_t type)
@@ -274,4 +275,68 @@ void extract_split_free(extract_alloc_t *alloc, split_t **psplit)
     for (i = 0; i < split->count; i++)
         extract_split_free(alloc, &split->split[i]);
     extract_free(alloc, psplit);
+}
+
+static void space_prefix(int depth)
+{
+    while (depth-- > 0)
+    {
+        putc(' ', stdout);
+    }
+}
+
+static void dump_span(const span_t *span, int depth)
+{
+    int i;
+    space_prefix(depth);
+    printf("chars=\"");
+    for (i = 0; i < span->chars_num; i++)
+    {
+        if (span->chars[i].ucs >= 32 && span->chars[i].ucs <= 127)
+        {
+             putc((char)span->chars[i].ucs, stdout);
+        }
+        else
+        {
+             printf("<%04x>", span->chars[i].ucs);
+        }
+    }
+    printf("\">\n");
+}
+
+static void
+content_dump_aux(const content_t *content, int depth)
+{
+    const content_t *walk;
+
+    assert(content->type == content_root);
+    for (walk = content->next; walk != content; walk = walk->next)
+    {
+        space_prefix(depth);
+        switch (walk->type)
+        {
+            case content_span:
+                printf("<span>\n");
+                dump_span((const span_t *)walk, depth+1);
+                printf("</span>\n");
+                break;
+            case content_line:
+                printf("<line>\n");
+                content_dump_aux(&((const line_t *)walk)->content, depth+1);
+                space_prefix(depth);
+                printf("</line>\n");
+                break;
+            case content_image:
+                printf("<image/>\n");
+                break;
+            default:
+                assert("Unexpected type found while dumping content list." == NULL);
+                break;
+        }
+    }
+}
+
+void content_dump(const content_t *content)
+{
+    content_dump_aux(content, 0);
 }
