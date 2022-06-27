@@ -161,22 +161,21 @@ static double line_angle(line_t* line)
 static const char* line_string2(extract_alloc_t* alloc, line_t* line)
 {
     static extract_astring_t ret = {0};
-    char    buffer[256];
-    span_t *span = content_first_span(&line->content);
-    int num = content_count_spans(&line->content);
-    content_t *content;
+    char                     buffer[256];
+    int                      num = content_count_spans(&line->content);
+    content_span_iterator    it;
+    span_t                  *span = content_span_iterator_init(&it, &line->content);
+
     extract_astring_free(alloc, &ret);
     snprintf(buffer, sizeof(buffer), "line x=%f y=%f spans_num=%i:",
              span->chars[0].x,
              span->chars[0].y,
              num);
     extract_astring_cat(alloc, &ret, buffer);
-    for (content = line->content.next; content != &line->content; content = content->next)
+    for (; span != NULL; span = content_span_iterator_next(&it))
     {
-        if (content->type != content_span)
-            continue;
         extract_astring_cat(alloc, &ret, " ");
-        extract_astring_cat(alloc, &ret, span_string2(alloc, (span_t *)content));
+        extract_astring_cat(alloc, &ret, span_string2(alloc, span));
     }
     return ret.chars;
 }
@@ -379,36 +378,35 @@ static int make_lines(
         content_t          *lines
         )
 {
-    int ret = -1;
+    int                    ret = -1;
 
     /* Make a line_t for each span. Then we will join some of these line_t's
     together before returning. */
-    int         a;
-    int         num_compatible;
-    int         num_joins;
-    span_t*     span = NULL;
-    int         spans_num = content_count_spans(spans); /* For debug only */
-    content_t  *lit, *next_lit;
+    int                    a;
+    int                    num_compatible;
+    int                    num_joins;
+    span_t                *span = NULL;
+    int                    spans_num = content_count_spans(spans); /* For debug only */
+    content_line_iterator  lit;
+    line_t                *line_a;
 
     if (rects_num)
     {
-        content_t *content, *next;
+        content_span_iterator  it;
+        span_t                *candidate;
+
         /* Make <lines> contain new span_t's and char_t's that are inside rects[]. */
-        for (content = spans->next; content != spans; content = next)
+        for (candidate = content_span_iterator_init(&it, spans); candidate != NULL; candidate = content_span_iterator_next(&it))
         {
-            span_t *candidate = (span_t *)content;
-            next = content->next;
-            if (content->type != content_span)
-                continue;
-            if (candidate->chars_num == 0)   continue; /* In case used for table, */
+            if (candidate->chars_num == 0)
+                continue; /* In case used for table, */
+
             /* Create a new span. */
             if (content_new_span(alloc, &span)) goto end;
             /* Extract any chars from candidate that fall inside rects/rect_num, inserting
              * those chars into span. */
             if (s_span_inside_rects(alloc, candidate, rects, rects_num, span))
-            {
                 goto end;
-            }
             if (span->chars_num)
             {
                 line_t *line;
@@ -436,16 +434,14 @@ static int make_lines(
     else
     {
         /* Make <lines> be a copy of <spans>. */
-        content_t *content, *next;
+        content_span_iterator  it;
+        span_t                *candidate;
 
         /* Make <lines> contain new span_t's and char_t's that are inside rects[]. */
-        for (a = 0, content = spans->next; content != spans; content = next, a++)
+        for (a = 0, candidate = content_span_iterator_init(&it, spans); candidate != NULL; candidate = content_span_iterator_next(&it), a++)
         {
             line_t *line;
-            span_t *candidate = (span_t *)content;
-            next = content->next;
-            if (content->type != content_span)
-                continue;
+
             if (content_append_new_line(alloc, lines, &line)) goto end;
             content_append_span(&line->content, candidate);
             outfx("initial line a=%i: %s", a, line_string(line));
@@ -456,20 +452,17 @@ static int make_lines(
 
     /* For each line, look for nearest aligned line, and append if found. */
     num_joins = 0;
-    for (a=0, lit = lines->next; lit != lines; a++, lit = next_lit) {
-        int b;
-        int verbose = 0;
-        int nearest_line_b = -1;
-        double nearest_adv = 0;
-        line_t* nearest_line = NULL;
-        span_t* span_a;
-        double angle_a;
-        content_t *lit2, *next_lit2;
-        line_t *line_a = (line_t *)lit;
-
-        next_lit = lit->next;
-        if (lit->type != content_line)
-            continue;
+    for (a=0, line_a = content_line_iterator_init(&lit, lines); line_a != NULL; a++, line_a = content_line_iterator_next(&lit))
+    {
+        content_line_iterator  lit2;
+        line_t                *line_b;
+        int                    b;
+        int                    verbose = 0;
+        int                    nearest_line_b = -1;
+        double                 nearest_adv = 0;
+        line_t                *nearest_line = NULL;
+        span_t                *span_a;
+        double                 angle_a;
 
         if (0 && a < 1) verbose = 1;
         outfx("looking at line_a=%s", line_string2(alloc, line_a));
@@ -483,14 +476,11 @@ static int make_lines(
                 line_string2(alloc, line_a)
                 );
 
-        for (b = 0, lit2 = lines->next; lit2 != lines; b++, lit2 = next_lit2) {
-            line_t *line_b = (line_t *)lit2;
-
-            next_lit2 = lit2->next;
-            if (lit2->type != content_line)
-                continue;
+        for (b = 0, line_b = content_line_iterator_init(&lit2, lines); line_b != NULL; b++, line_b = content_line_iterator_next(&lit2))
+        {
             if (line_a == line_b)
                 continue;
+
             if (verbose) {
                 outf("a=%i b=%i: nearest_line_b=%i nearest_adv=%f",
                         a,
@@ -655,18 +645,11 @@ static int make_lines(
                 outf("    %s", span_string2(alloc, span_b));
             }
             /* Move all the content from nearest_line to line_a. */
-            {
-                content_t *content, *next;
-                for (content = nearest_line->content.next; content != &nearest_line->content; content = next)
-                {
-                    next = content->next;
-                    content_append(&line_a->content, content);
-                }
-            }
+            content_concat(&line_a->content, &nearest_line->content);
 
             /* Ensure that we ignore nearest_line from now on. */
-            if (next_lit == &nearest_line->base)
-                next_lit = nearest_line->base.next;
+            if (lit.next == &nearest_line->base)
+                lit.next = lit.next->next;
             extract_line_free(alloc, &nearest_line);
 
             num_joins += 1;
@@ -674,7 +657,7 @@ static int make_lines(
             if (b > a) {
                 /* We haven't yet tried appending any spans to nearest_line, so
                 the new extended line_a needs checking again. */
-                next_lit = lit;
+                lit.next = &line_a->base;
                 a--;
             } else {
                 a--; /* b is before a, so a's number needs to move back one. */
@@ -705,20 +688,15 @@ static int make_lines(
 /* Returns max font size of all span_t's in an line_t. */
 static double line_font_size_max(line_t* line)
 {
-    double  size_max = 0;
-    content_t *content, *next;
+    double                 size_max = 0;
+    content_span_iterator  sit;
+    span_t                *span;
 
-    for (content = line->content.next; content != &line->content; content = next) {
-        double size;
-        span_t *span = (span_t *)content;
-        next = content->next;
-        if (content->type != content_span)
-            continue;
+    for (span = content_span_iterator_init(&sit, &line->content); span != NULL; span = content_span_iterator_next(&sit)) {
+        double size = extract_matrix_expansion(span->trm);
 
-        size = extract_matrix_expansion(span->trm);
-        if (size > size_max) {
+        if (size > size_max)
             size_max = size;
-        }
     }
     return size_max;
 }
@@ -875,11 +853,12 @@ static int make_paragraphs(
         int*                o_paragraphs_num
         )
 {
-    int ret = -1;
-    int a;
-    int num_joins;
-    paragraph_t** paragraphs = NULL;
-    content_t *lit, *lit_next;
+    int                     ret = -1;
+    int                     a;
+    int                     num_joins;
+    paragraph_t           **paragraphs = NULL;
+    content_line_iterator   lit;
+    line_t                 *line;
 
     /* Start off with a paragraph_t for each line_t. */
     int lines_num = content_count_lines(lines);
@@ -890,14 +869,11 @@ static int make_paragraphs(
         paragraphs[a] = NULL;
     }
     /* Set up initial paragraphs. */
-    for (a=0, lit = lines->next; lit != lines; a++, lit = lit_next)
+    for (a=0, line = content_line_iterator_init(&lit, lines); line != NULL; a++, line = content_line_iterator_next(&lit))
     {
-        lit_next = lit->next;
-        if (lit->type != content_line)
-            continue;
         if (extract_paragraph_alloc(alloc, &paragraphs[a]))
             goto end;
-        content_append_line(&paragraphs[a]->content, (line_t *)lit);
+        content_append_line(&paragraphs[a]->content, line);
     }
 
     /* Now join paragraphs together where possible. */

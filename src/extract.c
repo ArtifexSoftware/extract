@@ -391,16 +391,13 @@ On return document->subpage[].images* will be NULL etc.
         int c;
         for (c=0; c<page->subpages_num; ++c)
         {
-            subpage_t* subpage = page->subpages[c];
-            content_t *content, *next;
-            int i;
+            subpage_t              *subpage = page->subpages[c];
+            content_image_iterator  iit;
+            image_t                *image;
+            int                     i;
 
-            for (i = 0, content = subpage->content.next; content != &subpage->content; content = next, i++)
+            for (i = 0, image = content_image_iterator_init(&iit, &subpage->content); image != NULL; i++, image = content_image_iterator_next(&iit))
             {
-                image_t* image = (image_t *)content;
-                next = content->next;
-                if (content->type != content_image)
-                    continue;
                 if (extract_realloc2(
                         alloc,
                         &images.images,
@@ -1827,24 +1824,18 @@ static int paragraphs_to_text_content(
     int p;
     for (p=0; p<paragraphs_num; ++p)
     {
-        paragraph_t* paragraph = paragraphs[p];
-        content_t *lines, *next_line;
-        for (lines = paragraph->content.next; lines != &paragraph->content; lines = next_line)
+        paragraph_t           *paragraph = paragraphs[p];
+        content_line_iterator  lit;
+        line_t                *line;
+
+        for (line = content_line_iterator_init(&lit, &paragraph->content); line != NULL; line = content_line_iterator_next(&lit))
         {
-            line_t *line = (line_t *)lines;
-            content_t *content;
-            next_line = lines->next;
+            content_span_iterator  sit;
+            span_t                *span;
 
-            if (lines->type != content_line)
-                continue;
-
-            for (content = line->content.next; content != &line->content; content = content->next)
+            for (span = content_span_iterator_init(&sit, &line->content); span != NULL; span = content_span_iterator_next(&sit))
             {
-                span_t* span = (span_t *)content;
                 int c;
-
-                if (content->type != content_span)
-                    continue;
 
                 for (c=0; c<span->chars_num; ++c)
                 {

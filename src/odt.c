@@ -260,27 +260,20 @@ static int s_document_to_odt_content_paragraph(
 change font. */
 {
     int e = -1;
-    content_t *lines, *next_lines;
+    content_line_iterator  lit;
+    line_t                *line;
 
     if (s_odt_paragraph_start(alloc, content)) goto end;
 
-    for (lines = paragraph->content.next; lines != &paragraph->content; lines = next_lines)
+    for (line = content_line_iterator_init(&lit, &paragraph->content); line != NULL; line = content_line_iterator_next(&lit))
     {
-        line_t *line = (line_t *)lines;
-        content_t *spans, *next;
+        content_span_iterator  sit;
+        span_t                *span;
 
-        next_lines = lines->next;
-        if (lines->type != content_line)
-            continue;
-
-        for (spans = line->content.next; spans != &line->content; spans = next)
+        for (span = content_span_iterator_init(&sit, &line->content); span != NULL; span = content_span_iterator_next(&sit))
         {
             int si;
             double font_size_new;
-            span_t* span = (span_t *)spans;
-            next = spans->next;
-            if (spans->type != content_span)
-                continue;
 
             content_state->ctm_prev = &span->ctm;
             font_size_new = extract_matrices_to_font_size(&span->ctm, &span->trm);
@@ -568,31 +561,23 @@ and updates *p. */
 
             /* Update <extent>. */
             {
-                content_t *lines, *next_lines;
+                content_line_iterator  lit;
+                line_t                *line;
 
-                for (lines = paragraph->content.next; lines != &paragraph->content; lines = next_lines)
+                for (line = content_line_iterator_init(&lit, &paragraph->content); line != NULL; line = content_line_iterator_next(&lit))
                 {
-                    line_t *line = (line_t *)lines;
-                    span_t *span;
-                    char_t *char_;
-                    double adv, x, y, dx, dy, xx, yy;
+                    span_t *span = extract_line_span_last(line);
+                    char_t *char_ = extract_span_char_last(span);
+                    double  adv = char_->adv * extract_matrix_expansion(span->trm);
+                    double  x = char_->x + adv * cos(rotate);
+                    double  y = char_->y + adv * sin(rotate);
 
-                    next_lines = lines->next;
-                    if (lines->type != content_line)
-                        continue;
-
-                    span = extract_line_span_last(line);
-                    char_ = extract_span_char_last(span);
-                    adv = char_->adv * extract_matrix_expansion(span->trm);
-                    x = char_->x + adv * cos(rotate);
-                    y = char_->y + adv * sin(rotate);
-
-                    dx = x - origin.x;
-                    dy = y - origin.y;
+                    double  dx = x - origin.x;
+                    double  dy = y - origin.y;
 
                     /* Position relative to origin and before box rotation. */
-                    xx = ctm_inverse.a * dx + ctm_inverse.b * dy;
-                    yy = ctm_inverse.c * dx + ctm_inverse.d * dy;
+                    double  xx = ctm_inverse.a * dx + ctm_inverse.b * dy;
+                    double  yy = ctm_inverse.c * dx + ctm_inverse.d * dy;
                     yy = -yy;
                     if (xx > extent.x) extent.x = xx;
                     if (yy > extent.y) extent.y = yy;

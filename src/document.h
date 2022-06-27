@@ -78,6 +78,126 @@ void content_concat(content_t *dst, content_t *src);
 
 void content_dump(const content_t *content);
 
+/* To iterate over the line elements of a content list:
+
+content_line_iterator it;
+line_t *line;
+
+for(line = content_line_iterator_line_init(&it, content); line != NULL; line = content_line_iterator_next(&it))
+{
+}
+
+*/
+
+typedef struct {
+    content_t *root;
+    content_t *next;
+} content_line_iterator;
+
+static inline line_t *content_line_iterator_next(content_line_iterator *it)
+{
+    content_t *next;
+
+    do {
+        next = it->next;
+        if (next == it->root)
+            return NULL;
+        assert(next->type != content_root);
+        it->next = next->next;
+    } while (next->type != content_line);
+
+    return (line_t *)next;
+}
+
+static inline line_t *content_line_iterator_init(content_line_iterator *it, content_t *root)
+{
+    it->root = root;
+    it->next = root->next;
+
+    return content_line_iterator_next(it);
+}
+
+typedef struct {
+    content_t *root;
+    content_t *next;
+} content_span_iterator;
+
+static inline span_t *content_span_iterator_next(content_span_iterator *it)
+{
+    content_t *next;
+
+    do {
+        next = it->next;
+        if (next == it->root)
+            return NULL;
+        assert(next->type != content_root);
+        it->next = next->next;
+    } while (next->type != content_span);
+
+    return (span_t *)next;
+}
+
+static inline span_t *content_span_iterator_init(content_span_iterator *it, content_t *root)
+{
+    it->root = root;
+    it->next = root->next;
+
+    return content_span_iterator_next(it);
+}
+
+typedef struct {
+    content_t *root;
+    content_t *next;
+} content_image_iterator;
+
+static inline image_t *content_image_iterator_next(content_image_iterator *it)
+{
+    content_t *next;
+
+    do {
+        next = it->next;
+        if (next == it->root)
+            return NULL;
+        assert(next->type != content_root);
+        it->next = next->next;
+    } while (next->type != content_image);
+
+    return (image_t *)next;
+}
+
+static inline image_t *content_image_iterator_init(content_image_iterator *it, content_t *root)
+{
+    it->root = root;
+    it->next = root->next;
+
+    return content_image_iterator_next(it);
+}
+
+typedef struct {
+    content_t *root;
+    content_t *next;
+} content_iterator;
+
+static inline content_t *content_iterator_next(content_iterator *it)
+{
+    content_t *next = it->next;
+
+    if (next == it->root)
+        return NULL;
+    assert(next->type != content_root);
+    it->next = next->next;
+
+    return next;
+}
+
+static inline content_t *content_iterator_init(content_iterator *it, content_t *root)
+{
+    it->root = root;
+    it->next = root->next;
+
+    return content_iterator_next(it);
+}
+
 typedef struct
 {
     double x;

@@ -64,28 +64,21 @@ static int paragraph_to_html_content(
         extract_astring_t*  content
         )
 {
-    int e = -1;
-    const char* endl = (single_line) ? "" : "\n";
-    content_t *lines, *next_line;
+    int                    e = -1;
+    const char            *endl = (single_line) ? "" : "\n";
+    content_line_iterator  lit;
+    line_t                *line;
 
     if (extract_astring_catf(alloc, content, "%s%s<p>", endl, endl)) goto end;
 
-    for (lines = paragraph->content.next; lines != &paragraph->content; lines = next_line)
+    for (line = content_line_iterator_init(&lit, &paragraph->content); line != NULL; line = content_line_iterator_next(&lit))
     {
-        line_t *line = (line_t *)lines;
-        content_t *spans;
-        next_line = lines->next;
+        content_span_iterator  sit;
+        span_t                *span;
 
-        if (lines->type != content_line)
-            continue;
-
-        for (spans = line->content.next; spans != &line->content; spans = spans->next)
+        for (span = content_span_iterator_init(&sit, &line->content); span != NULL; span = content_span_iterator_next(&sit))
         {
             int c;
-            span_t *span = (span_t *)spans;
-
-            if (spans->type != content_span)
-                continue;
 
             content_state->ctm_prev = &span->ctm;
             if (span->flags.font_bold != content_state->font.bold)
@@ -110,7 +103,7 @@ static int paragraph_to_html_content(
             }
         }
 
-        if (content->chars_num && next_line->type != content_root)
+        if (content->chars_num && lit.next->type != content_root)
         {
             if (content->chars[content->chars_num-1] == '-')    content->chars_num -= 1;
             else if (content->chars[content->chars_num-1] != ' ')
