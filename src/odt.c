@@ -250,11 +250,11 @@ static int s_odt_append_empty_paragraph(extract_alloc_t* alloc, extract_astring_
 
 
 static int s_document_to_odt_content_paragraph(
-        extract_alloc_t*        alloc,
-        content_state_t*        content_state,
-        paragraph_t*            paragraph,
-        extract_astring_t*      content,
-        extract_odt_styles_t*   styles
+        extract_alloc_t      *alloc,
+        content_state_t      *content_state,
+        paragraph_t          *paragraph,
+        extract_astring_t    *content,
+        extract_odt_styles_t *styles
         )
 /* Append odt xml for <paragraph> to <content>. Updates *content_state if we
 change font. */
@@ -343,24 +343,24 @@ static int s_odt_append_image(
 
 
 static int s_odt_output_rotated_paragraphs(
-        extract_alloc_t*    alloc,
-        subpage_t*          subpage,
-        int                 paragraph_begin,
-        int                 paragraph_end,
-        double              rotation_rad,
-        double              x_pt,
-        double              y_pt,
-        double              w_pt,
-        double              h_pt,
-        int                 text_box_id,
-        extract_astring_t*  content,
-        extract_odt_styles_t* styles,
-        content_state_t*    content_state
+        extract_alloc_t            *alloc,
+        paragraph_t                *paragraph_begin,
+        paragraph_t                *paragraph_end,
+	content_paragraph_iterator *pit,
+        double                      rotation_rad,
+        double                      x_pt,
+        double                      y_pt,
+        double                      w_pt,
+        double                      h_pt,
+        int                         text_box_id,
+        extract_astring_t          *content,
+        extract_odt_styles_t       *styles,
+        content_state_t            *content_state
         )
 /* Writes paragraph to content inside rotated text box. */
 {
+    paragraph_t *paragraph;
     int e = 0;
-    int p;
     double pt_to_inch = 1/72.0;
     outf("rotated paragraphs: rotation_rad=%f (x y)=(%f %f) (w h)=(%f %f)", rotation_rad, x_pt, y_pt, w_pt, h_pt);
 
@@ -391,11 +391,8 @@ static int s_odt_output_rotated_paragraphs(
             );
     if (!e) e = extract_astring_cat(alloc, content, "<draw:text-box>\n");
 
-    for (p=paragraph_begin; p<paragraph_end; ++p)
-    {
-        paragraph_t* paragraph = subpage->paragraphs[p];
+    for (paragraph = paragraph_begin; paragraph != paragraph_end; paragraph = content_paragraph_iterator_next(pit))
         if (!e) e = s_document_to_odt_content_paragraph(alloc, content_state, paragraph, content, styles);
-    }
 
     if (!e) e = extract_astring_cat(alloc, content, "\n");
     if (!e) e = extract_astring_cat(alloc, content, "</draw:text-box>\n");
@@ -443,8 +440,12 @@ static int s_odt_append_table(extract_alloc_t* alloc, table_t* table, extract_as
 
         for (x=0; x<table->cells_num_x; ++x)
         {
-            cell_t* cell = table->cells[y*table->cells_num_x + x];
-            if (!cell->above || !cell->left)
+            cell_t                     *cell = table->cells[y*table->cells_num_x + x];
+            content_paragraph_iterator  pit;
+            paragraph_t                *paragraph;
+            content_state_t             content_state;
+
+	    if (!cell->above || !cell->left)
             {
                 if (extract_astring_cat(alloc, content, "            <table:covered-table-cell/>\n")) goto end;
                 continue;
@@ -462,22 +463,13 @@ static int s_odt_append_table(extract_alloc_t* alloc, table_t* table, extract_as
             if (extract_astring_catf(alloc, content, ">\n")) goto end;
 
             /* Write contents of this cell. */
-            {
-                int p;
-                content_state_t content_state;
-                content_state.font.name = NULL;
-                content_state.ctm_prev = NULL;
-                for (p=0; p<cell->paragraphs_num; ++p)
-                {
-                    paragraph_t* paragraph = cell->paragraphs[p];
-                    if (s_document_to_odt_content_paragraph(alloc, &content_state, paragraph, content, styles)) goto end;
-                }
-                if (content_state.font.name)
-                {
-                    if (s_odt_run_finish(alloc, &content_state, content)) goto end;
-                }
-                if (extract_astring_cat(alloc, content, "\n")) goto end;
-            }
+            content_state.font.name = NULL;
+            content_state.ctm_prev = NULL;
+            for (paragraph = content_paragraph_iterator_init(&pit, &cell->paragraphs); paragraph != NULL; paragraph = content_paragraph_iterator_next(&pit))
+                if (s_document_to_odt_content_paragraph(alloc, &content_state, paragraph, content, styles)) goto end;
+            if (content_state.font.name)
+                if (s_odt_run_finish(alloc, &content_state, content)) goto end;
+            if (extract_astring_cat(alloc, content, "\n")) goto end;
             if (extract_astring_cat(alloc, content, "            </table:table-cell>\n")) goto end;
         }
         if (extract_astring_cat(alloc, content, "        </table:table-row>\n")) goto end;
@@ -491,15 +483,15 @@ static int s_odt_append_table(extract_alloc_t* alloc, table_t* table, extract_as
 
 
 static int s_odt_append_rotated_paragraphs(
-        extract_alloc_t*    alloc,
-        subpage_t*          subpage,
-        content_state_t*    content_state,
-        int*                p,
-        int*                text_box_id,
-        const matrix_t*     ctm,
-        double              rotate,
-        extract_astring_t*  content,
-        extract_odt_styles_t* styles
+        extract_alloc_t             *alloc,
+        content_state_t             *content_state,
+	content_paragraph_iterator  *pit,
+	paragraph_t                **pparagraph,
+        int                         *text_box_id,
+        const matrix_t              *ctm,
+        double                       rotate,
+        extract_astring_t           *content,
+        extract_odt_styles_t        *styles
         )
 /* Appends paragraphs with same rotation, starting with subpage->paragraphs[*p]
 and updates *p. */
@@ -509,101 +501,89 @@ and updates *p. */
     before application of ctm, i.e. before rotation. */
     int e = -1;
     point_t extent = {0, 0};
-    int p0 = *p;
-    int p1;
-    paragraph_t* paragraph = subpage->paragraphs[*p];
+    paragraph_t *paragraph = *pparagraph;
+    paragraph_t *paragraph0 = paragraph;
+    /* We assume that first span is at origin of text
+     * block. This assumes left-to-right text. */
+    span_t *first_span = content_first_span(&content_first_line(&paragraph->content)->content);
+    point_t origin =
+    {
+        first_span->chars[0].x,
+        first_span->chars[0].y
+    };
+    matrix_t ctm_inverse = {1, 0, 0, 1, 0, 0};
+    double ctm_det = ctm->a*ctm->d - ctm->b*ctm->c;
+    content_paragraph_iterator pit2 = *pit;
 
     outf("rotate=%.2frad=%.1fdeg ctm: ef=(%f %f) abcd=(%f %f %f %f)",
-            rotate, rotate * 180 / pi,
-            ctm->e,
-            ctm->f,
-            ctm->a,
-            ctm->b,
-            ctm->c,
-            ctm->d
-            );
+         rotate, rotate * 180 / pi,
+         ctm->e,
+         ctm->f,
+         ctm->a,
+         ctm->b,
+         ctm->c,
+         ctm->d
+         );
 
+    if (ctm_det != 0)
     {
-        /* We assume that first span is at origin of text
-        block. This assumes left-to-right text. */
-        double rotate0 = rotate;
-        const matrix_t* ctm0 = ctm;
-        span_t *first_span = content_first_span(&content_first_line(&paragraph->content)->content);
-        point_t origin =
-        {
-                first_span->chars[0].x,
-                first_span->chars[0].y
-        };
-        matrix_t ctm_inverse = {1, 0, 0, 1, 0, 0};
-        double ctm_det = ctm->a*ctm->d - ctm->b*ctm->c;
-        if (ctm_det != 0)
-        {
-            ctm_inverse.a = +ctm->d / ctm_det;
-            ctm_inverse.b = -ctm->b / ctm_det;
-            ctm_inverse.c = -ctm->c / ctm_det;
-            ctm_inverse.d = +ctm->a / ctm_det;
-        }
-        else
-        {
-            outf("cannot invert ctm=(%f %f %f %f)",
-                    ctm->a, ctm->b, ctm->c, ctm->d);
-        }
-
-        for (*p=p0; *p<subpage->paragraphs_num; ++*p)
-        {
-            paragraph = subpage->paragraphs[*p];
-            ctm = &content_first_span(&content_first_line(&paragraph->content)->content)->ctm;
-            rotate = atan2(ctm->b, ctm->a);
-            if (rotate != rotate0)
-            {
-                break;
-            }
-
-            /* Update <extent>. */
-            {
-                content_line_iterator  lit;
-                line_t                *line;
-
-                for (line = content_line_iterator_init(&lit, &paragraph->content); line != NULL; line = content_line_iterator_next(&lit))
-                {
-                    span_t *span = extract_line_span_last(line);
-                    char_t *char_ = extract_span_char_last(span);
-                    double  adv = char_->adv * extract_matrix_expansion(span->trm);
-                    double  x = char_->x + adv * cos(rotate);
-                    double  y = char_->y + adv * sin(rotate);
-
-                    double  dx = x - origin.x;
-                    double  dy = y - origin.y;
-
-                    /* Position relative to origin and before box rotation. */
-                    double  xx = ctm_inverse.a * dx + ctm_inverse.b * dy;
-                    double  yy = ctm_inverse.c * dx + ctm_inverse.d * dy;
-                    yy = -yy;
-                    if (xx > extent.x) extent.x = xx;
-                    if (yy > extent.y) extent.y = yy;
-                    if (0) outf("rotate=%f *p=%i: origin=(%f %f) xy=(%f %f) dxy=(%f %f) xxyy=(%f %f) span: %s",
-                            rotate, *p, origin.x, origin.y, x, y, dx, dy, xx, yy, extract_span_string(alloc, span));
-                }
-            }
-        }
-        p1 = *p;
-        rotate = rotate0;
-        ctm = ctm0;
-        outf("rotate=%f p0=%i p1=%i. extent is: (%f %f)",
-                rotate, p0, p1, extent.x, extent.y);
+        ctm_inverse.a = +ctm->d / ctm_det;
+        ctm_inverse.b = -ctm->b / ctm_det;
+        ctm_inverse.c = -ctm->c / ctm_det;
+        ctm_inverse.d = +ctm->a / ctm_det;
+    }
+    else
+    {
+        outf("cannot invert ctm=(%f %f %f %f)",
+             ctm->a, ctm->b, ctm->c, ctm->d);
     }
 
-    /* Paragraphs p0..p1-1 have same rotation. We output them into
-    a single rotated text box. */
+    for (; paragraph; paragraph = content_paragraph_iterator_next(pit))
+    {
+        content_line_iterator  lit;
+        line_t                *line;
+        const matrix_t        *ctm1 = &content_first_span(&content_first_line(&paragraph->content)->content)->ctm;
+        double                 rotate1 = atan2(ctm1->b, ctm1->a);
+
+        if (rotate != rotate1)
+            break;
+
+        /* Update <extent>. */
+        for (line = content_line_iterator_init(&lit, &paragraph->content); line != NULL; line = content_line_iterator_next(&lit))
+        {
+            span_t *span = extract_line_span_last(line);
+            char_t *char_ = extract_span_char_last(span);
+            double  adv = char_->adv * extract_matrix_expansion(span->trm);
+            double  x = char_->x + adv * cos(rotate);
+            double  y = char_->y + adv * sin(rotate);
+
+            double  dx = x - origin.x;
+            double  dy = y - origin.y;
+
+            /* Position relative to origin and before box rotation. */
+            double  xx = ctm_inverse.a * dx + ctm_inverse.b * dy;
+            double  yy = ctm_inverse.c * dx + ctm_inverse.d * dy;
+            yy = -yy;
+            if (xx > extent.x) extent.x = xx;
+            if (yy > extent.y) extent.y = yy;
+            if (0) outf("rotate=%f origin=(%f %f) xy=(%f %f) dxy=(%f %f) xxyy=(%f %f) span: %s",
+                        rotate1, origin.x, origin.y, x, y, dx, dy, xx, yy, extract_span_string(alloc, span));
+        }
+    }
+    outf("rotate=%f extent is: (%f %f)",
+         rotate, extent.x, extent.y);
+
+    /* Paragraphs [paragraph0..paragraph) have same rotation. We output them into
+     * a single rotated text box. */
 
     /* We need unique id for text box. */
     *text_box_id += 1;
 
     if (s_odt_output_rotated_paragraphs(
             alloc,
-            subpage,
-            p0,
-            p1,
+            paragraph0,
+            paragraph,
+	    &pit2,
             rotate,
             ctm->e,
             ctm->f,
@@ -614,9 +594,9 @@ and updates *p. */
             styles,
             content_state
             )) goto end;
-    *p = p1 - 1;
-    e = 0;
 
+    *pparagraph = paragraph;
+    e = 0;
     end:
     return e;
 }
@@ -639,8 +619,9 @@ static int extract_page_to_odt_content(
     /* Write paragraphs into <content>. */
     for (c=0; c<page->subpages_num; ++c)
     {
-        subpage_t* subpage = page->subpages[c];
-        int p = 0;
+        subpage_t                  *subpage = page->subpages[c];
+        content_paragraph_iterator  pit;
+	paragraph_t                *paragraph;
         int t = 0;
         content_state_t content_state;
         content_state.font.name = NULL;
@@ -649,9 +630,8 @@ static int extract_page_to_odt_content(
         content_state.font.italic = 0;
         content_state.ctm_prev = NULL;
 
-        for(;;)
+        for(paragraph = content_paragraph_iterator_init(&pit, &subpage->paragraphs); ; )
         {
-            paragraph_t* paragraph = (p == subpage->paragraphs_num) ? NULL : subpage->paragraphs[p];
             table_t* table = (t == subpage->tables_num) ? NULL : subpage->tables[t];
             double y_paragraph;
             double y_table;
@@ -688,13 +668,14 @@ static int extract_page_to_odt_content(
 
                 if (rotation && rotate != 0)
                 {
-                    if (s_odt_append_rotated_paragraphs(alloc, subpage, &content_state, &p, &text_box_id, ctm, rotate, content, styles)) goto end;
+                    if (s_odt_append_rotated_paragraphs(alloc, &content_state, &pit, &paragraph, &text_box_id, ctm, rotate, content, styles)) goto end;
+		    /* paragraph is returned advanced. */
                 }
                 else
                 {
                     if (s_document_to_odt_content_paragraph(alloc, &content_state, paragraph, content, styles)) goto end;
+                    paragraph = content_paragraph_iterator_next(&pit);
                 }
-                p += 1;
             }
             else if (table)
             {

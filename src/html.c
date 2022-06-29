@@ -122,23 +122,21 @@ static int paragraph_to_html_content(
 
 
 static int paragraphs_to_html_content(
-        extract_alloc_t*    alloc,
-        content_state_t*    state,
-        paragraph_t**       paragraphs,
-        int                 paragraphs_num,
+        extract_alloc_t    *alloc,
+        content_state_t    *state,
+        content_t          *paragraphs,
         int                 single_line,
-        extract_astring_t*  content
+        extract_astring_t  *content
         )
 /* Append html for paragraphs[] to <content>. Updates *state if we change font
 etc. */
 {
+    content_paragraph_iterator  pit;
+    paragraph_t                *paragraph;
     int e = -1;
-    int p;
-    for (p=0; p<paragraphs_num; ++p)
-    {
-        paragraph_t* paragraph = paragraphs[p];
+
+    for (paragraph = content_paragraph_iterator_init(&pit, paragraphs); paragraph != NULL; paragraph = content_paragraph_iterator_next(&pit))
         if (paragraph_to_html_content(alloc, state, paragraph, single_line, content)) goto end;
-    }
 
     if (content_state_reset(alloc, state, content)) goto end;
     e = 0;
@@ -182,7 +180,7 @@ static int append_table(extract_alloc_t* alloc, content_state_t* state, table_t*
 
             if (extract_astring_cat(alloc, content, ">")) goto end;
 
-            if (paragraphs_to_html_content(alloc, state, cell->paragraphs, cell->paragraphs_num, 1 /* single_line*/, content)) goto end;
+            if (paragraphs_to_html_content(alloc, state, &cell->paragraphs, 1 /* single_line*/, content)) goto end;
             if (extract_astring_cat(alloc, content, "</td>")) goto end;
             if (extract_astring_cat(alloc, content, "\n")) goto end;
 
@@ -221,12 +219,15 @@ static int compare_paragraph_y(const void* a, const void* b)
 static int
 split_to_html(extract_alloc_t *alloc, split_t* split, subpage_t*** ppsubpage, extract_astring_t *output)
 {
-    int p;
-    int s;
-    int t;
-    subpage_t* subpage;
-    paragraph_t** paragraphs = NULL;
-    content_state_t state;
+    int                          p;
+    int                          s;
+    int                          t;
+    subpage_t                   *subpage;
+    int                          paragraphs_num;
+    paragraph_t                **paragraphs = NULL;
+    content_paragraph_iterator   pit;
+    paragraph_t                 *paragraph;
+    content_state_t              state;
     content_state_init(&state);
 
     if (split == NULL) {
@@ -281,20 +282,19 @@ split_to_html(extract_alloc_t *alloc, split_t* split, subpage_t*** ppsubpage, ex
         isn't quite right and results in bad ordering if ctm/trm matrices are
         inconsistent. So we create our own list of paragraphs sorted strictly
         by y coordinate of the first char of each paragraph. */
-    if (extract_malloc(alloc, &paragraphs, sizeof(*paragraphs) * subpage->paragraphs_num)) goto end;
-    for (p = 0; p < subpage->paragraphs_num; ++p)
-    {
-        paragraphs[p] = subpage->paragraphs[p];
-    }
-    qsort(paragraphs, subpage->paragraphs_num, sizeof(*paragraphs), compare_paragraph_y);
+    paragraphs_num = content_count_paragraphs(&subpage->paragraphs);
+    if (extract_malloc(alloc, &paragraphs, sizeof(*paragraphs) * paragraphs_num)) goto end;
+    for (p = 0, paragraph = content_paragraph_iterator_init(&pit, &subpage->paragraphs); paragraph != NULL; p++, paragraph = content_paragraph_iterator_next(&pit))
+        paragraphs[p] = paragraph;
+    qsort(paragraphs, paragraphs_num, sizeof(*paragraphs), compare_paragraph_y);
 
     if (0)
     {
         int p;
         outf0("paragraphs are:");
-        for (p=0; p<subpage->paragraphs_num; ++p)
+        for (p=0; p<paragraphs_num; ++p)
         {
-            paragraph_t* paragraph = subpage->paragraphs[p];
+            paragraph_t* paragraph = paragraphs[p];
             line_t *line = content_first_line(&paragraph->content);
             span_t *span = content_first_span(&line->content);
             outf0("    p=%i: %s", p, extract_span_string(NULL, span));
@@ -307,7 +307,7 @@ split_to_html(extract_alloc_t *alloc, split_t* split, subpage_t*** ppsubpage, ex
     {
         double y_paragraph;
         double y_table;
-        paragraph_t* paragraph = (p == subpage->paragraphs_num) ? NULL : paragraphs[p];
+        paragraph_t* paragraph = (p == paragraphs_num) ? NULL : paragraphs[p];
         table_t* table = (t == subpage->tables_num) ? NULL : subpage->tables[t];
         if (!paragraph && !table) break;
         y_paragraph = (paragraph) ? content_first_span(&content_first_line(&paragraph->content)->content)->chars[0].y : DBL_MAX;

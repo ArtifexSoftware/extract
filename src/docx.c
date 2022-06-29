@@ -249,23 +249,25 @@ static int s_docx_append_image(
 
 
 static int s_docx_output_rotated_paragraphs(
-        extract_alloc_t*    alloc,
-        subpage_t*          subpage,
-        int                 paragraph_begin,
-        int                 paragraph_end,
-        int                 rot,
-        int                 x,
-        int                 y,
-        int                 w,
-        int                 h,
-        int                 text_box_id,
-        extract_astring_t*  content,
-        content_state_t*    state
+        extract_alloc_t            *alloc,
+	content_paragraph_iterator *pit,
+        paragraph_t                *paragraph_begin,
+        paragraph_t                *paragraph_end,
+        int                         rot,
+        int                         x,
+        int                         y,
+        int                         w,
+        int                         h,
+        int                         text_box_id,
+        extract_astring_t          *content,
+        content_state_t            *state
         )
 /* Writes paragraph to content inside rotated text box. */
 {
     int e = 0;
-    int p;
+    paragraph_t *paragraph;
+    content_paragraph_iterator pit2 = *pit;
+
     outf("x,y=%ik,%ik = %i,%i", x/1000, y/1000, x, y);
     extract_astring_cat(alloc, content, "\n");
     extract_astring_cat(alloc, content, "\n");
@@ -334,10 +336,8 @@ static int s_docx_output_rotated_paragraphs(
     #endif
 
     /* Output paragraphs p0..p2-1. */
-    for (p=paragraph_begin; p<paragraph_end; ++p) {
-        paragraph_t* paragraph = subpage->paragraphs[p];
+    for (paragraph = paragraph_begin; paragraph != paragraph_end; paragraph = content_paragraph_iterator_next(pit))
         if (s_document_to_docx_content_paragraph(alloc, state, paragraph, content)) goto end;
-    }
 
     extract_astring_cat(alloc, content, "\n");
     extract_astring_cat(alloc, content, "                    </w:txbxContent>\n");
@@ -368,10 +368,8 @@ static int s_docx_output_rotated_paragraphs(
     extract_astring_cat(alloc, content, "            <v:textbox>\n");
     extract_astring_cat(alloc, content, "              <w:txbxContent>");
 
-    for (p=paragraph_begin; p<paragraph_end; ++p) {
-        paragraph_t* paragraph = subpage->paragraphs[p];
+    for (paragraph = paragraph_begin; paragraph != paragraph_end; paragraph = content_paragraph_iterator_next(&pit2))
         if (s_document_to_docx_content_paragraph(alloc, state, paragraph, content)) goto end;
-    }
 
     extract_astring_cat(alloc, content, "\n");
     extract_astring_cat(alloc, content, "\n");
@@ -450,20 +448,18 @@ to the application. */
 
             /* Write contents of this cell. */
             {
-                size_t chars_num_old = content->chars_num;
-                int p;
-                content_state_t content_state = {0};
-                content_state.font.name = NULL;
+                content_paragraph_iterator  pit;
+		paragraph_t                *paragraph;
+                size_t                      chars_num_old = content->chars_num;
+                content_state_t             content_state = {0};
+
+		content_state.font.name = NULL;
                 content_state.ctm_prev = NULL;
-                for (p=0; p<cell->paragraphs_num; ++p)
-                {
-                    paragraph_t* paragraph = cell->paragraphs[p];
+                for (paragraph = content_paragraph_iterator_init(&pit, &cell->paragraphs); paragraph != NULL; paragraph = content_paragraph_iterator_next(&pit))
                     if (s_document_to_docx_content_paragraph(alloc, &content_state, paragraph, content)) goto end;
-                }
-                if (content_state.font.name)
-                {
+
+		if (content_state.font.name)
                     if (s_docx_run_finish(alloc, &content_state, content)) goto end;
-                }
 
                 /* Need to write out at least an empty paragraph in each cell,
                 otherwise Word/Libreoffice fail to show table at all; the
@@ -471,9 +467,7 @@ to the application. */
                 block-level element, then this document shall be considered
                 corrupt." */
                 if (content->chars_num == chars_num_old)
-                {
                     if (extract_astring_catf(alloc, content, "<w:p/>\n")) goto end;
-                }
             }
             if (extract_astring_cat(alloc, content, "            </w:tc>\n")) goto end;
         }
@@ -487,14 +481,14 @@ to the application. */
 }
 
 static int s_docx_append_rotated_paragraphs(
-        extract_alloc_t*    alloc,
-        subpage_t*          subpage,
-        content_state_t*    state,
-        int*                p,
-        int*                text_box_id,
-        const matrix_t*     ctm,
-        double              rotate,
-        extract_astring_t*  output
+        extract_alloc_t            *alloc,
+        content_state_t            *state,
+	content_paragraph_iterator *pit,
+	paragraph_t               **pparagraph, 
+        int                        *text_box_id,
+        const matrix_t             *ctm,
+        double                      rotate,
+        extract_astring_t          *output
         )
 /* Appends paragraphs with same rotation, starting with page->paragraphs[*p]
 and updates *p. */
@@ -504,9 +498,21 @@ and updates *p. */
     before application of ctm, i.e. before rotation. */
     int e = -1;
     point_t extent = {0, 0};
-    int p0 = *p;
-    int p1;
-    paragraph_t* paragraph = subpage->paragraphs[*p];
+    paragraph_t *paragraph = *pparagraph;
+    /* Remember where the iterator started, so we can restart it
+     * for the output phase. */
+    content_paragraph_iterator pit2 = *pit;
+    paragraph_t *paragraph0 = paragraph;
+
+    /* We assume that first span is at origin of text
+    block. This assumes left-to-right text. */
+    span_t *first_span = content_head_as_span(&content_first_line(&paragraph->content)->content);
+    point_t origin = {
+                first_span->chars[0].x,
+                first_span->chars[0].y
+                };
+    matrix_t ctm_inverse = {1, 0, 0, 1, 0, 0};
+    double ctm_det = ctm->a*ctm->d - ctm->b*ctm->c;
 
     outf("rotate=%.2frad=%.1fdeg ctm: ef=(%f %f) abcd=(%f %f %f %f)",
             rotate, rotate * 180 / pi,
@@ -518,72 +524,52 @@ and updates *p. */
             ctm->d
             );
 
-    {
-        /* We assume that first span is at origin of text
-        block. This assumes left-to-right text. */
-        double rotate0 = rotate;
-        const matrix_t* ctm0 = ctm;
-        span_t *first_span = content_head_as_span(&content_first_line(&paragraph->content)->content);
-        point_t origin = {
-                first_span->chars[0].x,
-                first_span->chars[0].y
-                };
-        matrix_t ctm_inverse = {1, 0, 0, 1, 0, 0};
-        double ctm_det = ctm->a*ctm->d - ctm->b*ctm->c;
-        if (ctm_det != 0) {
-            ctm_inverse.a = +ctm->d / ctm_det;
-            ctm_inverse.b = -ctm->b / ctm_det;
-            ctm_inverse.c = -ctm->c / ctm_det;
-            ctm_inverse.d = +ctm->a / ctm_det;
-        }
-        else {
-            outf("cannot invert ctm=(%f %f %f %f)",
-                    ctm->a, ctm->b, ctm->c, ctm->d);
-        }
-
-        for (*p=p0; *p<subpage->paragraphs_num; ++(*p)) {
-            paragraph = subpage->paragraphs[*p];
-            ctm = &content_head_as_span(&content_first_line(&paragraph->content)->content)->ctm;
-            rotate = atan2(ctm->b, ctm->a);
-            if (rotate != rotate0) {
-                break;
-            }
-
-            /* Update <extent>. */
-            {
-                content_line_iterator  lit;
-                line_t                *line;
-
-                for (line = content_line_iterator_init(&lit, &paragraph->content); line != NULL; line = content_line_iterator_next(&lit))
-                {
-                    span_t *span = extract_line_span_last(line);
-                    char_t *char_ = extract_span_char_last(span);
-                    double  adv = char_->adv * extract_matrix_expansion(span->trm);
-                    double  x = char_->x + adv * cos(rotate);
-                    double  y = char_->y + adv * sin(rotate);
-
-                    double  dx = x - origin.x;
-                    double  dy = y - origin.y;
-
-                    /* Position relative to origin and before box rotation. */
-                    double  xx = ctm_inverse.a * dx + ctm_inverse.b * dy;
-                    double  yy = ctm_inverse.c * dx + ctm_inverse.d * dy;
-                    yy = -yy;
-                    if (xx > extent.x) extent.x = xx;
-                    if (yy > extent.y) extent.y = yy;
-                    if (0) outf("rotate=%f *p=%i: origin=(%f %f) xy=(%f %f) dxy=(%f %f) xxyy=(%f %f) span: %s",
-                            rotate, *p, origin.x, origin.y, x, y, dx, dy, xx, yy, extract_span_string(alloc, span));
-                }
-            }
-        }
-        p1 = *p;
-        rotate = rotate0;
-        ctm = ctm0;
-        outf("rotate=%f p0=%i p1=%i. extent is: (%f %f)",
-                rotate, p0, p1, extent.x, extent.y);
+    if (ctm_det != 0) {
+        ctm_inverse.a = +ctm->d / ctm_det;
+        ctm_inverse.b = -ctm->b / ctm_det;
+        ctm_inverse.c = -ctm->c / ctm_det;
+        ctm_inverse.d = +ctm->a / ctm_det;
+    } else {
+        outf("cannot invert ctm=(%f %f %f %f)",
+             ctm->a, ctm->b, ctm->c, ctm->d);
     }
 
-    /* Paragraphs p0..p1-1 have same rotation. We output them into
+    for (; paragraph != NULL; paragraph = content_paragraph_iterator_next(pit))
+    {
+        content_line_iterator  lit;
+        line_t                *line;
+        const matrix_t        *ctm1 = &content_head_as_span(&content_first_line(&paragraph->content)->content)->ctm;
+        double                 rotate1 = atan2(ctm1->b, ctm1->a);
+
+        if (rotate != rotate1)
+            break;
+
+        /* Update <extent>. */
+        for (line = content_line_iterator_init(&lit, &paragraph->content); line != NULL; line = content_line_iterator_next(&lit))
+        {
+            span_t *span = extract_line_span_last(line);
+            char_t *char_ = extract_span_char_last(span);
+            double  adv = char_->adv * extract_matrix_expansion(span->trm);
+            double  x = char_->x + adv * cos(rotate);
+            double  y = char_->y + adv * sin(rotate);
+
+            double  dx = x - origin.x;
+            double  dy = y - origin.y;
+
+            /* Position relative to origin and before box rotation. */
+            double  xx = ctm_inverse.a * dx + ctm_inverse.b * dy;
+            double  yy = ctm_inverse.c * dx + ctm_inverse.d * dy;
+            yy = -yy;
+            if (xx > extent.x) extent.x = xx;
+            if (yy > extent.y) extent.y = yy;
+            if (0) outf("rotate=%f: origin=(%f %f) xy=(%f %f) dxy=(%f %f) xxyy=(%f %f) span: %s",
+                        rotate1, origin.x, origin.y, x, y, dx, dy, xx, yy, extract_span_string(alloc, span));
+        }
+    }
+    outf("rotate=%f extent is: (%f %f)",
+         rotate, extent.x, extent.y);
+
+    /* Paragraphs [paragraph0..paragraph) have same rotation. We output them into
     a single rotated text box. */
 
     /* We need unique id for text box. */
@@ -633,9 +619,9 @@ and updates *p. */
         x -= dx;
         y -= -dy;
 
-        if (s_docx_output_rotated_paragraphs(alloc, subpage, p0, p1, rot, x, y, w, h, *text_box_id, output, state)) goto end;
+        if (s_docx_output_rotated_paragraphs(alloc, &pit2, paragraph0, paragraph, rot, x, y, w, h, *text_box_id, output, state)) goto end;
     }
-    *p = p1 - 1;
+    *pparagraph = paragraph;
     e = 0;
 
     end:
@@ -662,10 +648,10 @@ int extract_document_to_docx_content(
         int c;
 
         for (c=0; c<page->subpages_num; ++c) {
-            subpage_t* subpage = page->subpages[c];
-
-            int p = 0;
-            int t = 0;
+            subpage_t                  *subpage = page->subpages[c];
+            content_paragraph_iterator  pit;
+	    paragraph_t                *paragraph;
+            int                         t;
 
             content_state_t content_state;
             content_state.font.name = NULL;
@@ -675,8 +661,7 @@ int extract_document_to_docx_content(
             content_state.ctm_prev = NULL;
 
             /* Output paragraphs and tables in order of y coordinate. */
-            for(;;) {
-                paragraph_t* paragraph = (p == subpage->paragraphs_num) ? NULL : subpage->paragraphs[p];
+            for(t = 0, paragraph = content_paragraph_iterator_init(&pit, &subpage->paragraphs); ; ) {
                 table_t* table = (t == subpage->tables_num) ? NULL : subpage->tables[t];
                 double y_paragraph;
                 double y_table;
@@ -711,13 +696,14 @@ int extract_document_to_docx_content(
 
                     if (rotation && rotate != 0)
                     {
-                        if (s_docx_append_rotated_paragraphs(alloc, subpage, &content_state, &p, &text_box_id, ctm, rotate, content)) goto end;
+                        if (s_docx_append_rotated_paragraphs(alloc, &content_state, &pit, &paragraph, &text_box_id, ctm, rotate, content)) goto end;
+			/* paragraph is returned having been 'next'ed already. */
                     }
                     else
                     {
                         if (s_document_to_docx_content_paragraph(alloc, &content_state, paragraph, content)) goto end;
+                        paragraph = content_paragraph_iterator_next(&pit);
                     }
-                    p += 1;
                 }
                 else if (table)
                 {

@@ -31,6 +31,7 @@ typedef enum {
     content_root,
     content_span,
     content_line,
+    content_paragraph,
     content_image,
 } content_type_t;
 
@@ -57,26 +58,37 @@ span_t *content_first_span(const content_t *root);
 span_t *content_last_span(const content_t *root);
 line_t *content_first_line(const content_t *root);
 line_t *content_last_line(const content_t *root);
+paragraph_t *content_first_paragraph(const content_t *root);
+paragraph_t *content_last_paragraph(const content_t *root);
 
+int content_count(content_t *root);
 int content_count_images(content_t *root);
 int content_count_spans(content_t *root);
 int content_count_lines(content_t *root);
+int content_count_paragraphs(content_t *root);
 
 int content_new_root(extract_alloc_t *alloc, content_t **pcontent);
 int content_new_span(extract_alloc_t *alloc, span_t **pspan);
 int content_new_line(extract_alloc_t *alloc, line_t **pline);
+int content_new_paragraph(extract_alloc_t *alloc, paragraph_t **pparagraph);
 
 int content_append_new_span(extract_alloc_t* alloc, content_t *root, span_t **pspan);
 int content_append_new_line(extract_alloc_t* alloc, content_t *root, line_t **pline);
+int content_append_new_paragraph(extract_alloc_t* alloc, content_t *root, paragraph_t **pparagraph);
 int content_append_new_image(extract_alloc_t* alloc, content_t *root, image_t **pimage);
 
 void content_append(content_t *root, content_t *content);
 void content_append_span(content_t *root, span_t *span);
 void content_append_line(content_t *root, line_t *line);
+void content_append_paragraph(content_t *root, paragraph_t *paragraph);
 
 void content_concat(content_t *dst, content_t *src);
 
 void content_dump(const content_t *content);
+
+typedef int (content_cmp_fn)(const content_t *, const content_t *);
+
+void content_sort(content_t *content, content_cmp_fn *cmp);
 
 /* To iterate over the line elements of a content list:
 
@@ -88,6 +100,34 @@ for(line = content_line_iterator_line_init(&it, content); line != NULL; line = c
 }
 
 */
+
+typedef struct {
+    content_t *root;
+    content_t *next;
+} content_paragraph_iterator;
+
+static inline paragraph_t *content_paragraph_iterator_next(content_paragraph_iterator *it)
+{
+    content_t *next;
+
+    do {
+        next = it->next;
+        if (next == it->root)
+            return NULL;
+        assert(next->type != content_root);
+        it->next = next->next;
+    } while (next->type != content_paragraph);
+
+    return (paragraph_t *)next;
+}
+
+static inline paragraph_t *content_paragraph_iterator_init(content_paragraph_iterator *it, content_t *root)
+{
+    it->root = root;
+    it->next = root->next;
+
+    return content_paragraph_iterator_next(it);
+}
 
 typedef struct {
     content_t *root;
@@ -312,8 +352,6 @@ void extract_line_init(line_t *line);
 
 void extract_line_free(extract_alloc_t* alloc, line_t** pline);
 
-void extract_lines_free(extract_alloc_t* alloc, line_t*** plines, int lines_num);
-
 span_t* extract_line_span_first(line_t* line);
 /* Returns first span in a line. */
 
@@ -322,10 +360,13 @@ span_t* extract_line_span_last(line_t* line);
 
 struct paragraph_t
 {
+    content_t base;
     content_t content;
 };
 /* List of lines that are aligned and adjacent to each other so as to form a
 paragraph. */
+
+void extract_paragraph_init(paragraph_t *paragraph);
 
 void extract_paragraph_free(extract_alloc_t* alloc, paragraph_t** pparagraph);
 
@@ -389,8 +430,7 @@ typedef struct
 
     /* Contents of this cell. */
     content_t       lines;
-    paragraph_t**   paragraphs;
-    int             paragraphs_num;
+    content_t       paragraphs;
 } cell_t;
 /* A cell within a table. */
 
@@ -437,8 +477,7 @@ typedef struct
     /* These refer to items in .spans. Initially empty, then set by
     extract_join(). */
 
-    paragraph_t**   paragraphs;
-    int             paragraphs_num;
+    content_t   paragraphs;
     /* These refer to items in .lines. Initially empty, then set
     by extract_join(). */
 

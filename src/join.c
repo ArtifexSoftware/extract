@@ -754,15 +754,20 @@ static int lines_overlap(point_t a_left, point_t a_right, point_t b_left, point_
 
 /* A comparison function for use with qsort(), for sorting paragraphs within a
 page. */
-static int paragraphs_cmp(const void* a, const void* b)
+static int paragraphs_cmp(const content_t *a, const content_t *b)
 {
-    const paragraph_t* const* a_paragraph = a;
-    const paragraph_t* const* b_paragraph = b;
-    line_t* a_line = paragraph_line_first(*a_paragraph);
-    line_t* b_line = paragraph_line_first(*b_paragraph);
+    const paragraph_t *a_paragraph = (const paragraph_t *)a;
+    const paragraph_t *b_paragraph = (const paragraph_t *)b;
+    line_t *a_line, *b_line;
+    span_t *a_span, *b_span;
 
-    span_t* a_span = s_line_span_first(a_line);
-    span_t* b_span = s_line_span_first(b_line);
+    if (a->type != content_paragraph || b->type != content_paragraph)
+        return 0;
+
+    a_line = paragraph_line_first(a_paragraph);
+    b_line = paragraph_line_first(b_paragraph);
+    a_span = s_line_span_first(a_line);
+    b_span = s_line_span_first(b_line);
 
     if (0)
     {
@@ -826,7 +831,6 @@ static int paragraphs_cmp(const void* a, const void* b)
     return 0;
 }
 
-
 /* Creates a representation of line_t's that consists of a list of
 paragraph_t's.
 
@@ -847,68 +851,52 @@ On exit:
     are undefined.
 */
 static int make_paragraphs(
-        extract_alloc_t*    alloc,
-        content_t*          lines,
-        paragraph_t***      o_paragraphs,
-        int*                o_paragraphs_num
+        extract_alloc_t *alloc,
+        content_t       *lines,
+        content_t       *paragraphs
         )
 {
-    int                     ret = -1;
-    int                     a;
-    int                     num_joins;
-    paragraph_t           **paragraphs = NULL;
-    content_line_iterator   lit;
-    line_t                 *line;
+    int                         ret = -1;
+    int                         a;
+    int                         num_joins;
+    content_line_iterator       lit;
+    line_t                     *line;
+    content_paragraph_iterator  pit;
+    paragraph_t                *paragraph_a;
 
     /* Start off with a paragraph_t for each line_t. */
     int lines_num = content_count_lines(lines);
-    int paragraphs_num = lines_num;
-    if (extract_malloc(alloc, &paragraphs, sizeof(*paragraphs) * paragraphs_num)) goto end;
-    /* Ensure we can clean up after error when setting up. */
-    for (a=0; a<paragraphs_num; ++a) {
-        paragraphs[a] = NULL;
-    }
     /* Set up initial paragraphs. */
-    for (a=0, line = content_line_iterator_init(&lit, lines); line != NULL; a++, line = content_line_iterator_next(&lit))
+    for (line = content_line_iterator_init(&lit, lines); line != NULL; line = content_line_iterator_next(&lit))
     {
-        if (extract_paragraph_alloc(alloc, &paragraphs[a]))
+        paragraph_t *paragraph;
+        if (content_append_new_paragraph(alloc, paragraphs, &paragraph))
             goto end;
-        content_append_line(&paragraphs[a]->content, line);
+        content_append_line(&paragraph->content, line);
     }
 
     /* Now join paragraphs together where possible. */
     num_joins = 0;
-    for (a=0; a<paragraphs_num; ++a) {
-        paragraph_t* nearest_paragraph = NULL;
-        int nearest_paragraph_b = -1;
-        double nearest_paragraph_distance = -1;
-        line_t* line_a;
-        double angle_a;
-        int verbose;
+    for (a=0, paragraph_a = content_paragraph_iterator_init(&pit, paragraphs); paragraph_a != NULL; a++, paragraph_a = content_paragraph_iterator_next(&pit)) {
+        paragraph_t                *nearest_paragraph = NULL;
+        int                         nearest_paragraph_b = -1;
+        double                      nearest_paragraph_distance = -1;
+        line_t                     *line_a;
+        double                      angle_a;
+        int                         verbose = 0;
+	paragraph_t                *paragraph_b;
+	content_paragraph_iterator  pit2;
         int b;
-
-        paragraph_t* paragraph_a = paragraphs[a];
-        if (!paragraph_a) {
-            /* This paragraph is empty - already been appended to a different
-            paragraph. */
-            continue;
-        }
 
         line_a = paragraph_line_last(paragraph_a);
         assert(line_a != NULL);
         angle_a = line_angle(line_a);
-        verbose = 0;
 
         /* Look for nearest paragraph_t that could be appended to
         paragraph_a. */
-        for (b=0; b<paragraphs_num; ++b) {
-            paragraph_t* paragraph_b = paragraphs[b];
+        for (b=0, paragraph_b = content_paragraph_iterator_init(&pit2, paragraphs); paragraph_b != NULL; b++, paragraph_b = content_paragraph_iterator_next(&pit2))
+	{
             line_t* line_b;
-            if (!paragraph_b) {
-                /* This paragraph is empty - already been appended to a different
-                paragraph. */
-                continue;
-            }
             line_b = paragraph_line_first(paragraph_b);
             if (!lines_are_compatible(line_a, line_b, angle_a, 0)) {
                 continue;
@@ -1033,8 +1021,9 @@ static int make_paragraphs(
                 content_concat(&paragraph_a->content, &nearest_paragraph->content);
 
                 /* Ensure that we skip nearest_paragraph in future. */
+                if (pit.next == &nearest_paragraph->base)
+                    pit.next = pit.next->next;
                 extract_paragraph_free(alloc, &nearest_paragraph);
-                paragraphs[nearest_paragraph_b] = NULL;
 
                 num_joins += 1;
                 outfx(
@@ -1048,8 +1037,11 @@ static int make_paragraphs(
                     /* We haven't yet tried appending any paragraphs to
                     nearest_paragraph_b, so the new extended paragraph_a needs
                     checking again. */
+                    pit.next = &paragraph_a->base;
                     a -= 1;
-                }
+		} else {
+                    a -= 1;
+		}
             }
             else {
                 outfx(
@@ -1061,53 +1053,18 @@ static int make_paragraphs(
         }
     }
 
-    {
-        /* Remove empty paragraphs. */
-        int from;
-        int to;
-        int paragraphs_num_old;
-        for (from=0, to=0; from<paragraphs_num; ++from) {
-            if (paragraphs[from]) {
-                paragraphs[to] = paragraphs[from];
-                to += 1;
-            }
-        }
-        outfx("paragraphs_num=%i => %i", paragraphs_num, to);
-        paragraphs_num_old = paragraphs_num;
-        paragraphs_num = to;
-        if (extract_realloc2(
-                alloc,
-                &paragraphs,
-                sizeof(paragraph_t*) * paragraphs_num_old,
-                sizeof(paragraph_t*) * paragraphs_num
-                )) {
-            /* Should always succeed because we're not increasing allocation size, but
-            can fail with memento squeeze. */
-            goto end;
-        }
-    }
-
     /* Sort paragraphs so they appear in correct order, using paragraphs_cmp().
     */
-    qsort(paragraphs, paragraphs_num, sizeof(paragraph_t*), paragraphs_cmp);
+    content_sort(paragraphs, paragraphs_cmp);
 
-    *o_paragraphs = paragraphs;
-    *o_paragraphs_num = paragraphs_num;
     ret = 0;
-    outf("Turned %i lines into %i paragraphs", lines_num, paragraphs_num);
+    outf("Turned %i lines into %i paragraphs", lines_num, content_count_paragraphs(paragraphs));
 
     end:
 
     if (ret)
     {
-        if (paragraphs)
-        {
-            for (a=0; a<paragraphs_num; ++a)
-            {
-                extract_paragraph_free(alloc, &paragraphs[a]);
-            }
-        }
-        extract_free(alloc, &paragraphs);
+        content_clear(alloc, paragraphs);
     }
     return ret;
 }
@@ -1118,8 +1075,7 @@ static int s_join_subpage_rects(
         rect_t*             rects,
         int                 rects_num,
         content_t          *lines,
-        paragraph_t***      paragraphs,
-        int*                paragraphs_num
+        content_t          *paragraphs
         )
 /* Extracts text that is inside any of rects[0..rects_num], or all text if
 rects_num is zero. */
@@ -1134,8 +1090,7 @@ rects_num is zero. */
     if (make_paragraphs(
             alloc,
             lines,
-            paragraphs,
-            paragraphs_num
+            paragraphs
             )) return -1;
 
     return 0;
@@ -1222,8 +1177,7 @@ void extract_cell_init(cell_t* cell)
     cell->extend_right = 0;
     cell->extend_down = 0;
     content_init(&cell->lines, content_root);
-    cell->paragraphs = NULL;
-    cell->paragraphs_num = 0;
+    content_init(&cell->paragraphs, content_root);
 }
 
 
@@ -1328,8 +1282,7 @@ remove any found text from the page. */
                 &cell->rect,
                 1 /*rects_num*/,
                 &cell->lines,
-                &cell->paragraphs,
-                &cell->paragraphs_num
+                &cell->paragraphs
                 )) return -1;
     }
 
@@ -1473,8 +1426,7 @@ y_min..y_max. */
             cell->extend_right = 1;
             cell->extend_down = 1;
             content_init(&cell->lines, content_root);
-            cell->paragraphs = NULL;
-            cell->paragraphs_num = 0;
+            content_init(&cell->paragraphs, content_root);
 
             /* Set cell->above if there is a horizontal line above the cell. */
             outf("Looking to set above for i=%i j=%i rect=%s", i, j, extract_rect_string(&cell->rect));
@@ -1755,14 +1707,13 @@ static int extract_join_subpage(
             NULL /*rects*/,
             0 /*rects_num*/,
             &subpage->lines,
-            &subpage->paragraphs,
-            &subpage->paragraphs_num
+            &subpage->paragraphs
             ))
     {
         outf0("s_join_subpage_rects failed. subpage->spans_num=%i subpage->lines_num=%i subpage->paragraphs_num=%i",
                 content_count_spans(&subpage->content),
                 content_count_lines(&subpage->lines),
-                subpage->paragraphs_num
+                content_count_paragraphs(&subpage->paragraphs)
                 );
         return -1;
     }

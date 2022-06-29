@@ -56,6 +56,14 @@ void extract_line_init(line_t *line)
     content_init(&line->content, content_root);
 }
 
+void extract_paragraph_init(paragraph_t *paragraph)
+{
+    static const paragraph_t blank = { 0 };
+    *paragraph = blank;
+    content_init(&paragraph->base, content_paragraph);
+    content_init(&paragraph->content, content_root);
+}
+
 void extract_image_init(image_t *image)
 {
     static const image_t blank = { 0 };
@@ -85,11 +93,26 @@ content_clear(extract_alloc_t* alloc, content_t *proot)
             case content_line:
                 extract_line_free(alloc, (line_t **)&content);
                 break;
+            case content_paragraph:
+                extract_paragraph_free(alloc, (paragraph_t **)&content);
+                break;
             case content_image:
                 extract_image_free(alloc, (image_t **)&content);
                 break;
         }
     }
+}
+
+int
+content_count(content_t *root)
+{
+    int n = 0;
+    content_t *s;
+
+    for (s = root->next; s != root; s = s->next)
+        n++;
+
+    return n;
 }
 
 static int
@@ -117,6 +140,11 @@ int content_count_images(content_t *root)
 int content_count_lines(content_t *root)
 {
     return content_count_type(root, content_line);
+}
+
+int content_count_paragraphs(content_t *root)
+{
+    return content_count_type(root, content_paragraph);
 }
 
 static content_t *
@@ -192,17 +220,6 @@ void extract_line_free(extract_alloc_t* alloc, line_t** pline)
     extract_free(alloc, pline);
 }
 
-void extract_lines_free(extract_alloc_t* alloc, line_t*** plines, int lines_num)
-{
-    int l;
-    line_t** lines = *plines;
-    for (l=0; l<lines_num; ++l)
-    {
-        extract_line_free(alloc, &lines[l]);
-    }
-    extract_free(alloc, plines);
-}
-
 void extract_image_clear(extract_alloc_t* alloc, image_t* image)
 {
     extract_free(alloc, &image->type);
@@ -223,25 +240,16 @@ void extract_image_free(extract_alloc_t *alloc, image_t **pimage)
 
 void extract_cell_free(extract_alloc_t* alloc, cell_t** pcell)
 {
-    int p;
-    cell_t* cell = *pcell;
+    cell_t *cell = *pcell;
+
     if (!cell) return;
 
+    outf("cell=%p ", cell);
     outf("cell->lines_num=%i", content_count_lines(&cell->lines));
-    outf("cell->paragraphs_num=%i", cell->paragraphs_num);
+    outf("cell->paragraphs_num=%i", content_count_paragraphs(&cell->paragraphs));
     content_clear(alloc, &cell->lines);
+    content_clear(alloc, &cell->paragraphs);
 
-    outf("cell=%p cell->paragraphs_num=%i", cell, cell->paragraphs_num);
-    for (p=0; p<cell->paragraphs_num; ++p)
-    {
-        paragraph_t* paragraph = cell->paragraphs[p];
-        outf("paragraph->lines_num=%i", content_count_lines(&paragraph->content));
-        /* We don't attempt to free paragraph->lines[] because they point into
-        cell->lines which are already freed. */
-        content_clear(alloc, &paragraph->content);
-        extract_free(alloc, &cell->paragraphs[p]);
-    }
-    extract_free(alloc, &cell->paragraphs);
     extract_free(alloc, pcell);
 }
 
@@ -312,6 +320,7 @@ content_dump_aux(const content_t *content, int depth)
     assert(content->type == content_root);
     for (walk = content->next; walk != content; walk = walk->next)
     {
+	assert(walk->next->prev == walk && walk->prev->next == walk);
         space_prefix(depth);
         switch (walk->type)
         {
@@ -326,6 +335,12 @@ content_dump_aux(const content_t *content, int depth)
                 space_prefix(depth);
                 printf("</line>\n");
                 break;
+            case content_paragraph:
+                printf("<paragraph>\n");
+                content_dump_aux(&((const paragraph_t *)walk)->content, depth+1);
+                space_prefix(depth);
+                printf("</paragraph>\n");
+                break;
             case content_image:
                 printf("<image/>\n");
                 break;
@@ -339,4 +354,87 @@ content_dump_aux(const content_t *content, int depth)
 void content_dump(const content_t *content)
 {
     content_dump_aux(content, 0);
+}
+
+static content_t *
+cmp_and_merge(content_t *q1, int q1pos, int len1, int n, content_cmp_fn *cmp)
+{
+    int len2 = q1pos + len1*2; /* end of both lists assuming we don't overrun */
+    int p;
+    content_t *q2 = q1;
+
+    /* Don't overrun the end, and then convert to length from end. */
+    if (len2 > n)
+        len2 = n;
+    len2 -= q1pos + len1;
+
+    if (len2 <= 0)
+        len1 += len2;
+
+    /* Find the start of q2. We know this fits. */
+    for (p = 0; p < len1; p++)
+         q2 = q2->next;
+
+    if (len2 <= 0)
+        return q2;
+
+    /* So we have [q1..(q1+len1)) as the first list to merge, and [q2..q2+len2)) as the second list to merge. */
+    /* We know that q2 = q1+len1. So, if we can reduce len1 or len2 to 0, we have the lists sorted. */
+    while (1)
+    {
+        if (cmp(q1, q2) > 0)
+        {
+            /* q2 is smaller. q2 should be before q1. Move it. */
+	    /* So:
+	     *    a<->q1<->c..d<->q2<->b  =>  a<->q2<->q1<->c..d<->b
+	     * (where c and d can either be the same, or can be q2 and q1!)
+	     */
+            content_t *a = q1->prev;
+            content_t *b = q2->next;
+            content_t *d = q2->prev;
+            d->next = b;
+            b->prev = d;
+            a->next = q2;
+            q2->prev = a;
+            q2->next = q1;
+            q1->prev = q2;
+	    /* Now advance q2 */
+	    q2 = b;
+	    len2--;
+            if (len2 == 0)
+                break;
+	} else {
+	    /* Advance q1 */
+	    q1 = q1->next;
+	    len1--;
+            if (len1 == 0)
+                break;
+	}
+    }
+
+    while (len2)
+    {
+        q2 = q2->next;
+        len2--;
+    }
+
+    return q2;
+}
+
+/* Spiffy in-place merge sort. */
+void content_sort(content_t *content, content_cmp_fn *cmp)
+{
+    int n = content_count(content);
+    int size;
+
+    for (size = 1; size < n; size <<= 1)
+    {
+        int q1_idx = 0;
+	content_t *q1 = content->next;
+	assert(content->type == content_root);
+	for (q1_idx = 0; q1_idx < n; q1_idx += size*2)
+            q1 = cmp_and_merge(q1, q1_idx, size, n, cmp);
+	assert(q1->type == content_root);
+    }
+    assert(content_count(content) == n);
 }

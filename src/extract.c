@@ -193,6 +193,7 @@ void extract_paragraph_free(extract_alloc_t* alloc, paragraph_t** pparagraph)
     if (paragraph == NULL)
         return;
 
+    content_unlink(&paragraph->base);
     content_clear(alloc, &paragraph->content);
     extract_free(alloc, pparagraph);
 }
@@ -232,20 +233,8 @@ void extract_subpage_free(extract_alloc_t* alloc, subpage_t** psubpage)
     outf0("subpage=%p subpage->spans_num=%i subpage->lines_num=%i",
           subpage, content_count_spans(&subpage->content), content_count_lines(&subpage->lines));
     content_clear(alloc, &subpage->content);
-
     content_clear(alloc, &subpage->lines);
-
-    {
-        int p;
-        for (p=0; p<subpage->paragraphs_num; ++p) {
-            /* We don't call extract_lines_free(&paragraph->lines) because
-            these point into the same data as subpage->lines, which we have
-            already freed above. */
-            content_clear(alloc, &subpage->paragraphs[p]->content);
-            extract_free(alloc, &subpage->paragraphs[p]);
-        }
-    }
-    extract_free(alloc, &subpage->paragraphs);
+    content_clear(alloc, &subpage->paragraphs);
 
     extract_free(alloc, &subpage->tablelines_horizontal.tablelines);
     extract_free(alloc, &subpage->tablelines_vertical.tablelines);
@@ -332,6 +321,14 @@ int content_new_line(extract_alloc_t *alloc, line_t **pline)
     return 0;
 }
 
+int content_new_paragraph(extract_alloc_t *alloc, paragraph_t **pparagraph)
+{
+    if (extract_malloc(alloc, pparagraph, sizeof(**pparagraph))) return -1;
+    extract_paragraph_init(*pparagraph);
+
+    return 0;
+}
+
 int content_append_new_span(extract_alloc_t* alloc, content_t *root, span_t **pspan)
 /* Appends new empty span content to a content_list_t; returns -1 with errno set on error. */
 {
@@ -346,6 +343,15 @@ int content_append_new_line(extract_alloc_t* alloc, content_t *root, line_t **pl
 {
     if (content_new_line(alloc, pline)) return -1;
     content_append(root, &(*pline)->base);
+
+    return 0;
+}
+
+int content_append_new_paragraph(extract_alloc_t* alloc, content_t *root, paragraph_t **pparagraph)
+/* Appends new empty paragraph content to a content_list_t; returns -1 with errno set on error. */
+{
+    if (content_new_paragraph(alloc, pparagraph)) return -1;
+    content_append(root, &(*pparagraph)->base);
 
     return 0;
 }
@@ -1501,8 +1507,7 @@ int extract_subpage_alloc(extract_alloc_t* alloc, rect_t mediabox, extract_page_
     subpage = *psubpage;
     subpage->mediabox = mediabox;
     content_init(&subpage->content, content_root);
-    subpage->paragraphs = NULL;
-    subpage->paragraphs_num = 0;
+    content_init(&subpage->paragraphs, content_root);
     subpage->images_num = 0;
     content_init(&subpage->lines, content_root);
     subpage->tablelines_horizontal.tablelines = NULL;
@@ -1815,16 +1820,16 @@ int extract_page_end(extract_t* extract)
 
 
 static int paragraphs_to_text_content(
-        extract_alloc_t* alloc,
-        paragraph_t** paragraphs,
-        int paragraphs_num,
-        extract_astring_t* text
+        extract_alloc_t   *alloc,
+        content_t         *paragraphs,
+        extract_astring_t *text
         )
 {
-    int p;
-    for (p=0; p<paragraphs_num; ++p)
+    content_paragraph_iterator  pit;
+    paragraph_t                *paragraph;
+
+    for (paragraph = content_paragraph_iterator_init(&pit, paragraphs); paragraph != NULL; paragraph = content_paragraph_iterator_next(&pit))
     {
-        paragraph_t           *paragraph = paragraphs[p];
         content_line_iterator  lit;
         line_t                *line;
 
@@ -1908,8 +1913,7 @@ static int extract_write_tables_csv(extract_t* extract)
                         have_output = 1;
                         if (paragraphs_to_text_content(
                                 extract->alloc,
-                                cell->paragraphs,
-                                cell->paragraphs_num,
+                                &cell->paragraphs,
                                 &text
                                 )) goto end;
                         /* Reference cvs output trims trailing spaces. */
@@ -1998,8 +2002,7 @@ int extract_process(
                 subpage_t* subpage = page->subpages[c];
                 if (paragraphs_to_text_content(
                         extract->alloc,
-                        subpage->paragraphs,
-                        subpage->paragraphs_num,
+                        &subpage->paragraphs,
                         &extract->contentss[extract->contentss_num - 1]
                     )) goto end;
             }
