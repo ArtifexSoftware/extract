@@ -852,8 +852,7 @@ On exit:
 */
 static int make_paragraphs(
         extract_alloc_t *alloc,
-        content_t       *lines,
-        content_t       *paragraphs
+        content_t       *content
         )
 {
     int                         ret = -1;
@@ -864,20 +863,19 @@ static int make_paragraphs(
     content_paragraph_iterator  pit;
     paragraph_t                *paragraph_a;
 
-    /* Start off with a paragraph_t for each line_t. */
-    int lines_num = content_count_lines(lines);
-    /* Set up initial paragraphs. */
-    for (line = content_line_iterator_init(&lit, lines); line != NULL; line = content_line_iterator_next(&lit))
+    /* Convert every line_t to be a paragraph_t containing that line_t. */
+    int lines_num = content_count_lines(content);
+    for (line = content_line_iterator_init(&lit, content); line != NULL; line = content_line_iterator_next(&lit))
     {
         paragraph_t *paragraph;
-        if (content_append_new_paragraph(alloc, paragraphs, &paragraph))
+	if (content_replace_new_paragraph(alloc, &line->base, &paragraph))
             goto end;
         content_append_line(&paragraph->content, line);
     }
 
     /* Now join paragraphs together where possible. */
     num_joins = 0;
-    for (a=0, paragraph_a = content_paragraph_iterator_init(&pit, paragraphs); paragraph_a != NULL; a++, paragraph_a = content_paragraph_iterator_next(&pit)) {
+    for (a=0, paragraph_a = content_paragraph_iterator_init(&pit, content); paragraph_a != NULL; a++, paragraph_a = content_paragraph_iterator_next(&pit)) {
         paragraph_t                *nearest_paragraph = NULL;
         int                         nearest_paragraph_b = -1;
         double                      nearest_paragraph_distance = -1;
@@ -894,7 +892,7 @@ static int make_paragraphs(
 
         /* Look for nearest paragraph_t that could be appended to
         paragraph_a. */
-        for (b=0, paragraph_b = content_paragraph_iterator_init(&pit2, paragraphs); paragraph_b != NULL; b++, paragraph_b = content_paragraph_iterator_next(&pit2))
+        for (b=0, paragraph_b = content_paragraph_iterator_init(&pit2, content); paragraph_b != NULL; b++, paragraph_b = content_paragraph_iterator_next(&pit2))
 	{
             line_t* line_b;
             line_b = paragraph_line_first(paragraph_b);
@@ -1055,17 +1053,13 @@ static int make_paragraphs(
 
     /* Sort paragraphs so they appear in correct order, using paragraphs_cmp().
     */
-    content_sort(paragraphs, paragraphs_cmp);
+    content_sort(content, paragraphs_cmp);
 
     ret = 0;
-    outf("Turned %i lines into %i paragraphs", lines_num, content_count_paragraphs(paragraphs));
+    outf("Turned %i lines into %i paragraphs", lines_num, content_count_paragraphs(content));
 
     end:
 
-    if (ret)
-    {
-        content_clear(alloc, paragraphs);
-    }
     return ret;
 }
 
@@ -1074,8 +1068,7 @@ static int s_join_subpage_rects(
         subpage_t*          subpage,
         rect_t*             rects,
         int                 rects_num,
-        content_t          *lines,
-        content_t          *paragraphs
+        content_t          *lines
         )
 /* Extracts text that is inside any of rects[0..rects_num], or all text if
 rects_num is zero. */
@@ -1089,8 +1082,7 @@ rects_num is zero. */
             )) return -1;
     if (make_paragraphs(
             alloc,
-            lines,
-            paragraphs
+            lines
             )) return -1;
 
     return 0;
@@ -1176,8 +1168,7 @@ void extract_cell_init(cell_t* cell)
     cell->left = 0;
     cell->extend_right = 0;
     cell->extend_down = 0;
-    content_init(&cell->lines, content_root);
-    content_init(&cell->paragraphs, content_root);
+    content_init(&cell->content, content_root);
 }
 
 
@@ -1283,8 +1274,7 @@ remove any found text from the page. */
                 subpage,
                 &cell->rect,
                 1 /*rects_num*/,
-                &cell->lines,
-                &cell->paragraphs
+                &cell->content
                 )) return -1;
     }
 
@@ -1425,8 +1415,7 @@ y_min..y_max. */
             cell->left = (j==0);
             cell->extend_right = 1;
             cell->extend_down = 1;
-            content_init(&cell->lines, content_root);
-            content_init(&cell->paragraphs, content_root);
+            content_init(&cell->content, content_root);
 
             /* Set cell->above if there is a horizontal line above the cell. */
             outf("Looking to set above for i=%i j=%i rect=%s", i, j, extract_rect_string(&cell->rect));
@@ -1707,14 +1696,12 @@ static int extract_join_subpage(
             subpage,
             NULL /*rects*/,
             0 /*rects_num*/,
-            &subpage->lines,
-            &subpage->paragraphs
+            &subpage->lines
             ))
     {
-        outf0("s_join_subpage_rects failed. subpage->spans_num=%i subpage->lines_num=%i subpage->paragraphs_num=%i",
+        outf0("s_join_subpage_rects failed. subpage->spans_num=%i subpage->lines_num=%i",
                 content_count_spans(&subpage->content),
-                content_count_lines(&subpage->lines),
-                content_count_paragraphs(&subpage->paragraphs)
+                content_count_lines(&subpage->lines)
                 );
         return -1;
     }

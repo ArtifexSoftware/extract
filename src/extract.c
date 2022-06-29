@@ -236,7 +236,6 @@ void extract_subpage_free(extract_alloc_t* alloc, subpage_t** psubpage)
           subpage, content_count_spans(&subpage->content), content_count_lines(&subpage->lines));
     content_clear(alloc, &subpage->content);
     content_clear(alloc, &subpage->lines);
-    content_clear(alloc, &subpage->paragraphs);
     content_clear(alloc, &subpage->tables);
 
     extract_free(alloc, &subpage->tablelines_horizontal.tablelines);
@@ -372,6 +371,34 @@ int content_append_new_image(extract_alloc_t* alloc, content_t *root, image_t **
     if (extract_malloc(alloc, pimage, sizeof(**pimage))) return -1;
     extract_image_init(*pimage);
     content_append(root, &(*pimage)->base);
+
+    return 0;
+}
+
+void content_replace(content_t *current, content_t *replacement)
+{
+    assert(current->type != content_root && replacement->type != content_root);
+    /* Unlink replacement. */
+    if (replacement->prev)
+    {
+        replacement->prev->next = replacement->next;
+        replacement->next->prev = replacement->prev;
+    }
+    /* Insert replacement */
+    replacement->prev = current->prev;
+    current->prev->next = replacement;
+    replacement->next = current->next;
+    current->next->prev = replacement;
+    /* Unlink current */
+    current->prev = NULL;
+    current->next = NULL;
+}
+
+int content_replace_new_paragraph(extract_alloc_t* alloc, content_t *current, paragraph_t **pparagraph)
+/* Replaces current element with a new empty paragraph content; returns -1 with errno set on error. */
+{
+    if (content_new_paragraph(alloc, pparagraph)) return -1;
+    content_replace(current, &(*pparagraph)->base);
 
     return 0;
 }
@@ -1517,7 +1544,6 @@ int extract_subpage_alloc(extract_alloc_t* alloc, rect_t mediabox, extract_page_
     subpage = *psubpage;
     subpage->mediabox = mediabox;
     content_init(&subpage->content, content_root);
-    content_init(&subpage->paragraphs, content_root);
     subpage->images_num = 0;
     content_init(&subpage->lines, content_root);
     subpage->tablelines_horizontal.tablelines = NULL;
@@ -1923,7 +1949,7 @@ static int extract_write_tables_csv(extract_t* extract)
                         have_output = 1;
                         if (paragraphs_to_text_content(
                                 extract->alloc,
-                                &cell->paragraphs,
+                                &cell->content,
                                 &text
                                 )) goto end;
                         /* Reference cvs output trims trailing spaces. */
@@ -2012,7 +2038,7 @@ int extract_process(
                 subpage_t* subpage = page->subpages[c];
                 if (paragraphs_to_text_content(
                         extract->alloc,
-                        &subpage->paragraphs,
+                        &subpage->lines,
                         &extract->contentss[extract->contentss_num - 1]
                     )) goto end;
             }

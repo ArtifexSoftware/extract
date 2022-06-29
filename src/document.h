@@ -82,6 +82,9 @@ int content_append_new_paragraph(extract_alloc_t* alloc, content_t *root, paragr
 int content_append_new_image(extract_alloc_t* alloc, content_t *root, image_t **pimage);
 int content_append_new_table(extract_alloc_t* alloc, content_t *root, table_t **ptable);
 
+void content_replace(content_t *current, content_t *replacement);
+int content_replace_new_paragraph(extract_alloc_t* alloc, content_t *current, paragraph_t **pparagraph);
+
 void content_append(content_t *root, content_t *content);
 void content_append_span(content_t *root, span_t *span);
 void content_append_line(content_t *root, line_t *line);
@@ -463,8 +466,7 @@ typedef struct
     int             extend_down;
 
     /* Contents of this cell. */
-    content_t       lines;
-    content_t       paragraphs;
+    content_t       content;
 } cell_t;
 /* A cell within a table. */
 
@@ -508,15 +510,12 @@ typedef struct
     rect_t       mediabox;
 
     int          images_num;
+
+    /* All the content on the page. */
     content_t    content;
 
+    /* content extracted into lines and paragraphs. */
     content_t    lines;
-    /* These refer to items in .spans. Initially empty, then set by
-    extract_join(). */
-
-    content_t    paragraphs;
-    /* These refer to items in .lines. Initially empty, then set
-    by extract_join(). */
 
     tablelines_t tablelines_horizontal;
     tablelines_t tablelines_vertical;

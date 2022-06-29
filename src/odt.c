@@ -465,7 +465,7 @@ static int s_odt_append_table(extract_alloc_t* alloc, table_t* table, extract_as
             /* Write contents of this cell. */
             content_state.font.name = NULL;
             content_state.ctm_prev = NULL;
-            for (paragraph = content_paragraph_iterator_init(&pit, &cell->paragraphs); paragraph != NULL; paragraph = content_paragraph_iterator_next(&pit))
+            for (paragraph = content_paragraph_iterator_init(&pit, &cell->content); paragraph != NULL; paragraph = content_paragraph_iterator_next(&pit))
                 if (s_document_to_odt_content_paragraph(alloc, &content_state, paragraph, content, styles)) goto end;
             if (content_state.font.name)
                 if (s_odt_run_finish(alloc, &content_state, content)) goto end;
@@ -631,7 +631,7 @@ static int extract_page_to_odt_content(
         content_state.font.italic = 0;
         content_state.ctm_prev = NULL;
 
-        paragraph = content_paragraph_iterator_init(&pit, &subpage->paragraphs);
+        paragraph = content_paragraph_iterator_init(&pit, &subpage->lines);
         table = content_table_iterator_init(&tit, &subpage->tables);
         while (1)
         {

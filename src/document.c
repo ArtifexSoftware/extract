@@ -260,10 +260,7 @@ void extract_cell_free(extract_alloc_t* alloc, cell_t** pcell)
     if (!cell) return;
 
     outf("cell=%p ", cell);
-    outf("cell->lines_num=%i", content_count_lines(&cell->lines));
-    outf("cell->paragraphs_num=%i", content_count_paragraphs(&cell->paragraphs));
-    content_clear(alloc, &cell->lines);
-    content_clear(alloc, &cell->paragraphs);
+    content_clear(alloc, &cell->content);
 
     extract_free(alloc, pcell);
 }
@@ -368,7 +365,7 @@ content_dump_aux(const content_t *content, int depth)
                     {
                         space_prefix(depth+1);
                         printf("<cell>\n");
-                        content_dump_aux(&table->cells[k]->paragraphs, depth+2);
+                        content_dump_aux(&table->cells[k]->content, depth+2);
                         space_prefix(depth+1);
                         printf("</cell>\n");
                         k++;

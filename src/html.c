@@ -180,7 +180,7 @@ static int append_table(extract_alloc_t* alloc, content_state_t* state, table_t*
 
             if (extract_astring_cat(alloc, content, ">")) goto end;
 
-            if (paragraphs_to_html_content(alloc, state, &cell->paragraphs, 1 /* single_line*/, content)) goto end;
+            if (paragraphs_to_html_content(alloc, state, &cell->content, 1 /* single_line*/, content)) goto end;
             if (extract_astring_cat(alloc, content, "</td>")) goto end;
             if (extract_astring_cat(alloc, content, "\n")) goto end;
 
@@ -283,9 +283,9 @@ split_to_html(extract_alloc_t *alloc, split_t* split, subpage_t*** ppsubpage, ex
         isn't quite right and results in bad ordering if ctm/trm matrices are
         inconsistent. So we create our own list of paragraphs sorted strictly
         by y coordinate of the first char of each paragraph. */
-    paragraphs_num = content_count_paragraphs(&subpage->paragraphs);
+    paragraphs_num = content_count_paragraphs(&subpage->lines);
     if (extract_malloc(alloc, &paragraphs, sizeof(*paragraphs) * paragraphs_num)) goto end;
-    for (p = 0, paragraph = content_paragraph_iterator_init(&pit, &subpage->paragraphs); paragraph != NULL; p++, paragraph = content_paragraph_iterator_next(&pit))
+    for (p = 0, paragraph = content_paragraph_iterator_init(&pit, &subpage->lines); paragraph != NULL; p++, paragraph = content_paragraph_iterator_next(&pit))
         paragraphs[p] = paragraph;
     qsort(paragraphs, paragraphs_num, sizeof(*paragraphs), compare_paragraph_y);
 

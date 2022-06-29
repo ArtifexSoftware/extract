@@ -455,7 +455,7 @@ to the application. */
 
                 content_state.font.name = NULL;
                 content_state.ctm_prev = NULL;
-                for (paragraph = content_paragraph_iterator_init(&pit, &cell->paragraphs); paragraph != NULL; paragraph = content_paragraph_iterator_next(&pit))
+                for (paragraph = content_paragraph_iterator_init(&pit, &cell->content); paragraph != NULL; paragraph = content_paragraph_iterator_next(&pit))
                     if (s_document_to_docx_content_paragraph(alloc, &content_state, paragraph, content)) goto end;
 
                 if (content_state.font.name)
@@ -662,7 +662,7 @@ int extract_document_to_docx_content(
             content_state.ctm_prev = NULL;
 
             /* Output paragraphs and tables in order of y coordinate. */
-            paragraph = content_paragraph_iterator_init(&pit, &subpage->paragraphs);
+            paragraph = content_paragraph_iterator_init(&pit, &subpage->lines);
             table = content_table_iterator_init(&tit, &subpage->tables);
             while (1) {
                 double y_paragraph;
