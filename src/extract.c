@@ -209,15 +209,17 @@ int extract_paragraph_alloc(extract_alloc_t* alloc, paragraph_t** pparagraph)
 }
 
 
-static void table_free(extract_alloc_t* alloc, table_t** ptable)
+void extract_table_free(extract_alloc_t* alloc, table_t** ptable)
 {
-    int c;
-    table_t* table = *ptable;
+    int      c;
+    table_t *table = *ptable;
+
     outf("table->cells_num_x=%i table->cells_num_y=%i",
             table->cells_num_x,
             table->cells_num_y
             );
-    for (c = 0;  c< table->cells_num_x * table->cells_num_y; ++c)
+    content_unlink(&table->base);
+    for (c = 0; c< table->cells_num_x * table->cells_num_y; ++c)
     {
         extract_cell_free(alloc, &table->cells[c]);
     }
@@ -235,19 +237,10 @@ void extract_subpage_free(extract_alloc_t* alloc, subpage_t** psubpage)
     content_clear(alloc, &subpage->content);
     content_clear(alloc, &subpage->lines);
     content_clear(alloc, &subpage->paragraphs);
+    content_clear(alloc, &subpage->tables);
 
     extract_free(alloc, &subpage->tablelines_horizontal.tablelines);
     extract_free(alloc, &subpage->tablelines_vertical.tablelines);
-
-    {
-        int t;
-        outf("subpage=%p subpage->tables_num=%i", subpage, subpage->tables_num);
-        for (t=0; t<subpage->tables_num; ++t)
-        {
-            table_free(alloc, &subpage->tables[t]);
-        }
-        extract_free(alloc, &subpage->tables);
-    }
 
     extract_free(alloc, psubpage);
 }
@@ -329,6 +322,14 @@ int content_new_paragraph(extract_alloc_t *alloc, paragraph_t **pparagraph)
     return 0;
 }
 
+int content_new_table(extract_alloc_t *alloc, table_t **ptable)
+{
+    if (extract_malloc(alloc, ptable, sizeof(**ptable))) return -1;
+    extract_table_init(*ptable);
+
+    return 0;
+}
+
 int content_append_new_span(extract_alloc_t* alloc, content_t *root, span_t **pspan)
 /* Appends new empty span content to a content_list_t; returns -1 with errno set on error. */
 {
@@ -352,6 +353,15 @@ int content_append_new_paragraph(extract_alloc_t* alloc, content_t *root, paragr
 {
     if (content_new_paragraph(alloc, pparagraph)) return -1;
     content_append(root, &(*pparagraph)->base);
+
+    return 0;
+}
+
+int content_append_new_table(extract_alloc_t* alloc, content_t *root, table_t **ptable)
+/* Appends new empty table content to a content_list_t; returns -1 with errno set on error. */
+{
+    if (content_new_table(alloc, ptable)) return -1;
+    content_append(root, &(*ptable)->base);
 
     return 0;
 }
@@ -1514,8 +1524,7 @@ int extract_subpage_alloc(extract_alloc_t* alloc, rect_t mediabox, extract_page_
     subpage->tablelines_horizontal.tablelines_num = 0;
     subpage->tablelines_vertical.tablelines = NULL;
     subpage->tablelines_vertical.tablelines_num = 0;
-    subpage->tables = NULL;
-    subpage->tables_num = 0;
+    content_init(&subpage->tables, content_root);
 
     if (extract_realloc2(
             alloc,
@@ -1882,17 +1891,18 @@ static int extract_write_tables_csv(extract_t* extract)
         extract_page_t* page = extract->document.pages[p];
         for (c=0; c<page->subpages_num; ++c)
         {
-            subpage_t* subpage = page->subpages[c];
-            int t;
-            outf("p=%i subpage->tables_num=%i", p, subpage->tables_num);
-            for (t=0; t<subpage->tables_num; ++t)
+            content_table_iterator  tit;
+            table_t                *table;
+            subpage_t              *subpage = page->subpages[c];
+
+            outf("p=%i subpage->tables_num=%i", p, content_count_tables(&subpage->tables));
+            for (table = content_table_iterator_init(&tit, &subpage->tables); table != NULL; table = content_table_iterator_next(&tit))
             {
-                table_t* table = subpage->tables[t];
                 int y;
                 extract_free(extract->alloc, &path);
                 if (extract_asprintf(extract->alloc, &path, extract->tables_csv_format, extract->tables_csv_i) < 0) goto end;
                 extract->tables_csv_i += 1;
-                outf("Writing table %i to: %s", t, path);
+                outf("Writing table to: %s", path);
                 outf("table->cells_num_x=%i", table->cells_num_x);
                 outf("table->cells_num_y=%i", table->cells_num_y);
                 f = fopen(path, "w");

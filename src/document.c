@@ -64,6 +64,13 @@ void extract_paragraph_init(paragraph_t *paragraph)
     content_init(&paragraph->content, content_root);
 }
 
+void extract_table_init(table_t *table)
+{
+    static const table_t blank = { 0 };
+    *table = blank;
+    content_init(&table->base, content_table);
+}
+
 void extract_image_init(image_t *image)
 {
     static const image_t blank = { 0 };
@@ -95,6 +102,9 @@ content_clear(extract_alloc_t* alloc, content_t *proot)
                 break;
             case content_paragraph:
                 extract_paragraph_free(alloc, (paragraph_t **)&content);
+                break;
+            case content_table:
+                extract_table_free(alloc, (table_t **)&content);
                 break;
             case content_image:
                 extract_image_free(alloc, (image_t **)&content);
@@ -145,6 +155,11 @@ int content_count_lines(content_t *root)
 int content_count_paragraphs(content_t *root)
 {
     return content_count_type(root, content_paragraph);
+}
+
+int content_count_tables(content_t *root)
+{
+    return content_count_type(root, content_table);
 }
 
 static content_t *
@@ -320,7 +335,7 @@ content_dump_aux(const content_t *content, int depth)
     assert(content->type == content_root);
     for (walk = content->next; walk != content; walk = walk->next)
     {
-	assert(walk->next->prev == walk && walk->prev->next == walk);
+        assert(walk->next->prev == walk && walk->prev->next == walk);
         space_prefix(depth);
         switch (walk->type)
         {
@@ -341,6 +356,28 @@ content_dump_aux(const content_t *content, int depth)
                 space_prefix(depth);
                 printf("</paragraph>\n");
                 break;
+            case content_table:
+            {
+                const table_t *table = (const table_t *)walk;
+                int i, j, k;
+                printf("<table w=%d h=%d>\n", table->cells_num_x, table->cells_num_y);
+                k = 0;
+                for (j = 0; j < table->cells_num_y; j++)
+                {
+                    for (i = 0; i < table->cells_num_x; i++)
+                    {
+                        space_prefix(depth+1);
+                        printf("<cell>\n");
+                        content_dump_aux(&table->cells[k]->paragraphs, depth+2);
+                        space_prefix(depth+1);
+                        printf("</cell>\n");
+                        k++;
+                    }
+                }
+                space_prefix(depth);
+                printf("</table>\n");
+                break;
+            }
             case content_image:
                 printf("<image/>\n");
                 break;
@@ -385,10 +422,10 @@ cmp_and_merge(content_t *q1, int q1pos, int len1, int n, content_cmp_fn *cmp)
         if (cmp(q1, q2) > 0)
         {
             /* q2 is smaller. q2 should be before q1. Move it. */
-	    /* So:
-	     *    a<->q1<->c..d<->q2<->b  =>  a<->q2<->q1<->c..d<->b
-	     * (where c and d can either be the same, or can be q2 and q1!)
-	     */
+            /* So:
+             *    a<->q1<->c..d<->q2<->b  =>  a<->q2<->q1<->c..d<->b
+             * (where c and d can either be the same, or can be q2 and q1!)
+             */
             content_t *a = q1->prev;
             content_t *b = q2->next;
             content_t *d = q2->prev;
@@ -398,18 +435,18 @@ cmp_and_merge(content_t *q1, int q1pos, int len1, int n, content_cmp_fn *cmp)
             q2->prev = a;
             q2->next = q1;
             q1->prev = q2;
-	    /* Now advance q2 */
-	    q2 = b;
-	    len2--;
+            /* Now advance q2 */
+            q2 = b;
+            len2--;
             if (len2 == 0)
                 break;
-	} else {
-	    /* Advance q1 */
-	    q1 = q1->next;
-	    len1--;
+        } else {
+            /* Advance q1 */
+            q1 = q1->next;
+            len1--;
             if (len1 == 0)
                 break;
-	}
+        }
     }
 
     while (len2)
@@ -430,11 +467,11 @@ void content_sort(content_t *content, content_cmp_fn *cmp)
     for (size = 1; size < n; size <<= 1)
     {
         int q1_idx = 0;
-	content_t *q1 = content->next;
-	assert(content->type == content_root);
-	for (q1_idx = 0; q1_idx < n; q1_idx += size*2)
+        content_t *q1 = content->next;
+        assert(content->type == content_root);
+        for (q1_idx = 0; q1_idx < n; q1_idx += size*2)
             q1 = cmp_and_merge(q1, q1_idx, size, n, cmp);
-	assert(q1->type == content_root);
+        assert(q1->type == content_root);
     }
     assert(content_count(content) == n);
 }

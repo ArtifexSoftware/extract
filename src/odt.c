@@ -346,7 +346,7 @@ static int s_odt_output_rotated_paragraphs(
         extract_alloc_t            *alloc,
         paragraph_t                *paragraph_begin,
         paragraph_t                *paragraph_end,
-	content_paragraph_iterator *pit,
+        content_paragraph_iterator *pit,
         double                      rotation_rad,
         double                      x_pt,
         double                      y_pt,
@@ -445,7 +445,7 @@ static int s_odt_append_table(extract_alloc_t* alloc, table_t* table, extract_as
             paragraph_t                *paragraph;
             content_state_t             content_state;
 
-	    if (!cell->above || !cell->left)
+            if (!cell->above || !cell->left)
             {
                 if (extract_astring_cat(alloc, content, "            <table:covered-table-cell/>\n")) goto end;
                 continue;
@@ -485,8 +485,8 @@ static int s_odt_append_table(extract_alloc_t* alloc, table_t* table, extract_as
 static int s_odt_append_rotated_paragraphs(
         extract_alloc_t             *alloc,
         content_state_t             *content_state,
-	content_paragraph_iterator  *pit,
-	paragraph_t                **pparagraph,
+        content_paragraph_iterator  *pit,
+        paragraph_t                **pparagraph,
         int                         *text_box_id,
         const matrix_t              *ctm,
         double                       rotate,
@@ -583,7 +583,7 @@ and updates *p. */
             alloc,
             paragraph0,
             paragraph,
-	    &pit2,
+            &pit2,
             rotate,
             ctm->e,
             ctm->f,
@@ -621,8 +621,9 @@ static int extract_page_to_odt_content(
     {
         subpage_t                  *subpage = page->subpages[c];
         content_paragraph_iterator  pit;
-	paragraph_t                *paragraph;
-        int t = 0;
+        paragraph_t                *paragraph;
+        content_table_iterator      tit;
+        table_t                    *table;
         content_state_t content_state;
         content_state.font.name = NULL;
         content_state.font.size = 0;
@@ -630,9 +631,10 @@ static int extract_page_to_odt_content(
         content_state.font.italic = 0;
         content_state.ctm_prev = NULL;
 
-        for(paragraph = content_paragraph_iterator_init(&pit, &subpage->paragraphs); ; )
+        paragraph = content_paragraph_iterator_init(&pit, &subpage->paragraphs);
+        table = content_table_iterator_init(&tit, &subpage->tables);
+        while (1)
         {
-            table_t* table = (t == subpage->tables_num) ? NULL : subpage->tables[t];
             double y_paragraph;
             double y_table;
             line_t *first_line = paragraph ? content_first_line(&paragraph->content) : NULL;
@@ -669,7 +671,7 @@ static int extract_page_to_odt_content(
                 if (rotation && rotate != 0)
                 {
                     if (s_odt_append_rotated_paragraphs(alloc, &content_state, &pit, &paragraph, &text_box_id, ctm, rotate, content, styles)) goto end;
-		    /* paragraph is returned advanced. */
+                    /* paragraph is returned advanced. */
                 }
                 else
                 {
@@ -680,7 +682,7 @@ static int extract_page_to_odt_content(
             else if (table)
             {
                 if (s_odt_append_table(alloc, table, content, styles)) goto end;
-                t += 1;
+                table = content_table_iterator_next(&tit);
             }
         }
 

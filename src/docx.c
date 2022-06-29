@@ -250,7 +250,7 @@ static int s_docx_append_image(
 
 static int s_docx_output_rotated_paragraphs(
         extract_alloc_t            *alloc,
-	content_paragraph_iterator *pit,
+        content_paragraph_iterator *pit,
         paragraph_t                *paragraph_begin,
         paragraph_t                *paragraph_end,
         int                         rot,
@@ -449,16 +449,16 @@ to the application. */
             /* Write contents of this cell. */
             {
                 content_paragraph_iterator  pit;
-		paragraph_t                *paragraph;
+                paragraph_t                *paragraph;
                 size_t                      chars_num_old = content->chars_num;
                 content_state_t             content_state = {0};
 
-		content_state.font.name = NULL;
+                content_state.font.name = NULL;
                 content_state.ctm_prev = NULL;
                 for (paragraph = content_paragraph_iterator_init(&pit, &cell->paragraphs); paragraph != NULL; paragraph = content_paragraph_iterator_next(&pit))
                     if (s_document_to_docx_content_paragraph(alloc, &content_state, paragraph, content)) goto end;
 
-		if (content_state.font.name)
+                if (content_state.font.name)
                     if (s_docx_run_finish(alloc, &content_state, content)) goto end;
 
                 /* Need to write out at least an empty paragraph in each cell,
@@ -483,8 +483,8 @@ to the application. */
 static int s_docx_append_rotated_paragraphs(
         extract_alloc_t            *alloc,
         content_state_t            *state,
-	content_paragraph_iterator *pit,
-	paragraph_t               **pparagraph, 
+        content_paragraph_iterator *pit,
+        paragraph_t               **pparagraph, 
         int                        *text_box_id,
         const matrix_t             *ctm,
         double                      rotate,
@@ -650,8 +650,9 @@ int extract_document_to_docx_content(
         for (c=0; c<page->subpages_num; ++c) {
             subpage_t                  *subpage = page->subpages[c];
             content_paragraph_iterator  pit;
-	    paragraph_t                *paragraph;
-            int                         t;
+            paragraph_t                *paragraph;
+            content_table_iterator      tit;
+            table_t                    *table;
 
             content_state_t content_state;
             content_state.font.name = NULL;
@@ -661,8 +662,9 @@ int extract_document_to_docx_content(
             content_state.ctm_prev = NULL;
 
             /* Output paragraphs and tables in order of y coordinate. */
-            for(t = 0, paragraph = content_paragraph_iterator_init(&pit, &subpage->paragraphs); ; ) {
-                table_t* table = (t == subpage->tables_num) ? NULL : subpage->tables[t];
+            paragraph = content_paragraph_iterator_init(&pit, &subpage->paragraphs);
+            table = content_table_iterator_init(&tit, &subpage->tables);
+            while (1) {
                 double y_paragraph;
                 double y_table;
                 line_t *first_line = paragraph ? content_first_line(&paragraph->content) : NULL;
@@ -697,7 +699,7 @@ int extract_document_to_docx_content(
                     if (rotation && rotate != 0)
                     {
                         if (s_docx_append_rotated_paragraphs(alloc, &content_state, &pit, &paragraph, &text_box_id, ctm, rotate, content)) goto end;
-			/* paragraph is returned having been 'next'ed already. */
+                        /* paragraph is returned having been 'next'ed already. */
                     }
                     else
                     {
@@ -708,7 +710,7 @@ int extract_document_to_docx_content(
                 else if (table)
                 {
                     if (s_docx_append_table(alloc, table, content)) goto end;
-                    t += 1;
+                    table = content_table_iterator_next(&tit);
                 }
             }
 

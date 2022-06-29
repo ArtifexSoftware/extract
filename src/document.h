@@ -14,6 +14,7 @@ typedef struct span_t span_t;
 typedef struct line_t line_t;
 typedef struct paragraph_t paragraph_t;
 typedef struct image_t image_t;
+typedef struct table_t table_t;
 
 static const double pi = 3.141592653589793;
 
@@ -33,6 +34,7 @@ typedef enum {
     content_line,
     content_paragraph,
     content_image,
+    content_table,
 } content_type_t;
 
 typedef struct content_t {
@@ -66,21 +68,25 @@ int content_count_images(content_t *root);
 int content_count_spans(content_t *root);
 int content_count_lines(content_t *root);
 int content_count_paragraphs(content_t *root);
+int content_count_tables(content_t *root);
 
 int content_new_root(extract_alloc_t *alloc, content_t **pcontent);
 int content_new_span(extract_alloc_t *alloc, span_t **pspan);
 int content_new_line(extract_alloc_t *alloc, line_t **pline);
 int content_new_paragraph(extract_alloc_t *alloc, paragraph_t **pparagraph);
+int content_new_table(extract_alloc_t *alloc, table_t **ptable);
 
 int content_append_new_span(extract_alloc_t* alloc, content_t *root, span_t **pspan);
 int content_append_new_line(extract_alloc_t* alloc, content_t *root, line_t **pline);
 int content_append_new_paragraph(extract_alloc_t* alloc, content_t *root, paragraph_t **pparagraph);
 int content_append_new_image(extract_alloc_t* alloc, content_t *root, image_t **pimage);
+int content_append_new_table(extract_alloc_t* alloc, content_t *root, table_t **ptable);
 
 void content_append(content_t *root, content_t *content);
 void content_append_span(content_t *root, span_t *span);
 void content_append_line(content_t *root, line_t *line);
 void content_append_paragraph(content_t *root, paragraph_t *paragraph);
+void content_append_table(content_t *root, table_t *table);
 
 void content_concat(content_t *dst, content_t *src);
 
@@ -211,6 +217,34 @@ static inline image_t *content_image_iterator_init(content_image_iterator *it, c
     it->next = root->next;
 
     return content_image_iterator_next(it);
+}
+
+typedef struct {
+    content_t *root;
+    content_t *next;
+} content_table_iterator;
+
+static inline table_t *content_table_iterator_next(content_table_iterator *it)
+{
+    content_t *next;
+
+    do {
+        next = it->next;
+        if (next == it->root)
+            return NULL;
+        assert(next->type != content_root);
+        it->next = next->next;
+    } while (next->type != content_table);
+
+    return (table_t *)next;
+}
+
+static inline table_t *content_table_iterator_init(content_table_iterator *it, content_t *root)
+{
+    it->root = root;
+    it->next = root->next;
+
+    return content_table_iterator_next(it);
 }
 
 typedef struct {
@@ -436,19 +470,22 @@ typedef struct
 
 void extract_cell_init(cell_t* cell);
 void extract_cell_free(extract_alloc_t* alloc, cell_t** pcell);
+void extract_table_init(table_t *table);
 
-typedef struct
+struct table_t
 {
+    content_t   base;
     point_t     pos;    /* top-left. */
 
     /* Array of cells_num_x*cells_num_y cells; cell (x, y) is:
         cells_num_x * y + x.
     */
-    cell_t**    cells;
+    cell_t    **cells;
     int         cells_num_x;
     int         cells_num_y;
-} table_t;
+};
 
+void extract_table_free(extract_alloc_t* alloc, table_t** ptable);
 
 typedef enum
 {
@@ -468,24 +505,23 @@ typedef struct split_t
 
 typedef struct
 {
-    rect_t      mediabox;
+    rect_t       mediabox;
 
-    int         images_num;
-    content_t   content;
+    int          images_num;
+    content_t    content;
 
-    content_t   lines;
+    content_t    lines;
     /* These refer to items in .spans. Initially empty, then set by
     extract_join(). */
 
-    content_t   paragraphs;
+    content_t    paragraphs;
     /* These refer to items in .lines. Initially empty, then set
     by extract_join(). */
 
-    tablelines_t    tablelines_horizontal;
-    tablelines_t    tablelines_vertical;
+    tablelines_t tablelines_horizontal;
+    tablelines_t tablelines_vertical;
 
-    table_t**   tables;
-    int         tables_num;
+    content_t    tables;
 } subpage_t;
 /* A subpage. Contains different representations of the list of spans. */
 

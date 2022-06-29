@@ -1269,9 +1269,11 @@ remove any found text from the page. */
 {
     /* Find text within each cell. We don't attempt to handle images within
     cells. */
-    int e = -1;
-    int i;
-    int cells_num = cells_num_x * cells_num_y;
+    int      e = -1;
+    int      i;
+    int      cells_num = cells_num_x * cells_num_y;
+    table_t *table;
+
     for (i=0; i<cells_num; ++i)
     {
         cell_t* cell = cells[i];
@@ -1287,14 +1289,12 @@ remove any found text from the page. */
     }
 
     /* Append the table we have found to page->tables[]. */
-    if (extract_realloc(alloc, &subpage->tables, sizeof(*subpage->tables) * (subpage->tables_num + 1))) goto end;
-    if (extract_malloc(alloc, &subpage->tables[subpage->tables_num], sizeof(*subpage->tables[subpage->tables_num]))) goto end;
-    subpage->tables[subpage->tables_num]->pos.x = cells[0]->rect.min.x;
-    subpage->tables[subpage->tables_num]->pos.y = cells[0]->rect.min.y;
-    subpage->tables[subpage->tables_num]->cells = cells;
-    subpage->tables[subpage->tables_num]->cells_num_x = cells_num_x;
-    subpage->tables[subpage->tables_num]->cells_num_y = cells_num_y;
-    subpage->tables_num += 1;
+    if (content_append_new_table(alloc, &subpage->tables, &table)) goto end;
+    table->pos.x = cells[0]->rect.min.x;
+    table->pos.y = cells[0]->rect.min.y;
+    table->cells = cells;
+    table->cells_num_x = cells_num_x;
+    table->cells_num_y = cells_num_y;
 
     if (0)
     {
@@ -1644,16 +1644,17 @@ Any text found inside tables is removed from page->spans[].
 }
 
 
-static void show_tables(table_t** tables, int tables_num)
+static void show_tables(content_t *tables)
 /* For debugging only. */
 {
-    int i;
-    outf0("tables_num=%i", tables_num);
-    for (i=0; i<tables_num; ++i)
+    content_table_iterator  tit;
+    table_t                *table;
+
+    outf0("tables_num=%i", content_count_tables(tables));
+    for (table = content_table_iterator_init(&tit, tables); table != NULL; table = content_table_iterator_next(&tit))
     {
-        table_t* table = tables[i];
         int y;
-        outf0("table %i: cells_num_y=%i cells_num_x=%i", i, table->cells_num_y, table->cells_num_x);
+        outf0("table: cells_num_y=%i cells_num_x=%i", table->cells_num_y, table->cells_num_x);
         for (y=0; y<table->cells_num_y; ++y)
         {
             int x;
@@ -1683,7 +1684,7 @@ text. */
     if (0)
     {
         outf0("=== tables from extract_page_tables_find_lines():");
-        show_tables(subpage->tables, subpage->tables_num);
+        show_tables(&subpage->tables);
     }
 
     return 0;

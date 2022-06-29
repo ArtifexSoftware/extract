@@ -221,12 +221,13 @@ split_to_html(extract_alloc_t *alloc, split_t* split, subpage_t*** ppsubpage, ex
 {
     int                          p;
     int                          s;
-    int                          t;
     subpage_t                   *subpage;
     int                          paragraphs_num;
     paragraph_t                **paragraphs = NULL;
     content_paragraph_iterator   pit;
     paragraph_t                 *paragraph;
+    content_table_iterator       tit;
+    table_t                     *table;
     content_state_t              state;
     content_state_init(&state);
 
@@ -302,18 +303,17 @@ split_to_html(extract_alloc_t *alloc, split_t* split, subpage_t*** ppsubpage, ex
     }
 
     p = 0;
-    t = 0;
+    table = content_table_iterator_init(&tit, &subpage->tables);
     for(;;)
     {
         double y_paragraph;
         double y_table;
         paragraph_t* paragraph = (p == paragraphs_num) ? NULL : paragraphs[p];
-        table_t* table = (t == subpage->tables_num) ? NULL : subpage->tables[t];
         if (!paragraph && !table) break;
         y_paragraph = (paragraph) ? content_first_span(&content_first_line(&paragraph->content)->content)->chars[0].y : DBL_MAX;
         y_table = (table) ? table->pos.y : DBL_MAX;
         outf("p=%i y_paragraph=%f", p, y_paragraph);
-        outf("t=%i y_table=%f", t, y_table);
+        outf("y_table=%f", y_table);
         if (paragraph && y_paragraph < y_table)
         {
             //extract_astring_catf(alloc, output, "<p>@@@ paragraph %i y=%f @@@)</p>\n", p, y_paragraph);
@@ -325,7 +325,7 @@ split_to_html(extract_alloc_t *alloc, split_t* split, subpage_t*** ppsubpage, ex
         {
             //extract_astring_catf(alloc, output, "<p>@@@ table %t y=%f @@@)</p>\n", p, y_table);
             if (append_table(alloc, &state, table, output)) goto end;
-            t += 1;
+            table = content_table_iterator_next(&tit);
         }
     }
     extract_free(alloc, &paragraphs);
