@@ -631,7 +631,7 @@ static int extract_page_to_odt_content(
         content_state.font.italic = 0;
         content_state.ctm_prev = NULL;
 
-        paragraph = content_paragraph_iterator_init(&pit, &subpage->lines);
+        paragraph = content_paragraph_iterator_init(&pit, &subpage->content);
         table = content_table_iterator_init(&tit, &subpage->tables);
         while (1)
         {

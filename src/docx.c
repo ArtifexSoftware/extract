@@ -662,7 +662,7 @@ int extract_document_to_docx_content(
             content_state.ctm_prev = NULL;
 
             /* Output paragraphs and tables in order of y coordinate. */
-            paragraph = content_paragraph_iterator_init(&pit, &subpage->lines);
+            paragraph = content_paragraph_iterator_init(&pit, &subpage->content);
             table = content_table_iterator_init(&tit, &subpage->tables);
             while (1) {
                 double y_paragraph;

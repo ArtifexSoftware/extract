@@ -83,6 +83,7 @@ int content_append_new_image(extract_alloc_t* alloc, content_t *root, image_t **
 int content_append_new_table(extract_alloc_t* alloc, content_t *root, table_t **ptable);
 
 void content_replace(content_t *current, content_t *replacement);
+int content_replace_new_line(extract_alloc_t* alloc, content_t *current, line_t **pline);
 int content_replace_new_paragraph(extract_alloc_t* alloc, content_t *current, paragraph_t **pparagraph);
 
 void content_append(content_t *root, content_t *content);
@@ -513,9 +514,6 @@ typedef struct
 
     /* All the content on the page. */
     content_t    content;
-
-    /* content extracted into lines and paragraphs. */
-    content_t    lines;
 
     tablelines_t tablelines_horizontal;
     tablelines_t tablelines_vertical;

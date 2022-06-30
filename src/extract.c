@@ -233,9 +233,8 @@ void extract_subpage_free(extract_alloc_t* alloc, subpage_t** psubpage)
     if (!subpage) return;
 
     outf0("subpage=%p subpage->spans_num=%i subpage->lines_num=%i",
-          subpage, content_count_spans(&subpage->content), content_count_lines(&subpage->lines));
+          subpage, content_count_spans(&subpage->content), content_count_lines(&subpage->content));
     content_clear(alloc, &subpage->content);
-    content_clear(alloc, &subpage->lines);
     content_clear(alloc, &subpage->tables);
 
     extract_free(alloc, &subpage->tablelines_horizontal.tablelines);
@@ -403,6 +402,14 @@ int content_replace_new_paragraph(extract_alloc_t* alloc, content_t *current, pa
     return 0;
 }
 
+int content_replace_new_line(extract_alloc_t* alloc, content_t *current, line_t **pline)
+/* Replaces current element with a new empty line content; returns -1 with errno set on error. */
+{
+    if (content_new_line(alloc, pline)) return -1;
+    content_replace(current, &(*pline)->base);
+
+    return 0;
+}
 
 static void extract_images_free(extract_alloc_t* alloc, images_t* images)
 {
@@ -1545,7 +1552,6 @@ int extract_subpage_alloc(extract_alloc_t* alloc, rect_t mediabox, extract_page_
     subpage->mediabox = mediabox;
     content_init(&subpage->content, content_root);
     subpage->images_num = 0;
-    content_init(&subpage->lines, content_root);
     subpage->tablelines_horizontal.tablelines = NULL;
     subpage->tablelines_horizontal.tablelines_num = 0;
     subpage->tablelines_vertical.tablelines = NULL;
@@ -2038,7 +2044,7 @@ int extract_process(
                 subpage_t* subpage = page->subpages[c];
                 if (paragraphs_to_text_content(
                         extract->alloc,
-                        &subpage->lines,
+                        &subpage->content,
                         &extract->contentss[extract->contentss_num - 1]
                     )) goto end;
             }

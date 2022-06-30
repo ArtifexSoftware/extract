@@ -433,17 +433,19 @@ static int make_lines(
     }
     else
     {
-        /* Make <lines> be a copy of <spans>. */
-        content_span_iterator  it;
-        span_t                *candidate;
+        /* <lines> and <spans> are the same. Convert all the <spans> into <lines>. */
+        content_span_iterator  sit;
+        span_t                *span;
+
+        assert(lines == spans);
 
         /* Make <lines> contain new span_t's and char_t's that are inside rects[]. */
-        for (a = 0, candidate = content_span_iterator_init(&it, spans); candidate != NULL; candidate = content_span_iterator_next(&it), a++)
+        for (a = 0, span = content_span_iterator_init(&sit, spans); span != NULL; span = content_span_iterator_next(&sit), a++)
         {
             line_t *line;
 
-            if (content_append_new_line(alloc, lines, &line)) goto end;
-            content_append_span(&line->content, candidate);
+            if (content_replace_new_line(alloc, &span->base, &line)) goto end;
+            content_append_span(&line->content, span);
             outfx("initial line a=%i: %s", a, line_string(line));
         }
     }
@@ -1696,12 +1698,12 @@ static int extract_join_subpage(
             subpage,
             NULL /*rects*/,
             0 /*rects_num*/,
-            &subpage->lines
+            &subpage->content
             ))
     {
         outf0("s_join_subpage_rects failed. subpage->spans_num=%i subpage->lines_num=%i",
                 content_count_spans(&subpage->content),
-                content_count_lines(&subpage->lines)
+                content_count_lines(&subpage->content)
                 );
         return -1;
     }
