@@ -30,63 +30,69 @@ docx_paragraph_finish(). */
 #include <sys/stat.h>
 
 
-static int s_docx_paragraph_start(extract_alloc_t* alloc, extract_astring_t* content)
+static int
+docx_paragraph_start(extract_alloc_t *alloc, extract_astring_t *output)
 {
-    return extract_astring_cat(alloc, content, "\n\n<w:p>");
+    return extract_astring_cat(alloc, output, "\n\n<w:p>");
 }
 
-static int s_docx_paragraph_finish(extract_alloc_t* alloc, extract_astring_t* content)
+static int
+docx_paragraph_finish(extract_alloc_t *alloc, extract_astring_t *output)
 {
-    return extract_astring_cat(alloc, content, "\n</w:p>");
+    return extract_astring_cat(alloc, output, "\n</w:p>");
 }
 
-static int s_docx_run_start(
-        extract_alloc_t* alloc,
-        extract_astring_t* content,
-        content_state_t* content_state
-        )
-/* Starts a new run. Caller must ensure that s_docx_run_finish() was
+/* Starts a new run. Caller must ensure that docx_run_finish() was
 called to terminate any previous run. */
+static int
+docx_run_start(extract_alloc_t   *alloc,
+               extract_astring_t *output,
+               content_state_t   *content_state)
 {
     int e = 0;
-    if (!e) e = extract_astring_cat(alloc, content, "\n<w:r><w:rPr><w:rFonts w:ascii=\"");
-    if (!e) e = extract_astring_cat(alloc, content, content_state->font.name);
-    if (!e) e = extract_astring_cat(alloc, content, "\" w:hAnsi=\"");
-    if (!e) e = extract_astring_cat(alloc, content, content_state->font.name);
-    if (!e) e = extract_astring_cat(alloc, content, "\"/>");
-    if (!e && content_state->font.bold) e = extract_astring_cat(alloc, content, "<w:b/>");
-    if (!e && content_state->font.italic) e = extract_astring_cat(alloc, content, "<w:i/>");
+    if (!e) e = extract_astring_cat(alloc, output, "\n<w:r><w:rPr><w:rFonts w:ascii=\"");
+    if (!e) e = extract_astring_cat(alloc, output, content_state->font.name);
+    if (!e) e = extract_astring_cat(alloc, output, "\" w:hAnsi=\"");
+    if (!e) e = extract_astring_cat(alloc, output, content_state->font.name);
+    if (!e) e = extract_astring_cat(alloc, output, "\"/>");
+    if (!e && content_state->font.bold) e = extract_astring_cat(alloc, output, "<w:b/>");
+    if (!e && content_state->font.italic) e = extract_astring_cat(alloc, output, "<w:i/>");
     {
         char   font_size_text[32];
 
-        if (!e) e = extract_astring_cat(alloc, content, "<w:sz w:val=\"");
+        if (!e) e = extract_astring_cat(alloc, output, "<w:sz w:val=\"");
         snprintf(font_size_text, sizeof(font_size_text), "%f", content_state->font.size * 2);
-        extract_astring_cat(alloc, content, font_size_text);
-        extract_astring_cat(alloc, content, "\"/>");
+        extract_astring_cat(alloc, output, font_size_text);
+        extract_astring_cat(alloc, output, "\"/>");
 
-        if (!e) e = extract_astring_cat(alloc, content, "<w:szCs w:val=\"");
+        if (!e) e = extract_astring_cat(alloc, output, "<w:szCs w:val=\"");
         snprintf(font_size_text, sizeof(font_size_text), "%f", content_state->font.size * 1.5);
-        extract_astring_cat(alloc, content, font_size_text);
-        extract_astring_cat(alloc, content, "\"/>");
+        extract_astring_cat(alloc, output, font_size_text);
+        extract_astring_cat(alloc, output, "\"/>");
     }
-    if (!e) e = extract_astring_cat(alloc, content, "</w:rPr><w:t xml:space=\"preserve\">");
+    if (!e) e = extract_astring_cat(alloc, output, "</w:rPr><w:t xml:space=\"preserve\">");
     return e;
 
 }
 
-static int s_docx_run_finish(extract_alloc_t* alloc, content_state_t* state, extract_astring_t* content)
+static int
+docx_run_finish(extract_alloc_t   *alloc,
+                content_state_t   *state,
+                extract_astring_t *output)
 {
     if (state) state->font.name = NULL;
-    return extract_astring_cat(alloc, content, "</w:t></w:r>");
+    return extract_astring_cat(alloc, output, "</w:t></w:r>");
 }
 
-static int s_docx_paragraph_empty(extract_alloc_t* alloc, extract_astring_t* content)
 /* Append an empty paragraph to *content. */
+static int
+docx_paragraph_empty(extract_alloc_t   *alloc,
+                     extract_astring_t *output)
 {
     int e = -1;
     static char fontname[] = "OpenSans";
     content_state_t content_state = {0};
-    if (s_docx_paragraph_start(alloc, content)) goto end;
+    if (docx_paragraph_start(alloc, output)) goto end;
     /* It seems like our choice of font size here doesn't make any difference
     to the ammount of vertical space, unless we include a non-space
     character. Presumably something to do with the styles in the template
@@ -96,40 +102,40 @@ static int s_docx_paragraph_empty(extract_alloc_t* alloc, extract_astring_t* con
     content_state.font.bold = 0;
     content_state.font.italic = 0;
 
-    if (s_docx_run_start(alloc, content, &content_state)) goto end;
-    //docx_char_append_string(content, "&#160;");   /* &#160; is non-break space. */
-    if (s_docx_run_finish(alloc, NULL /*state*/, content)) goto end;
-    if (s_docx_paragraph_finish(alloc, content)) goto end;
+    if (docx_run_start(alloc, output, &content_state)) goto end;
+    //docx_char_append_string(output, "&#160;");   /* &#160; is non-break space. */
+    if (docx_run_finish(alloc, NULL /*state*/, output)) goto end;
+    if (docx_paragraph_finish(alloc, output)) goto end;
     e = 0;
     end:
     return e;
 }
 
 
-static int s_docx_char_truncate_if(extract_astring_t* content, char c)
 /* Removes last char if it is <c>. */
+static int
+docx_char_truncate_if(extract_astring_t *output, char c)
 {
-    if (content->chars_num && content->chars[content->chars_num-1] == c) {
-        extract_astring_truncate(content, 1);
+    if (output->chars_num && output->chars[output->chars_num-1] == c) {
+        extract_astring_truncate(output, 1);
     }
     return 0;
 }
 
 
-static int s_document_to_docx_content_paragraph(
-        extract_alloc_t*    alloc,
-        content_state_t*    content_state,
-        paragraph_t*        paragraph,
-        extract_astring_t*  content
-        )
 /* Append docx xml for <paragraph> to <content>. Updates *state if we change
 font. */
+static int
+document_to_docx_content_paragraph(extract_alloc_t   *alloc,
+                                   content_state_t   *content_state,
+                                   paragraph_t       *paragraph,
+                                   extract_astring_t *content)
 {
     int                    e = -1;
     content_line_iterator  lit;
     line_t                *line;
 
-    if (s_docx_paragraph_start(alloc, content)) goto end;
+    if (docx_paragraph_start(alloc, content)) goto end;
 
     for (line = content_line_iterator_init(&lit, &paragraph->content); line != NULL; line = content_line_iterator_next(&lit))
     {
@@ -150,13 +156,13 @@ font. */
                     || font_size_new != content_state->font.size
                     ) {
                 if (content_state->font.name) {
-                    if (s_docx_run_finish(alloc, content_state, content)) goto end;
+                    if (docx_run_finish(alloc, content_state, content)) goto end;
                 }
                 content_state->font.name = span->font_name;
                 content_state->font.bold = span->flags.font_bold;
                 content_state->font.italic = span->flags.font_italic;
                 content_state->font.size = font_size_new;
-                if (s_docx_run_start(alloc, content, content_state)) goto end;
+                if (docx_run_start(alloc, content, content_state)) goto end;
             }
 
             for (si=0; si<span->chars_num; ++si) {
@@ -165,14 +171,14 @@ font. */
                 if (extract_astring_catc_unicode_xml(alloc, content, c)) goto end;
             }
             /* Remove any trailing '-' at end of line. */
-            if (s_docx_char_truncate_if(content, '-')) goto end;
+            if (docx_char_truncate_if(content, '-')) goto end;
         }
     }
     if (content_state->font.name)
     {
-        if (s_docx_run_finish(alloc, content_state, content)) goto end;
+        if (docx_run_finish(alloc, content_state, content)) goto end;
     }
-    if (s_docx_paragraph_finish(alloc, content)) goto end;
+    if (docx_paragraph_finish(alloc, content)) goto end;
 
     e = 0;
 
@@ -180,147 +186,143 @@ font. */
     return e;
 }
 
-static int s_docx_append_image(
-        extract_alloc_t*    alloc,
-        extract_astring_t*  content,
-        image_t*            image
-        )
 /* Write reference to image into docx content. */
+static int
+docx_append_image(extract_alloc_t   *alloc,
+                  extract_astring_t *output,
+                  image_t           *image)
 {
-    extract_astring_cat(alloc, content, "\n");
-    extract_astring_cat(alloc, content, "     <w:p>\n");
-    extract_astring_cat(alloc, content, "       <w:r>\n");
-    extract_astring_cat(alloc, content, "         <w:rPr>\n");
-    extract_astring_cat(alloc, content, "           <w:noProof/>\n");
-    extract_astring_cat(alloc, content, "         </w:rPr>\n");
-    extract_astring_cat(alloc, content, "         <w:drawing>\n");
-    extract_astring_cat(alloc, content, "           <wp:inline distT=\"0\" distB=\"0\" distL=\"0\" distR=\"0\" wp14:anchorId=\"7057A832\" wp14:editId=\"466EB3FB\">\n");
-    extract_astring_cat(alloc, content, "             <wp:extent cx=\"2933700\" cy=\"2200275\"/>\n");
-    extract_astring_cat(alloc, content, "             <wp:effectExtent l=\"0\" t=\"0\" r=\"0\" b=\"9525\"/>\n");
-    extract_astring_cat(alloc, content, "             <wp:docPr id=\"1\" name=\"Picture 1\"/>\n");
-    extract_astring_cat(alloc, content, "             <wp:cNvGraphicFramePr>\n");
-    extract_astring_cat(alloc, content, "               <a:graphicFrameLocks xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" noChangeAspect=\"1\"/>\n");
-    extract_astring_cat(alloc, content, "             </wp:cNvGraphicFramePr>\n");
-    extract_astring_cat(alloc, content, "             <a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\">\n");
-    extract_astring_cat(alloc, content, "               <a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">\n");
-    extract_astring_cat(alloc, content, "                 <pic:pic xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">\n");
-    extract_astring_cat(alloc, content, "                   <pic:nvPicPr>\n");
-    extract_astring_cat(alloc, content, "                     <pic:cNvPr id=\"1\" name=\"Picture 1\"/>\n");
-    extract_astring_cat(alloc, content, "                     <pic:cNvPicPr>\n");
-    extract_astring_cat(alloc, content, "                       <a:picLocks noChangeAspect=\"1\" noChangeArrowheads=\"1\"/>\n");
-    extract_astring_cat(alloc, content, "                     </pic:cNvPicPr>\n");
-    extract_astring_cat(alloc, content, "                   </pic:nvPicPr>\n");
-    extract_astring_cat(alloc, content, "                   <pic:blipFill>\n");
-    extract_astring_catf(alloc, content,"                     <a:blip r:embed=\"%s\">\n", image->id);
-    extract_astring_cat(alloc, content, "                       <a:extLst>\n");
-    extract_astring_cat(alloc, content, "                         <a:ext uri=\"{28A0092B-C50C-407E-A947-70E740481C1C}\">\n");
-    extract_astring_cat(alloc, content, "                           <a14:useLocalDpi xmlns:a14=\"http://schemas.microsoft.com/office/drawing/2010/main\" val=\"0\"/>\n");
-    extract_astring_cat(alloc, content, "                         </a:ext>\n");
-    extract_astring_cat(alloc, content, "                       </a:extLst>\n");
-    extract_astring_cat(alloc, content, "                     </a:blip>\n");
-    //extract_astring_cat(alloc, content, "                     <a:srcRect/>\n");
-    extract_astring_cat(alloc, content, "                     <a:stretch>\n");
-    extract_astring_cat(alloc, content, "                       <a:fillRect/>\n");
-    extract_astring_cat(alloc, content, "                     </a:stretch>\n");
-    extract_astring_cat(alloc, content, "                   </pic:blipFill>\n");
-    extract_astring_cat(alloc, content, "                   <pic:spPr bwMode=\"auto\">\n");
-    extract_astring_cat(alloc, content, "                     <a:xfrm>\n");
-    extract_astring_cat(alloc, content, "                       <a:off x=\"0\" y=\"0\"/>\n");
-    extract_astring_cat(alloc, content, "                       <a:ext cx=\"2933700\" cy=\"2200275\"/>\n");
-    extract_astring_cat(alloc, content, "                     </a:xfrm>\n");
-    extract_astring_cat(alloc, content, "                     <a:prstGeom prst=\"rect\">\n");
-    extract_astring_cat(alloc, content, "                       <a:avLst/>\n");
-    extract_astring_cat(alloc, content, "                     </a:prstGeom>\n");
-    extract_astring_cat(alloc, content, "                     <a:noFill/>\n");
-    extract_astring_cat(alloc, content, "                     <a:ln>\n");
-    extract_astring_cat(alloc, content, "                       <a:noFill/>\n");
-    extract_astring_cat(alloc, content, "                     </a:ln>\n");
-    extract_astring_cat(alloc, content, "                   </pic:spPr>\n");
-    extract_astring_cat(alloc, content, "                 </pic:pic>\n");
-    extract_astring_cat(alloc, content, "               </a:graphicData>\n");
-    extract_astring_cat(alloc, content, "             </a:graphic>\n");
-    extract_astring_cat(alloc, content, "           </wp:inline>\n");
-    extract_astring_cat(alloc, content, "         </w:drawing>\n");
-    extract_astring_cat(alloc, content, "       </w:r>\n");
-    extract_astring_cat(alloc, content, "     </w:p>\n");
-    extract_astring_cat(alloc, content, "\n");
+    extract_astring_cat(alloc, output, "\n");
+    extract_astring_cat(alloc, output, "     <w:p>\n");
+    extract_astring_cat(alloc, output, "       <w:r>\n");
+    extract_astring_cat(alloc, output, "         <w:rPr>\n");
+    extract_astring_cat(alloc, output, "           <w:noProof/>\n");
+    extract_astring_cat(alloc, output, "         </w:rPr>\n");
+    extract_astring_cat(alloc, output, "         <w:drawing>\n");
+    extract_astring_cat(alloc, output, "           <wp:inline distT=\"0\" distB=\"0\" distL=\"0\" distR=\"0\" wp14:anchorId=\"7057A832\" wp14:editId=\"466EB3FB\">\n");
+    extract_astring_cat(alloc, output, "             <wp:extent cx=\"2933700\" cy=\"2200275\"/>\n");
+    extract_astring_cat(alloc, output, "             <wp:effectExtent l=\"0\" t=\"0\" r=\"0\" b=\"9525\"/>\n");
+    extract_astring_cat(alloc, output, "             <wp:docPr id=\"1\" name=\"Picture 1\"/>\n");
+    extract_astring_cat(alloc, output, "             <wp:cNvGraphicFramePr>\n");
+    extract_astring_cat(alloc, output, "               <a:graphicFrameLocks xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" noChangeAspect=\"1\"/>\n");
+    extract_astring_cat(alloc, output, "             </wp:cNvGraphicFramePr>\n");
+    extract_astring_cat(alloc, output, "             <a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\">\n");
+    extract_astring_cat(alloc, output, "               <a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">\n");
+    extract_astring_cat(alloc, output, "                 <pic:pic xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\">\n");
+    extract_astring_cat(alloc, output, "                   <pic:nvPicPr>\n");
+    extract_astring_cat(alloc, output, "                     <pic:cNvPr id=\"1\" name=\"Picture 1\"/>\n");
+    extract_astring_cat(alloc, output, "                     <pic:cNvPicPr>\n");
+    extract_astring_cat(alloc, output, "                       <a:picLocks noChangeAspect=\"1\" noChangeArrowheads=\"1\"/>\n");
+    extract_astring_cat(alloc, output, "                     </pic:cNvPicPr>\n");
+    extract_astring_cat(alloc, output, "                   </pic:nvPicPr>\n");
+    extract_astring_cat(alloc, output, "                   <pic:blipFill>\n");
+    extract_astring_catf(alloc, output,"                     <a:blip r:embed=\"%s\">\n", image->id);
+    extract_astring_cat(alloc, output, "                       <a:extLst>\n");
+    extract_astring_cat(alloc, output, "                         <a:ext uri=\"{28A0092B-C50C-407E-A947-70E740481C1C}\">\n");
+    extract_astring_cat(alloc, output, "                           <a14:useLocalDpi xmlns:a14=\"http://schemas.microsoft.com/office/drawing/2010/main\" val=\"0\"/>\n");
+    extract_astring_cat(alloc, output, "                         </a:ext>\n");
+    extract_astring_cat(alloc, output, "                       </a:extLst>\n");
+    extract_astring_cat(alloc, output, "                     </a:blip>\n");
+    //extract_astring_cat(alloc, output, "                     <a:srcRect/>\n");
+    extract_astring_cat(alloc, output, "                     <a:stretch>\n");
+    extract_astring_cat(alloc, output, "                       <a:fillRect/>\n");
+    extract_astring_cat(alloc, output, "                     </a:stretch>\n");
+    extract_astring_cat(alloc, output, "                   </pic:blipFill>\n");
+    extract_astring_cat(alloc, output, "                   <pic:spPr bwMode=\"auto\">\n");
+    extract_astring_cat(alloc, output, "                     <a:xfrm>\n");
+    extract_astring_cat(alloc, output, "                       <a:off x=\"0\" y=\"0\"/>\n");
+    extract_astring_cat(alloc, output, "                       <a:ext cx=\"2933700\" cy=\"2200275\"/>\n");
+    extract_astring_cat(alloc, output, "                     </a:xfrm>\n");
+    extract_astring_cat(alloc, output, "                     <a:prstGeom prst=\"rect\">\n");
+    extract_astring_cat(alloc, output, "                       <a:avLst/>\n");
+    extract_astring_cat(alloc, output, "                     </a:prstGeom>\n");
+    extract_astring_cat(alloc, output, "                     <a:noFill/>\n");
+    extract_astring_cat(alloc, output, "                     <a:ln>\n");
+    extract_astring_cat(alloc, output, "                       <a:noFill/>\n");
+    extract_astring_cat(alloc, output, "                     </a:ln>\n");
+    extract_astring_cat(alloc, output, "                   </pic:spPr>\n");
+    extract_astring_cat(alloc, output, "                 </pic:pic>\n");
+    extract_astring_cat(alloc, output, "               </a:graphicData>\n");
+    extract_astring_cat(alloc, output, "             </a:graphic>\n");
+    extract_astring_cat(alloc, output, "           </wp:inline>\n");
+    extract_astring_cat(alloc, output, "         </w:drawing>\n");
+    extract_astring_cat(alloc, output, "       </w:r>\n");
+    extract_astring_cat(alloc, output, "     </w:p>\n");
+    extract_astring_cat(alloc, output, "\n");
     return 0;
 }
 
 
-static int s_docx_output_rotated_paragraphs(
-        extract_alloc_t            *alloc,
-        content_paragraph_iterator *pit,
-        paragraph_t                *paragraph_begin,
-        paragraph_t                *paragraph_end,
-        int                         rot,
-        int                         x,
-        int                         y,
-        int                         w,
-        int                         h,
-        int                         text_box_id,
-        extract_astring_t          *content,
-        content_state_t            *state
-        )
 /* Writes paragraph to content inside rotated text box. */
+static int
+docx_output_rotated_paragraphs(extract_alloc_t   *alloc,
+                               block_t           *block,
+                               int                rot,
+                               int                x,
+                               int                y,
+                               int                w,
+                               int                h,
+                               int                text_box_id,
+                               extract_astring_t *output,
+                               content_state_t   *state)
 {
-    int e = 0;
-    paragraph_t *paragraph;
-    content_paragraph_iterator pit2 = *pit;
+    int                          e = 0;
+    paragraph_t                *paragraph;
+    content_paragraph_iterator  pit;
 
     outf("x,y=%ik,%ik = %i,%i", x/1000, y/1000, x, y);
-    extract_astring_cat(alloc, content, "\n");
-    extract_astring_cat(alloc, content, "\n");
-    extract_astring_cat(alloc, content, "<w:p>\n");
-    extract_astring_cat(alloc, content, "  <w:r>\n");
-    extract_astring_cat(alloc, content, "    <mc:AlternateContent>\n");
-    extract_astring_cat(alloc, content, "      <mc:Choice Requires=\"wps\">\n");
-    extract_astring_cat(alloc, content, "        <w:drawing>\n");
-    extract_astring_cat(alloc, content, "          <wp:anchor distT=\"0\" distB=\"0\" distL=\"0\" distR=\"0\" simplePos=\"0\" relativeHeight=\"0\" behindDoc=\"0\" locked=\"0\" layoutInCell=\"1\" allowOverlap=\"1\" wp14:anchorId=\"53A210D1\" wp14:editId=\"2B7E8016\">\n");
-    extract_astring_cat(alloc, content, "            <wp:simplePos x=\"0\" y=\"0\"/>\n");
-    extract_astring_cat(alloc, content, "            <wp:positionH relativeFrom=\"page\">\n");
-    extract_astring_catf(alloc, content,"              <wp:posOffset>%i</wp:posOffset>\n", x);
-    extract_astring_cat(alloc, content, "            </wp:positionH>\n");
-    extract_astring_cat(alloc, content, "            <wp:positionV relativeFrom=\"page\">\n");
-    extract_astring_catf(alloc, content,"              <wp:posOffset>%i</wp:posOffset>\n", y);
-    extract_astring_cat(alloc, content, "            </wp:positionV>\n");
-    extract_astring_catf(alloc, content,"            <wp:extent cx=\"%i\" cy=\"%i\"/>\n", w, h);
-    extract_astring_cat(alloc, content, "            <wp:effectExtent l=\"381000\" t=\"723900\" r=\"371475\" b=\"723900\"/>\n");
-    extract_astring_cat(alloc, content, "            <wp:wrapNone/>\n");
-    extract_astring_catf(alloc, content,"            <wp:docPr id=\"%i\" name=\"Text Box %i\"/>\n", text_box_id, text_box_id);
-    extract_astring_cat(alloc, content, "            <wp:cNvGraphicFramePr/>\n");
-    extract_astring_cat(alloc, content, "            <a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\">\n");
-    extract_astring_cat(alloc, content, "              <a:graphicData uri=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\">\n");
-    extract_astring_cat(alloc, content, "                <wps:wsp>\n");
-    extract_astring_cat(alloc, content, "                  <wps:cNvSpPr txBox=\"1\"/>\n");
-    extract_astring_cat(alloc, content, "                  <wps:spPr>\n");
-    extract_astring_catf(alloc, content,"                    <a:xfrm rot=\"%i\">\n", rot);
-    extract_astring_cat(alloc, content, "                      <a:off x=\"0\" y=\"0\"/>\n");
-    extract_astring_cat(alloc, content, "                      <a:ext cx=\"3228975\" cy=\"2286000\"/>\n");
-    extract_astring_cat(alloc, content, "                    </a:xfrm>\n");
-    extract_astring_cat(alloc, content, "                    <a:prstGeom prst=\"rect\">\n");
-    extract_astring_cat(alloc, content, "                      <a:avLst/>\n");
-    extract_astring_cat(alloc, content, "                    </a:prstGeom>\n");
+    extract_astring_cat(alloc, output, "\n");
+    extract_astring_cat(alloc, output, "\n");
+    extract_astring_cat(alloc, output, "<w:p>\n");
+    extract_astring_cat(alloc, output, "  <w:r>\n");
+    extract_astring_cat(alloc, output, "    <mc:AlternateContent>\n");
+    extract_astring_cat(alloc, output, "      <mc:Choice Requires=\"wps\">\n");
+    extract_astring_cat(alloc, output, "        <w:drawing>\n");
+    extract_astring_cat(alloc, output, "          <wp:anchor distT=\"0\" distB=\"0\" distL=\"0\" distR=\"0\" simplePos=\"0\" relativeHeight=\"0\" behindDoc=\"0\" locked=\"0\" layoutInCell=\"1\" allowOverlap=\"1\" wp14:anchorId=\"53A210D1\" wp14:editId=\"2B7E8016\">\n");
+    extract_astring_cat(alloc, output, "            <wp:simplePos x=\"0\" y=\"0\"/>\n");
+    extract_astring_cat(alloc, output, "            <wp:positionH relativeFrom=\"page\">\n");
+    extract_astring_catf(alloc, output,"              <wp:posOffset>%i</wp:posOffset>\n", x);
+    extract_astring_cat(alloc, output, "            </wp:positionH>\n");
+    extract_astring_cat(alloc, output, "            <wp:positionV relativeFrom=\"page\">\n");
+    extract_astring_catf(alloc, output,"              <wp:posOffset>%i</wp:posOffset>\n", y);
+    extract_astring_cat(alloc, output, "            </wp:positionV>\n");
+    extract_astring_catf(alloc, output,"            <wp:extent cx=\"%i\" cy=\"%i\"/>\n", w, h);
+    extract_astring_cat(alloc, output, "            <wp:effectExtent l=\"381000\" t=\"723900\" r=\"371475\" b=\"723900\"/>\n");
+    extract_astring_cat(alloc, output, "            <wp:wrapNone/>\n");
+    extract_astring_catf(alloc, output,"            <wp:docPr id=\"%i\" name=\"Text Box %i\"/>\n", text_box_id, text_box_id);
+    extract_astring_cat(alloc, output, "            <wp:cNvGraphicFramePr/>\n");
+    extract_astring_cat(alloc, output, "            <a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\">\n");
+    extract_astring_cat(alloc, output, "              <a:graphicData uri=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\">\n");
+    extract_astring_cat(alloc, output, "                <wps:wsp>\n");
+    extract_astring_cat(alloc, output, "                  <wps:cNvSpPr txBox=\"1\"/>\n");
+    extract_astring_cat(alloc, output, "                  <wps:spPr>\n");
+    extract_astring_catf(alloc, output,"                    <a:xfrm rot=\"%i\">\n", rot);
+    extract_astring_cat(alloc, output, "                      <a:off x=\"0\" y=\"0\"/>\n");
+    extract_astring_cat(alloc, output, "                      <a:ext cx=\"3228975\" cy=\"2286000\"/>\n");
+    extract_astring_cat(alloc, output, "                    </a:xfrm>\n");
+    extract_astring_cat(alloc, output, "                    <a:prstGeom prst=\"rect\">\n");
+    extract_astring_cat(alloc, output, "                      <a:avLst/>\n");
+    extract_astring_cat(alloc, output, "                    </a:prstGeom>\n");
 
     /* Give box a solid background. */
     if (0) {
-        extract_astring_cat(alloc, content, "                    <a:solidFill>\n");
-        extract_astring_cat(alloc, content, "                      <a:schemeClr val=\"lt1\"/>\n");
-        extract_astring_cat(alloc, content, "                    </a:solidFill>\n");
+        extract_astring_cat(alloc, output, "                    <a:solidFill>\n");
+        extract_astring_cat(alloc, output, "                      <a:schemeClr val=\"lt1\"/>\n");
+        extract_astring_cat(alloc, output, "                    </a:solidFill>\n");
         }
 
     /* Draw line around box. */
     if (0) {
-        extract_astring_cat(alloc, content, "                    <a:ln w=\"175\">\n");
-        extract_astring_cat(alloc, content, "                      <a:solidFill>\n");
-        extract_astring_cat(alloc, content, "                        <a:prstClr val=\"black\"/>\n");
-        extract_astring_cat(alloc, content, "                      </a:solidFill>\n");
-        extract_astring_cat(alloc, content, "                    </a:ln>\n");
+        extract_astring_cat(alloc, output, "                    <a:ln w=\"175\">\n");
+        extract_astring_cat(alloc, output, "                      <a:solidFill>\n");
+        extract_astring_cat(alloc, output, "                        <a:prstClr val=\"black\"/>\n");
+        extract_astring_cat(alloc, output, "                      </a:solidFill>\n");
+        extract_astring_cat(alloc, output, "                    </a:ln>\n");
     }
 
-    extract_astring_cat(alloc, content, "                  </wps:spPr>\n");
-    extract_astring_cat(alloc, content, "                  <wps:txbx>\n");
-    extract_astring_cat(alloc, content, "                    <w:txbxContent>");
+    extract_astring_cat(alloc, output, "                  </wps:spPr>\n");
+    extract_astring_cat(alloc, output, "                  <wps:txbx>\n");
+    extract_astring_cat(alloc, output, "                    <w:txbxContent>");
 
     #if 0
     if (0) {
@@ -336,67 +338,70 @@ static int s_docx_output_rotated_paragraphs(
     #endif
 
     /* Output paragraphs p0..p2-1. */
-    for (paragraph = paragraph_begin; paragraph != paragraph_end; paragraph = content_paragraph_iterator_next(pit))
-        if (s_document_to_docx_content_paragraph(alloc, state, paragraph, content)) goto end;
+    for (paragraph = content_paragraph_iterator_init(&pit, &block->content); paragraph != NULL; paragraph = content_paragraph_iterator_next(&pit))
+        if (document_to_docx_content_paragraph(alloc, state, paragraph, output)) goto end;
 
-    extract_astring_cat(alloc, content, "\n");
-    extract_astring_cat(alloc, content, "                    </w:txbxContent>\n");
-    extract_astring_cat(alloc, content, "                  </wps:txbx>\n");
-    extract_astring_cat(alloc, content, "                  <wps:bodyPr rot=\"0\" spcFirstLastPara=\"0\" vertOverflow=\"overflow\" horzOverflow=\"overflow\" vert=\"horz\" wrap=\"square\" lIns=\"91440\" tIns=\"45720\" rIns=\"91440\" bIns=\"45720\" numCol=\"1\" spcCol=\"0\" rtlCol=\"0\" fromWordArt=\"0\" anchor=\"t\" anchorCtr=\"0\" forceAA=\"0\" compatLnSpc=\"1\">\n");
-    extract_astring_cat(alloc, content, "                    <a:prstTxWarp prst=\"textNoShape\">\n");
-    extract_astring_cat(alloc, content, "                      <a:avLst/>\n");
-    extract_astring_cat(alloc, content, "                    </a:prstTxWarp>\n");
-    extract_astring_cat(alloc, content, "                    <a:noAutofit/>\n");
-    extract_astring_cat(alloc, content, "                  </wps:bodyPr>\n");
-    extract_astring_cat(alloc, content, "                </wps:wsp>\n");
-    extract_astring_cat(alloc, content, "              </a:graphicData>\n");
-    extract_astring_cat(alloc, content, "            </a:graphic>\n");
-    extract_astring_cat(alloc, content, "          </wp:anchor>\n");
-    extract_astring_cat(alloc, content, "        </w:drawing>\n");
-    extract_astring_cat(alloc, content, "      </mc:Choice>\n");
+    extract_astring_cat(alloc, output, "\n");
+    extract_astring_cat(alloc, output, "                    </w:txbxContent>\n");
+    extract_astring_cat(alloc, output, "                  </wps:txbx>\n");
+    extract_astring_cat(alloc, output, "                  <wps:bodyPr rot=\"0\" spcFirstLastPara=\"0\" vertOverflow=\"overflow\" horzOverflow=\"overflow\" vert=\"horz\" wrap=\"square\" lIns=\"91440\" tIns=\"45720\" rIns=\"91440\" bIns=\"45720\" numCol=\"1\" spcCol=\"0\" rtlCol=\"0\" fromWordArt=\"0\" anchor=\"t\" anchorCtr=\"0\" forceAA=\"0\" compatLnSpc=\"1\">\n");
+    extract_astring_cat(alloc, output, "                    <a:prstTxWarp prst=\"textNoShape\">\n");
+    extract_astring_cat(alloc, output, "                      <a:avLst/>\n");
+    extract_astring_cat(alloc, output, "                    </a:prstTxWarp>\n");
+    extract_astring_cat(alloc, output, "                    <a:noAutofit/>\n");
+    extract_astring_cat(alloc, output, "                  </wps:bodyPr>\n");
+    extract_astring_cat(alloc, output, "                </wps:wsp>\n");
+    extract_astring_cat(alloc, output, "              </a:graphicData>\n");
+    extract_astring_cat(alloc, output, "            </a:graphic>\n");
+    extract_astring_cat(alloc, output, "          </wp:anchor>\n");
+    extract_astring_cat(alloc, output, "        </w:drawing>\n");
+    extract_astring_cat(alloc, output, "      </mc:Choice>\n");
 
     /* This fallback is copied from a real Word document. Not sure
     whether it works - both Libreoffice and Word use the above
     choice. */
-    extract_astring_cat(alloc, content, "      <mc:Fallback>\n");
-    extract_astring_cat(alloc, content, "        <w:pict>\n");
-    extract_astring_cat(alloc, content, "          <v:shapetype w14:anchorId=\"53A210D1\" id=\"_x0000_t202\" coordsize=\"21600,21600\" o:spt=\"202\" path=\"m,l,21600r21600,l21600,xe\">\n");
-    extract_astring_cat(alloc, content, "            <v:stroke joinstyle=\"miter\"/>\n");
-    extract_astring_cat(alloc, content, "            <v:path gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n");
-    extract_astring_cat(alloc, content, "          </v:shapetype>\n");
-    extract_astring_catf(alloc, content,"          <v:shape id=\"Text Box %i\" o:spid=\"_x0000_s1026\" type=\"#_x0000_t202\" style=\"position:absolute;margin-left:71.25pt;margin-top:48.75pt;width:254.25pt;height:180pt;rotation:-2241476fd;z-index:251659264;visibility:visible;mso-wrap-style:square;mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;mso-position-horizontal-relative:text;mso-position-vertical:absolute;mso-position-vertical-relative:text;v-text-anchor:top\" o:gfxdata=\"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&#10;bFBLBQYAAAAABAAEAPMAAAC8BQAAAAA=&#10;\" fillcolor=\"white [3201]\" strokeweight=\".5pt\">\n", text_box_id);
-    extract_astring_cat(alloc, content, "            <v:textbox>\n");
-    extract_astring_cat(alloc, content, "              <w:txbxContent>");
+    extract_astring_cat(alloc, output, "      <mc:Fallback>\n");
+    extract_astring_cat(alloc, output, "        <w:pict>\n");
+    extract_astring_cat(alloc, output, "          <v:shapetype w14:anchorId=\"53A210D1\" id=\"_x0000_t202\" coordsize=\"21600,21600\" o:spt=\"202\" path=\"m,l,21600r21600,l21600,xe\">\n");
+    extract_astring_cat(alloc, output, "            <v:stroke joinstyle=\"miter\"/>\n");
+    extract_astring_cat(alloc, output, "            <v:path gradientshapeok=\"t\" o:connecttype=\"rect\"/>\n");
+    extract_astring_cat(alloc, output, "          </v:shapetype>\n");
+    extract_astring_catf(alloc, output,"          <v:shape id=\"Text Box %i\" o:spid=\"_x0000_s1026\" type=\"#_x0000_t202\" style=\"position:absolute;margin-left:71.25pt;margin-top:48.75pt;width:254.25pt;height:180pt;rotation:-2241476fd;z-index:251659264;visibility:visible;mso-wrap-style:square;mso-wrap-distance-left:9pt;mso-wrap-distance-top:0;mso-wrap-distance-right:9pt;mso-wrap-distance-bottom:0;mso-position-horizontal:absolute;mso-position-horizontal-relative:text;mso-position-vertical:absolute;mso-position-vertical-relative:text;v-text-anchor:top\" o:gfxdata=\"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&#10;bFBLBQYAAAAABAAEAPMAAAC8BQAAAAA=&#10;\" fillcolor=\"white [3201]\" strokeweight=\".5pt\">\n", text_box_id);
+    extract_astring_cat(alloc, output, "            <v:textbox>\n");
+    extract_astring_cat(alloc, output, "              <w:txbxContent>");
 
-    for (paragraph = paragraph_begin; paragraph != paragraph_end; paragraph = content_paragraph_iterator_next(&pit2))
-        if (s_document_to_docx_content_paragraph(alloc, state, paragraph, content)) goto end;
+    for (paragraph = content_paragraph_iterator_init(&pit, &block->content); paragraph != NULL; paragraph = content_paragraph_iterator_next(&pit))
+        if (document_to_docx_content_paragraph(alloc, state, paragraph, output)) goto end;
 
-    extract_astring_cat(alloc, content, "\n");
-    extract_astring_cat(alloc, content, "\n");
-    extract_astring_cat(alloc, content, "              </w:txbxContent>\n");
-    extract_astring_cat(alloc, content, "            </v:textbox>\n");
-    extract_astring_cat(alloc, content, "          </v:shape>\n");
-    extract_astring_cat(alloc, content, "        </w:pict>\n");
-    extract_astring_cat(alloc, content, "      </mc:Fallback>\n");
-    extract_astring_cat(alloc, content, "    </mc:AlternateContent>\n");
-    extract_astring_cat(alloc, content, "  </w:r>\n");
-    extract_astring_cat(alloc, content, "</w:p>");
+    extract_astring_cat(alloc, output, "\n");
+    extract_astring_cat(alloc, output, "\n");
+    extract_astring_cat(alloc, output, "              </w:txbxContent>\n");
+    extract_astring_cat(alloc, output, "            </v:textbox>\n");
+    extract_astring_cat(alloc, output, "          </v:shape>\n");
+    extract_astring_cat(alloc, output, "        </w:pict>\n");
+    extract_astring_cat(alloc, output, "      </mc:Fallback>\n");
+    extract_astring_cat(alloc, output, "    </mc:AlternateContent>\n");
+    extract_astring_cat(alloc, output, "  </w:r>\n");
+    extract_astring_cat(alloc, output, "</w:p>");
     e = 0;
     end:
     return e;
 }
 
 
-static int s_docx_append_table(extract_alloc_t* alloc, table_t* table, extract_astring_t* content)
 /* Appends table to content.
 
 We do not fix the size of the table or its columns and rows, but instead leave layout up
 to the application. */
+static int
+docx_append_table(extract_alloc_t   *alloc,
+                  table_t           *table,
+                  extract_astring_t *output)
 {
     int e = -1;
     int y;
 
-    if (extract_astring_cat(alloc, content,
+    if (extract_astring_cat(alloc, output,
             "\n"
             "    <w:tbl>\n"
             "        <w:tblLayout w:type=\"autofit\"/>\n"
@@ -405,7 +410,7 @@ to the application. */
     for (y=0; y<table->cells_num_y; ++y)
     {
         int x;
-        if (extract_astring_cat(alloc, content,
+        if (extract_astring_cat(alloc, output,
                 "        <w:tr>\n"
                 "            <w:trPr/>\n"
                 )) goto end;
@@ -415,11 +420,11 @@ to the application. */
             cell_t* cell = table->cells[y*table->cells_num_x + x];
             if (!cell->left) continue;
 
-            if (extract_astring_cat(alloc, content, "            <w:tc>\n")) goto end;
+            if (extract_astring_cat(alloc, output, "            <w:tc>\n")) goto end;
 
             /* Write cell properties. */
             {
-                if (extract_astring_cat(alloc, content,
+                if (extract_astring_cat(alloc, output,
                         "                <w:tcPr>\n"
                         "                    <w:tcBorders>\n"
                         "                        <w:top w:val=\"double\" w:sz=\"2\" w:space=\"0\" w:color=\"808080\"/>\n"
@@ -430,89 +435,82 @@ to the application. */
                         )) goto end;
                 if (cell->extend_right > 1)
                 {
-                    if (extract_astring_catf(alloc, content, "                    <w:gridSpan w:val=\"%i\"/>\n", cell->extend_right)) goto end;
+                    if (extract_astring_catf(alloc, output, "                    <w:gridSpan w:val=\"%i\"/>\n", cell->extend_right)) goto end;
                 }
                 if (cell->above)
                 {
                     if (cell->extend_down > 1)
                     {
-                        if (extract_astring_catf(alloc, content, "                    <w:vMerge w:val=\"restart\"/>\n", cell->extend_down)) goto end;
+                        if (extract_astring_catf(alloc, output, "                    <w:vMerge w:val=\"restart\"/>\n", cell->extend_down)) goto end;
                     }
                 }
                 else
                 {
-                    if (extract_astring_catf(alloc, content, "                    <w:vMerge w:val=\"continue\"/>\n")) goto end;
+                    if (extract_astring_catf(alloc, output, "                    <w:vMerge w:val=\"continue\"/>\n")) goto end;
                 }
-                if (extract_astring_cat(alloc, content, "                </w:tcPr>\n")) goto end;
+                if (extract_astring_cat(alloc, output, "                </w:tcPr>\n")) goto end;
             }
 
             /* Write contents of this cell. */
             {
                 content_paragraph_iterator  pit;
                 paragraph_t                *paragraph;
-                size_t                      chars_num_old = content->chars_num;
+                size_t                      chars_num_old = output->chars_num;
                 content_state_t             content_state = {0};
 
                 content_state.font.name = NULL;
                 content_state.ctm_prev = NULL;
                 for (paragraph = content_paragraph_iterator_init(&pit, &cell->content); paragraph != NULL; paragraph = content_paragraph_iterator_next(&pit))
-                    if (s_document_to_docx_content_paragraph(alloc, &content_state, paragraph, content)) goto end;
+                    if (document_to_docx_content_paragraph(alloc, &content_state, paragraph, output)) goto end;
 
                 if (content_state.font.name)
-                    if (s_docx_run_finish(alloc, &content_state, content)) goto end;
+                    if (docx_run_finish(alloc, &content_state, output)) goto end;
 
                 /* Need to write out at least an empty paragraph in each cell,
                 otherwise Word/Libreoffice fail to show table at all; the
                 OOXML spec says "If a table cell does not include at least one
                 block-level element, then this document shall be considered
                 corrupt." */
-                if (content->chars_num == chars_num_old)
-                    if (extract_astring_catf(alloc, content, "<w:p/>\n")) goto end;
+                if (output->chars_num == chars_num_old)
+                    if (extract_astring_catf(alloc, output, "<w:p/>\n")) goto end;
             }
-            if (extract_astring_cat(alloc, content, "            </w:tc>\n")) goto end;
+            if (extract_astring_cat(alloc, output, "            </w:tc>\n")) goto end;
         }
-        if (extract_astring_cat(alloc, content, "        </w:tr>\n")) goto end;
+        if (extract_astring_cat(alloc, output, "        </w:tr>\n")) goto end;
     }
-    if (extract_astring_cat(alloc, content, "    </w:tbl>\n")) goto end;
+    if (extract_astring_cat(alloc, output, "    </w:tbl>\n")) goto end;
     e = 0;
 
     end:
     return e;
 }
 
-static int s_docx_append_rotated_paragraphs(
-        extract_alloc_t            *alloc,
-        content_state_t            *state,
-        content_paragraph_iterator *pit,
-        paragraph_t               **pparagraph, 
-        int                        *text_box_id,
-        const matrix_t             *ctm,
-        double                      rotate,
-        extract_astring_t          *output
-        )
-/* Appends paragraphs with same rotation, starting with page->paragraphs[*p]
-and updates *p. */
+/* Appends a block of content with same rotation. */
+static int
+docx_append_rotated_paragraphs(extract_alloc_t    *alloc,
+                               content_state_t    *state,
+                               block_t            *block,
+                               int                *text_box_id,
+                               const matrix_t     *ctm,
+                               double              rotate,
+                               extract_astring_t  *output)
 {
     /* Find extent of paragraphs with this same rotation. extent
     will contain max width and max height of paragraphs, in units
     before application of ctm, i.e. before rotation. */
-    int e = -1;
-    point_t extent = {0, 0};
-    paragraph_t *paragraph = *pparagraph;
-    /* Remember where the iterator started, so we can restart it
-     * for the output phase. */
-    content_paragraph_iterator pit2 = *pit;
-    paragraph_t *paragraph0 = paragraph;
+    int               e           = -1;
+    point_t           extent      = {0, 0};
+    content_iterator  cit;
+    content_t        *content;
+    paragraph_t      *paragraph   = content_first_paragraph(&block->content);
 
     /* We assume that first span is at origin of text
     block. This assumes left-to-right text. */
-    span_t *first_span = content_head_as_span(&content_first_line(&paragraph->content)->content);
-    point_t origin = {
-                first_span->chars[0].x,
-                first_span->chars[0].y
-                };
-    matrix_t ctm_inverse = {1, 0, 0, 1, 0, 0};
-    double ctm_det = ctm->a*ctm->d - ctm->b*ctm->c;
+    span_t           *first_span  = content_head_as_span(&content_first_line(&paragraph->content)->content);
+    point_t           origin      = { first_span->chars[0].x,
+                                      first_span->chars[0].y };
+    matrix_t          ctm_inverse = {1, 0, 0, 1, 0, 0};
+    double            ctm_det     = ctm->a*ctm->d - ctm->b*ctm->c;
 
     outf("rotate=%.2frad=%.1fdeg ctm: ef=(%f %f) abcd=(%f %f %f %f)",
             rotate, rotate * 180 / pi,
@@ -534,15 +532,17 @@ and updates *p. */
              ctm->a, ctm->b, ctm->c, ctm->d);
     }
 
-    for (; paragraph != NULL; paragraph = content_paragraph_iterator_next(pit))
+    for (content = content_iterator_init(&cit, &block->content); content != NULL; content = content_iterator_next(&cit))
     {
         content_line_iterator  lit;
         line_t                *line;
-        const matrix_t        *ctm1 = &content_head_as_span(&content_first_line(&paragraph->content)->content)->ctm;
-        double                 rotate1 = atan2(ctm1->b, ctm1->a);
+        paragraph_t           *paragraph;
 
-        if (rotate != rotate1)
-            break;
+        assert(content->type == content_paragraph);
+        if (content->type != content_paragraph)
+            continue; /* This shouldn't happen for now! */
+
+        paragraph = (paragraph_t *)content;
 
         /* Update <extent>. */
         for (line = content_line_iterator_init(&lit, &paragraph->content); line != NULL; line = content_line_iterator_next(&lit))
@@ -563,13 +563,13 @@ and updates *p. */
             if (xx > extent.x) extent.x = xx;
             if (yy > extent.y) extent.y = yy;
             if (0) outf("rotate=%f: origin=(%f %f) xy=(%f %f) dxy=(%f %f) xxyy=(%f %f) span: %s",
-                        rotate1, origin.x, origin.y, x, y, dx, dy, xx, yy, extract_span_string(alloc, span));
+                        rotate, origin.x, origin.y, x, y, dx, dy, xx, yy, extract_span_string(alloc, span));
         }
     }
     outf("rotate=%f extent is: (%f %f)",
          rotate, extent.x, extent.y);
 
-    /* Paragraphs [paragraph0..paragraph) have same rotation. We output them into
+    /* All the paragraphs have same rotation. We output them into
     a single rotated text box. */
 
     /* We need unique id for text box. */
@@ -619,9 +619,8 @@ and updates *p. */
         x -= dx;
         y -= -dy;
 
-        if (s_docx_output_rotated_paragraphs(alloc, &pit2, paragraph0, paragraph, rot, x, y, w, h, *text_box_id, output, state)) goto end;
+        if (docx_output_rotated_paragraphs(alloc, block, rot, x, y, w, h, *text_box_id, output, state)) goto end;
     }
-    *pparagraph = paragraph;
     e = 0;
 
     end:
@@ -629,14 +628,13 @@ and updates *p. */
     return e;
 }
 
-int extract_document_to_docx_content(
-        extract_alloc_t*    alloc,
-        document_t*         document,
-        int                 spacing,
-        int                 rotation,
-        int                 images,
-        extract_astring_t*  content
-        )
+int
+extract_document_to_docx_content(extract_alloc_t   *alloc,
+                                 document_t        *document,
+                                 int                spacing,
+                                 int                rotation,
+                                 int                images,
+                                 extract_astring_t *output)
 {
     int ret = -1;
     int text_box_id = 0;
@@ -649,8 +647,8 @@ int extract_document_to_docx_content(
 
         for (c=0; c<page->subpages_num; ++c) {
             subpage_t                  *subpage = page->subpages[c];
-            content_paragraph_iterator  pit;
-            paragraph_t                *paragraph;
+            content_iterator            cit;
+            content_t                  *content;
             content_table_iterator      tit;
             table_t                    *table;
 
@@ -662,11 +660,13 @@ int extract_document_to_docx_content(
             content_state.ctm_prev = NULL;
 
             /* Output paragraphs and tables in order of y coordinate. */
-            paragraph = content_paragraph_iterator_init(&pit, &subpage->content);
+            content = content_iterator_init(&cit, &subpage->content);
             table = content_table_iterator_init(&tit, &subpage->tables);
             while (1) {
                 double y_paragraph;
                 double y_table;
+                block_t *block = (content && content->type == content_block) ? (block_t *)content : NULL;
+                paragraph_t *paragraph = (content && content->type == content_paragraph) ? (paragraph_t *)content : (block ? content_first_paragraph(&block->content) : NULL);
                 line_t *first_line = paragraph ? content_first_line(&paragraph->content) : NULL;
                 span_t *first_span = first_line ? content_head_as_span(&first_line->content) : NULL;
                 if (!paragraph && !table)   break;
@@ -688,28 +688,44 @@ int extract_document_to_docx_content(
                         ) {
                         /* Extra vertical space between paragraphs that were at
                         different angles in the original document. */
-                        if (s_docx_paragraph_empty(alloc, content)) goto end;
+                        if (docx_paragraph_empty(alloc, output)) goto end;
                     }
 
                     if (spacing) {
                         /* Extra vertical space between paragraphs. */
-                        if (s_docx_paragraph_empty(alloc, content)) goto end;
+                        if (docx_paragraph_empty(alloc, output)) goto end;
                     }
 
                     if (rotation && rotate != 0)
                     {
-                        if (s_docx_append_rotated_paragraphs(alloc, &content_state, &pit, &paragraph, &text_box_id, ctm, rotate, content)) goto end;
-                        /* paragraph is returned having been 'next'ed already. */
+                        assert(block);
+                        if (docx_append_rotated_paragraphs(alloc, &content_state, block, &text_box_id, ctm, rotate, output)) goto end;
+                    }
+                    else if (block)
+                    {
+                        content_paragraph_iterator pit;
+                        int                        first = 1;
+
+                        for (paragraph = content_paragraph_iterator_init(&pit, &block->content); paragraph != NULL; paragraph = content_paragraph_iterator_next(&pit))
+                        {
+                            if (spacing && !first) {
+                                /* Extra vertical space between paragraphs. */
+                                if (docx_paragraph_empty(alloc, output)) goto end;
+                            }
+                            first = 0;
+
+                            if (document_to_docx_content_paragraph(alloc, &content_state, paragraph, output)) goto end;
+                        }
                     }
                     else
                     {
-                        if (s_document_to_docx_content_paragraph(alloc, &content_state, paragraph, content)) goto end;
-                        paragraph = content_paragraph_iterator_next(&pit);
+                        if (document_to_docx_content_paragraph(alloc, &content_state, paragraph, output)) goto end;
                     }
+                    content = content_iterator_next(&cit);
                 }
                 else if (table)
                 {
-                    if (s_docx_append_table(alloc, table, content)) goto end;
+                    if (docx_append_table(alloc, table, output)) goto end;
                     table = content_table_iterator_next(&tit);
                 }
             }
@@ -719,7 +735,7 @@ int extract_document_to_docx_content(
                 image_t                *image;
 
                 for (image = content_image_iterator_init(&iit, &subpage->content); image != NULL; image = content_image_iterator_next(&iit))
-                    s_docx_append_image(alloc, content, image);
+                    docx_append_image(alloc, output, image);
             }
         }
     }
@@ -731,31 +747,37 @@ int extract_document_to_docx_content(
 }
 
 
-static int s_find_mid(const char* text, const char* begin, const char* end, const char** o_begin, const char** o_end)
 /* Sets *o_begin to end of first occurrence of <begin> in <text>, and *o_end to
 beginning of first occurtence of <end> in <text>. */
+static int
+find_mid(const char  *text,
+         const char  *begin,
+         const char  *end,
+         const char **o_begin,
+         const char **o_end)
 {
     *o_begin = strstr(text, begin);
     if (!*o_begin) goto fail;
     *o_begin += strlen(begin);
     *o_end = strstr(*o_begin, end);
     if (!*o_end) goto fail;
+
     return 0;
-    fail:
+
+fail:
     errno = ESRCH;
     return -1;
 }
 
 
-int extract_docx_content_item(
-        extract_alloc_t*    alloc,
-        extract_astring_t*  contentss,
-        int                 contentss_num,
-        images_t*           images,
-        const char*         name,
-        const char*         text,
-        char**              text2
-        )
+int
+extract_docx_content_item(extract_alloc_t    *alloc,
+                          extract_astring_t  *contentss,
+                          int                 contentss_num,
+                          images_t           *images,
+                          const char         *name,
+                          const char         *text,
+                          char              **text2)
 {
     int e = -1;
     extract_astring_t   temp;
@@ -772,7 +794,7 @@ int extract_docx_content_item(
         int it;
         extract_astring_free(alloc, &temp);
         outf("text: %s", text);
-        if (s_find_mid(text, "<Types ", "</Types>", &begin, &end)) goto end;
+        if (find_mid(text, "<Types ", "</Types>", &begin, &end)) goto end;
 
         insert = begin;
         insert = strchr(insert, '>');
@@ -800,7 +822,7 @@ int extract_docx_content_item(
         const char* end;
         int         j;
         extract_astring_free(alloc, &temp);
-        if (s_find_mid(text, "<Relationships", "</Relationships>", &begin, &end)) goto end;
+        if (find_mid(text, "<Relationships", "</Relationships>", &begin, &end)) goto end;
         if (extract_astring_catl(alloc, &temp, text, end - text)) goto end;
         outf("images.images_num=%i", images->images_num);
         for (j=0; j<images->images_num; ++j) {
@@ -845,22 +867,21 @@ int extract_docx_content_item(
 
 
 
-int extract_docx_write_template(
-        extract_alloc_t*    alloc,
-        extract_astring_t*  contentss,
-        int                 contentss_num,
-        images_t*           images,
-        const char*         path_template,
-        const char*         path_out,
-        int                 preserve_dir
-        )
+int
+extract_docx_write_template(extract_alloc_t   *alloc,
+                            extract_astring_t *contentss,
+                            int                contentss_num,
+                            images_t          *images,
+                            const char        *path_template,
+                            const char        *path_out,
+                            int                preserve_dir)
 {
-    int     e = -1;
-    int     i;
-    char*   path_tempdir = NULL;
-    char*   path = NULL;
-    char*   text = NULL;
-    char*   text2 = NULL;
+    int   e = -1;
+    int   i;
+    char *path_tempdir = NULL;
+    char *path = NULL;
+    char *text = NULL;
+    char *text2 = NULL;
 
     assert(path_out);
     assert(path_template);

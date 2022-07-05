@@ -870,7 +870,7 @@ static int make_paragraphs(
     for (line = content_line_iterator_init(&lit, content); line != NULL; line = content_line_iterator_next(&lit))
     {
         paragraph_t *paragraph;
-	if (content_replace_new_paragraph(alloc, &line->base, &paragraph))
+        if (content_replace_new_paragraph(alloc, &line->base, &paragraph))
             goto end;
         content_append_line(&paragraph->content, line);
     }
@@ -884,8 +884,8 @@ static int make_paragraphs(
         line_t                     *line_a;
         double                      angle_a;
         int                         verbose = 0;
-	paragraph_t                *paragraph_b;
-	content_paragraph_iterator  pit2;
+        paragraph_t                *paragraph_b;
+        content_paragraph_iterator  pit2;
         int b;
 
         line_a = paragraph_line_last(paragraph_a);
@@ -895,7 +895,7 @@ static int make_paragraphs(
         /* Look for nearest paragraph_t that could be appended to
         paragraph_a. */
         for (b=0, paragraph_b = content_paragraph_iterator_init(&pit2, content); paragraph_b != NULL; b++, paragraph_b = content_paragraph_iterator_next(&pit2))
-	{
+        {
             line_t* line_b;
             line_b = paragraph_line_first(paragraph_b);
             if (!lines_are_compatible(line_a, line_b, angle_a, 0)) {
@@ -1039,9 +1039,9 @@ static int make_paragraphs(
                     checking again. */
                     pit.next = &paragraph_a->base;
                     a -= 1;
-		} else {
+                } else {
                     a -= 1;
-		}
+                }
             }
             else {
                 outfx(
@@ -1065,6 +1065,102 @@ static int make_paragraphs(
     return ret;
 }
 
+static int
+spot_rotated_blocks(extract_alloc_t *alloc,
+                    content_t       *lines)
+{
+    /* On entry, we have that the content in lines has been
+    sorted so that paragraphs with the same rotation are together,
+    and sorted in order of increasing y. All we have to do here is
+    to spot a run of paragraphs with the same rotation, and to gather
+    them into a block. */
+    content_iterator  cit;
+    content_t        *content;
+    content_iterator  cit0;
+    content_t        *content0 = NULL;
+    int               ret = -1;
+    matrix_t          ctm0;
+    int               ctm0_set = 0;
+
+    for (content = content_iterator_init(&cit, lines); content != NULL; content = content_iterator_next(&cit))
+    {
+        matrix_t ctm;
+        int      ctm_set = 0;
+        int      flush = 0;
+
+        switch (content->type)
+        {
+            case content_paragraph:
+            {
+                double rotate;
+                ctm = s_line_span_first(paragraph_line_first((paragraph_t *)content))->ctm;
+                rotate = atan2(ctm.b, ctm.a);
+                /* We are not gathering rotated stuff into blocks. If the rotation returns to zero
+                 * then flush any collection we might have found. Otherwise, remember that we have
+                 * a ctm value set, so we can compare to it. */
+                if (rotate == 0)
+                    flush = 1;
+                else
+                    ctm_set = 1;
+                /* If the ctm value differs from the first ctm0 we met for the current collection,
+                 * flush the collection. */
+                if (ctm0_set && extract_matrix_cmp4(&ctm, &ctm0) != 0)
+                    flush = 1;
+                break;
+            }
+            default:
+                flush = 1;
+                break;
+        }
+
+        if (flush && content0)
+        {
+            /* Move [content0..content) to a block */
+            block_t *block;
+            content_t *c = content_iterator_next(&cit0);
+            /* Replace content0 with new block. */
+            if (content_replace_new_block(alloc, content0, &block)) goto end;
+            /* Insert content0 into block. */
+            content_append(&block->content, content0);
+            /* Now move the rest of the list into block too. */
+            for (; c != content; c = content_iterator_next(&cit0))
+            {
+                content_append(&block->content, c);
+            }
+            ctm0_set = 0;
+            content0 = NULL;
+        }
+        if (ctm_set && !ctm0_set)
+        {
+            ctm0 = ctm;
+            ctm0_set = 1;
+            content0 = content;
+            cit0 = cit;
+        }
+    }
+
+    if (content0)
+    {
+        /* Move [content0..NULL) to a block */
+        block_t *block;
+        content_t *c = content_iterator_next(&cit0);
+        /* Replace content0 with new block. */
+        if (content_replace_new_block(alloc, content0, &block)) goto end;
+        /* Insert content0 into block. */
+        content_append(&block->content, content0);
+        /* Now move the rest of the list into block too. */
+        for (; c != content; c = content_iterator_next(&cit0))
+        {
+            content_append(&block->content, c);
+        }
+    }
+
+    ret = 0;
+end:
+
+    return ret;
+}
+
 static int s_join_subpage_rects(
         extract_alloc_t*    alloc,
         subpage_t*          subpage,
@@ -1075,17 +1171,16 @@ static int s_join_subpage_rects(
 /* Extracts text that is inside any of rects[0..rects_num], or all text if
 rects_num is zero. */
 {
-    if (make_lines(
-            alloc,
-            &subpage->content,
-            rects,
-            rects_num,
-            lines
-            )) return -1;
-    if (make_paragraphs(
-            alloc,
-            lines
-            )) return -1;
+    if (make_lines(alloc,
+                   &subpage->content,
+                   rects,
+                   rects_num,
+                   lines))
+        return -1;
+    if (make_paragraphs(alloc, lines))
+        return -1;
+    if (spot_rotated_blocks(alloc, lines))
+        return -1;
 
     return 0;
 }

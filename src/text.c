@@ -8,22 +8,21 @@
 #include <string.h>
 
 
-int extract_content_insert(
-        extract_alloc_t*    alloc,
-        const char*         original,
-        const char*         single_name,
-        const char*         mid_begin_name,
-        const char*         mid_end_name,
-        extract_astring_t*  contentss,
-        int                 contentss_num,
-        char**              o_out
-        )
+int
+extract_content_insert(extract_alloc_t    *alloc,
+                       const char         *original,
+                       const char         *single_name,
+                       const char         *mid_begin_name,
+                       const char         *mid_end_name,
+                       extract_astring_t  *contentss,
+                       int                 contentss_num,
+                       char              **o_out)
 {
-    int e = -1;
-    const char* mid_begin = NULL;
-    const char* mid_end = NULL;
-    const char* single = NULL;
-    extract_astring_t   out;
+    int                e         = -1;
+    const char        *mid_begin = NULL;
+    const char        *mid_end   = NULL;
+    const char        *single    = NULL;
+    extract_astring_t  out;
     extract_astring_init(&out);
 
     assert(single_name || mid_begin_name || mid_end_name);
@@ -33,10 +32,9 @@ int extract_content_insert(
     if (single)
     {
         outf("Have found single_name='%s', using in preference to mid_begin_name=%s mid_end_name=%s",
-                single_name,
-                mid_begin_name,
-                mid_end_name
-                );
+             single_name,
+             mid_begin_name,
+             mid_end_name);
         mid_begin = single;
         mid_end = single + strlen(single_name);
     }

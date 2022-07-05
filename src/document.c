@@ -64,6 +64,14 @@ void extract_paragraph_init(paragraph_t *paragraph)
     content_init(&paragraph->content, content_root);
 }
 
+void extract_block_init(block_t *block)
+{
+    static const block_t blank = { 0 };
+    *block = blank;
+    content_init(&block->base, content_block);
+    content_init(&block->content, content_root);
+}
+
 void extract_table_init(table_t *table)
 {
     static const table_t blank = { 0 };
@@ -102,6 +110,9 @@ content_clear(extract_alloc_t* alloc, content_t *proot)
                 break;
             case content_paragraph:
                 extract_paragraph_free(alloc, (paragraph_t **)&content);
+                break;
+            case content_block:
+                extract_block_free(alloc, (block_t **)&content);
                 break;
             case content_table:
                 extract_table_free(alloc, (table_t **)&content);
@@ -208,6 +219,16 @@ line_t *content_first_line(const content_t *root)
 line_t *content_last_line(const content_t *root)
 {
     return (line_t *)content_last_of_type(root, content_line);
+}
+
+paragraph_t *content_first_paragraph(const content_t *root)
+{
+    return (paragraph_t *)content_first_of_type(root, content_paragraph);
+}
+
+paragraph_t *content_last_paragraph(const content_t *root)
+{
+    return (paragraph_t *)content_last_of_type(root, content_paragraph);
 }
 
 void
@@ -321,7 +342,7 @@ static void dump_span(const span_t *span, int depth)
              printf("<%04x>", span->chars[i].ucs);
         }
     }
-    printf("\">\n");
+    printf("\"\n");
 }
 
 static void
@@ -337,21 +358,45 @@ content_dump_aux(const content_t *content, int depth)
         switch (walk->type)
         {
             case content_span:
-                printf("<span>\n");
+            {
+                const span_t *span = (const span_t *)walk;
+                printf("<span ctm=[%g %g %g %g %g %g]\n",
+                       span->ctm.a, span->ctm.b, span->ctm.c, span->ctm.d, span->ctm.e, span->ctm.f);
+                space_prefix(depth);
+                printf("      trm=[%g %g %g %g %g %g]\n",
+                       span->trm.a, span->trm.b, span->trm.c, span->trm.d, span->trm.e, span->trm.f);
                 dump_span((const span_t *)walk, depth+1);
-                printf("</span>\n");
+                space_prefix(depth);
+                printf("/>\n");
                 break;
+            }
             case content_line:
-                printf("<line>\n");
-                content_dump_aux(&((const line_t *)walk)->content, depth+1);
+            {
+                const line_t *line = (const line_t *)walk;
+                span_t *span = content_first_span(&line->content);
+                char_t *char0 = (span && span->chars_num > 0) ? &span->chars[0] : NULL;
+                char_t *char1 = (span && span->chars_num > 0) ? &span->chars[span->chars_num-1] : NULL;
+                printf("<line");
+                if (char0)
+                {
+                    printf(" x0=%g y0=%g x1=%g y1=%g\n", char0->x, char0->y, char1->x, char1->y);
+                }
+                content_dump_aux(&line->content, depth+1);
                 space_prefix(depth);
                 printf("</line>\n");
                 break;
+            }
             case content_paragraph:
                 printf("<paragraph>\n");
                 content_dump_aux(&((const paragraph_t *)walk)->content, depth+1);
                 space_prefix(depth);
                 printf("</paragraph>\n");
+                break;
+            case content_block:
+                printf("<block>\n");
+                content_dump_aux(&((const block_t *)walk)->content, depth+1);
+                space_prefix(depth);
+                printf("</block>\n");
                 break;
             case content_table:
             {

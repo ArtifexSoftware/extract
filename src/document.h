@@ -15,6 +15,7 @@ typedef struct line_t line_t;
 typedef struct paragraph_t paragraph_t;
 typedef struct image_t image_t;
 typedef struct table_t table_t;
+typedef struct block_t block_t;
 
 static const double pi = 3.141592653589793;
 
@@ -27,6 +28,22 @@ Thus:
   Every node in a list (including the root) has next and prev != NULL.
   The root node in an empty list has next and prev pointing to itself.
   Any non-root node with prev and next == NULL is not in a list.
+
+Content nodes are of different types.
+
+A spans is an array of "char_t"s (note, an array, NOT a content list).
+
+Lines contain a content list consisting of spans.
+
+Paragraphs contain a content list consisting of lines.
+
+An image nodes contains details of a bitmap image.
+
+A table node contains an array of cells, each of which contains a content
+list that can contain any other type.
+
+Blocks contain a content list consisting of paragraphs, tables and images.
+Conceptually these represent a block of content on a page.
 */
 typedef enum {
     content_root,
@@ -35,6 +52,7 @@ typedef enum {
     content_paragraph,
     content_image,
     content_table,
+    content_block
 } content_type_t;
 
 typedef struct content_t {
@@ -75,22 +93,27 @@ int content_new_span(extract_alloc_t *alloc, span_t **pspan);
 int content_new_line(extract_alloc_t *alloc, line_t **pline);
 int content_new_paragraph(extract_alloc_t *alloc, paragraph_t **pparagraph);
 int content_new_table(extract_alloc_t *alloc, table_t **ptable);
+int content_new_block(extract_alloc_t *alloc, block_t **pblock);
 
 int content_append_new_span(extract_alloc_t* alloc, content_t *root, span_t **pspan);
 int content_append_new_line(extract_alloc_t* alloc, content_t *root, line_t **pline);
 int content_append_new_paragraph(extract_alloc_t* alloc, content_t *root, paragraph_t **pparagraph);
 int content_append_new_image(extract_alloc_t* alloc, content_t *root, image_t **pimage);
 int content_append_new_table(extract_alloc_t* alloc, content_t *root, table_t **ptable);
+int content_append_new_block(extract_alloc_t* alloc, content_t *root, block_t **pblock);
 
 void content_replace(content_t *current, content_t *replacement);
 int content_replace_new_line(extract_alloc_t* alloc, content_t *current, line_t **pline);
 int content_replace_new_paragraph(extract_alloc_t* alloc, content_t *current, paragraph_t **pparagraph);
+int content_replace_new_block(extract_alloc_t* alloc, content_t *current, block_t **pblock);
+
 
 void content_append(content_t *root, content_t *content);
 void content_append_span(content_t *root, span_t *span);
 void content_append_line(content_t *root, line_t *line);
 void content_append_paragraph(content_t *root, paragraph_t *paragraph);
 void content_append_table(content_t *root, table_t *table);
+void content_append_block(content_t *root, block_t *block);
 
 void content_concat(content_t *dst, content_t *src);
 
@@ -408,7 +431,16 @@ void extract_paragraph_init(paragraph_t *paragraph);
 
 void extract_paragraph_free(extract_alloc_t* alloc, paragraph_t** pparagraph);
 
-int extract_paragraph_alloc(extract_alloc_t* alloc, paragraph_t** pparagraph);
+struct block_t
+{
+    content_t base;
+    content_t content;
+};
+/* List of content that we believe should be treated as a whole. */
+
+void extract_block_init(block_t *block);
+
+void extract_block_free(extract_alloc_t* alloc, block_t** pblock);
 
 struct image_t
 {

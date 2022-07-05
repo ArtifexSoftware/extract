@@ -198,16 +198,17 @@ void extract_paragraph_free(extract_alloc_t* alloc, paragraph_t** pparagraph)
     extract_free(alloc, pparagraph);
 }
 
-int extract_paragraph_alloc(extract_alloc_t* alloc, paragraph_t** pparagraph)
+void extract_block_free(extract_alloc_t* alloc, block_t** pblock)
 {
-    if (extract_malloc(alloc, pparagraph, sizeof(paragraph_t)))
-        return -1;
+    block_t *block = *pblock;
 
-    content_init(&(*pparagraph)->content, content_root);
+    if (block == NULL)
+        return;
 
-    return 0;
+    content_unlink(&block->base);
+    content_clear(alloc, &block->content);
+    extract_free(alloc, pblock);
 }
-
 
 void extract_table_free(extract_alloc_t* alloc, table_t** ptable)
 {
@@ -288,6 +289,16 @@ void content_append_line(content_t *root, line_t *line)
     content_append(root, &line->base);
 }
 
+void content_append_paragraph(content_t *root, paragraph_t *paragraph)
+{
+    content_append(root, &paragraph->base);
+}
+
+void content_append_block(content_t *root, block_t *block)
+{
+    content_append(root, &block->base);
+}
+
 int content_new_root(extract_alloc_t *alloc, content_t **pcontent)
 {
     if (extract_malloc(alloc, pcontent, sizeof(**pcontent))) return -1;
@@ -320,6 +331,13 @@ int content_new_paragraph(extract_alloc_t *alloc, paragraph_t **pparagraph)
     return 0;
 }
 
+int content_new_block(extract_alloc_t *alloc, block_t **pblock)
+{
+    if (extract_malloc(alloc, pblock, sizeof(**pblock))) return -1;
+    extract_block_init(*pblock);
+
+    return 0;
+}
 int content_new_table(extract_alloc_t *alloc, table_t **ptable)
 {
     if (extract_malloc(alloc, ptable, sizeof(**ptable))) return -1;
@@ -351,6 +369,15 @@ int content_append_new_paragraph(extract_alloc_t* alloc, content_t *root, paragr
 {
     if (content_new_paragraph(alloc, pparagraph)) return -1;
     content_append(root, &(*pparagraph)->base);
+
+    return 0;
+}
+
+int content_append_new_block(extract_alloc_t* alloc, content_t *root, block_t **pblock)
+/* Appends new empty block content to a content_list_t; returns -1 with errno set on error. */
+{
+    if (content_new_block(alloc, pblock)) return -1;
+    content_append(root, &(*pblock)->base);
 
     return 0;
 }
@@ -398,6 +425,15 @@ int content_replace_new_paragraph(extract_alloc_t* alloc, content_t *current, pa
 {
     if (content_new_paragraph(alloc, pparagraph)) return -1;
     content_replace(current, &(*pparagraph)->base);
+
+    return 0;
+}
+
+int content_replace_new_block(extract_alloc_t* alloc, content_t *current, block_t **pblock)
+/* Replaces current element with a new empty block content; returns -1 with errno set on error. */
+{
+    if (content_new_block(alloc, pblock)) return -1;
+    content_replace(current, &(*pblock)->base);
 
     return 0;
 }
@@ -1859,48 +1895,69 @@ int extract_page_end(extract_t* extract)
     return 0;
 }
 
-
-static int paragraphs_to_text_content(
-        extract_alloc_t   *alloc,
-        content_t         *paragraphs,
-        extract_astring_t *text
-        )
+static int
+paragraph_to_text(extract_alloc_t   *alloc,
+                  paragraph_t       *paragraph,
+                  extract_astring_t *text)
 {
-    content_paragraph_iterator  pit;
-    paragraph_t                *paragraph;
+    content_line_iterator  lit;
+    line_t                *line;
 
-    for (paragraph = content_paragraph_iterator_init(&pit, paragraphs); paragraph != NULL; paragraph = content_paragraph_iterator_next(&pit))
+    for (line = content_line_iterator_init(&lit, &paragraph->content); line != NULL; line = content_line_iterator_next(&lit))
     {
-        content_line_iterator  lit;
-        line_t                *line;
+        content_span_iterator  sit;
+        span_t                *span;
 
-        for (line = content_line_iterator_init(&lit, &paragraph->content); line != NULL; line = content_line_iterator_next(&lit))
+        for (span = content_span_iterator_init(&sit, &line->content); span != NULL; span = content_span_iterator_next(&sit))
         {
-            content_span_iterator  sit;
-            span_t                *span;
+            int c;
 
-            for (span = content_span_iterator_init(&sit, &line->content); span != NULL; span = content_span_iterator_next(&sit))
+            for (c=0; c<span->chars_num; ++c)
             {
-                int c;
-
-                for (c=0; c<span->chars_num; ++c)
-                {
-                    /* We encode each character as utf8. */
-                    char_t* char_ = &span->chars[c];
-                    unsigned cc = char_->ucs;
-                    if (extract_astring_catc_unicode(
-                            alloc,
-                            text,
-                            cc,
-                            0 /*xml*/,
-                            1 /*ascii_ligatures*/,
-                            1 /*ascii_dash*/,
-                            1 /*ascii_apostrophe*/
-                            )) return -1;
-                }
+                /* We encode each character as utf8. */
+                char_t* char_ = &span->chars[c];
+                unsigned cc = char_->ucs;
+                if (extract_astring_catc_unicode(alloc,
+                                                 text,
+                                                 cc,
+                                                 0 /*xml*/,
+                                                 1 /*ascii_ligatures*/,
+                                                 1 /*ascii_dash*/,
+                                                 1 /*ascii_apostrophe*/
+                                                 )) return -1;
             }
         }
-        if (extract_astring_catc(alloc, text, '\n')) return -1;
+    }
+    if (extract_astring_catc(alloc, text, '\n')) return -1;
+
+    return 0;
+}
+
+static int
+paragraphs_to_text_content(extract_alloc_t   *alloc,
+                           content_t         *paragraphs,
+                           extract_astring_t *text)
+{
+    content_iterator  cit;
+    content_t        *content;
+
+    for (content = content_iterator_init(&cit, paragraphs); content != NULL; content = content_iterator_next(&cit))
+    {
+        if (content->type == content_paragraph)
+        {
+            if (paragraph_to_text(alloc, (paragraph_t *)content, text)) return -1;
+        }
+        else if (content->type == content_block)
+        {
+            block_t                    *block = (block_t *)content;
+            content_paragraph_iterator  pit;
+            paragraph_t                *paragraph;
+
+            for (paragraph = content_paragraph_iterator_init(&pit, &block->content); paragraph != NULL; paragraph = content_paragraph_iterator_next(&pit))
+            {
+                if (paragraph_to_text(alloc, paragraph, text)) return -1;
+            }
+        }
     }
     return 0;
 }
