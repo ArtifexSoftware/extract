@@ -148,7 +148,7 @@ document_to_docx_content_paragraph(extract_alloc_t   *alloc,
             double font_size_new;
 
             content_state->ctm_prev = &span->ctm;
-            font_size_new = extract_matrices_to_font_size(&span->ctm, &span->trm);
+            font_size_new = extract_font_size(&span->ctm);
             if (!content_state->font.name
                     || strcmp(span->font_name, content_state->font.name)
                     || span->flags.font_bold != content_state->font.bold
@@ -491,7 +491,7 @@ docx_append_rotated_paragraphs(extract_alloc_t    *alloc,
                                content_state_t    *state,
                                block_t            *block,
                                int                *text_box_id,
-                               const matrix_t     *ctm,
+                               const matrix4_t    *ctm,
                                double              rotate,
                                extract_astring_t  *output)
 {
@@ -509,13 +509,11 @@ docx_append_rotated_paragraphs(extract_alloc_t    *alloc,
     span_t           *first_span  = content_head_as_span(&content_first_line(&paragraph->content)->content);
     point_t           origin      = { first_span->chars[0].x,
                                       first_span->chars[0].y };
-    matrix_t          ctm_inverse = {1, 0, 0, 1, 0, 0};
+    matrix4_t         ctm_inverse = {1, 0, 0, 1};
     double            ctm_det     = ctm->a*ctm->d - ctm->b*ctm->c;
 
-    outf("rotate=%.2frad=%.1fdeg ctm: ef=(%f %f) abcd=(%f %f %f %f)",
+    outf("rotate=%.2frad=%.1fdeg ctm: abcd=(%f %f %f %f)",
             rotate, rotate * 180 / pi,
-            ctm->e,
-            ctm->f,
             ctm->a,
             ctm->b,
             ctm->c,
@@ -549,7 +547,7 @@ docx_append_rotated_paragraphs(extract_alloc_t    *alloc,
         {
             span_t *span = extract_line_span_last(line);
             char_t *char_ = extract_span_char_last(span);
-            double  adv = char_->adv * extract_matrix_expansion(span->trm);
+            double  adv = char_->adv * extract_matrix_expansion(span->ctm);
             double  x = char_->x + adv * cos(rotate);
             double  y = char_->y + adv * sin(rotate);
 
@@ -589,8 +587,8 @@ docx_append_rotated_paragraphs(extract_alloc_t    *alloc,
         box by subtracting the vector that the top-left moves when
         rotated by angle <rotate> about the middle. */
         double point_to_emu = 12700;    /* https://en.wikipedia.org/wiki/Office_Open_XML_file_formats#DrawingML */
-        int x = (int) (ctm->e * point_to_emu);
-        int y = (int) (ctm->f * point_to_emu);
+        int x = (int) (origin.x * point_to_emu);
+        int y = (int) (origin.y * point_to_emu);
         int w = (int) (extent.x * point_to_emu);
         int h = (int) (extent.y * point_to_emu);
         int dx;
@@ -607,9 +605,9 @@ docx_append_rotated_paragraphs(extract_alloc_t    *alloc,
 
         dx = (int) ((1-cos(rotate)) * w / 2.0 + sin(rotate) * h / 2.0);
         dy = (int) ((cos(rotate)-1) * h / 2.0 + sin(rotate) * w / 2.0);
-        outf("ctm->e,f=%f,%f rotate=%f => x,y=%ik %ik dx,dy=%ik %ik",
-                ctm->e,
-                ctm->f,
+        outf("origin.x,y=%f,%f rotate=%f => x,y=%ik %ik dx,dy=%ik %ik",
+                origin.x,
+                origin.y,
                 rotate * 180/pi,
                 x/1000,
                 y/1000,
@@ -674,17 +672,15 @@ extract_document_to_docx_content(extract_alloc_t   *alloc,
                 y_table = (table) ? table->pos.y : DBL_MAX;
 
                 if (paragraph && y_paragraph < y_table) {
-                    const matrix_t* ctm = &first_span->ctm;
-                    double rotate = atan2(ctm->b, ctm->a);
+                    const matrix4_t *ctm    = &first_span->ctm;
+                    double           rotate = atan2(ctm->b, ctm->a);
 
                     if (spacing
                         && content_state.ctm_prev
                         && first_line
                         && first_span
-                        && extract_matrix_cmp4(
-                                content_state.ctm_prev,
-                                &first_span->ctm
-                                )
+                        && extract_matrix4_cmp(content_state.ctm_prev,
+                                               &first_span->ctm)
                         ) {
                         /* Extra vertical space between paragraphs that were at
                         different angles in the original document. */

@@ -300,7 +300,7 @@ document_to_odt_content_paragraph(extract_alloc_t      *alloc,
             double font_size_new;
 
             content_state->ctm_prev = &span->ctm;
-            font_size_new = extract_matrices_to_font_size(&span->ctm, &span->trm);
+            font_size_new = extract_font_size(&span->ctm);
             if (!content_state->font.name
                     || strcmp(span->font_name, content_state->font.name)
                     || span->flags.font_bold != content_state->font.bold
@@ -513,7 +513,7 @@ odt_append_rotated_paragraphs(extract_alloc_t       *alloc,
                               content_state_t       *content_state,
                               block_t               *block,
                               int                   *text_box_id,
-                              const matrix_t        *ctm,
+                              const matrix4_t       *ctm,
                               double                 rotate,
                               extract_astring_t     *output,
                               extract_odt_styles_t  *styles)
@@ -535,10 +535,10 @@ odt_append_rotated_paragraphs(extract_alloc_t       *alloc,
     matrix_t          ctm_inverse = {1, 0, 0, 1, 0, 0};
     double            ctm_det     = ctm->a*ctm->d - ctm->b*ctm->c;
 
-    outf("rotate=%.2frad=%.1fdeg ctm: ef=(%f %f) abcd=(%f %f %f %f)",
+    outf("rotate=%.2frad=%.1fdeg ctm: origin=(%f %f) abcd=(%f %f %f %f)",
          rotate, rotate * 180 / pi,
-         ctm->e,
-         ctm->f,
+         origin.x,
+         origin.y,
          ctm->a,
          ctm->b,
          ctm->c,
@@ -575,7 +575,7 @@ odt_append_rotated_paragraphs(extract_alloc_t       *alloc,
         {
             span_t *span = extract_line_span_last(line);
             char_t *char_ = extract_span_char_last(span);
-            double  adv = char_->adv * extract_matrix_expansion(span->trm);
+            double  adv = char_->adv * extract_font_size(&span->ctm);
             double  x = char_->x + adv * cos(rotate);
             double  y = char_->y + adv * sin(rotate);
 
@@ -604,8 +604,8 @@ odt_append_rotated_paragraphs(extract_alloc_t       *alloc,
     if (odt_output_rotated_paragraphs(alloc,
                                       block,
                                       rotate,
-                                      ctm->e,
-                                      ctm->f,
+                                      origin.x,
+                                      origin.y,
                                       extent.x,
                                       extent.y,
                                       *text_box_id,
@@ -664,16 +664,14 @@ extract_page_to_odt_content(extract_alloc_t      *alloc,
 
             if (paragraph && y_paragraph < y_table)
             {
-                const matrix_t* ctm = &first_span->ctm;
-                double rotate = atan2(ctm->b, ctm->a);
+                const matrix4_t *ctm = &first_span->ctm;
+                double           rotate = atan2(ctm->b, ctm->a);
 
                 if (spacing
                         && content_state.ctm_prev
                         && first_span
-                        && extract_matrix_cmp4(
-                                content_state.ctm_prev,
-                                &first_span->ctm
-                                )
+                        && extract_matrix4_cmp(content_state.ctm_prev,
+                                               &first_span->ctm)
                         )
                 {
                     /* Extra vertical space between paragraphs that were at

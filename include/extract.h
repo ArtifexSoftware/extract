@@ -54,25 +54,6 @@ int extract_page_begin(extract_t* extract, double minx, double miny, double maxx
 /* Must be called before extract_span_begin(). */
 
 
-int extract_span_begin(
-        extract_t*  extract,
-        const char* font_name,
-        int         font_bold,
-        int         font_italic,
-        int         wmode,
-        double      ctm_a,
-        double      ctm_b,
-        double      ctm_c,
-        double      ctm_d,
-        double      ctm_e,
-        double      ctm_f,
-        double      trm_a,
-        double      trm_b,
-        double      trm_c,
-        double      trm_d,
-        double      trm_e,
-        double      trm_f
-        );
 /* Starts a new span.
 extract
     As passed to earlier call to extract_begin().
@@ -86,9 +67,16 @@ wmode
     0 or 1.
 ctm_*
     Matrix values.
-trm_*
-    Matrix values.
 */
+int extract_span_begin(extract_t  *extract,
+                       const char *font_name,
+                       int         font_bold,
+                       int         font_italic,
+                       int         wmode,
+                       double      ctm_a,
+                       double      ctm_b,
+                       double      ctm_c,
+                       double      ctm_d);
 
 
 int extract_add_char(
@@ -97,7 +85,6 @@ int extract_add_char(
         double         y,
         unsigned       ucs,
         double         adv,
-        int            autosplit,
         double         minx,
         double         miny,
         double         maxx,
@@ -114,8 +101,6 @@ ucs
     Unicode value.
 adv
     Advance of this character.
-autosplit
-    Ignored as of 2021-07-02.
 minx, miny, maxx, maxy
     Glyph bbox
 */

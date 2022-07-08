@@ -326,6 +326,9 @@ static void space_prefix(int depth)
     }
 }
 
+static void
+content_dump_aux(const content_t *content, int depth);
+
 static void dump_span(const span_t *span, int depth)
 {
     int i;
@@ -346,6 +349,48 @@ static void dump_span(const span_t *span, int depth)
 }
 
 static void
+content_dump_span_aux(const span_t *span, int depth)
+{
+    space_prefix(depth);
+    printf("<span ctm=[%g %g %g %g]\n",
+           span->ctm.a, span->ctm.b, span->ctm.c, span->ctm.d);
+    space_prefix(depth);
+    printf(" font-name=\"%s\"\n", span->font_name);
+    dump_span(span, depth+1);
+    space_prefix(depth);
+    printf("/>\n");
+}
+
+void
+content_dump_span(const span_t *span)
+{
+    content_dump_span_aux(span, 0);
+}
+
+static void
+content_dump_line_aux(const line_t *line, int depth)
+{
+    span_t *span = content_first_span(&line->content);
+    char_t *char0 = (span && span->chars_num > 0) ? &span->chars[0] : NULL;
+    char_t *char1 = (span && span->chars_num > 0) ? &span->chars[span->chars_num-1] : NULL;
+    space_prefix(depth);
+    printf("<line");
+    if (char0)
+    {
+        printf(" x0=%g y0=%g x1=%g y1=%g\n", char0->x, char0->y, char1->x, char1->y);
+    }
+    content_dump_aux(&line->content, depth+1);
+    space_prefix(depth);
+    printf("</line>\n");
+}
+
+void
+content_dump_line(const line_t *line)
+{
+    content_dump_line_aux(line, 0);
+}
+
+static void
 content_dump_aux(const content_t *content, int depth)
 {
     const content_t *walk;
@@ -354,45 +399,23 @@ content_dump_aux(const content_t *content, int depth)
     for (walk = content->next; walk != content; walk = walk->next)
     {
         assert(walk->next->prev == walk && walk->prev->next == walk);
-        space_prefix(depth);
         switch (walk->type)
         {
             case content_span:
-            {
-                const span_t *span = (const span_t *)walk;
-                printf("<span ctm=[%g %g %g %g %g %g]\n",
-                       span->ctm.a, span->ctm.b, span->ctm.c, span->ctm.d, span->ctm.e, span->ctm.f);
-                space_prefix(depth);
-                printf("      trm=[%g %g %g %g %g %g]\n",
-                       span->trm.a, span->trm.b, span->trm.c, span->trm.d, span->trm.e, span->trm.f);
-                dump_span((const span_t *)walk, depth+1);
-                space_prefix(depth);
-                printf("/>\n");
+                content_dump_span_aux((const span_t *)walk, depth);
                 break;
-            }
             case content_line:
-            {
-                const line_t *line = (const line_t *)walk;
-                span_t *span = content_first_span(&line->content);
-                char_t *char0 = (span && span->chars_num > 0) ? &span->chars[0] : NULL;
-                char_t *char1 = (span && span->chars_num > 0) ? &span->chars[span->chars_num-1] : NULL;
-                printf("<line");
-                if (char0)
-                {
-                    printf(" x0=%g y0=%g x1=%g y1=%g\n", char0->x, char0->y, char1->x, char1->y);
-                }
-                content_dump_aux(&line->content, depth+1);
-                space_prefix(depth);
-                printf("</line>\n");
+                content_dump_line_aux((const span_t *)walk, depth);
                 break;
-            }
             case content_paragraph:
+                space_prefix(depth);
                 printf("<paragraph>\n");
                 content_dump_aux(&((const paragraph_t *)walk)->content, depth+1);
                 space_prefix(depth);
                 printf("</paragraph>\n");
                 break;
             case content_block:
+                space_prefix(depth);
                 printf("<block>\n");
                 content_dump_aux(&((const block_t *)walk)->content, depth+1);
                 space_prefix(depth);
@@ -402,6 +425,7 @@ content_dump_aux(const content_t *content, int depth)
             {
                 const table_t *table = (const table_t *)walk;
                 int i, j, k;
+                space_prefix(depth);
                 printf("<table w=%d h=%d>\n", table->cells_num_x, table->cells_num_y);
                 k = 0;
                 for (j = 0; j < table->cells_num_y; j++)
@@ -421,6 +445,7 @@ content_dump_aux(const content_t *content, int depth)
                 break;
             }
             case content_image:
+                space_prefix(depth);
                 printf("<image/>\n");
                 break;
             default:

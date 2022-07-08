@@ -118,6 +118,9 @@ void content_append_block(content_t *root, block_t *block);
 void content_concat(content_t *dst, content_t *src);
 
 void content_dump(const content_t *content);
+void content_dump_line(const line_t *line);
+void content_dump_span(const span_t *span);
+
 
 typedef int (content_cmp_fn)(const content_t *, const content_t *);
 
@@ -336,33 +339,38 @@ typedef struct
     double  f;
 } matrix_t;
 
-const char* extract_matrix_string(const matrix_t* matrix);
+typedef struct
+{
+    double  a;
+    double  b;
+    double  c;
+    double  d;
+} matrix4_t;
 
-double      extract_matrix_expansion(matrix_t m);
+const char *extract_matrix_string(const matrix_t *matrix);
+const char *extract_matrix4_string(const matrix4_t *matrix);
+
+double      extract_matrix_expansion(matrix4_t m);
 /* Returns a*d - b*c. */
 
-point_t     extract_multiply_matrix_point(matrix_t m, point_t p);
+point_t     extract_multiply_matrix4_point(matrix4_t m, point_t p);
 matrix_t    extract_multiply_matrix_matrix(matrix_t m1, matrix_t m2);
 
-int extract_matrix_cmp4(const matrix_t* lhs, const matrix_t* rhs)
+int extract_matrix4_cmp(const matrix4_t *lhs, const matrix4_t *rhs)
 ;
 /* Returns zero if first four members of *lhs and *rhs are equal, otherwise
 +/-1. */
 
 typedef struct
 {
-    /* (x,y) before transformation by ctm and trm. */
-    double      pre_x;
-    double      pre_y;
-
-    /* (x,y) after transformation by ctm and trm. */
+    /* (x,y) after transformation by ctm. */
     double      x;
     double      y;
 
     unsigned    ucs;
     double      adv;
 
-    rect_t bbox;
+    rect_t      bbox;
 } char_t;
 /* A single char in a span.
 */
@@ -370,11 +378,8 @@ typedef struct
 struct span_t
 {
     content_t   base;
-    matrix_t    ctm;
-    matrix_t    trm;
-    char*       font_name;
-
-    /* font size is extract_matrix_cmp4(trm). */
+    matrix4_t   ctm;
+    char       *font_name;
 
     struct {
         unsigned font_bold      : 1;
@@ -382,8 +387,8 @@ struct span_t
         unsigned wmode          : 1;
     } flags;
 
-    char_t*     chars;
-    int         chars_num;
+    char_t    *chars;
+    int        chars_num;
 };
 /* List of chars that have same font and are usually adjacent. */
 
@@ -395,9 +400,10 @@ void extract_span_free(extract_alloc_t* alloc, span_t** pspan);
 char_t* extract_span_char_last(span_t* span);
 /* Returns last character in span. */
 
-int extract_span_append_c(extract_alloc_t* alloc, span_t* span, int c);
+char_t *extract_span_append_c(extract_alloc_t *alloc, span_t *span, int c);
 /* Appends new char_t to an span_t with .ucs=c and all other
-fields zeroed. */
+fields zeroed. Returns pointer to new char_t record, or NULL if allocation
+failed. */
 
 const char* extract_span_string(extract_alloc_t* alloc, span_t* span);
 /* Returns static string containing info about span_t. */
@@ -588,13 +594,13 @@ typedef struct
 int extract_document_join(extract_alloc_t* alloc, document_t* document, int layout_analysis);
 /* This does all the work of finding paragraphs and tables. */
 
-double extract_matrices_to_font_size(matrix_t* ctm, matrix_t* trm);
+double extract_font_size(matrix4_t *ctm);
 
 /* Things below here are used when generating output. */
 
 typedef struct
 {
-    char*   name;
+    char   *name;
     double  size;
     int     bold;
     int     italic;
@@ -603,8 +609,8 @@ typedef struct
 
 typedef struct
 {
-    font_t      font;
-    matrix_t*   ctm_prev;
+    font_t     font;
+    matrix4_t *ctm_prev;
 } content_state_t;
 /* Used to keep track of font information when writing paragraphs of odt
 content, e.g. so we know whether a font has changed so need to start a new odt

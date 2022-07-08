@@ -29,7 +29,7 @@ const rect_t extract_rect_infinite = { { -DBL_MAX, -DBL_MAX }, {  DBL_MAX,  DBL_
 const rect_t extract_rect_empty    = { {  DBL_MAX,  DBL_MAX }, { -DBL_MAX, -DBL_MAX } };
 
 
-double extract_matrix_expansion(matrix_t m)
+double extract_matrix_expansion(matrix4_t m)
 {
     return sqrt(fabs(m.a * m.d - m.b * m.c));
 }
@@ -37,8 +37,6 @@ double extract_matrix_expansion(matrix_t m)
 
 static void char_init(char_t* item)
 {
-    item->pre_x = 0;
-    item->pre_y = 0;
     item->x = 0;
     item->y = 0;
     item->ucs = 0;
@@ -66,10 +64,8 @@ const char* extract_span_string(extract_alloc_t* alloc, span_t* span)
     static extract_astring_t ret = {0};
     double x0 = 0;
     double y0 = 0;
-    point_t pre0 = {0, 0};
     double x1 = 0;
     double y1 = 0;
-    point_t pre1 = {0, 0};
     int c0 = 0;
     int c1 = 0;
     int i;
@@ -83,26 +79,20 @@ const char* extract_span_string(extract_alloc_t* alloc, span_t* span)
         c0 = span->chars[0].ucs;
         x0 = span->chars[0].x;
         y0 = span->chars[0].y;
-        pre0.x = span->chars[0].pre_x;
-        pre0.y = span->chars[0].pre_y;
         c1 = span->chars[span->chars_num-1].ucs;
         x1 = span->chars[span->chars_num-1].x;
         y1 = span->chars[span->chars_num-1].y;
-        pre1.x = span->chars[span->chars_num-1].pre_x;
-        pre1.y = span->chars[span->chars_num-1].pre_y;
     }
     {
         char buffer[400];
         snprintf(buffer, sizeof(buffer),
-                "span ctm=%s trm=%s chars_num=%i (%c:%f,%f pre(%f %f))..(%c:%f,%f pre(%f %f)) font=%s:(%f,%f) wmode=%i chars_num=%i: ",
-                extract_matrix_string(&span->ctm),
-                extract_matrix_string(&span->trm),
+                "span ctm=%s chars_num=%i (%c:%f,%f)..(%c:%f,%f) font=%s:(%f) wmode=%i chars_num=%i: ",
+                extract_matrix4_string(&span->ctm),
                 span->chars_num,
-                c0, x0, y0, pre0.x, pre0.y,
-                c1, x1, y1, pre1.x, pre1.y,
+                c0, x0, y0,
+                c1, x1, y1,
                 span->font_name,
-                span->trm.a,
-                span->trm.d,
+                extract_font_size(&span->ctm),
                 span->flags.wmode,
                 span->chars_num
                 );
@@ -130,22 +120,24 @@ const char* extract_span_string(extract_alloc_t* alloc, span_t* span)
     return ret.chars;
 }
 
-int extract_span_append_c(extract_alloc_t* alloc, span_t* span, int c)
+char_t *extract_span_append_c(extract_alloc_t *alloc, span_t *span, int c)
 {
-    char_t* item;
+    char_t *item;
+
     if (extract_realloc2(
             alloc,
             &span->chars,
             sizeof(*span->chars) * span->chars_num,
             sizeof(*span->chars) * (span->chars_num + 1)
             )) {
-        return -1;
+        return NULL;
     }
     item = &span->chars[span->chars_num];
     span->chars_num += 1;
     char_init(item);
     item->ucs = c;
-    return 0;
+
+    return item;
 }
 
 char_t* extract_span_char_last(span_t* span)
@@ -562,7 +554,7 @@ static int s_sign(double x)
     return 0;
 }
 
-int extract_matrix_cmp4(const matrix_t* lhs, const matrix_t* rhs)
+int extract_matrix4_cmp(const matrix4_t* lhs, const matrix4_t* rhs)
 {
     int ret;
     ret = s_sign(lhs->a - rhs->a);  if (ret) return ret;
@@ -573,7 +565,7 @@ int extract_matrix_cmp4(const matrix_t* lhs, const matrix_t* rhs)
 }
 
 
-point_t extract_multiply_matrix_point(matrix_t m, point_t p)
+point_t extract_multiply_matrix4_point(matrix4_t m, point_t p)
 {
     double x = p.x;
     p.x = m.a * x + m.c * p.y;
@@ -622,133 +614,6 @@ static void s_document_init(document_t* document)
 {
     document->pages = NULL;
     document->pages_num = 0;
-}
-
-
-static int subpage_span_end_clean(extract_alloc_t* alloc, subpage_t* subpage)
-/* Does preliminary processing of the end of the last span in a subpage; intended
-to be called as we load span information.
-
-Looks at last two char_t's in last span_t of <subpage>, and either
-leaves unchanged, or removes space in last-but-one position, or moves last
-char_t into a new span_t. */
-{
-    int ret = -1;
-    span_t* span;
-    char_t* char_;
-    double font_size;
-    double x;
-    double y;
-    double err_x;
-    double err_y;
-    point_t dir;
-
-    /* Find the last span. */
-    {
-        content_t *content = &subpage->content;
-
-        assert(content->type == content_root && content->prev != content);
-        span = (span_t *)content->prev;
-        while (span->base.type != content_span)
-        {
-            span = (span_t *)span->base.prev;
-            assert(&span->base != content);
-        }
-    }
-
-    assert(span->chars_num);
-
-    /* Last two char_t's are char_[-2] and char_[-1]. */
-    char_ = &span->chars[span->chars_num];
-
-    if (span->chars_num == 1) {
-        return 0;
-    }
-
-    font_size = extract_matrix_expansion(span->trm)
-            * extract_matrix_expansion(span->ctm);
-
-    if (span->flags.wmode) {
-        dir.x = 0;
-        dir.y = 1;
-    }
-    else {
-        dir.x = 1;
-        dir.y = 0;
-    }
-    dir = extract_multiply_matrix_point(span->trm, dir);
-
-    x = char_[-2].pre_x + char_[-2].adv * dir.x;
-    y = char_[-2].pre_y + char_[-2].adv * dir.y;
-
-    err_x = (char_[-1].pre_x - x) / font_size;
-    err_y = (char_[-1].pre_y - y) / font_size;
-
-    if (span->chars_num >= 2 && span->chars[span->chars_num-2].ucs == ' ') {
-        int remove_penultimate_space = 0;
-        if (err_x < -span->chars[span->chars_num-2].adv / 2
-                && err_x > -span->chars[span->chars_num-2].adv
-                ) {
-            remove_penultimate_space = 1;
-        }
-        if ((char_[-1].pre_x - char_[-2].pre_x) / font_size < char_[-1].adv / 10) {
-            outfx(
-                    "removing penultimate space because space very narrow:"
-                    "char_[-1].pre_x-char_[-2].pre_x=%f font_size=%f"
-                    " char_[-1].adv=%f",
-                    char_[-1].pre_x - char_[-2].pre_x,
-                    font_size,
-                    char_[-1].adv
-                    );
-            remove_penultimate_space = 1;
-        }
-        if (remove_penultimate_space) {
-            /* This character overlaps with previous space
-            character. We discard previous space character - these
-            sometimes seem to appear in the middle of words for some
-            reason. */
-            outfx("removing space before final char in: %s",
-                    extract_span_string(span));
-            span->chars[span->chars_num-2] = span->chars[span->chars_num-1];
-            span->chars_num -= 1;
-            outfx("span is now:                         %s", extract_span_string(span));
-            return 0;
-        }
-    }
-    else if (fabs(err_x) > 0.01 || fabs(err_y) > 0.01) {
-        /* This character doesn't seem to be a continuation of
-        previous characters, so split into two spans. This often
-        splits text incorrectly, but this is corrected later when
-        we join spans into lines. */
-        outfx(
-                "Splitting last char into new span. font_size=%f dir.x=%f"
-                " char[-1].pre=(%f, %f) err=(%f, %f): %s",
-                font_size,
-                dir.x,
-                char_[-1].pre_x,
-                char_[-1].pre_y,
-                err_x,
-                err_y,
-                span_string2(span)
-                );
-        {
-            span_t* span2;
-            content_t save;
-            if (content_append_new_span(alloc, &subpage->content, &span2)) goto end;
-            save = span2->base; /* Avoid overwriting the linked list entries. */
-            *span2 = *span;
-            span2->base = save;
-            if (extract_strdup(alloc, span->font_name, &span2->font_name)) goto end;
-            span2->chars_num = 1;
-            if (extract_malloc(alloc, &span2->chars, sizeof(char_t) * span2->chars_num)) goto end;
-            span2->chars[0] = char_[-1];
-            span->chars_num -= 1;
-        }
-        return 0;
-    }
-    ret = 0;
-    end:
-    return ret;
 }
 
 
@@ -1074,25 +939,15 @@ int extract_read_intermediate(extract_t* extract, extract_buffer_t* buffer, int 
                 font_bold = strstr(font_name, "-Bold") ? 1 : 0;
                 font_italic = strstr(font_name, "-Oblique") ? 1 : 0;
                 if (extract_xml_tag_attributes_find_int(&tag, "wmode", &wmode)) goto end;
-                if (extract_span_begin(
-                        extract,
-                        font_name,
-                        font_bold,
-                        font_italic,
-                        wmode,
-                        ctm.a,
-                        ctm.b,
-                        ctm.c,
-                        ctm.d,
-                        ctm.e,
-                        ctm.f,
-                        trm.a,
-                        trm.b,
-                        trm.c,
-                        trm.d,
-                        trm.e,
-                        trm.f
-                        )) goto end;
+                if (extract_span_begin(extract,
+                                       font_name,
+                                       font_bold,
+                                       font_italic,
+                                       wmode,
+                                       ctm.a,
+                                       ctm.b,
+                                       ctm.c,
+                                       ctm.d)) goto end;
 
                 for(;;) {
                     double         x;
@@ -1119,7 +974,7 @@ int extract_read_intermediate(extract_t* extract, extract_buffer_t* buffer, int 
                     if (extract_xml_tag_attributes_find_uint(&tag, "ucs", &ucs)) goto end;
 
                     /* BBox is bogus here. Analysis will fail. */
-                    if (extract_add_char(extract, x, y, ucs, adv, autosplit, x, y, x + adv, y + adv)) goto end;
+                    if (extract_add_char(extract, x, y, ucs, adv, x, y, x + adv, y + adv)) goto end;
                 }
 
                 extract_xml_tag_free(extract->alloc, &tag);
@@ -1146,63 +1001,39 @@ int extract_read_intermediate(extract_t* extract, extract_buffer_t* buffer, int 
 }
 
 
-int extract_span_begin(
-        extract_t*  extract,
-        const char* font_name,
-        int         font_bold,
-        int         font_italic,
-        int         wmode,
-        double      ctm_a,
-        double      ctm_b,
-        double      ctm_c,
-        double      ctm_d,
-        double      ctm_e,
-        double      ctm_f,
-        double      trm_a,
-        double      trm_b,
-        double      trm_c,
-        double      trm_d,
-        double      trm_e,
-        double      trm_f
-        )
+int
+extract_span_begin(extract_t  *extract,
+                   const char *font_name,
+                   int         font_bold,
+                   int         font_italic,
+                   int         wmode,
+                   double      ctm_a,
+                   double      ctm_b,
+                   double      ctm_c,
+                   double      ctm_d)
 {
-    int e = -1;
-    extract_page_t* page;
-    subpage_t* subpage;
-    span_t* span;
+    int             e = -1;
+    extract_page_t *page;
+    subpage_t      *subpage;
+    span_t         *span;
+
+    /* FIXME: RJW: Should continue the last span if everything is the same. */
+
     assert(extract->document.pages_num > 0);
     page = extract->document.pages[extract->document.pages_num-1];
     subpage = page->subpages[page->subpages_num-1];
-    outf("extract_span_begin(): ctm=(%f %f %f %f %f %f) trm=(%f %f %f %f %f %f) font_name=%s, wmode=%i",
-            ctm_a,
-            ctm_b,
-            ctm_c,
-            ctm_d,
-            ctm_e,
-            ctm_f,
-            trm_a,
-            trm_b,
-            trm_c,
-            trm_d,
-            trm_e,
-            trm_f,
-            font_name,
-            wmode
-            );
+    outf("extract_span_begin(): ctm=(%f %f %f %f) font_name=%s, wmode=%i",
+         ctm_a,
+         ctm_b,
+         ctm_c,
+         ctm_d,
+         font_name,
+         wmode);
     if (content_append_new_span(extract->alloc, &subpage->content, &span)) goto end;
     span->ctm.a = ctm_a;
     span->ctm.b = ctm_b;
     span->ctm.c = ctm_c;
     span->ctm.d = ctm_d;
-    span->ctm.e = ctm_e;
-    span->ctm.f = ctm_f;
-
-    span->trm.a = trm_a;
-    span->trm.b = trm_b;
-    span->trm.c = trm_c;
-    span->trm.d = trm_d;
-    span->trm.e = trm_e;
-    span->trm.f = trm_f;
 
     {
         const char* ff = strchr(font_name, '+');
@@ -1219,127 +1050,123 @@ int extract_span_begin(
     return e;
 }
 
-
-int extract_add_char(
-        extract_t*     extract,
-        double         x,
-        double         y,
-        unsigned       ucs,
-        double         adv,
-        int            autosplit,
-        double         x0,
-        double         y0,
-        double         x1,
-        double         y1
-        )
+/* Create a new empty span, based on the current one. */
+static span_t *
+split_to_new_span(extract_alloc_t *alloc, content_t *content, span_t *span0)
 {
-    int e = -1;
-    char_t* char_;
-    extract_page_t* page = extract->document.pages[extract->document.pages_num-1];
-    subpage_t* subpage = page->subpages[page->subpages_num-1];
-    span_t* span = content_last_span(&subpage->content);
+    content_t  save;
+    span_t    *span;
+    char      *name;
+
+    if (extract_strdup(alloc, span0->font_name, &name))
+        return NULL;
+
+    if (content_append_new_span(alloc, content, &span))
+    {
+        extract_free(alloc, &name);
+        return NULL;
+    }
+
+    save = span->base; /* Avoid overwriting linked list. */
+    *span = *span0;
+    span->base = save;
+    span->chars = NULL;
+    span->chars_num = 0;
+
+    return span;
+}
+
+int extract_add_char(extract_t *extract,
+                     double     x,
+                     double     y,
+                     unsigned   ucs,
+                     double     adv,
+                     double     x0,
+                     double     y0,
+                     double     x1,
+                     double     y1)
+{
+    int             e       = -1;
+    char_t         *char_;
+    extract_page_t *page    = extract->document.pages[extract->document.pages_num-1];
+    subpage_t      *subpage = page->subpages[page->subpages_num-1];
+    span_t         *span    = content_last_span(&subpage->content);
+    double          dist, perp, scale_squared;
+    point_t         dir;
+
+    if (span->flags.wmode)
+    {
+        dir.x = 0;
+        dir.y = 1;
+        scale_squared = span->ctm.c * span->ctm.c + span->ctm.d * span->ctm.d;
+    }
+    else
+    {
+        dir.x = 1;
+        dir.y = 0;
+        scale_squared = span->ctm.a * span->ctm.a + span->ctm.b * span->ctm.b;
+    }
+    dir = extract_multiply_matrix4_point(span->ctm, dir);
 
     outf("(%f %f) ucs=% 5i=%c adv=%f", x, y, ucs, (ucs >=32 && ucs< 127) ? ucs : ' ', adv);
-    /* Ignore the specified <autosplit> - there seems no advantage to not
-    splitting spans on multiple lines, and not doing so causes problems with
-    missing spaces in the output. */
-    autosplit = 1;
 
     if (span->chars_num)
     {
-        char_t* char_prev = &span->chars[span->chars_num - 1];
-        double xx = span->ctm.a * x + span->ctm.c * y + span->ctm.e;
-        double yy = span->ctm.b * x + span->ctm.d * y + span->ctm.f;
-        double dx = xx - char_prev->x;
-        double dy = yy - char_prev->y;
-        double a = atan2(dy, dx);
-        double span_a;
-        matrix_t m = extract_multiply_matrix_matrix(span->trm, span->ctm);
-        point_t dir = {1 - span->flags.wmode, span->flags.wmode};
-        dir = extract_multiply_matrix_point(m, dir);
-        span_a = atan2(dir.y, dir.x);
-        if (fabs(span_a - a) > 0.01)
+        char_t *char_prev = &span->chars[span->chars_num - 1];
+        double adv0 = char_prev->adv;
+
+        /* Use dot product to calculate the distance that we have moved along the direction vector. */
+        dist = (x - char_prev->x) * dir.x + (y - char_prev->y) * dir.y;
+        /* Use dot product to calculate the distance that we have moved perpendicular to the direction vector. */
+        perp = (x - char_prev->x) * dir.y - (y - char_prev->y) * dir.x;
+        /* Both dist and perp are multiplied by scale_squared. */
+        dist /= scale_squared;
+        perp /= scale_squared;
+
+        /* Arbitrary fractions here; ideally we should consult the font bbox, but we don't currently
+         * have that. */
+        if (fabs(perp) > adv0/2 || fabs(dist) > adv0 * 3)
         {
             /* Create new span. */
-            span_t* span0 = span;
-            content_t save;
-            outf("chars_num=%i prev=(%f %f) => (%f %f) xy=(%f %f) => xxyy=(%f %f) delta=(%f %f) a=%f not in line with dir=(%f %f) a=%f: ",
-                    span->chars_num,
-                    char_prev->pre_x, char_prev->pre_y,
-                    char_prev->x, char_prev->y,
-                    x, y,
-                    xx, yy,
-                    dx, dy, a,
-                    dir.x, dir.y, span_a
-                    );
             extract->num_spans_autosplit += 1;
-            if (content_append_new_span(extract->alloc, &subpage->content, &span)) goto end;
-            save = span->base; /* Avoid overwriting linked list. */
-            *span = *span0;
-            span->base = save;
-            span->chars = NULL;
-            span->chars_num = 0;
-            if (extract_strdup(extract->alloc, span0->font_name, &span->font_name)) goto end;
+            span = split_to_new_span(extract->alloc, &subpage->content, span);
+            if (span == NULL) goto end;
+        }
+        else if (char_prev->ucs == 32)
+        {
+            /* Previous code existed in subpage_span_end_clean to remove spaces if the promised advance wasn't there. This has been removed until I see
+             * some examples of it being needed. - RJW */
+            assert(fabs(dist) > adv0/10);
+        }
+        else if (ucs != 32 && fabs(dist) > 3*adv0/2)
+        {
+            /* Larger gap than expected. Add an extra space. */
+
+            /* Where should the space go? At the predicted position where the previous char
+             * ended. */
+            point_t space = { adv0 * (1 - span->flags.wmode), adv0 * span->flags.wmode };
+            space = extract_multiply_matrix4_point(span->ctm, space);
+
+            char_ = extract_span_append_c(extract->alloc, span, ' ');
+            if (char_ == NULL) goto end;
+
+            char_->x = space.x;
+            char_->y = space.y;
         }
     }
 
-    if (0 && autosplit && y - extract->span_offset_y != 0) {
+    char_ = extract_span_append_c(extract->alloc, span, ucs);
+    if (char_ == NULL) goto end;
 
-        double e = span->ctm.e + span->ctm.a * (x - extract->span_offset_x)
-                + span->ctm.b * (y - extract->span_offset_y);
-        double f = span->ctm.f + span->ctm.c * (x - extract->span_offset_x)
-                + span->ctm.d * (y - extract->span_offset_y);
-        extract->span_offset_x = x;
-        extract->span_offset_y = y;
-        outfx("autosplit: char_pre_y=%f offset_y=%f",
-                char_pre_y, offset_y);
-        outfx(
-                "autosplit: changing ctm.{e,f} from (%f, %f) to (%f, %f)",
-                span->ctm.e,
-                span->ctm.f,
-                e, f
-                );
-        if (span->chars_num > 0) {
-            /* Create new span. */
-            span_t* span0 = span;
-            extract->num_spans_autosplit += 1;
-            if (content_append_new_span(extract->alloc, &subpage->content, &span)) goto end;
-            *span = *span0;
-            span->chars = NULL;
-            span->chars_num = 0;
-            if (extract_strdup(extract->alloc, span0->font_name, &span->font_name)) goto end;
-        }
-        span->ctm.e = e;
-        span->ctm.f = f;
-        outfx("autosplit: char_pre_y=%f offset_y=%f",
-                char_pre_y, offset_y);
-    }
-
-    if (extract_span_append_c(extract->alloc, span, 0 /*c*/)) goto end;
-    /* Coverity warns, but extract_span_append_c() will have appended an item. */
-    /* coverity[var_deref_op] */
-    char_ = &span->chars[ span->chars_num-1];
-
-    char_->pre_x = x;
-    char_->pre_y = y;
-
-    char_->x = span->ctm.a * char_->pre_x + span->ctm.c * char_->pre_y + span->ctm.e;
-    char_->y = span->ctm.b * char_->pre_x + span->ctm.d * char_->pre_y + span->ctm.f;
+    char_->x = x;
+    char_->y = y;
 
     char_->adv = adv;
-    char_->ucs = ucs;
     char_->bbox.min.x = x0;
     char_->bbox.min.y = y0;
     char_->bbox.max.x = x1;
     char_->bbox.max.y = y1;
 
-    {
-        int subpage_spans_num_old = content_count_spans(&subpage->content);
-        if (subpage_span_end_clean(extract->alloc, subpage)) goto end;
-        if (content_count_spans(&subpage->content) != subpage_spans_num_old) {
-            extract->num_spans_split += 1;
-        }
-    }
     e = 0;
 
     end:
@@ -2332,10 +2159,9 @@ void extract_exp_min(extract_t* extract, size_t size)
     extract_alloc_exp_min(extract->alloc, size);
 }
 
-double extract_matrices_to_font_size(matrix_t* ctm, matrix_t* trm)
+double extract_font_size(matrix4_t *ctm)
 {
-    double font_size = extract_matrix_expansion(*trm)
-            * extract_matrix_expansion(*ctm);
+    double font_size = extract_matrix_expansion(*ctm);
     /* Round font_size to nearest 0.01. */
     font_size = (double) (int) (font_size * 100.0f + 0.5f) / 100.0f;
     return font_size;
