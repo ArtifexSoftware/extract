@@ -82,12 +82,14 @@ extract_content_insert(extract_alloc_t    *alloc,
 
     *o_out = out.chars;
     out.chars = NULL;
-    e = 0;
 
-    end:
+    e = 0;
+end:
+
     if (e) {
         extract_astring_free(alloc, &out);
         *o_out = NULL;
     }
+
     return e;
 }

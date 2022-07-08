@@ -209,7 +209,7 @@ int main(int argc, char** argv)
     }
 
     if (extract_begin(alloc, format, &extract)) goto end;
-    if (extract_read_intermediate(extract, intermediate, autosplit)) goto end;
+    if (extract_read_intermediate(extract, intermediate)) goto end;
 
     if (extract_process(extract, spacing, rotation, images)) goto end;
 

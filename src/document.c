@@ -39,7 +39,7 @@ void extract_span_init(span_t *span)
     content_init(&span->base, content_span);
 }
 
-void extract_span_free(extract_alloc_t* alloc, span_t **pspan)
+void extract_span_free(extract_alloc_t *alloc, span_t **pspan)
 {
     if (!*pspan) return;
     content_unlink(&(*pspan)->base);
@@ -87,7 +87,7 @@ void extract_image_init(image_t *image)
 }
 
 void
-content_clear(extract_alloc_t* alloc, content_t *proot)
+content_clear(extract_alloc_t *alloc, content_t *proot)
 {
     content_t *content, *next;
 
@@ -247,16 +247,15 @@ content_concat(content_t *dst, content_t *src)
     }
 }
 
-
-void extract_line_free(extract_alloc_t* alloc, line_t** pline)
+void extract_line_free(extract_alloc_t* alloc, line_t **pline)
 {
-    line_t* line = *pline;
+    line_t *line = *pline;
     content_unlink(&(*pline)->base);
     content_clear(alloc, &line->content);
     extract_free(alloc, pline);
 }
 
-void extract_image_clear(extract_alloc_t* alloc, image_t* image)
+void extract_image_clear(extract_alloc_t *alloc, image_t *image)
 {
     extract_free(alloc, &image->type);
     extract_free(alloc, &image->name);
@@ -274,20 +273,19 @@ void extract_image_free(extract_alloc_t *alloc, image_t **pimage)
     extract_free(alloc, pimage);
 }
 
-void extract_cell_free(extract_alloc_t* alloc, cell_t** pcell)
+void extract_cell_free(extract_alloc_t *alloc, cell_t **pcell)
 {
     cell_t *cell = *pcell;
 
     if (!cell) return;
 
-    outf("cell=%p ", cell);
     content_clear(alloc, &cell->content);
 
     extract_free(alloc, pcell);
 }
 
 int
-extract_split_alloc(extract_alloc_t* alloc, split_type_t type, int count, split_t** psplit)
+extract_split_alloc(extract_alloc_t *alloc, split_type_t type, int count, split_t **psplit)
 {
     split_t *split;
 
@@ -405,7 +403,7 @@ content_dump_aux(const content_t *content, int depth)
                 content_dump_span_aux((const span_t *)walk, depth);
                 break;
             case content_line:
-                content_dump_line_aux((const span_t *)walk, depth);
+                content_dump_line_aux((const line_t *)walk, depth);
                 break;
             case content_paragraph:
                 space_prefix(depth);

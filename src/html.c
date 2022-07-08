@@ -28,7 +28,7 @@ docx_paragraph_finish(). */
 #include <sys/stat.h>
 
 
-static void content_state_init(content_state_t* content_state)
+static void content_state_init(content_state_t *content_state)
 {
     content_state->font.name = NULL;
     content_state->font.size = 0;
@@ -37,9 +37,11 @@ static void content_state_init(content_state_t* content_state)
     content_state->ctm_prev = NULL;
 }
 
-static int content_state_reset(extract_alloc_t* alloc, content_state_t* content_state, extract_astring_t* content)
+static int
+content_state_reset(extract_alloc_t *alloc, content_state_t *content_state, extract_astring_t *content)
 {
     int e = -1;
+
     if (content_state->font.bold)
     {
         if (extract_astring_cat(alloc, content, "</b>")) goto end;
@@ -50,19 +52,19 @@ static int content_state_reset(extract_alloc_t* alloc, content_state_t* content_
         if (extract_astring_cat(alloc, content, "</i>")) goto end;
         content_state->font.italic = 0;
     }
-    e = 0;
 
-    end:
+    e = 0;
+end:
+
     return e;
 }
 
-static int paragraph_to_html_content(
-        extract_alloc_t*    alloc,
-        content_state_t*    content_state,
-        paragraph_t*        paragraph,
-        int                 single_line,
-        extract_astring_t*  content
-        )
+static int
+paragraph_to_html_content(extract_alloc_t   *alloc,
+                          content_state_t   *content_state,
+                          paragraph_t       *paragraph,
+                          int                single_line,
+                          extract_astring_t *content)
 {
     int                    e = -1;
     const char            *endl = (single_line) ? "" : "\n";
@@ -121,15 +123,14 @@ static int paragraph_to_html_content(
 }
 
 
-static int paragraphs_to_html_content(
-        extract_alloc_t    *alloc,
-        content_state_t    *state,
-        content_t          *paragraphs,
-        int                 single_line,
-        extract_astring_t  *content
-        )
 /* Append html for paragraphs[] to <content>. Updates *state if we change font
 etc. */
+static int
+paragraphs_to_html_content(extract_alloc_t    *alloc,
+                           content_state_t    *state,
+                           content_t          *paragraphs,
+                           int                 single_line,
+                           extract_astring_t  *content)
 {
     content_paragraph_iterator  pit;
     paragraph_t                *paragraph;
@@ -145,7 +146,8 @@ etc. */
     return e;
 }
 
-static int append_table(extract_alloc_t* alloc, content_state_t* state, table_t* table, extract_astring_t* content)
+static int
+append_table(extract_alloc_t *alloc, content_state_t *state, table_t *table, extract_astring_t *content)
 {
     int e = -1;
     int y;
@@ -196,28 +198,31 @@ static int append_table(extract_alloc_t* alloc, content_state_t* state, table_t*
 }
 
 /* FIXME: Badly named! first_char_of_last_span_of_paragraph! */
-static char_t* paragraph_first_char(const paragraph_t* paragraph)
+static char_t *
+paragraph_first_char(const paragraph_t *paragraph)
 {
     line_t *line = content_last_line(&paragraph->content);
     span_t *span = content_last_span(&line->content);
     return &span->chars[0];
 }
 
-static int compare_paragraph_y(const void* a, const void* b)
+static int compare_paragraph_y(const void *a, const void *b)
 {
-    const paragraph_t* const* a_paragraph = a;
-    const paragraph_t* const* b_paragraph = b;
+    const paragraph_t *const *a_paragraph = a;
+    const paragraph_t *const *b_paragraph = b;
     double a_y = paragraph_first_char(*a_paragraph)->y;
     double b_y = paragraph_first_char(*b_paragraph)->y;
+
     if (a_y > b_y)  return +1;
     if (a_y < b_y)  return -1;
+
     return 0;
 }
 
 /*
 */
 static int
-split_to_html(extract_alloc_t *alloc, split_t* split, subpage_t*** ppsubpage, extract_astring_t *output)
+split_to_html(extract_alloc_t *alloc, split_t *split, subpage_t ***ppsubpage, extract_astring_t *output)
 {
     int                          p;
     int                          s;
@@ -336,17 +341,15 @@ end:
     return -1;
 }
 
-int extract_document_to_html_content(
-        extract_alloc_t*    alloc,
-        document_t*         document,
-        int                 rotation,
-        int                 images,
-        extract_astring_t*  content
-        )
+int extract_document_to_html_content(extract_alloc_t   *alloc,
+                                     document_t        *document,
+                                     int                rotation,
+                                     int                images,
+                                     extract_astring_t *content)
 {
     int ret = -1;
     int n;
-    paragraph_t** paragraphs = NULL;
+    paragraph_t **paragraphs = NULL;
 
     (void) rotation;
     (void) images;
@@ -357,8 +360,8 @@ int extract_document_to_html_content(
     /* Write paragraphs into <content>. */
     for (n=0; n<document->pages_num; ++n)
     {
-        extract_page_t* page = document->pages[n];
-        subpage_t **psubpage = page->subpages;
+        extract_page_t  *page     = document->pages[n];
+        subpage_t      **psubpage = page->subpages;
 
         /* Every page gets its own div. */
         extract_astring_cat(alloc, content, "<div>\n");
@@ -371,9 +374,11 @@ int extract_document_to_html_content(
     }
     extract_astring_cat(alloc, content, "</body>\n");
     extract_astring_cat(alloc, content, "</html>\n");
-    ret = 0;
 
+    ret = 0;
 end:
+
     extract_free(alloc, &paragraphs);
+
     return ret;
 }

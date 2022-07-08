@@ -12,36 +12,33 @@
 #include <stdio.h>
 
 
-static char_t* span_char_first(span_t* span)
+static char_t *span_char_first(span_t *span)
 {
     assert(span->chars_num > 0);
     return &span->chars[0];
 }
 
-static span_t* s_line_span_first(line_t* line)
-{
-    return extract_line_span_first(line);
-}
-
 /* Returns first char_t in a line. */
-static char_t* line_item_first(line_t* line)
+static char_t *line_item_first(line_t *line)
 {
-    span_t* span = s_line_span_first(line);
+    span_t *span = extract_line_span_first(line);
     return span_char_first(span);
 }
 
 /* Returns last char_t in a line. */
-static char_t* line_item_last(line_t* line)
+static char_t *line_item_last(line_t *line)
 {
-    span_t* span = extract_line_span_last(line);
+    span_t *span = extract_line_span_last(line);
     return extract_span_char_last(span);
 }
 
-static point_t char_to_point(const char_t* char_)
+static point_t char_to_point(const char_t *char_)
 {
     point_t ret;
+
     ret.x = char_->x;
     ret.y = char_->y;
+
     return ret;
 }
 
@@ -57,6 +54,7 @@ const char *extract_matrix_string(const matrix_t *matrix)
             matrix->d,
             matrix->e,
             matrix->f);
+
     return ret[i];
 }
 
@@ -74,7 +72,7 @@ const char *extract_matrix4_string(const matrix4_t *matrix)
 }
 
 /* Returns total width of span. */
-static double span_adv_total(span_t* span)
+static double span_adv_total(span_t *span)
 {
     double dx = extract_span_char_last(span)->x - span_char_first(span)->x;
     double dy = extract_span_char_last(span)->y - span_char_first(span)->y;
@@ -84,21 +82,7 @@ static double span_adv_total(span_t* span)
     return sqrt(dx*dx + dy*dy) + adv;
 }
 
-/* Returns distance between end of <a> and beginning of <b>. */
-static double
-spans_adv(span_t *a_span,
-          char_t *a,
-          char_t *b)
-{
-    double delta_x = b->x - a->x;
-    double delta_y = b->y - a->y;
-    double s = sqrt( delta_x*delta_x + delta_y*delta_y);
-    double a_size = a->adv * extract_matrix_expansion(a_span->ctm);
-    s -= a_size;
-    return s;
-}
-
-static double span_angle(span_t* span)
+static double span_angle(span_t *span)
 {
     double ret = atan2(-span->ctm.c, span->ctm.a);
     if (0)
@@ -130,7 +114,7 @@ static double span_angle(span_t* span)
     }*/
 }
 
-static double span_angle2(span_t* span)
+static double span_angle2(span_t *span)
 {
     if (span->chars_num > 1)
     {
@@ -147,28 +131,30 @@ static double span_angle2(span_t* span)
 }
 
 /* Returns static string containing brief info about span_t. */
-static const char* span_string2(extract_alloc_t* alloc, span_t* span)
+static const char *span_string2(extract_alloc_t *alloc, span_t *span)
 {
     static extract_astring_t ret = {0};
     int i;
+
     extract_astring_free(alloc, &ret);
     extract_astring_catc(alloc, &ret, '"');
     for (i=0; i<span->chars_num; ++i) {
         extract_astring_catc(alloc, &ret, (char) span->chars[i].ucs);
     }
     extract_astring_catc(alloc, &ret, '"');
+
     return ret.chars;
 }
 
 /* Returns angle of <line>. */
-static double line_angle(line_t* line)
+static double line_angle(line_t *line)
 {
     /* All spans in a line must have same angle, so just use the first span. */
     return span_angle(content_first_span(&line->content));
 }
 
 /* Returns static string containing brief info about line_t. */
-static const char* line_string2(extract_alloc_t* alloc, line_t* line)
+static const char *line_string2(extract_alloc_t *alloc, line_t *line)
 {
     static extract_astring_t ret = {0};
     char                     buffer[256];
@@ -187,16 +173,18 @@ static const char* line_string2(extract_alloc_t* alloc, line_t* line)
         extract_astring_cat(alloc, &ret, " ");
         extract_astring_cat(alloc, &ret, span_string2(alloc, span));
     }
+
     return ret.chars;
 }
 
 /* Array of pointers to lines that are aligned and adjacent to each other so as
 to form a paragraph. */
-static const char* paragraph_string(extract_alloc_t* alloc, paragraph_t* paragraph)
+static const char *paragraph_string(extract_alloc_t *alloc, paragraph_t *paragraph)
 {
     static extract_astring_t ret = {0};
     line_t *first_line = content_first_line(&paragraph->content);
     line_t *last_line = content_last_line(&paragraph->content);
+
     extract_astring_free(alloc, &ret);
     extract_astring_cat(alloc, &ret, "paragraph: ");
     if (first_line != NULL) {
@@ -210,17 +198,18 @@ static const char* paragraph_string(extract_alloc_t* alloc, paragraph_t* paragra
                     );
         }
     }
+
     return ret.chars;
 }
 
 /* Returns first line in paragraph. */
-static line_t* paragraph_line_first(const paragraph_t* paragraph)
+static line_t *paragraph_line_first(const paragraph_t *paragraph)
 {
     return content_first_line(&paragraph->content);
 }
 
 /* Returns last line in paragraph. */
-static line_t* paragraph_line_last(const paragraph_t* paragraph)
+static line_t *paragraph_line_last(const paragraph_t *paragraph)
 {
     return content_last_line(&paragraph->content);
 }
@@ -278,13 +267,6 @@ lines_are_compatible(line_t *a,
 
 static const unsigned ucs_NONE = ((unsigned) -1);
 
-static int s_span_inside_rects(
-        extract_alloc_t* alloc,
-        span_t* span,
-        rect_t* rects,
-        int rects_num,
-        span_t* o_span
-        )
 /* Returns with <o_span> containing char_t's from <span> that are inside
 rects[], and *span modified to remove any char_t's that we have moved to
 <o_span>.
@@ -292,9 +274,16 @@ rects[], and *span modified to remove any char_t's that we have moved to
 May return with span->chars_num == 0, in which case the caller must remove the
 span (including freeing .font_name), because lots of code assumes that there
 are no empty spans. */
+static int
+s_span_inside_rects(extract_alloc_t *alloc,
+                    span_t          *span,
+                    rect_t          *rects,
+                    int              rects_num,
+                    span_t          *o_span)
 {
-    int c;
+    int       c;
     content_t save = *(content_t *)o_span;
+
     *o_span = *span;
     *(content_t *)o_span = save; /* Avoid changing prev/next. */
     extract_strdup(alloc, span->font_name, &o_span->font_name);
@@ -345,7 +334,6 @@ are no empty spans. */
 
     if (o_span->chars_num)
     {
-        //outf0("  span: %s", extract_span_string(alloc, span));
         outf("o_span: %s", extract_span_string(alloc, o_span));
     }
     return 0;
@@ -465,12 +453,10 @@ make_lines(extract_alloc_t *alloc,
         double                 nearest_score = 0;
         line_t                *nearest_line = NULL;
         span_t                *span_a;
-        double                 angle_a;
 
         outfx("looking at line_a=%s", line_string2(alloc, line_a));
 
         span_a = extract_line_span_last(line_a);
-        angle_a = span_angle(span_a);
 
         for (b = 0, line_b = content_line_iterator_init(&lit2, lines); line_b != NULL; b++, line_b = content_line_iterator_next(&lit2))
         {
@@ -496,6 +482,7 @@ make_lines(extract_alloc_t *alloc,
                 double colinear = (diff.x * tdir.x + diff.y * tdir.y) / last_a->adv;
                 double perp     = (diff.x * tdir.y - diff.y * tdir.x) / last_a->adv;
                 /* colinear and perp are now both device space distances. */
+                double score;
 
                 /* Heuristic: perpendicular distance larger than half of adv rules it out as a match. */
                 /* Ideally we should be using font bbox here, but we don't have that, currently. */
@@ -503,7 +490,7 @@ make_lines(extract_alloc_t *alloc,
                      continue;
 
                 /* We now form a score for this match. */
-                double score = fabs(colinear);
+                score = fabs(colinear);
                 if (score < perp * 10) /* perpendicular distance matters much more. */
                     score = perp * 10;
 
@@ -520,7 +507,7 @@ make_lines(extract_alloc_t *alloc,
             /* line_a and nearest_line are aligned so we can move line_b's
             spans on to the end of line_a. */
             double average_adv;
-            span_t* span_b = s_line_span_first(nearest_line);
+            span_t* span_b = extract_line_span_first(nearest_line);
             b = nearest_line_b;
 
             /* Find average advance of the two adjacent spans in the two
@@ -649,7 +636,7 @@ respectively.
 
 AQB is a right angle. We need to find AQ.
 */
-static double line_distance_y( double ax, double ay, double bx, double by, double angle)
+static double line_distance_y(double ax, double ay, double bx, double by, double angle)
 {
     double dx = bx - ax;
     double dy = by - ay;
@@ -658,7 +645,7 @@ static double line_distance_y( double ax, double ay, double bx, double by, doubl
 }
 
 /* Returns distance QB in above diagram. */
-static double line_distance_x( double ax, double ay, double bx, double by, double angle)
+static double line_distance_x(double ax, double ay, double bx, double by, double angle)
 {
     double dx = bx - ax;
     double dy = by - ay;
@@ -679,7 +666,7 @@ static int lines_overlap(point_t a_left, point_t a_right, point_t b_left, point_
 }
 
 
-/* A comparison function for use with qsort(), for sorting paragraphs within a
+/* A comparison function, for sorting paragraphs within a
 page. */
 static int paragraphs_cmp(const content_t *a, const content_t *b)
 {
@@ -693,8 +680,8 @@ static int paragraphs_cmp(const content_t *a, const content_t *b)
 
     a_line = paragraph_line_first(a_paragraph);
     b_line = paragraph_line_first(b_paragraph);
-    a_span = s_line_span_first(a_line);
-    b_span = s_line_span_first(b_line);
+    a_span = extract_line_span_first(a_line);
+    b_span = extract_line_span_first(b_line);
 
     if (0)
     {
@@ -1122,36 +1109,42 @@ s_join_subpage_rects(extract_alloc_t *alloc,
 }
 
 
-static int tablelines_compare_x(const void* a, const void* b)
 /* Compares two tableline_t's rectangles using x as primary key. */
+static int tablelines_compare_x(const void *a, const void *b)
 {
-    const tableline_t*  aa = a;
-    const tableline_t*  bb = b;
+    const tableline_t *aa = a;
+    const tableline_t *bb = b;
+
     if (aa->rect.min.x > bb->rect.min.x)    return +1;
     if (aa->rect.min.x < bb->rect.min.x)    return -1;
     if (aa->rect.min.y > bb->rect.min.y)    return +1;
     if (aa->rect.min.y < bb->rect.min.y)    return -1;
+
     return 0;
 }
 
-static int tablelines_compare_y(const void* a, const void* b)
 /* Compares two tableline_t's rectangles using y as primary key. */
+static int tablelines_compare_y(const void *a, const void *b)
 {
-    const tableline_t*  aa = a;
-    const tableline_t*  bb = b;
+    const tableline_t *aa = a;
+    const tableline_t *bb = b;
+
     if (aa->rect.min.y > bb->rect.min.y)    return +1;
     if (aa->rect.min.y < bb->rect.min.y)    return -1;
     if (aa->rect.min.x > bb->rect.min.x)    return +1;
     if (aa->rect.min.x < bb->rect.min.x)    return -1;
+
     return 0;
 }
 
-static int table_find_y_range(extract_alloc_t* alloc, tablelines_t* all, double y_min, double y_max,
-        tablelines_t* out)
 /* Makes <out> to contain all lines in <all> with y coordinate in the range
 y_min..y_max. */
+static int
+table_find_y_range(extract_alloc_t *alloc, tablelines_t *all, double y_min, double y_max,
+                   tablelines_t *out)
 {
     int i;
+
     for (i=0; i<all->tablelines_num; ++i)
     {
         if (all->tablelines[i].rect.min.y >= y_min && all->tablelines[i].rect.min.y < y_max)
@@ -1165,17 +1158,20 @@ y_min..y_max. */
             outf("Excluding line because outside y=%f..%f: %s", y_min, y_max, extract_rect_string(&all->tablelines[i].rect));
         }
     }
+
     return 0;
 }
 
 
-static int overlap(double a_min, double a_max, double b_min, double b_max)
 /* Returns one if a_min..a_max significantly overlapps b_min..b_max, otherwise
 zero. */
+static int
+overlap(double a_min, double a_max, double b_min, double b_max)
 {
     double overlap;
     int ret0;
     int ret1;
+
     assert(a_min < a_max);
     assert(b_min < b_max);
     if (b_min < a_min)  b_min = a_min;
@@ -1188,10 +1184,11 @@ zero. */
     {
         if (0) outf0("warning, unclear overlap=%f: a=%f..%f b=%f..%f", overlap, a_min, a_max, b_min, b_max);
     }
+
     return overlap > 0.8;
 }
 
-void extract_cell_init(cell_t* cell)
+void extract_cell_init(cell_t *cell)
 {
     cell->rect.min.x = 0;
     cell->rect.min.y = 0;
@@ -1205,28 +1202,29 @@ void extract_cell_init(cell_t* cell)
 }
 
 
-static int table_find_extend(cell_t** cells, int cells_num_x, int cells_num_y)
+/* Find cell extensions to right and down by looking at cells' .left and
+above flags.
+
+For example for adjacent cells ABC..., we extend A to include cells BC..
+until we reach a cell with .left set to one.
+
+ABCDE
+FGHIJ
+KLMNO
+
+When looking to extend cell A, we only look at cells in the same column or
+same row, (i.e. in the above example we look at BCDE and FK, and not at
+GHIJ and LMNO).
+
+For example if BCDE have no left lines and FK have no above lines, we
+ignore any lines in GHIJ and LMNO and make A extend to the entire 3x4
+box. Having found this box, we set .above=0 and .left to 0 in all enclosed
+cells, which simplifies html table generation code.
+*/
+static int table_find_extend(cell_t **cells, int cells_num_x, int cells_num_y)
 {
-    /* Find cell extensions to right and down by looking at cells' .left and
-    .above flags.
-
-    For example for adjacent cells ABC..., we extend A to include cells BC..
-    until we reach a cell with .left set to one.
-
-    ABCDE
-    FGHIJ
-    KLMNO
-
-    When looking to extend cell A, we only look at cells in the same column or
-    same row, (i.e. in the above example we look at BCDE and FK, and not at
-    GHIJ and LMNO).
-
-    For example if BCDE have no left lines and FK have no above lines, we
-    ignore any lines in GHIJ and LMNO and make A extend to the entire 3x4
-    box. Having found this box, we set .above=0 and .left to 0 in all enclosed
-    cells, which simplifies html table generation code.
-    */
     int y;
+
     for (y=0; y<cells_num_y; ++y)
     {
         int x;
@@ -1286,10 +1284,11 @@ static int table_find_extend(cell_t** cells, int cells_num_x, int cells_num_y)
 }
 
 
-static int table_find_cells_text(extract_alloc_t* alloc, subpage_t* subpage,
-        cell_t** cells, int cells_num_x, int cells_num_y)
 /* Sets each cell to contain the text that is within the cell's boundary. We
 remove any found text from the page. */
+static int
+table_find_cells_text(extract_alloc_t *alloc, subpage_t *subpage,
+                      cell_t **cells, int cells_num_x, int cells_num_y)
 {
     /* Find text within each cell. We don't attempt to handle images within
     cells. */
@@ -1302,13 +1301,11 @@ remove any found text from the page. */
     {
         cell_t* cell = cells[i];
         if (!cell->above || !cell->left) continue;
-        if (s_join_subpage_rects(
-                alloc,
-                subpage,
-                &cell->rect,
-                1 /*rects_num*/,
-                &cell->content
-                )) return -1;
+        if (s_join_subpage_rects(alloc,
+                                 subpage,
+                                 &cell->rect,
+                                 1 /*rects_num*/,
+                                 &cell->content)) return -1;
     }
 
     /* Append the table we have found to page->tables[]. */
@@ -1345,30 +1342,32 @@ remove any found text from the page. */
     }
 
     e = 0;
-    end:
+end:
+
     return e;
 }
 
 
-static int table_find(extract_alloc_t* alloc, subpage_t* subpage, double y_min, double y_max)
 /* Finds single table made from lines whose y coordinates are in the range
 y_min..y_max. */
+static int
+table_find(extract_alloc_t *alloc, subpage_t *subpage, double y_min, double y_max)
 {
-    tablelines_t* all_h = &subpage->tablelines_horizontal;
-    tablelines_t* all_v = &subpage->tablelines_vertical;
+    tablelines_t *all_h = &subpage->tablelines_horizontal;
+    tablelines_t *all_v = &subpage->tablelines_vertical;
     int e = -1;
     int i;
 
     /* Find subset of vertical and horizontal lines that are within range
     y_min..y_max, and sort by y coordinate. */
-    tablelines_t    tl_h = {NULL, 0};
-    tablelines_t    tl_v = {NULL, 0};
-    cell_t**    cells = NULL;
-    int         cells_num = 0;
-    int         cells_num_x = 0;
-    int         cells_num_y = 0;
-    int x;
-    int y;
+    tablelines_t   tl_h = {NULL, 0};
+    tablelines_t   tl_v = {NULL, 0};
+    cell_t       **cells = NULL;
+    int            cells_num = 0;
+    int            cells_num_x = 0;
+    int            cells_num_y = 0;
+    int            x;
+    int            y;
 
     outf("y=(%f %f)", y_min, y_max);
 
@@ -1537,7 +1536,8 @@ y_min..y_max. */
     if (table_find_cells_text(alloc, subpage, cells, cells_num_x, cells_num_y)) goto end;
 
     e = 0;
-    end:
+end:
+
     extract_free(alloc, &tl_h.tablelines);
     extract_free(alloc, &tl_v.tablelines);
     if (e)
@@ -1548,19 +1548,18 @@ y_min..y_max. */
         }
         extract_free(alloc, &cells);
     }
+
     return e;
 }
 
 
-static int extract_subpage_tables_find_lines(
-        extract_alloc_t*    alloc,
-        subpage_t*          subpage
-        )
 /* Finds tables in <page> by looking for lines in page->tablelines_horizontal
 and page->tablelines_vertical that look like table dividers.
 
 Any text found inside tables is removed from page->spans[].
 */
+static int extract_subpage_tables_find_lines(extract_alloc_t *alloc,
+                                             subpage_t       *subpage)
 {
     double miny;
     double maxy;
@@ -1571,18 +1570,14 @@ Any text found inside tables is removed from page->spans[].
     outf("page->tablelines_vertical.tablelines_num=%i", subpage->tablelines_vertical.tablelines_num);
 
     /* Sort all lines by y coordinate. */
-    qsort(
-            subpage->tablelines_horizontal.tablelines,
-            subpage->tablelines_horizontal.tablelines_num,
-            sizeof(*subpage->tablelines_horizontal.tablelines),
-            tablelines_compare_y
-            );
-    qsort(
-            subpage->tablelines_vertical.tablelines,
-            subpage->tablelines_vertical.tablelines_num,
-            sizeof(*subpage->tablelines_vertical.tablelines),
-            tablelines_compare_y
-            );
+    qsort(subpage->tablelines_horizontal.tablelines,
+          subpage->tablelines_horizontal.tablelines_num,
+          sizeof(*subpage->tablelines_horizontal.tablelines),
+          tablelines_compare_y);
+    qsort(subpage->tablelines_vertical.tablelines,
+          subpage->tablelines_vertical.tablelines_num,
+          sizeof(*subpage->tablelines_vertical.tablelines),
+          tablelines_compare_y);
 
     if (0)
     {
@@ -1615,9 +1610,9 @@ Any text found inside tables is removed from page->spans[].
     ih = 0;
     for(;;)
     {
-        tableline_t* tlv = NULL;
-        tableline_t* tlh = NULL;
-        tableline_t* tl;
+        tableline_t *tlv = NULL;
+        tableline_t *tlh = NULL;
+        tableline_t *tl;
         if (iv < subpage->tablelines_vertical.tablelines_num)
         {
             tlv = &subpage->tablelines_vertical.tablelines[iv];
@@ -1666,8 +1661,8 @@ Any text found inside tables is removed from page->spans[].
 }
 
 
-static void show_tables(content_t *tables)
 /* For debugging only. */
+static void show_tables(content_t *tables)
 {
     content_table_iterator  tit;
     table_t                *table;
@@ -1690,16 +1685,15 @@ static void show_tables(content_t *tables)
     }
 }
 
-static int extract_subpage_tables_find(
-        extract_alloc_t*    alloc,
-        subpage_t*          subpage
-        )
 /* Find tables in <page>.
 
 At the moment this only calls extract_page_tables_find_lines(), but in future
 will call other functions that find tables in different ways, e.g. by analysing
 an image of a page, or looking for blocks of whitespace in between chunks of
 text. */
+static int
+extract_subpage_tables_find(extract_alloc_t *alloc,
+                            subpage_t       *subpage)
 {
     if (extract_subpage_tables_find_lines(alloc, subpage)) return -1;
 
@@ -1712,11 +1706,10 @@ text. */
     return 0;
 }
 
-static int extract_join_subpage(
-        extract_alloc_t*    alloc,
-        subpage_t*          subpage
-        )
 /* Finds tables and paragraphs on <page>. */
+static int
+extract_join_subpage(extract_alloc_t *alloc,
+                     subpage_t       *subpage)
 {
     /* Find tables on this page first. This will remove text that is within
     tables from page->spans, so that text doesn't appear more than once in
@@ -1724,13 +1717,11 @@ static int extract_join_subpage(
     if (extract_subpage_tables_find(alloc, subpage)) return -1;
 
     /* Now join remaining spans into lines and paragraphs. */
-    if (s_join_subpage_rects(
-            alloc,
-            subpage,
-            NULL /*rects*/,
-            0 /*rects_num*/,
-            &subpage->content
-            ))
+    if (s_join_subpage_rects(alloc,
+                             subpage,
+                             NULL /*rects*/,
+                             0 /*rects_num*/,
+                             &subpage->content))
     {
         outf0("s_join_subpage_rects failed. subpage->spans_num=%i subpage->lines_num=%i",
                 content_count_spans(&subpage->content),
@@ -1743,15 +1734,16 @@ static int extract_join_subpage(
 }
 
 
-int extract_document_join(extract_alloc_t* alloc, document_t* document, int layout_analysis)
-{
-    /* For each page in <document> we find tables and join spans into lines and paragraphs.
+/* For each page in <document> we find tables and join spans into lines and paragraphs.
 
-    A line is a list of spans that are at the same angle and on the same
-    line. A paragraph is a list of lines that are at the same angle and close
-    together.
-    */
+A line is a list of spans that are at the same angle and on the same
+line. A paragraph is a list of lines that are at the same angle and close
+together.
+*/
+int extract_document_join(extract_alloc_t *alloc, document_t *document, int layout_analysis)
+{
     int p;
+
     for (p=0; p<document->pages_num; ++p) {
         extract_page_t* page = document->pages[p];
         int c;

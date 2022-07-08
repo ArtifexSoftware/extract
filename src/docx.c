@@ -50,6 +50,7 @@ docx_run_start(extract_alloc_t   *alloc,
                content_state_t   *content_state)
 {
     int e = 0;
+
     if (!e) e = extract_astring_cat(alloc, output, "\n<w:r><w:rPr><w:rFonts w:ascii=\"");
     if (!e) e = extract_astring_cat(alloc, output, content_state->font.name);
     if (!e) e = extract_astring_cat(alloc, output, "\" w:hAnsi=\"");
@@ -71,8 +72,8 @@ docx_run_start(extract_alloc_t   *alloc,
         extract_astring_cat(alloc, output, "\"/>");
     }
     if (!e) e = extract_astring_cat(alloc, output, "</w:rPr><w:t xml:space=\"preserve\">");
-    return e;
 
+    return e;
 }
 
 static int
@@ -81,6 +82,7 @@ docx_run_finish(extract_alloc_t   *alloc,
                 extract_astring_t *output)
 {
     if (state) state->font.name = NULL;
+
     return extract_astring_cat(alloc, output, "</w:t></w:r>");
 }
 
@@ -92,6 +94,7 @@ docx_paragraph_empty(extract_alloc_t   *alloc,
     int e = -1;
     static char fontname[] = "OpenSans";
     content_state_t content_state = {0};
+
     if (docx_paragraph_start(alloc, output)) goto end;
     /* It seems like our choice of font size here doesn't make any difference
     to the ammount of vertical space, unless we include a non-space
@@ -106,8 +109,10 @@ docx_paragraph_empty(extract_alloc_t   *alloc,
     //docx_char_append_string(output, "&#160;");   /* &#160; is non-break space. */
     if (docx_run_finish(alloc, NULL /*state*/, output)) goto end;
     if (docx_paragraph_finish(alloc, output)) goto end;
+
     e = 0;
-    end:
+end:
+
     return e;
 }
 
@@ -116,9 +121,9 @@ docx_paragraph_empty(extract_alloc_t   *alloc,
 static int
 docx_char_truncate_if(extract_astring_t *output, char c)
 {
-    if (output->chars_num && output->chars[output->chars_num-1] == c) {
+    if (output->chars_num && output->chars[output->chars_num-1] == c)
         extract_astring_truncate(output, 1);
-    }
+
     return 0;
 }
 
@@ -150,14 +155,14 @@ document_to_docx_content_paragraph(extract_alloc_t   *alloc,
             content_state->ctm_prev = &span->ctm;
             font_size_new = extract_font_size(&span->ctm);
             if (!content_state->font.name
-                    || strcmp(span->font_name, content_state->font.name)
-                    || span->flags.font_bold != content_state->font.bold
-                    || span->flags.font_italic != content_state->font.italic
-                    || font_size_new != content_state->font.size
-                    ) {
-                if (content_state->font.name) {
+                || strcmp(span->font_name, content_state->font.name)
+                || span->flags.font_bold != content_state->font.bold
+                || span->flags.font_italic != content_state->font.italic
+                || font_size_new != content_state->font.size)
+            {
+                if (content_state->font.name)
                     if (docx_run_finish(alloc, content_state, content)) goto end;
-                }
+
                 content_state->font.name = span->font_name;
                 content_state->font.bold = span->flags.font_bold;
                 content_state->font.italic = span->flags.font_italic;
@@ -165,7 +170,8 @@ document_to_docx_content_paragraph(extract_alloc_t   *alloc,
                 if (docx_run_start(alloc, content, content_state)) goto end;
             }
 
-            for (si=0; si<span->chars_num; ++si) {
+            for (si=0; si<span->chars_num; ++si)
+            {
                 char_t* char_ = &span->chars[si];
                 int c = char_->ucs;
                 if (extract_astring_catc_unicode_xml(alloc, content, c)) goto end;
@@ -181,8 +187,8 @@ document_to_docx_content_paragraph(extract_alloc_t   *alloc,
     if (docx_paragraph_finish(alloc, content)) goto end;
 
     e = 0;
+end:
 
-    end:
     return e;
 }
 
@@ -249,6 +255,7 @@ docx_append_image(extract_alloc_t   *alloc,
     extract_astring_cat(alloc, output, "       </w:r>\n");
     extract_astring_cat(alloc, output, "     </w:p>\n");
     extract_astring_cat(alloc, output, "\n");
+
     return 0;
 }
 
@@ -266,7 +273,7 @@ docx_output_rotated_paragraphs(extract_alloc_t   *alloc,
                                extract_astring_t *output,
                                content_state_t   *state)
 {
-    int                          e = 0;
+    int                         e = -1;
     paragraph_t                *paragraph;
     content_paragraph_iterator  pit;
 
@@ -383,8 +390,10 @@ docx_output_rotated_paragraphs(extract_alloc_t   *alloc,
     extract_astring_cat(alloc, output, "    </mc:AlternateContent>\n");
     extract_astring_cat(alloc, output, "  </w:r>\n");
     extract_astring_cat(alloc, output, "</w:p>");
+
     e = 0;
-    end:
+end:
+
     return e;
 }
 
@@ -402,18 +411,16 @@ docx_append_table(extract_alloc_t   *alloc,
     int y;
 
     if (extract_astring_cat(alloc, output,
-            "\n"
-            "    <w:tbl>\n"
-            "        <w:tblLayout w:type=\"autofit\"/>\n"
-            )) goto end;
+                            "\n"
+                            "    <w:tbl>\n"
+                            "        <w:tblLayout w:type=\"autofit\"/>\n")) goto end;
 
     for (y=0; y<table->cells_num_y; ++y)
     {
         int x;
         if (extract_astring_cat(alloc, output,
-                "        <w:tr>\n"
-                "            <w:trPr/>\n"
-                )) goto end;
+                                "        <w:tr>\n"
+                                "            <w:trPr/>\n")) goto end;
 
         for (x=0; x<table->cells_num_x; ++x)
         {
@@ -479,9 +486,10 @@ docx_append_table(extract_alloc_t   *alloc,
         if (extract_astring_cat(alloc, output, "        </w:tr>\n")) goto end;
     }
     if (extract_astring_cat(alloc, output, "    </w:tbl>\n")) goto end;
-    e = 0;
 
-    end:
+    e = 0;
+end:
+
     return e;
 }
 
@@ -619,9 +627,9 @@ docx_append_rotated_paragraphs(extract_alloc_t    *alloc,
 
         if (docx_output_rotated_paragraphs(alloc, block, rot, x, y, w, h, *text_box_id, output, state)) goto end;
     }
-    e = 0;
 
-    end:
+    e = 0;
+end:
 
     return e;
 }
@@ -634,16 +642,18 @@ extract_document_to_docx_content(extract_alloc_t   *alloc,
                                  int                images,
                                  extract_astring_t *output)
 {
-    int ret = -1;
+    int e = -1;
     int text_box_id = 0;
     int p;
 
     /* Write paragraphs into <content>. */
-    for (p=0; p<document->pages_num; ++p) {
-        extract_page_t* page = document->pages[p];
+    for (p=0; p<document->pages_num; ++p)
+    {
+        extract_page_t *page = document->pages[p];
         int c;
 
-        for (c=0; c<page->subpages_num; ++c) {
+        for (c=0; c<page->subpages_num; ++c)
+        {
             subpage_t                  *subpage = page->subpages[c];
             content_iterator            cit;
             content_t                  *content;
@@ -660,7 +670,8 @@ extract_document_to_docx_content(extract_alloc_t   *alloc,
             /* Output paragraphs and tables in order of y coordinate. */
             content = content_iterator_init(&cit, &subpage->content);
             table = content_table_iterator_init(&tit, &subpage->tables);
-            while (1) {
+            while (1)
+            {
                 double y_paragraph;
                 double y_table;
                 block_t *block = (content && content->type == content_block) ? (block_t *)content : NULL;
@@ -671,7 +682,8 @@ extract_document_to_docx_content(extract_alloc_t   *alloc,
                 y_paragraph = (paragraph) ? first_span->chars[0].y : DBL_MAX;
                 y_table = (table) ? table->pos.y : DBL_MAX;
 
-                if (paragraph && y_paragraph < y_table) {
+                if (paragraph && y_paragraph < y_table)
+                {
                     const matrix4_t *ctm    = &first_span->ctm;
                     double           rotate = atan2(ctm->b, ctm->a);
 
@@ -680,17 +692,16 @@ extract_document_to_docx_content(extract_alloc_t   *alloc,
                         && first_line
                         && first_span
                         && extract_matrix4_cmp(content_state.ctm_prev,
-                                               &first_span->ctm)
-                        ) {
+                                               &first_span->ctm))
+                    {
                         /* Extra vertical space between paragraphs that were at
                         different angles in the original document. */
                         if (docx_paragraph_empty(alloc, output)) goto end;
                     }
 
-                    if (spacing) {
-                        /* Extra vertical space between paragraphs. */
+                    /* Extra vertical space between paragraphs. */
+                    if (spacing)
                         if (docx_paragraph_empty(alloc, output)) goto end;
-                    }
 
                     if (rotation && rotate != 0)
                     {
@@ -735,11 +746,11 @@ extract_document_to_docx_content(extract_alloc_t   *alloc,
             }
         }
     }
-    ret = 0;
 
-    end:
+    e = 0;
+end:
 
-    return ret;
+    return e;
 }
 
 
@@ -775,19 +786,21 @@ extract_docx_content_item(extract_alloc_t    *alloc,
                           const char         *text,
                           char              **text2)
 {
-    int e = -1;
-    extract_astring_t   temp;
-    extract_astring_init(&temp);
+    int               e    = -1;
+    extract_astring_t temp = { 0 };
+
     *text2 = NULL;
 
     if (0)
     {}
-    else if (!strcmp(name, "[Content_Types].xml")) {
+    else if (!strcmp(name, "[Content_Types].xml"))
+    {
         /* Add information about all image types that we are going to use. */
-        const char* begin;
-        const char* end;
-        const char* insert;
+        const char *begin;
+        const char *end;
+        const char *insert;
         int it;
+
         extract_astring_free(alloc, &temp);
         outf("text: %s", text);
         if (find_mid(text, "<Types ", "</Types>", &begin, &end)) goto end;
@@ -800,7 +813,7 @@ extract_docx_content_item(extract_alloc_t    *alloc,
         if (extract_astring_catl(alloc, &temp, text, insert - text)) goto end;
         outf("images->imagetypes_num=%i", images->imagetypes_num);
         for (it=0; it<images->imagetypes_num; ++it) {
-            const char* imagetype = images->imagetypes[it];
+            const char *imagetype = images->imagetypes[it];
             if (extract_astring_cat(alloc, &temp, "<Default Extension=\"")) goto end;
             if (extract_astring_cat(alloc, &temp, imagetype)) goto end;
             if (extract_astring_cat(alloc, &temp, "\" ContentType=\"image/")) goto end;
@@ -811,12 +824,14 @@ extract_docx_content_item(extract_alloc_t    *alloc,
         *text2 = temp.chars;
         extract_astring_init(&temp);
     }
-    else if (!strcmp(name, "word/_rels/document.xml.rels")) {
+    else if (!strcmp(name, "word/_rels/document.xml.rels"))
+    {
         /* Add relationships between image ids and image names within docx
         archive. */
-        const char* begin;
-        const char* end;
+        const char *begin;
+        const char *end;
         int         j;
+
         extract_astring_free(alloc, &temp);
         if (find_mid(text, "<Relationships", "</Relationships>", &begin, &end)) goto end;
         if (extract_astring_catl(alloc, &temp, text, end - text)) goto end;
@@ -833,31 +848,35 @@ extract_docx_content_item(extract_alloc_t    *alloc,
         *text2 = temp.chars;
         extract_astring_init(&temp);
     }
-    else if (!strcmp(name, "word/document.xml")) {
+    else if (!strcmp(name, "word/document.xml"))
+    {
         /* Insert paragraphs content. */
-        if (extract_content_insert(
-                alloc,
-                text,
-                NULL /*single*/,
-                "<w:body>",
-                "</w:body>",
-                contentss,
-                contentss_num,
-                text2
-                )) goto end;
+        if (extract_content_insert(alloc,
+                                   text,
+                                   NULL /*single*/,
+                                   "<w:body>",
+                                   "</w:body>",
+                                   contentss,
+                                   contentss_num,
+                                   text2)) goto end;
     }
-    else {
+    else
+    {
         *text2 = NULL;
     }
+
     e = 0;
-    end:
-    if (e) {
+end:
+
+    if (e)
+    {
         /* We might have set <text2> to new content. */
         extract_free(alloc, text2);
         /* We might have used <temp> as a temporary buffer. */
         extract_astring_free(alloc, &temp);
     }
     extract_astring_init(&temp);
+
     return e;
 }
 
@@ -910,7 +929,7 @@ extract_docx_write_template(extract_alloc_t   *alloc,
     modify. */
 
     {
-        const char* names[] = {
+        const char *names[] = {
                 "word/document.xml",
                 "[Content_Types].xml",
                 "word/_rels/document.xml.rels",
@@ -924,18 +943,16 @@ extract_docx_write_template(extract_alloc_t   *alloc,
             if (extract_asprintf(alloc, &path, "%s/%s", path_tempdir, name) < 0) goto end;
             if (extract_read_all_path(alloc, path, &text)) goto end;
 
-            if (extract_docx_content_item(
-                    alloc,
-                    contentss,
-                    contentss_num,
-                    images,
-                    name,
-                    text,
-                    &text2
-                    )) goto end;
+            if (extract_docx_content_item(alloc,
+                                          contentss,
+                                          contentss_num,
+                                          images,
+                                          name,
+                                          text,
+                                          &text2)) goto end;
 
             {
-                const char* text3 = (text2) ? text2 : text;
+                const char *text3 = (text2) ? text2 : text;
                 if (extract_write_all(text3, strlen(text3), path)) goto end;
             }
         }
@@ -955,12 +972,12 @@ extract_docx_write_template(extract_alloc_t   *alloc,
 
     outf("Zipping tempdir to create %s", path_out);
     {
-        const char* path_out_leaf = strrchr(path_out, '/');
+        const char *path_out_leaf = strrchr(path_out, '/');
         if (!path_out_leaf) path_out_leaf = path_out;
         if (extract_systemf(alloc, "cd '%s' && zip -q -r -D '../%s' .", path_tempdir, path_out_leaf))
         {
             outf("Zip command failed to convert '%s' directory into output file: %s",
-                    path_tempdir, path_out);
+                 path_tempdir, path_out);
             goto end;
         }
     }
@@ -970,8 +987,8 @@ extract_docx_write_template(extract_alloc_t   *alloc,
     }
 
     e = 0;
+end:
 
-    end:
     outf("e=%i", e);
     extract_free(alloc, &path_tempdir);
     extract_free(alloc, &path);
@@ -981,5 +998,6 @@ extract_docx_write_template(extract_alloc_t   *alloc,
     if (e) {
         outf("Failed to create %s", path_out);
     }
+
     return e;
 }

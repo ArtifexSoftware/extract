@@ -308,7 +308,7 @@ typedef struct
     double y;
 } point_t;
 
-const char* extract_point_string(const point_t* point);
+const char *extract_point_string(const point_t *point);
 
 typedef struct
 {
@@ -327,7 +327,7 @@ int extract_rect_contains_rect(rect_t a, rect_t b);
 
 int extract_rect_valid(rect_t a);
 
-const char* extract_rect_string(const rect_t* rect);
+const char *extract_rect_string(const rect_t *rect);
 
 typedef struct
 {
@@ -350,17 +350,17 @@ typedef struct
 const char *extract_matrix_string(const matrix_t *matrix);
 const char *extract_matrix4_string(const matrix4_t *matrix);
 
-double      extract_matrix_expansion(matrix4_t m);
 /* Returns a*d - b*c. */
+double      extract_matrix_expansion(matrix4_t m);
 
 point_t     extract_multiply_matrix4_point(matrix4_t m, point_t p);
 matrix_t    extract_multiply_matrix_matrix(matrix_t m1, matrix_t m2);
 
-int extract_matrix4_cmp(const matrix4_t *lhs, const matrix4_t *rhs)
-;
 /* Returns zero if first four members of *lhs and *rhs are equal, otherwise
 +/-1. */
+int extract_matrix4_cmp(const matrix4_t *lhs, const matrix4_t *rhs);
 
+/* A single char in a span. */
 typedef struct
 {
     /* (x,y) after transformation by ctm. */
@@ -368,13 +368,12 @@ typedef struct
     double      y;
 
     unsigned    ucs;
-    double      adv;
+    double      adv; /* Advance, before transform by ctm */
 
     rect_t      bbox;
 } char_t;
-/* A single char in a span.
-*/
 
+/* List of chars that have same font and are usually adjacent. */
 struct span_t
 {
     content_t   base;
@@ -390,105 +389,105 @@ struct span_t
     char_t    *chars;
     int        chars_num;
 };
-/* List of chars that have same font and are usually adjacent. */
 
-void extract_span_init(span_t* span);
+void extract_span_init(span_t *span);
 
-void extract_span_free(extract_alloc_t* alloc, span_t** pspan);
 /* Frees a span_t, returning with *pspan set to NULL. */
+void extract_span_free(extract_alloc_t *alloc, span_t **pspan);
 
-char_t* extract_span_char_last(span_t* span);
 /* Returns last character in span. */
+char_t *extract_span_char_last(span_t *span);
 
-char_t *extract_span_append_c(extract_alloc_t *alloc, span_t *span, int c);
 /* Appends new char_t to an span_t with .ucs=c and all other
 fields zeroed. Returns pointer to new char_t record, or NULL if allocation
 failed. */
+char_t *extract_span_append_c(extract_alloc_t *alloc, span_t *span, int c);
 
-const char* extract_span_string(extract_alloc_t* alloc, span_t* span);
 /* Returns static string containing info about span_t. */
+const char *extract_span_string(extract_alloc_t *alloc, span_t *span);
 
+/* List of spans that are aligned on same line. */
 struct line_t
 {
     content_t base;
     content_t content;
 };
-/* List of spans that are aligned on same line. */
 
 void extract_line_init(line_t *line);
 
-void extract_line_free(extract_alloc_t* alloc, line_t** pline);
+void extract_line_free(extract_alloc_t* alloc, line_t **pline);
 
-span_t* extract_line_span_first(line_t* line);
 /* Returns first span in a line. */
+span_t *extract_line_span_first(line_t *line);
 
-span_t* extract_line_span_last(line_t* line);
 /* Returns last span in a line. */
+span_t *extract_line_span_last(line_t *line);
 
+/* List of lines that are aligned and adjacent to each other so as to form a
+paragraph. */
 struct paragraph_t
 {
     content_t base;
     content_t content;
 };
-/* List of lines that are aligned and adjacent to each other so as to form a
-paragraph. */
 
 void extract_paragraph_init(paragraph_t *paragraph);
 
-void extract_paragraph_free(extract_alloc_t* alloc, paragraph_t** pparagraph);
+void extract_paragraph_free(extract_alloc_t *alloc, paragraph_t **pparagraph);
 
+/* List of content that we believe should be treated as a whole. */
 struct block_t
 {
     content_t base;
     content_t content;
 };
-/* List of content that we believe should be treated as a whole. */
 
 void extract_block_init(block_t *block);
 
-void extract_block_free(extract_alloc_t* alloc, block_t** pblock);
+void extract_block_free(extract_alloc_t *alloc, block_t **pblock);
 
-struct image_t
-{
-    content_t base;
-    char*   type;   /* jpg, png etc. */
-    char*   name;   /* Name of image file within docx. */
-    char*   id;     /* ID of image within docx. */
-    double  x;
-    double  y;
-    double  w;
-    double  h;
-    void*   data;
-    size_t  data_size;
-
-    extract_image_data_free data_free;
-    void*                   data_free_handle;
-
-};
 /* Information about an image. <type> is as passed to extract_add_image();
 <name> and <id> are created to be unique identifiers for use in generated docx
 file. */
+struct image_t
+{
+    content_t                base;
+    char                    *type;   /* jpg, png etc. */
+    char                    *name;   /* Name of image file within docx. */
+    char                    *id;     /* ID of image within docx. */
+    double                   x;
+    double                   y;
+    double                   w;
+    double                   h;
+    void                    *data;
+    size_t                   data_size;
 
-void extract_image_init(image_t* image);
+    extract_image_data_free *data_free;
+    void                    *data_free_handle;
 
-void extract_image_clear(extract_alloc_t* alloc, image_t* image);
+};
+
+void extract_image_init(image_t *image);
+
+void extract_image_clear(extract_alloc_t *alloc, image_t *image);
 
 void extract_image_free(extract_alloc_t *alloc, image_t **pimage);
 
+/* A line that is part of a table. */
 typedef struct
 {
     float   color;
     rect_t  rect;
 } tableline_t;
-/* A line that is part of a table. */
 
 typedef struct
 {
-    tableline_t*    tablelines;
-    int             tablelines_num;
+    tableline_t *tablelines;
+    int          tablelines_num;
 } tablelines_t;
 
 
+/* A cell within a table. */
 typedef struct
 {
     rect_t          rect;
@@ -507,10 +506,9 @@ typedef struct
     /* Contents of this cell. */
     content_t       content;
 } cell_t;
-/* A cell within a table. */
 
-void extract_cell_init(cell_t* cell);
-void extract_cell_free(extract_alloc_t* alloc, cell_t** pcell);
+void extract_cell_init(cell_t *cell);
+void extract_cell_free(extract_alloc_t *alloc, cell_t **pcell);
 void extract_table_init(table_t *table);
 
 struct table_t
@@ -526,7 +524,7 @@ struct table_t
     int         cells_num_y;
 };
 
-void extract_table_free(extract_alloc_t* alloc, table_t** ptable);
+void extract_table_free(extract_alloc_t *alloc, table_t **ptable);
 
 typedef enum
 {
@@ -538,12 +536,13 @@ typedef enum
 
 typedef struct split_t
 {
-    split_type_t type;
-    double weight;
-    int count;
+    split_type_t    type;
+    double          weight;
+    int             count;
     struct split_t *split[1];
 } split_t;
 
+/* A subpage. Contains different representations of the list of spans. */
 typedef struct
 {
     rect_t       mediabox;
@@ -558,46 +557,46 @@ typedef struct
 
     content_t    tables;
 } subpage_t;
-/* A subpage. Contains different representations of the list of spans. */
 
 
+/* A page. Contains a list of subpages. NB not
+called page_t because this clashes with a system type on hpux. */
 typedef struct
 {
     rect_t      mediabox;
 
-    subpage_t** subpages;
+    subpage_t **subpages;
     int         subpages_num;
 
-    split_t*    split;
+    split_t    *split;
 } extract_page_t;
-/* A page. Contains a list of subpages. NB not
-called page_t because this clashes with a system type on hpux. */
 
 
-typedef struct
-{
-    extract_page_t**    pages;
-    int                 pages_num;
-} document_t;
 /* A list of pages. */
+typedef struct
+{
+    extract_page_t **pages;
+    int              pages_num;
+} document_t;
 
 
 typedef struct
 {
-    image_t**   images;
-    int         images_num;
-    char**      imagetypes;
-    int         imagetypes_num;
+    image_t **images;
+    int       images_num;
+    char    **imagetypes;
+    int       imagetypes_num;
 } images_t;
 
 
-int extract_document_join(extract_alloc_t* alloc, document_t* document, int layout_analysis);
 /* This does all the work of finding paragraphs and tables. */
+int extract_document_join(extract_alloc_t *alloc, document_t *document, int layout_analysis);
 
 double extract_font_size(matrix4_t *ctm);
 
 /* Things below here are used when generating output. */
 
+/* Basic information about current font. */
 typedef struct
 {
     char   *name;
@@ -605,30 +604,29 @@ typedef struct
     int     bold;
     int     italic;
 } font_t;
-/* Basic information about current font. */
 
+/* Used to keep track of font information when writing paragraphs of odt
+content, e.g. so we know whether a font has changed so need to start a new odt
+span. */
 typedef struct
 {
     font_t     font;
     matrix4_t *ctm_prev;
 } content_state_t;
-/* Used to keep track of font information when writing paragraphs of odt
-content, e.g. so we know whether a font has changed so need to start a new odt
-span. */
 
-int extract_page_analyse(extract_alloc_t* alloc, extract_page_t* page);
 /* Analyse page content for layouts. */
+int extract_page_analyse(extract_alloc_t *alloc, extract_page_t *page);
 
-int extract_subpage_alloc(extract_alloc_t* extract, rect_t mediabox, extract_page_t* page, subpage_t** psubpage);
-/* content_t constructor. */
+/* subpage_t constructor. */
+int extract_subpage_alloc(extract_alloc_t *extract, rect_t mediabox, extract_page_t *page, subpage_t **psubpage);
 
-void extract_subpage_free(extract_alloc_t* alloc, subpage_t** psubpage);
 /* subpage_t destructor. */
+void extract_subpage_free(extract_alloc_t *alloc, subpage_t **psubpage);
 
-int extract_split_alloc(extract_alloc_t* alloc, split_type_t type, int count, split_t** psplit);
 /* Allocate a split_t. */
+int extract_split_alloc(extract_alloc_t *alloc, split_type_t type, int count, split_t **psplit);
 
-void extract_split_free(extract_alloc_t* alloc, split_t** psplit);
+void extract_split_free(extract_alloc_t *alloc, split_t **psplit);
 
 /* Some helper functions */
 
