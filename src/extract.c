@@ -1069,6 +1069,47 @@ split_to_new_span(extract_alloc_t *alloc, content_t *content, span_t *span0)
     return span;
 }
 
+static span_t *
+find_previous_non_space_char(content_t *content, int *char_num, int *intervening_space)
+{
+    content_t *s;
+    int i;
+
+    *intervening_space = 0;
+    for (s = content->prev; s != content; s = s->prev)
+    {
+        span_t *span = (span_t *)s;
+
+        if (s->type != content_span)
+            continue;
+
+        for (i = span->chars_num-1; i >= 0; i--)
+        {
+            if (span->chars[i].ucs != 32)
+            {
+                *char_num = i;
+                return span;
+            }
+            *intervening_space = 1;
+        }
+    }
+
+    return NULL;
+}
+
+static point_t
+predicted_end_of_char(char_t *char_, const span_t *span)
+{
+    double adv = char_->adv;
+    point_t dir = { adv * (1 - span->flags.wmode), adv * span->flags.wmode };
+
+    dir = extract_multiply_matrix4_point(span->ctm, dir);
+    dir.x += char_->x;
+    dir.y += char_->y;
+
+    return dir;
+}
+
 int extract_add_char(extract_t *extract,
                      double     x,
                      double     y,
@@ -1084,8 +1125,11 @@ int extract_add_char(extract_t *extract,
     extract_page_t *page    = extract->document.pages[extract->document.pages_num-1];
     subpage_t      *subpage = page->subpages[page->subpages_num-1];
     span_t         *span    = content_last_span(&subpage->content);
+    span_t         *span0;
+    int             char_num0;
     double          dist, perp, scale_squared;
     point_t         dir;
+    int             intervening_space;
 
     if (span->flags.wmode)
     {
@@ -1103,48 +1147,84 @@ int extract_add_char(extract_t *extract,
 
     outf("(%f %f) ucs=% 5i=%c adv=%f", x, y, ucs, (ucs >=32 && ucs< 127) ? ucs : ' ', adv);
 
-    if (span->chars_num)
+    /* Now, check whether we need to break to a new line, or add (or subtract) a space. */
+    span0 = find_previous_non_space_char(&subpage->content, &char_num0, &intervening_space);
+
+    if (span0 == NULL)
     {
-        char_t *char_prev = &span->chars[span->chars_num - 1];
+        outf("%c x=%g y=%g adv=%g\n", ucs, x, y, adv);
+    }
+    else
+    {
+        char_t *char_prev = &span0->chars[char_num0];
         double adv0 = char_prev->adv;
+        point_t predicted_end_of_char0 = predicted_end_of_char(char_prev, span0);
+        /* We don't currently have access to the size of the advance for a space.
+         * Typically it's around 1 to 1/2 that of a real char. So guess at that
+         * using the 2 advances we have available to us. */
+        double space_guess = (adv0 + adv)/4;
 
         /* Use dot product to calculate the distance that we have moved along the direction vector. */
-        dist = (x - char_prev->x) * dir.x + (y - char_prev->y) * dir.y;
+        dist = (x - predicted_end_of_char0.x) * dir.x + (y - predicted_end_of_char0.y) * dir.y;
         /* Use dot product to calculate the distance that we have moved perpendicular to the direction vector. */
-        perp = (x - char_prev->x) * dir.y - (y - char_prev->y) * dir.x;
+        perp = (x - predicted_end_of_char0.x) * dir.y - (y - predicted_end_of_char0.y) * dir.x;
         /* Both dist and perp are multiplied by scale_squared. */
         dist /= scale_squared;
         perp /= scale_squared;
+        /* So now, dist, perp, adv, adv0 and space_guess are all in pre-transform space. */
+
+        /* So fabs(dist) is expected to be 0, and perp is expected to be 0 for characters
+         * "naturally placed" on a line. */
+        outf("%c x=%g y=%g adv=%g dist=%g perp=%g\n", ucs, x, y, adv, dist, perp);
 
         /* Arbitrary fractions here; ideally we should consult the font bbox, but we don't currently
          * have that. */
-        if (fabs(perp) > adv0/2 || fabs(dist) > adv0 * 3)
+        if (fabs(perp) > 3*space_guess/2 || fabs(dist) > space_guess * 8)
         {
             /* Create new span. */
-            extract->num_spans_autosplit += 1;
-            span = split_to_new_span(extract->alloc, &subpage->content, span);
-            if (span == NULL) goto end;
+            if (span->chars_num > 0)
+            {
+                extract->num_spans_autosplit += 1;
+                span = split_to_new_span(extract->alloc, &subpage->content, span);
+                if (span == NULL) goto end;
+            }
         }
-        else if (char_prev->ucs == 32)
+        else if (intervening_space)
         {
-            /* Previous code existed in subpage_span_end_clean to remove spaces if the promised advance wasn't there. This has been removed until I see
-             * some examples of it being needed. - RJW */
-            assert(fabs(dist) > adv0/10);
+            /* Some files, notably zlib.3.pdf appear to contain stray extra spaces within the PDF
+             * content themselves. e.g. "suppor ts". We therefore spot when the
+             * space allocated for a space isn't used, and remove the space. */
+            /* MAGIC NUMBER WARNING. zlib.pdf says that /4 is not sensitive enough. /3 is OK. */
+            if (dist < space_guess/3)
+            {
+                if (span->chars_num > 0)
+                {
+                    span->chars_num--;
+                    /* Don't need to worry about it being empty, as we're about to add another char! */
+                }
+                else
+                {
+                    span_t *space_span = content_prev_span(&span->base);
+                    assert(space_span->chars_num > 0);
+                    space_span->chars_num--;
+                    if (space_span->chars_num == 0)
+                        extract_span_free(extract->alloc, &space_span);
+                }
+            }
         }
-        else if (ucs != 32 && fabs(dist) > 3*adv0/2)
+        /* MAGIC NUMBER WARNING: We expect the space char to be about 1/2 as wide of a standard char.
+         * zlib3.pdf shows that sometimes we need to insert a space when it's *just* smaller than
+         * this. (e.g. 'eveninthe'). */
+        else if (!intervening_space && dist > 2*space_guess/3)
         {
             /* Larger gap than expected. Add an extra space. */
-
             /* Where should the space go? At the predicted position where the previous char
              * ended. */
-            point_t space = { adv0 * (1 - span->flags.wmode), adv0 * span->flags.wmode };
-            space = extract_multiply_matrix4_point(span->ctm, space);
-
             char_ = extract_span_append_c(extract->alloc, span, ' ');
             if (char_ == NULL) goto end;
 
-            char_->x = space.x;
-            char_->y = space.y;
+            char_->x = predicted_end_of_char0.x;
+            char_->y = predicted_end_of_char0.y;
         }
     }
 
@@ -1162,6 +1242,11 @@ int extract_add_char(extract_t *extract,
 
     e = 0;
 end:
+
+    if (span->chars_num == 0)
+    {
+        extract_span_free(extract->alloc, &span);
+    }
 
     return e;
 }

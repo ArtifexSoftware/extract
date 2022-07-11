@@ -81,6 +81,13 @@ line_t *content_last_line(const content_t *root);
 paragraph_t *content_first_paragraph(const content_t *root);
 paragraph_t *content_last_paragraph(const content_t *root);
 
+span_t *content_next_span(const content_t *node);
+span_t *content_prev_span(const content_t *node);
+line_t *content_next_line(const content_t *node);
+line_t *content_prev_line(const content_t *node);
+paragraph_t *content_next_paragraph(const content_t *node);
+paragraph_t *content_prev_paragraph(const content_t *node);
+
 int content_count(content_t *root);
 int content_count_images(content_t *root);
 int content_count_spans(content_t *root);

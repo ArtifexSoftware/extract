@@ -231,6 +231,64 @@ paragraph_t *content_last_paragraph(const content_t *root)
     return (paragraph_t *)content_last_of_type(root, content_paragraph);
 }
 
+static content_t *
+content_next_of_type(const content_t *node, content_type_t type)
+{
+    content_t *content;
+    assert(node && node->type != content_root);
+
+    for (content = node->next; content->type != content_root; content = content->next)
+    {
+        if (content->type == type)
+            return content;
+    }
+    return NULL;
+}
+
+static content_t *
+content_prev_of_type(const content_t *node, content_type_t type)
+{
+    content_t *content;
+    assert(node && node->type != content_root);
+
+    for (content = node->prev; content->type != content_root; content = content->prev)
+    {
+        if (content->type == type)
+            return content;
+    }
+    return NULL;
+}
+
+span_t *content_next_span(const content_t *root)
+{
+    return (span_t *)content_next_of_type(root, content_span);
+}
+
+span_t *content_prev_span(const content_t *root)
+{
+    return (span_t *)content_prev_of_type(root, content_span);
+}
+
+line_t *content_next_line(const content_t *root)
+{
+    return (line_t *)content_next_of_type(root, content_line);
+}
+
+line_t *content_prev_line(const content_t *root)
+{
+    return (line_t *)content_prev_of_type(root, content_line);
+}
+
+paragraph_t *content_next_paragraph(const content_t *root)
+{
+    return (paragraph_t *)content_next_of_type(root, content_paragraph);
+}
+
+paragraph_t *content_prev_paragraph(const content_t *root)
+{
+    return (paragraph_t *)content_prev_of_type(root, content_paragraph);
+}
+
 void
 content_concat(content_t *dst, content_t *src)
 {

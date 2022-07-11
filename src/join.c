@@ -452,6 +452,8 @@ make_lines(extract_alloc_t *alloc,
         int                    nearest_line_b = -1;
         double                 nearest_score = 0;
         line_t                *nearest_line = NULL;
+        double                 nearest_colinear = 0;
+        double                 nearest_space_guess = 0;
         span_t                *span_a;
 
         outfx("looking at line_a=%s", line_string2(alloc, line_a));
@@ -478,27 +480,34 @@ make_lines(extract_alloc_t *alloc,
                 /* Find the difference between the end of span_a and the start of span_b. */
                 char_t *first_b = span_char_first(span_b);
                 point_t diff = { first_b->x - span_a_end.x, first_b->y - span_a_end.y };
+                double scale_squared = ((span_a->flags.wmode) ?
+                                        (span_a->ctm.c * span_a->ctm.c + span_a->ctm.d * span_a->ctm.d) :
+                                        (span_a->ctm.a * span_a->ctm.a + span_a->ctm.b * span_a->ctm.b));
                 /* Now find the differences in position, both colinear and perpendicular. */
-                double colinear = (diff.x * tdir.x + diff.y * tdir.y) / last_a->adv;
-                double perp     = (diff.x * tdir.y - diff.y * tdir.x) / last_a->adv;
-                /* colinear and perp are now both device space distances. */
+                double colinear = (diff.x * tdir.x + diff.y * tdir.y) / last_a->adv / scale_squared;
+                double perp     = (diff.x * tdir.y - diff.y * tdir.x) / last_a->adv / scale_squared;
+                /* colinear and perp are now both pre-transform space distances, to match adv etc. */
                 double score;
+                double space_guess = (last_a->adv + first_b->adv)/4;
 
                 /* Heuristic: perpendicular distance larger than half of adv rules it out as a match. */
                 /* Ideally we should be using font bbox here, but we don't have that, currently. */
-                if (fabs(perp) > fabs(last_a->adv) / 2)
+                /* NOTE: We should match the logic in extract_add_char here! */
+                if (fabs(perp) > 3*space_guess/2 || fabs(colinear) > space_guess * 8)
                      continue;
 
                 /* We now form a score for this match. */
                 score = fabs(colinear);
-                if (score < perp * 10) /* perpendicular distance matters much more. */
-                    score = perp * 10;
+                if (score < fabs(perp) * 10) /* perpendicular distance matters much more. */
+                    score = fabs(perp) * 10;
 
                 if (!nearest_line || score < nearest_score)
                 {
                     nearest_line = line_b;
                     nearest_score = score;
                     nearest_line_b = b;
+                    nearest_colinear = colinear;
+                    nearest_space_guess = space_guess;
                 }
             }
         }
@@ -520,16 +529,11 @@ make_lines(extract_alloc_t *alloc,
                     (double) (span_a->chars_num + span_b->chars_num)
                     );
 
-            if (0 && nearest_score > 5 * average_adv)
+            if (   extract_span_char_last(span_a)->ucs != ' '
+                && span_char_first(span_b)->ucs != ' ')
             {
-                continue;
-            }
-
-            if (1
-                    && extract_span_char_last(span_a)->ucs != ' '
-                    && span_char_first(span_b)->ucs != ' '
-                    ) {
-                int insert_space = (nearest_score > 0.25 * average_adv);
+                /* Again, match the logic in extract_add_char here. */
+                int insert_space = (nearest_colinear > 2*nearest_space_guess/3);
                 if (insert_space) {
                     /* Append space to span_a before concatenation. */
                     char_t* item;
