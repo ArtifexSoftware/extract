@@ -388,27 +388,28 @@ content_dump_aux(const content_t *content, int depth);
 static void dump_span(const span_t *span, int depth)
 {
     int i;
-    space_prefix(depth);
-    printf("chars=\"");
     for (i = 0; i < span->chars_num; i++)
     {
-        if (span->chars[i].ucs >= 32 && span->chars[i].ucs <= 127)
+        char_t *c = &span->chars[i];
+        space_prefix(depth);
+        printf("<char ucs=\"");
+        if (c->ucs >= 32 && c->ucs <= 127)
         {
-             putc((char)span->chars[i].ucs, stdout);
+             putc((char)c->ucs, stdout);
         }
         else
         {
-             printf("<%04x>", span->chars[i].ucs);
+             printf("<%04x>", c->ucs);
         }
+        printf("\" x=%f y=%f adv=%f />\n", c->x, c->y, c->adv);
     }
-    printf("\"\n");
 }
 
 static void
 content_dump_span_aux(const span_t *span, int depth)
 {
     space_prefix(depth);
-    printf("<span ctm=[%g %g %g %g]\n",
+    printf("<span ctm=[%f %f %f %f]\n",
            span->ctm.a, span->ctm.b, span->ctm.c, span->ctm.d);
     space_prefix(depth);
     printf("      font-name=\"%s\" font_bbox=[%f %f %f %f]>\n",
@@ -417,7 +418,7 @@ content_dump_span_aux(const span_t *span, int depth)
            span->font_bbox.max.x, span->font_bbox.max.y);
     dump_span(span, depth+1);
     space_prefix(depth);
-    printf("/>\n");
+    printf("</span>\n");
 }
 
 void
@@ -429,9 +430,10 @@ content_dump_span(const span_t *span)
 static void
 content_dump_line_aux(const line_t *line, int depth)
 {
-    span_t *span = content_first_span(&line->content);
-    char_t *char0 = (span && span->chars_num > 0) ? &span->chars[0] : NULL;
-    char_t *char1 = (span && span->chars_num > 0) ? &span->chars[span->chars_num-1] : NULL;
+    span_t *span0 = content_first_span(&line->content);
+    span_t *span1 = content_last_span(&line->content);
+    char_t *char0 = (span0 && span0->chars_num > 0) ? &span0->chars[0] : NULL;
+    char_t *char1 = (span1 && span1->chars_num > 0) ? &span1->chars[span1->chars_num-1] : NULL;
     space_prefix(depth);
     printf("<line");
     if (char0)
