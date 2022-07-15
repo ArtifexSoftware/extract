@@ -411,7 +411,10 @@ content_dump_span_aux(const span_t *span, int depth)
     printf("<span ctm=[%g %g %g %g]\n",
            span->ctm.a, span->ctm.b, span->ctm.c, span->ctm.d);
     space_prefix(depth);
-    printf(" font-name=\"%s\"\n", span->font_name);
+    printf("      font-name=\"%s\" font_bbox=[%f %f %f %f]>\n",
+           span->font_name,
+           span->font_bbox.min.x, span->font_bbox.min.y,
+           span->font_bbox.max.x, span->font_bbox.max.y);
     dump_span(span, depth+1);
     space_prefix(depth);
     printf("/>\n");

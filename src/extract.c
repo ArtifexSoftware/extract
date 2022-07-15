@@ -937,7 +937,8 @@ int extract_read_intermediate(extract_t *extract, extract_buffer_t *buffer)
                                        ctm.a,
                                        ctm.b,
                                        ctm.c,
-                                       ctm.d)) goto end;
+                                       ctm.d,
+                                       0,0,0,0)) goto end;
 
                 for(;;) {
                     double         x;
@@ -1000,7 +1001,11 @@ extract_span_begin(extract_t  *extract,
                    double      ctm_a,
                    double      ctm_b,
                    double      ctm_c,
-                   double      ctm_d)
+                   double      ctm_d,
+                   double      bbox_x0,
+                   double      bbox_y0,
+                   double      bbox_x1,
+                   double      bbox_y1)
 {
     int             e = -1;
     extract_page_t *page;
@@ -1024,6 +1029,10 @@ extract_span_begin(extract_t  *extract,
     span->ctm.b = ctm_b;
     span->ctm.c = ctm_c;
     span->ctm.d = ctm_d;
+    span->font_bbox.min.x = bbox_x0;
+    span->font_bbox.min.y = bbox_y0;
+    span->font_bbox.max.x = bbox_x1;
+    span->font_bbox.max.y = bbox_y1;
 
     {
         const char *ff = strchr(font_name, '+');

@@ -65,6 +65,8 @@ wmode
     0 or 1.
 ctm_*
     Matrix values.
+bbox_*
+   font bounding box (unscaled)
 */
 int extract_span_begin(extract_t  *extract,
                        const char *font_name,
@@ -74,7 +76,11 @@ int extract_span_begin(extract_t  *extract,
                        double      ctm_a,
                        double      ctm_b,
                        double      ctm_c,
-                       double      ctm_d);
+                       double      ctm_d,
+                       double      bbox_x0,
+                       double      bbox_y0,
+                       double      bbox_x1,
+                       double      bbox_y1);
 
 
 /* Appends specified character to current span.

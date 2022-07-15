@@ -386,6 +386,7 @@ struct span_t
     content_t   base;
     matrix4_t   ctm;
     char       *font_name;
+    rect_t      font_bbox;
 
     struct {
         unsigned font_bold      : 1;
