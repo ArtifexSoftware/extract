@@ -95,7 +95,7 @@ static double span_angle(span_t *span)
         double ret;
         dir.x = span->flags.wmode ? 0 : 1;
         dir.y = span->flags.wmode ? 1 : 0;
-        dir = extract_multiply_matrix4_point(span->ctm, dir);
+        dir = extract_matrix4_transform_point(span->ctm, dir);
         ret = atan2(dir.y, dir.x);
         return ret;
     }
@@ -475,7 +475,7 @@ make_lines(extract_alloc_t *alloc,
                 char_t *last_a = extract_span_char_last(span_a);
                 /* Predict the end of span_a. */
                 point_t dir = { last_a->adv * (1 - span_a->flags.wmode), last_a->adv * span_a->flags.wmode };
-                point_t tdir = extract_multiply_matrix4_point(span_a->ctm, dir);
+                point_t tdir = extract_matrix4_transform_point(span_a->ctm, dir);
                 point_t span_a_end = { last_a->x + tdir.x, last_a->y + tdir.y };
                 /* Find the difference between the end of span_a and the start of span_b. */
                 char_t *first_b = span_char_first(span_b);
@@ -801,23 +801,29 @@ make_paragraphs(extract_alloc_t *alloc,
     for (a=0, paragraph_a = content_paragraph_iterator_init(&pit, content); paragraph_a != NULL; a++, paragraph_a = content_paragraph_iterator_next(&pit)) {
         paragraph_t                *nearest_paragraph = NULL;
         int                         nearest_paragraph_b = -1;
-        double                      nearest_paragraph_distance = -1;
+        int                         nearest_line_b = -1;
+        double                      nearest_score = 0;
+        line_t                     *nearest_line = NULL;
+        double                      nearest_perp = 0;
         line_t                     *line_a;
-        double                      angle_a;
         int                         verbose = 0;
         paragraph_t                *paragraph_b;
         content_paragraph_iterator  pit2;
         int b;
+        span_t                     *span_a;
 
         line_a = paragraph_line_last(paragraph_a);
         assert(line_a != NULL);
-        angle_a = line_angle(line_a);
+        span_a = extract_line_span_last(line_a);
+        assert(span_a != NULL);
 
         /* Look for nearest paragraph_t that could be appended to
         paragraph_a. */
         for (b=0, paragraph_b = content_paragraph_iterator_init(&pit2, content); paragraph_b != NULL; b++, paragraph_b = content_paragraph_iterator_next(&pit2))
         {
             line_t *line_b;
+            span_t *span_b;
+
             if (paragraph_a == paragraph_b)
                 continue;
             line_b = paragraph_line_first(paragraph_b);
@@ -826,94 +832,47 @@ make_paragraphs(extract_alloc_t *alloc,
             }
 
             {
-                double ax = line_item_last(line_a)->x;
-                double ay = line_item_last(line_a)->y;
-                double bx = line_item_first(line_b)->x;
-                double by = line_item_first(line_b)->y;
-                double distance = line_distance_y(ax, ay, bx, by, angle_a);
-                if (verbose) {
-                    outf(
-                            "angle_a=%f a=(%f %f) b=(%f %f) delta=(%f %f) distance=%f:",
-                            angle_a * 180 / pi,
-                            ax, ay,
-                            bx, by,
-                            bx - ax,
-                            by - ay,
-                            distance
-                            );
-                    outf("    line_a=%s", line_string2(alloc, line_a));
-                    outf("    line_b=%s", line_string2(alloc, line_b));
-                }
-                if (distance > 0)
+                span_t *span_b = extract_line_span_first(line_b);
+                char_t *last_a = extract_span_char_last(span_a);
+                /* Predict the end of span_a. */
+                point_t dir = { last_a->adv * (1 - span_a->flags.wmode), last_a->adv * span_a->flags.wmode };
+                point_t tdir = extract_matrix4_transform_point(span_a->ctm, dir);
+                point_t span_a_end = { last_a->x + tdir.x, last_a->y + tdir.y };
+                /* Find the difference between the end of span_a and the start of span_b. */
+                char_t *first_b = span_char_first(span_b);
+                point_t diff = { first_b->x - span_a_end.x, first_b->y - span_a_end.y };
+                double scale_squared = ((span_a->flags.wmode) ?
+                                        (span_a->ctm.c * span_a->ctm.c + span_a->ctm.d * span_a->ctm.d) :
+                                        (span_a->ctm.a * span_a->ctm.a + span_a->ctm.b * span_a->ctm.b));
+                /* Now find the perpendicular difference in position. */
+                double perp     = (diff.x * tdir.y - diff.y * tdir.x) / last_a->adv / scale_squared;
+                /* perp is now a pre-transform space distance, to match adv etc. */
+                double score;
+
+                score = fabs(perp);
+
+                if (!nearest_paragraph || score < nearest_score)
                 {
-                    if (nearest_paragraph_distance == -1
-                            || distance < nearest_paragraph_distance)
-                    {
-                        int ok = 1;
-                        if (0)
-                        {
-                            /* Check whether lines overlap horizontally. */
-                            point_t a_left = char_to_point(line_item_first(line_a));
-                            point_t b_left = char_to_point(line_item_first(line_b));
-                            point_t a_right = char_to_point(line_item_last(line_a));
-                            point_t b_right = char_to_point(line_item_last(line_b));
-
-                            if (!lines_overlap(a_left, a_right, b_left, b_right, angle_a))
-                            {
-                                outf("Not joining lines because not overlapping.");
-                                ok = 0;
-                            }
-                        }
-
-                        if (ok)
-                        {
-                            if (verbose) {
-                                outf("updating nearest. distance=%f:", distance);
-                                outf("    line_a=%s", line_string2(alloc, line_a));
-                                outf("    line_b=%s", line_string2(alloc, line_b));
-                            }
-
-                            nearest_paragraph_distance = distance;
-                            nearest_paragraph_b = b;
-                            nearest_paragraph = paragraph_b;
-                        }
-                    }
+                    nearest_paragraph = paragraph_b;
+                    nearest_score = score;
+                    nearest_paragraph_b = b;
+                    nearest_perp = perp;
                 }
             }
         }
 
         if (nearest_paragraph) {
-            double line_b_size = line_font_size_max(
-                    paragraph_line_first(nearest_paragraph)
-                    );
-            line_t* line_b = paragraph_line_first(nearest_paragraph);
+            double line_b_size = line_font_size_max(paragraph_line_first(nearest_paragraph));
+            line_t *line_b = paragraph_line_first(nearest_paragraph);
             (void) line_b; /* Only used in outfx(). */
-            if (nearest_paragraph_distance < 1.4 * line_b_size) {
+            if (nearest_perp < 1.4 * line_b_size) {
                 /* Paragraphs are close together vertically compared to maximum
                 font size of first line in second paragraph, so we'll join them
                 into a single paragraph. */
-                span_t* a_span;
-                if (verbose) {
-                    outf(
-                            "joing paragraphs. a=(%f,%f) b=(%f,%f) nearest_paragraph_distance=%f line_b_size=%f",
-                            line_item_last(line_a)->x,
-                            line_item_last(line_a)->y,
-                            line_item_first(line_b)->x,
-                            line_item_first(line_b)->y,
-                            nearest_paragraph_distance,
-                            line_b_size
-                            );
-                    outf("    %s", paragraph_string(alloc, paragraph_a));
-                    outf("    %s", paragraph_string(alloc, nearest_paragraph));
-                    outf("paragraph_a ctm=%s",
-                            extract_matrix4_string(&content_first_span(&content_first_line(&paragraph_a->content)->content)->ctm)
-                            );
-                }
-                /* Join these two paragraph_t's. */
-                a_span = extract_line_span_last(line_a);
-                if (extract_span_char_last(a_span)->ucs == '-'
-                        || extract_span_char_last(a_span)->ucs == 0x2212 /* unicode dash */
-                        )
+                span_t *a_span = extract_line_span_last(line_a);
+
+                if (extract_span_char_last(a_span)->ucs == '-' ||
+                    extract_span_char_last(a_span)->ucs == 0x2212 /* unicode dash */)
                 {
                     /* remove trailing '-' at end of prev line. char_t doesn't
                     contain any malloc-heap pointers so this doesn't leak. */
@@ -941,7 +900,7 @@ make_paragraphs(extract_alloc_t *alloc,
                     c->y = c_prev->y + c_prev->adv * a_span->ctm.c;
                 }
 
-                /* Join the two paragraphs by moving content from neareast_paragraph to paragraph_a. */
+                /* Join the two paragraphs by moving content from nearest_paragraph to paragraph_a. */
                 content_concat(&paragraph_a->content, &nearest_paragraph->content);
 
                 /* Ensure that we skip nearest_paragraph in future. */
@@ -950,12 +909,6 @@ make_paragraphs(extract_alloc_t *alloc,
                 extract_paragraph_free(alloc, &nearest_paragraph);
 
                 num_joins += 1;
-                outfx(
-                        "have joined paragraph a=%i to nearest_paragraph_b=%i. num_joins=%i.",
-                        a,
-                        nearest_paragraph_b,
-                        num_joins
-                        );
 
                 if (nearest_paragraph_b > a) {
                     /* We haven't yet tried appending any paragraphs to
@@ -966,13 +919,6 @@ make_paragraphs(extract_alloc_t *alloc,
                 } else {
                     a -= 1;
                 }
-            }
-            else {
-                outfx(
-                        "Not joining paragraphs. nearest_paragraph_distance=%f line_b_size=%f",
-                        nearest_paragraph_distance,
-                        line_b_size
-                        );
             }
         }
     }

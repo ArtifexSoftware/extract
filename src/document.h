@@ -362,8 +362,13 @@ const char *extract_matrix4_string(const matrix4_t *matrix);
 /* Returns a*d - b*c. */
 double      extract_matrix_expansion(matrix4_t m);
 
-point_t     extract_multiply_matrix4_point(matrix4_t m, point_t p);
+/* Returns the inverse of a matrix (or identity for degenerate). */
+matrix4_t   extract_matrix4_invert(const matrix4_t *ctm);
+
+point_t     extract_matrix4_transform_point(matrix4_t m, point_t p);
+point_t     extract_matrix4_transform_xy(matrix4_t m, double x, double y);
 matrix_t    extract_multiply_matrix_matrix(matrix_t m1, matrix_t m2);
+matrix4_t   extract_multiply_matrix4_matrix4(matrix4_t m1, matrix4_t m2);
 
 /* Returns zero if first four members of *lhs and *rhs are equal, otherwise
 +/-1. */
@@ -646,5 +651,16 @@ static inline span_t *content_head_as_span(content_t *root)
     assert(root != NULL && root->type == content_root && (root->next == NULL || root->next->type == content_span));
     return (span_t *)root->next;
 }
+
+/* Return a point for the post-advance position of a char in a given span. */
+point_t extract_predicted_end_of_char(char_t *char_, const span_t *span);
+
+/* Return a point for the post-advance position of the final char in a given span. */
+point_t extract_end_of_span(const span_t *span);
+
+/* Return the bounds for a block before it was rotated around its origin. */
+rect_t extract_block_pre_rotation_bounds(block_t *block, double rotate);
+
+double extract_baseline_angle(const matrix4_t *ctm);
 
 #endif

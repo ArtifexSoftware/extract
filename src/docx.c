@@ -500,80 +500,19 @@ docx_append_rotated_paragraphs(extract_alloc_t    *alloc,
                                block_t            *block,
                                int                *text_box_id,
                                const matrix4_t    *ctm,
-                               double              rotate,
+                               double              angle,
                                extract_astring_t  *output)
 {
     /* Find extent of paragraphs with this same rotation. extent
     will contain max width and max height of paragraphs, in units
     before application of ctm, i.e. before rotation. */
     int               e           = -1;
-    point_t           extent      = {0, 0};
-    content_iterator  cit;
-    content_t        *content;
-    paragraph_t      *paragraph   = content_first_paragraph(&block->content);
+    rect_t            bounds;
 
-    /* We assume that first span is at origin of text
-    block. This assumes left-to-right text. */
-    span_t           *first_span  = content_head_as_span(&content_first_line(&paragraph->content)->content);
-    point_t           origin      = { first_span->chars[0].x,
-                                      first_span->chars[0].y };
-    matrix4_t         ctm_inverse = {1, 0, 0, 1};
-    double            ctm_det     = ctm->a*ctm->d - ctm->b*ctm->c;
+    bounds = extract_block_pre_rotation_bounds(block, angle);
 
-    outf("rotate=%.2frad=%.1fdeg ctm: abcd=(%f %f %f %f)",
-            rotate, rotate * 180 / pi,
-            ctm->a,
-            ctm->b,
-            ctm->c,
-            ctm->d
-            );
-
-    if (ctm_det != 0) {
-        ctm_inverse.a = +ctm->d / ctm_det;
-        ctm_inverse.b = -ctm->b / ctm_det;
-        ctm_inverse.c = -ctm->c / ctm_det;
-        ctm_inverse.d = +ctm->a / ctm_det;
-    } else {
-        outf("cannot invert ctm=(%f %f %f %f)",
-             ctm->a, ctm->b, ctm->c, ctm->d);
-    }
-
-    for (content = content_iterator_init(&cit, &block->content); content != NULL; content = content_iterator_next(&cit))
-    {
-        content_line_iterator  lit;
-        line_t                *line;
-        paragraph_t           *paragraph;
-
-        assert(content->type == content_paragraph);
-        if (content->type != content_paragraph)
-            continue; /* This shouldn't happen for now! */
-
-        paragraph = (paragraph_t *)content;
-
-        /* Update <extent>. */
-        for (line = content_line_iterator_init(&lit, &paragraph->content); line != NULL; line = content_line_iterator_next(&lit))
-        {
-            span_t *span = extract_line_span_last(line);
-            char_t *char_ = extract_span_char_last(span);
-            double  adv = char_->adv * extract_matrix_expansion(span->ctm);
-            double  x = char_->x + adv * cos(rotate);
-            double  y = char_->y + adv * sin(rotate);
-
-            double  dx = x - origin.x;
-            double  dy = y - origin.y;
-
-            /* Position relative to origin and before box rotation. */
-            double  xx = ctm_inverse.a * dx + ctm_inverse.b * dy;
-            double  yy = ctm_inverse.c * dx + ctm_inverse.d * dy;
-            yy = -yy;
-            if (xx > extent.x) extent.x = xx;
-            if (yy > extent.y) extent.y = yy;
-            if (0) outf("rotate=%f: origin=(%f %f) xy=(%f %f) dxy=(%f %f) xxyy=(%f %f) span: %s",
-                        rotate, origin.x, origin.y, x, y, dx, dy, xx, yy, extract_span_string(alloc, span));
-        }
-    }
-    outf("rotate=%f extent is: (%f %f)",
-         rotate, extent.x, extent.y);
+    outf("angle=%f pre-transform box is: (%f %f) to (%f %f)",
+         angle, bounds.min.x, bounds.min.y, bounds.max.x, bounds.max.y);
 
     /* All the paragraphs have same rotation. We output them into
     a single rotated text box. */
@@ -583,47 +522,19 @@ docx_append_rotated_paragraphs(extract_alloc_t    *alloc,
 
     {
         /* Angles are in units of 1/60,000 degree. */
-        int rot = (int) (rotate * 180 / pi * 60000);
+        int rot = (int) (angle * 180 / pi * 60000);
 
         /* <wp:anchor distT=\.. etc are in EMU - 1/360,000 of a cm.
         relativeHeight is z-ordering. (wp:positionV:wp:posOffset,
         wp:positionV:wp:posOffset) is position of origin of box in
-        EMU.
-
-        The box rotates about its centre but we want to rotate
-        about the origin (top-left). So we correct the position of
-        box by subtracting the vector that the top-left moves when
-        rotated by angle <rotate> about the middle. */
+        EMU. */
         double point_to_emu = 12700;    /* https://en.wikipedia.org/wiki/Office_Open_XML_file_formats#DrawingML */
-        int x = (int) (origin.x * point_to_emu);
-        int y = (int) (origin.y * point_to_emu);
-        int w = (int) (extent.x * point_to_emu);
-        int h = (int) (extent.y * point_to_emu);
-        int dx;
-        int dy;
+        int x = (int) (bounds.min.x * point_to_emu);
+        int y = (int) (bounds.min.y * point_to_emu);
+        int w = (int) ((bounds.max.x - bounds.min.x) * point_to_emu);
+        int h = (int) ((bounds.max.y - bounds.min.y) * point_to_emu);
 
-        if (0) outf("rotate: %f rad, %f deg. rot=%i", rotate, rotate*180/pi, rot);
-
-        h *= 2;
-        /* We can't predict how much space Word will actually
-        require for the rotated text, so make the box have the
-        original width but allow text to take extra vertical
-        space. There doesn't seem to be a way to make the text box
-        auto-grow to contain the text. */
-
-        dx = (int) ((1-cos(rotate)) * w / 2.0 + sin(rotate) * h / 2.0);
-        dy = (int) ((cos(rotate)-1) * h / 2.0 + sin(rotate) * w / 2.0);
-        outf("origin.x,y=%f,%f rotate=%f => x,y=%ik %ik dx,dy=%ik %ik",
-                origin.x,
-                origin.y,
-                rotate * 180/pi,
-                x/1000,
-                y/1000,
-                dx/1000,
-                dy/1000
-                );
-        x -= dx;
-        y -= -dy;
+        if (0) outf("rotate: %f rad, %f deg. rot=%i", angle, angle*180/pi, rot);
 
         if (docx_output_rotated_paragraphs(alloc, block, rot, x, y, w, h, *text_box_id, output, state)) goto end;
     }
@@ -684,8 +595,8 @@ extract_document_to_docx_content(extract_alloc_t   *alloc,
 
                 if (paragraph && y_paragraph < y_table)
                 {
-                    const matrix4_t *ctm    = &first_span->ctm;
-                    double           rotate = atan2(ctm->b, ctm->a);
+                    const matrix4_t *ctm   = &first_span->ctm;
+                    double           angle = extract_baseline_angle(ctm);
 
                     if (spacing
                         && content_state.ctm_prev
@@ -703,10 +614,10 @@ extract_document_to_docx_content(extract_alloc_t   *alloc,
                     if (spacing)
                         if (docx_paragraph_empty(alloc, output)) goto end;
 
-                    if (rotation && rotate != 0)
+                    if (rotation && angle != 0)
                     {
                         assert(block);
-                        if (docx_append_rotated_paragraphs(alloc, &content_state, block, &text_box_id, ctm, rotate, output)) goto end;
+                        if (docx_append_rotated_paragraphs(alloc, &content_state, block, &text_box_id, ctm, angle, output)) goto end;
                     }
                     else if (block)
                     {

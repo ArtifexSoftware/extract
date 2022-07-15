@@ -34,6 +34,25 @@ double extract_matrix_expansion(matrix4_t m)
     return sqrt(fabs(m.a * m.d - m.b * m.c));
 }
 
+matrix4_t extract_matrix4_invert(const matrix4_t *ctm)
+{
+    matrix4_t ctm_inverse = {1, 0, 0, 1};
+    double    ctm_det     = ctm->a*ctm->d - ctm->b*ctm->c;
+
+    if (ctm_det == 0) {
+        outf("cannot invert ctm=(%f %f %f %f)",
+             ctm->a, ctm->b, ctm->c, ctm->d);
+    }
+    else
+    {
+        ctm_inverse.a = +ctm->d / ctm_det;
+        ctm_inverse.b = -ctm->b / ctm_det;
+        ctm_inverse.c = -ctm->c / ctm_det;
+        ctm_inverse.d = +ctm->a / ctm_det;
+    }
+
+    return ctm_inverse;
+}
 
 static void char_init(char_t* item)
 {
@@ -551,13 +570,22 @@ int extract_matrix4_cmp(const matrix4_t *lhs, const matrix4_t *rhs)
     return 0;
 }
 
-
-point_t extract_multiply_matrix4_point(matrix4_t m, point_t p)
+point_t extract_matrix4_transform_point(matrix4_t m, point_t p)
 {
     double x = p.x;
 
     p.x = m.a * x + m.c * p.y;
     p.y = m.b * x + m.d * p.y;
+
+    return p;
+}
+
+point_t extract_matrix4_transform_xy(matrix4_t m, double x, double y)
+{
+    point_t p;
+
+    p.x = m.a * x + m.c * y;
+    p.y = m.b * x + m.d * y;
 
     return p;
 }
@@ -570,8 +598,20 @@ matrix_t extract_multiply_matrix_matrix(matrix_t m1, matrix_t m2)
     ret.b = m1.a * m2.b + m1.b * m2.d;
     ret.c = m1.c * m2.a + m1.d * m2.c;
     ret.d = m1.c * m2.b + m1.d * m2.d;
-    ret.e = m1.e + m2.e;
-    ret.f = m1.f + m2.f;
+    ret.e = m1.e * m2.a + m1.f * m2.c + m2.e;
+    ret.f = m1.e * m2.b + m1.f * m2.d + m2.f;
+
+    return ret;
+}
+
+matrix4_t extract_multiply_matrix4_matrix4(matrix4_t m1, matrix4_t m2)
+{
+    matrix4_t ret;
+
+    ret.a = m1.a * m2.a + m1.b * m2.c;
+    ret.b = m1.a * m2.b + m1.b * m2.d;
+    ret.c = m1.c * m2.a + m1.d * m2.c;
+    ret.d = m1.c * m2.b + m1.d * m2.d;
 
     return ret;
 }
@@ -1106,17 +1146,24 @@ find_previous_non_space_char(content_t *content, int *char_num, int *intervening
     return NULL;
 }
 
-static point_t
-predicted_end_of_char(char_t *char_, const span_t *span)
+point_t
+extract_predicted_end_of_char(char_t *char_, const span_t *span)
 {
     double adv = char_->adv;
     point_t dir = { adv * (1 - span->flags.wmode), adv * span->flags.wmode };
 
-    dir = extract_multiply_matrix4_point(span->ctm, dir);
+    dir = extract_matrix4_transform_point(span->ctm, dir);
     dir.x += char_->x;
     dir.y += char_->y;
 
     return dir;
+}
+
+point_t
+extract_end_of_span(const span_t *span)
+{
+    assert(span && span->chars_num > 0);
+    return extract_predicted_end_of_char(&span->chars[span->chars_num-1], span);
 }
 
 int extract_add_char(extract_t *extract,
@@ -1152,7 +1199,7 @@ int extract_add_char(extract_t *extract,
         dir.y = 0;
         scale_squared = span->ctm.a * span->ctm.a + span->ctm.b * span->ctm.b;
     }
-    dir = extract_multiply_matrix4_point(span->ctm, dir);
+    dir = extract_matrix4_transform_point(span->ctm, dir);
 
     outf("(%f %f) ucs=% 5i=%c adv=%f", x, y, ucs, (ucs >=32 && ucs< 127) ? ucs : ' ', adv);
 
@@ -1167,7 +1214,7 @@ int extract_add_char(extract_t *extract,
     {
         char_t *char_prev = &span0->chars[char_num0];
         double adv0 = char_prev->adv;
-        point_t predicted_end_of_char0 = predicted_end_of_char(char_prev, span0);
+        point_t predicted_end_of_char0 = extract_predicted_end_of_char(char_prev, span0);
         /* We don't currently have access to the size of the advance for a space.
          * Typically it's around 1 to 1/2 that of a real char. So guess at that
          * using the 2 advances we have available to us. */
@@ -2246,4 +2293,138 @@ double extract_font_size(matrix4_t *ctm)
     font_size = (double) (int) (font_size * 100.0f + 0.5f) / 100.0f;
 
     return font_size;
+}
+
+rect_t extract_block_pre_rotation_bounds(block_t *block, double angle)
+{
+    content_paragraph_iterator  pit;
+    paragraph_t                *paragraph = content_first_paragraph(&block->content);
+    line_t                     *line0     = content_first_line(&paragraph->content);
+    span_t                     *span0     = content_first_span(&line0->content);
+    rect_t                      pre_box   = extract_rect_empty;
+    matrix4_t                   unrotate, rotate;
+    point_t                     centre, trans_centre;
+
+    /* Construct a matrix to undo the rotation that we are about to put into
+     * the file. i.e. get us a matrix that maps us from where the chars are
+     * positioned back to the pre-rotated position. These pre-rotated positions
+     * can then be used to calculate the origin/extent of the area that we
+     * need to put into the file. */
+
+    /* The well know rotation matrixes:
+     *
+     *  CW: [  cos(theta)     sin(theta) ]  CCW: [  cos(theta)    -sin(theta) ]
+     *      [ -sin(theta)     cos(theta) ]       [  sin(theta)     cos(theta) ]
+     */
+
+    /* Word gives us an angle to rotate by clockwise. So the inverse is the
+     * CCW matrix: */
+    unrotate.a = cos(angle);
+    unrotate.b = -sin(angle);
+    unrotate.c = -unrotate.b;
+    unrotate.d = unrotate.a;
+    /* And the forward rotation is the CW matrix: */
+    rotate.a = unrotate.a;  /* cos(theta) =  cos(-theta) */
+    rotate.b = -unrotate.b; /* sin(theta) = -sin(-theta) */
+    rotate.c = -rotate.b;
+    rotate.d = rotate.a;
+
+    /* So ctm.unrotate.rotate = ctm, by construction. ctm.unrotate should
+     * (in the common cases where the ctm is just a scale + rotation)  map
+     * all our character locations back to a rectangular region. We now
+     * calculate that region as pre_box. */
+
+    for (paragraph = content_paragraph_iterator_init(&pit, &block->content); paragraph != NULL; paragraph = content_paragraph_iterator_next(&pit))
+    {
+        content_line_iterator  lit;
+        line_t                *line;
+
+        for (line = content_line_iterator_init(&lit, &paragraph->content); line != NULL; line = content_line_iterator_next(&lit))
+        {
+            span_t  *span0 = content_first_span(&line->content);
+            span_t  *span1 = content_last_span(&line->content);
+            point_t  start = { span0->chars[0].x, span0->chars[0].y};
+            point_t  end   = extract_end_of_span(span1);
+            double   hoff  = span0->font_bbox.max.y - (span0->font_bbox.min.y < 0 ? span0->font_bbox.min.y : 0);
+
+            outf("%f %f -> %f %f\n", start.x, start.y, end.x, end.y);
+            start = extract_matrix4_transform_point(unrotate, start);
+            end   = extract_matrix4_transform_point(unrotate, end);
+            outf("   --------->    %f %f -> %f %f\n", start.x, start.y, end.x, end.y);
+
+            /* Allow for the height of the span here. */
+            hoff *= sqrt(span0->ctm.c * span0->ctm.c + span0->ctm.d * span0->ctm.d);
+
+            if (start.y < end.y)
+                start.y -= hoff;
+            else
+                end.y -= hoff;
+            pre_box = extract_rect_union_point(pre_box, start);
+            pre_box = extract_rect_union_point(pre_box, end);
+        }
+    }
+
+    /* So pre_box rotated around the origin by angle should give us the region we want. */
+    /* BUT word etc rotate around the centre of the box. So we need to offset the region to
+     * allow for this. */
+    /* So word, takes the declared box, and subtracts the centre vector from it. Then it
+     * does the rotation (around the origin - now the centre of the box). Then it adds the
+     * centre vector to it again. So the centre of the box does not change. Unfortunately,
+     * we haven't easily got the centre vector of the transformed box to hand, so calculate
+     * it by rerotating the centre vector of the pre_box.*/
+    centre.x  = (pre_box.min.x + pre_box.max.x)/2;
+    centre.y  = (pre_box.min.y + pre_box.max.y)/2;
+    trans_centre = extract_matrix4_transform_point(rotate, centre);
+#if 0
+    {
+        point_t centre2 = extract_matrix4_transform_point(unrotate, trans_centre);
+        centre2 = centre2;
+    }
+#endif
+#if 0
+    printf("Centre of this paragraph should be %f %f\n", trans_centre.x, trans_centre.y);
+#endif
+
+    /* So the centre of our pre_box should be trans_centre not centre. */
+    centre.x -= trans_centre.x;
+    centre.y -= trans_centre.y;
+    pre_box.min.x -= centre.x;
+    pre_box.min.y -= centre.y;
+    pre_box.max.x -= centre.x;
+    pre_box.max.y -= centre.y;
+
+#if 0
+    /* So, as a sanity check, convert the 4 corners back to a quad. */
+    {
+        rect_t centred_box = { pre_box.min.x - trans_centre.x,
+                               pre_box.min.y - trans_centre.y,
+                               pre_box.max.x - trans_centre.x,
+                               pre_box.max.y - trans_centre.y };
+        point_t corner;
+
+        corner = extract_matrix4_transform_xy(rotate, centred_box.min.x, centred_box.min.y);
+        corner.x += trans_centre.x;
+        corner.y += trans_centre.y;
+        printf("TL: %f %f\n", corner.x, corner.y);
+        corner = extract_matrix4_transform_xy(rotate, centred_box.max.x, centred_box.min.y);
+        corner.x += trans_centre.x;
+        corner.y += trans_centre.y;
+        printf("TR: %f %f\n", corner.x, corner.y);
+        corner = extract_matrix4_transform_xy(rotate, centred_box.max.x, centred_box.max.y);
+        corner.x += trans_centre.x;
+        corner.y += trans_centre.y;
+        printf("BR: %f %f\n", corner.x, corner.y);
+        corner = extract_matrix4_transform_xy(rotate, centred_box.min.x, centred_box.max.y);
+        corner.x += trans_centre.x;
+        corner.y += trans_centre.y;
+        printf("BL: %f %f\n", corner.x, corner.y);
+    }
+#endif
+
+    return pre_box;
+}
+
+double extract_baseline_angle(const matrix4_t *ctm)
+{
+    return atan2(ctm->b, ctm->a);
 }
