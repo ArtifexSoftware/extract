@@ -330,6 +330,8 @@ rect_t extract_rect_intersect(rect_t a, rect_t b);
 
 rect_t extract_rect_union(rect_t a, rect_t b);
 
+rect_t extract_rect_union_point(rect_t a, point_t b);
+
 int extract_rect_contains_rect(rect_t a, rect_t b);
 
 int extract_rect_valid(rect_t a);
