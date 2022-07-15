@@ -25,8 +25,8 @@
 
 
 
-const rect_t extract_rect_infinite = { { DBL_MIN, DBL_MIN }, { DBL_MAX, DBL_MAX } };
-const rect_t extract_rect_empty    = { { DBL_MAX, DBL_MAX }, { DBL_MIN, DBL_MIN } };
+const rect_t extract_rect_infinite = { { -DBL_MAX, -DBL_MAX }, {  DBL_MAX,  DBL_MAX } };
+const rect_t extract_rect_empty    = { {  DBL_MAX,  DBL_MAX }, { -DBL_MAX, -DBL_MAX } };
 
 
 double extract_matrix_expansion(matrix_t m)
