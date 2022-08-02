@@ -687,23 +687,10 @@ static int paragraphs_cmp(const content_t *a, const content_t *b)
     a_span = extract_line_span_first(a_line);
     b_span = extract_line_span_first(b_line);
 
-    if (0)
+    /* We can't directly compare stuff with different wmodes. */
+    if (a_span->flags.wmode != b_span->flags.wmode)
     {
-        double a_angle = span_angle2(a_span);
-        double b_angle = span_angle2(b_span);
-        if (fabs(a_angle - b_angle) > 0.01)
-        {
-            outf0("angles differ: a_angle=%f b_angle=%f", a_angle, b_angle);
-            outf0("a_span: %s", extract_span_string(NULL, a_span));
-            outf0("b_span: %s", extract_span_string(NULL, b_span));
-            if (a_angle - b_angle > 3.14/2) {
-                /* Give up if more than 90 deg. */
-                return 0;
-            }
-            if (a_angle > b_angle)  return 1;
-            if (a_angle < b_angle)  return -1;
-            return 0;
-        }
+        return a_span->flags.wmode - b_span->flags.wmode;
     }
 
     /* If matrices are compatible (i.e. they share the same baseline vector), don't consider that as
@@ -713,7 +700,7 @@ static int paragraphs_cmp(const content_t *a, const content_t *b)
      * comparison. A might be compatible with B, and B with C, but A might not be with C.
      * Worry about that if we get an example.
      */
-    if (a_span->flags.wmode != b_span->flags.wmode || !matrices_are_compatible(&a_span->ctm, &b_span->ctm, a_span->flags.wmode))
+    if (!matrices_are_compatible(&a_span->ctm, &b_span->ctm, a_span->flags.wmode))
     {
         /* If ctm matrices differ, always return this diff first. Note that we
         ignore .e and .f because if data is from ghostscript then .e and .f
@@ -734,23 +721,28 @@ static int paragraphs_cmp(const content_t *a, const content_t *b)
         }
     }
 
+    /* So, we know the matrices are compatible - i.e. the baselines are parallel.
+     * Just sort on how far down the page we are going. */
     {
-        double a_angle = line_angle(a_line);
-        double b_angle = line_angle(b_line);
-        if (fabs(a_angle - b_angle) > 3.14/2) {
-            /* Give up if more than 90 deg. */
-            return 0;
-        }
-        {
-            double angle = (a_angle + b_angle) / 2;
-            double ax = line_item_first(a_line)->x;
-            double ay = line_item_first(a_line)->y;
-            double bx = line_item_first(b_line)->x;
-            double by = line_item_first(b_line)->y;
-            double distance = line_distance_y(ax, ay, bx, by, angle);
-            if (distance > 0)   return -1;
-            if (distance < 0)   return +1;
-        }
+        span_t *span_a = content_first_span(&a_line->content);
+        span_t *span_b = content_first_span(&b_line->content);
+        point_t dir  = { 1 - span_a->flags.wmode, span_a->flags.wmode };
+        point_t tdir = extract_matrix4_transform_point(span_a->ctm, dir);
+        point_t diff = { span_a->chars[0].x - span_b->chars[0].x, span_a->chars[0].y - span_b->chars[0].y };
+        double perp     = (diff.x * tdir.y - diff.y * tdir.x);
+
+#if 0
+        printf("Comparing:\n");
+        content_dump_brief(&a_line->content);
+        printf("And:\n");
+        content_dump_brief(&b_line->content);
+        printf("perp=%g\n", perp);
+#endif
+
+        if (perp < 0)
+            return 1;
+        if (perp > 0)
+            return -1;
     }
     return 0;
 }
@@ -819,7 +811,6 @@ make_paragraphs(extract_alloc_t *alloc,
     paragraph_t                *paragraph_a;
 
     /* Convert every line_t to be a paragraph_t containing that line_t. */
-    int lines_num = content_count_lines(content);
     for (line = content_line_iterator_init(&lit, content); line != NULL; line = content_line_iterator_next(&lit))
     {
         paragraph_t *paragraph;
@@ -834,12 +825,8 @@ make_paragraphs(extract_alloc_t *alloc,
     for (a=0, paragraph_a = content_paragraph_iterator_init(&pit, content); paragraph_a != NULL; a++, paragraph_a = content_paragraph_iterator_next(&pit)) {
         paragraph_t                *nearest_paragraph = NULL;
         int                         nearest_paragraph_b = -1;
-        int                         nearest_line_b = -1;
         double                      nearest_score = 0;
-        line_t                     *nearest_line = NULL;
-        double                      nearest_perp = 0;
         line_t                     *line_a;
-        int                         verbose = 0;
         paragraph_t                *paragraph_b;
         content_paragraph_iterator  pit2;
         int b;
@@ -855,7 +842,6 @@ make_paragraphs(extract_alloc_t *alloc,
         for (b=0, paragraph_b = content_paragraph_iterator_init(&pit2, content); paragraph_b != NULL; b++, paragraph_b = content_paragraph_iterator_next(&pit2))
         {
             line_t *line_b;
-            span_t *span_b;
 
             if (paragraph_a == paragraph_b)
                 continue;
@@ -866,39 +852,49 @@ make_paragraphs(extract_alloc_t *alloc,
 
             {
                 span_t *span_b = extract_line_span_first(line_b);
-                char_t *last_a = extract_span_char_last(span_a);
-                /* Predict the end of span_a. */
-                point_t dir = { last_a->adv * (1 - span_a->flags.wmode), last_a->adv * span_a->flags.wmode };
-                point_t tdir = extract_matrix4_transform_point(span_a->ctm, dir);
-                point_t span_a_end = { last_a->x + tdir.x, last_a->y + tdir.y };
-                /* Find the difference between the end of span_a and the start of span_b. */
+                char_t *first_a = span_char_first(span_a);
                 char_t *first_b = span_char_first(span_b);
-                point_t diff = { first_b->x - span_a_end.x, first_b->y - span_a_end.y };
+                point_t dir = { 1 - span_a->flags.wmode, span_a->flags.wmode };
+                point_t tdir = extract_matrix4_transform_point(span_a->ctm, dir);
+                /* Find the difference between the start of span_a and the start of span_b. */
+                point_t diff = { first_b->x - first_a->x, first_b->y - first_a->y };
+                /* Now find the perpendicular difference in position. */
                 double scale_squared = ((span_a->flags.wmode) ?
                                         (span_a->ctm.c * span_a->ctm.c + span_a->ctm.d * span_a->ctm.d) :
                                         (span_a->ctm.a * span_a->ctm.a + span_a->ctm.b * span_a->ctm.b));
-                /* Now find the perpendicular difference in position. */
-                double perp     = (diff.x * tdir.y - diff.y * tdir.x) / last_a->adv / scale_squared;
-                /* perp is now a pre-transform space distance, to match adv etc. */
+                double perp     = (diff.x * tdir.y - diff.y * tdir.x) / sqrt(scale_squared);
+                /* perp is now a post-transform space distance. */
                 double score;
 
-                score = fabs(perp);
+                /* We are only interested in scoring down the page. */
+                score = -perp;
 
-                if (!nearest_paragraph || score < nearest_score)
+#if 0
+                printf("Comparing:\n");
+                content_dump_brief(&paragraph_a->content);
+                printf("And:\n");
+                content_dump_brief(&paragraph_b->content);
+                printf("score=%g\n", score);
+#endif
+
+                if (score >= 0 && (!nearest_paragraph || score < nearest_score))
                 {
                     nearest_paragraph = paragraph_b;
                     nearest_score = score;
                     nearest_paragraph_b = b;
-                    nearest_perp = perp;
                 }
             }
         }
 
         if (nearest_paragraph) {
-            double line_b_size = line_font_size_max(paragraph_line_first(nearest_paragraph));
+            double line_a_height = line_a->ascender - line_a->descender;
             line_t *line_b = paragraph_line_first(nearest_paragraph);
-            (void) line_b; /* Only used in outfx(). */
-            if (nearest_perp < 1.4 * line_b_size) {
+            double line_b_height = line_b->ascender - line_b->descender;
+            double expected_height = (line_a_height + line_b_height)/2;
+
+            printf("Best score = %g, expected_height=%g\n", nearest_score, expected_height);
+
+            if (nearest_score > 0 && nearest_score < 2 * expected_height) {
                 /* Paragraphs are close together vertically compared to maximum
                 font size of first line in second paragraph, so we'll join them
                 into a single paragraph. */
@@ -935,6 +931,11 @@ make_paragraphs(extract_alloc_t *alloc,
 
                 /* Join the two paragraphs by moving content from nearest_paragraph to paragraph_a. */
                 content_concat(&paragraph_a->content, &nearest_paragraph->content);
+
+#if 0
+                printf("Joining to give:\n");
+                content_dump_brief(&paragraph_a->content);
+#endif
 
                 /* Ensure that we skip nearest_paragraph in future. */
                 if (pit.next == &nearest_paragraph->base)
