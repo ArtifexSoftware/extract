@@ -67,7 +67,7 @@ docx_run_start(extract_alloc_t   *alloc,
         extract_astring_cat(alloc, output, "\"/>");
 
         if (!e) e = extract_astring_cat(alloc, output, "<w:szCs w:val=\"");
-        snprintf(font_size_text, sizeof(font_size_text), "%f", content_state->font.size * 1.5);
+        snprintf(font_size_text, sizeof(font_size_text), "%f", content_state->font.size * 2);
         extract_astring_cat(alloc, output, font_size_text);
         extract_astring_cat(alloc, output, "\"/>");
     }
@@ -206,8 +206,8 @@ docx_append_image(extract_alloc_t   *alloc,
     extract_astring_cat(alloc, output, "         </w:rPr>\n");
     extract_astring_cat(alloc, output, "         <w:drawing>\n");
     extract_astring_cat(alloc, output, "           <wp:inline distT=\"0\" distB=\"0\" distL=\"0\" distR=\"0\" wp14:anchorId=\"7057A832\" wp14:editId=\"466EB3FB\">\n");
-    extract_astring_cat(alloc, output, "             <wp:extent cx=\"2933700\" cy=\"2200275\"/>\n");
-    extract_astring_cat(alloc, output, "             <wp:effectExtent l=\"0\" t=\"0\" r=\"0\" b=\"9525\"/>\n");
+    //extract_astring_cat(alloc, output, "             <wp:extent cx=\"2933700\" cy=\"2200275\"/>\n");
+    //extract_astring_cat(alloc, output, "             <wp:effectExtent l=\"0\" t=\"0\" r=\"0\" b=\"9525\"/>\n");
     extract_astring_cat(alloc, output, "             <wp:docPr id=\"1\" name=\"Picture 1\"/>\n");
     extract_astring_cat(alloc, output, "             <wp:cNvGraphicFramePr>\n");
     extract_astring_cat(alloc, output, "               <a:graphicFrameLocks xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" noChangeAspect=\"1\"/>\n");
@@ -237,7 +237,7 @@ docx_append_image(extract_alloc_t   *alloc,
     extract_astring_cat(alloc, output, "                   <pic:spPr bwMode=\"auto\">\n");
     extract_astring_cat(alloc, output, "                     <a:xfrm>\n");
     extract_astring_cat(alloc, output, "                       <a:off x=\"0\" y=\"0\"/>\n");
-    extract_astring_cat(alloc, output, "                       <a:ext cx=\"2933700\" cy=\"2200275\"/>\n");
+    //extract_astring_cat(alloc, output, "                       <a:ext cx=\"2933700\" cy=\"2200275\"/>\n");
     extract_astring_cat(alloc, output, "                     </a:xfrm>\n");
     extract_astring_cat(alloc, output, "                     <a:prstGeom prst=\"rect\">\n");
     extract_astring_cat(alloc, output, "                       <a:avLst/>\n");
@@ -294,7 +294,7 @@ docx_output_rotated_paragraphs(extract_alloc_t   *alloc,
     extract_astring_catf(alloc, output,"              <wp:posOffset>%i</wp:posOffset>\n", y);
     extract_astring_cat(alloc, output, "            </wp:positionV>\n");
     extract_astring_catf(alloc, output,"            <wp:extent cx=\"%i\" cy=\"%i\"/>\n", w, h);
-    extract_astring_cat(alloc, output, "            <wp:effectExtent l=\"381000\" t=\"723900\" r=\"371475\" b=\"723900\"/>\n");
+    //extract_astring_cat(alloc, output, "            <wp:effectExtent l=\"381000\" t=\"723900\" r=\"371475\" b=\"723900\"/>\n");
     extract_astring_cat(alloc, output, "            <wp:wrapNone/>\n");
     extract_astring_catf(alloc, output,"            <wp:docPr id=\"%i\" name=\"Text Box %i\"/>\n", text_box_id, text_box_id);
     extract_astring_cat(alloc, output, "            <wp:cNvGraphicFramePr/>\n");
@@ -305,7 +305,7 @@ docx_output_rotated_paragraphs(extract_alloc_t   *alloc,
     extract_astring_cat(alloc, output, "                  <wps:spPr>\n");
     extract_astring_catf(alloc, output,"                    <a:xfrm rot=\"%i\">\n", rot);
     extract_astring_cat(alloc, output, "                      <a:off x=\"0\" y=\"0\"/>\n");
-    extract_astring_cat(alloc, output, "                      <a:ext cx=\"3228975\" cy=\"2286000\"/>\n");
+    //extract_astring_cat(alloc, output, "                      <a:ext cx=\"3228975\" cy=\"2286000\"/>\n");
     extract_astring_cat(alloc, output, "                    </a:xfrm>\n");
     extract_astring_cat(alloc, output, "                    <a:prstGeom prst=\"rect\">\n");
     extract_astring_cat(alloc, output, "                      <a:avLst/>\n");
@@ -364,6 +364,7 @@ docx_output_rotated_paragraphs(extract_alloc_t   *alloc,
     extract_astring_cat(alloc, output, "        </w:drawing>\n");
     extract_astring_cat(alloc, output, "      </mc:Choice>\n");
 
+#if 0
     /* This fallback is copied from a real Word document. Not sure
     whether it works - both Libreoffice and Word use the above
     choice. */
@@ -387,6 +388,7 @@ docx_output_rotated_paragraphs(extract_alloc_t   *alloc,
     extract_astring_cat(alloc, output, "          </v:shape>\n");
     extract_astring_cat(alloc, output, "        </w:pict>\n");
     extract_astring_cat(alloc, output, "      </mc:Fallback>\n");
+#endif
     extract_astring_cat(alloc, output, "    </mc:AlternateContent>\n");
     extract_astring_cat(alloc, output, "  </w:r>\n");
     extract_astring_cat(alloc, output, "</w:p>");
