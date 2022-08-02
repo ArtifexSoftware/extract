@@ -426,6 +426,8 @@ const char *extract_span_string(extract_alloc_t *alloc, span_t *span);
 struct line_t
 {
     content_t base;
+    double ascender;
+    double descender;
     content_t content;
 };
 

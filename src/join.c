@@ -755,6 +755,38 @@ static int paragraphs_cmp(const content_t *a, const content_t *b)
     return 0;
 }
 
+static double
+font_size_from_ctm(const matrix4_t *ctm)
+{
+    if (ctm->b == 0)
+        return fabs(ctm->a);
+    if (ctm->a == 0)
+        return fabs(ctm->b);
+
+    return sqrt(ctm->a * ctm->a + ctm->b * ctm->b);
+}
+
+static void
+calculate_line_height(line_t *line)
+{
+    content_span_iterator  sit;
+    span_t                *span;
+    double                 asc = 0, desc = 0;
+
+    for (span = content_span_iterator_init(&sit, &line->content); span != NULL; span = content_span_iterator_next(&sit))
+    {
+        double span_font_size = font_size_from_ctm(&span->ctm);
+        double min_y = span->font_bbox.min.y * span_font_size;
+        double max_y = span->font_bbox.max.y * span_font_size;
+        if (min_y < desc)
+            desc = min_y;
+        if (max_y > asc)
+            asc = max_y;
+    }
+    line->ascender = asc;
+    line->descender = desc;
+}
+
 /* Creates a representation of line_t's that consists of a list of
 paragraph_t's.
 
@@ -794,6 +826,7 @@ make_paragraphs(extract_alloc_t *alloc,
         if (content_replace_new_paragraph(alloc, &line->base, &paragraph))
             goto end;
         content_append_line(&paragraph->content, line);
+        calculate_line_height(line);
     }
 
     /* Now join paragraphs together where possible. */
