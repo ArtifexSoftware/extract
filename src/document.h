@@ -127,6 +127,7 @@ void content_concat(content_t *dst, content_t *src);
 void content_dump(const content_t *content);
 void content_dump_line(const line_t *line);
 void content_dump_span(const span_t *span);
+void content_dump_brief(const content_t *content);
 
 
 typedef int (content_cmp_fn)(const content_t *, const content_t *);

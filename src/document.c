@@ -521,6 +521,90 @@ void content_dump(const content_t *content)
     content_dump_aux(content, 0);
 }
 
+static void
+content_dump_brief_aux(const content_t *content, int depth);
+
+static void
+content_dump_brief_span_aux(const span_t *span)
+{
+    int i;
+
+    printf("\"");
+    for (i = 0; i < span->chars_num; i++)
+    {
+        char_t *c = &span->chars[i];
+        if (c->ucs >= 32 && c->ucs <= 127)
+        {
+             putc((char)c->ucs, stdout);
+        }
+        else
+        {
+             printf("<%04x>", c->ucs);
+        }
+    }
+    printf("\"");
+}
+
+static void
+content_dump_brief_line_aux(const line_t *line, int depth)
+{
+    printf("<line text=");
+    content_dump_brief_aux(&line->content, depth+1);
+    printf(">\n");
+}
+
+static void
+content_dump_brief_aux(const content_t *content, int depth)
+{
+    const content_t *walk;
+
+    assert(content->type == content_root);
+    for (walk = content->next; walk != content; walk = walk->next)
+    {
+        assert(walk->next->prev == walk && walk->prev->next == walk);
+        switch (walk->type)
+        {
+            case content_span:
+                content_dump_brief_span_aux((const span_t *)walk);
+                break;
+            case content_line:
+                content_dump_brief_line_aux((const line_t *)walk, depth);
+                break;
+            case content_paragraph:
+                content_dump_brief_aux(&((const paragraph_t *)walk)->content, depth+1);
+                break;
+            case content_block:
+                content_dump_brief_aux(&((const block_t *)walk)->content, depth+1);
+                break;
+            case content_table:
+            {
+                const table_t *table = (const table_t *)walk;
+                int i, j, k;
+                k = 0;
+                for (j = 0; j < table->cells_num_y; j++)
+                {
+                    for (i = 0; i < table->cells_num_x; i++)
+                    {
+                        content_dump_brief_aux(&table->cells[k]->content, depth+2);
+                        k++;
+                    }
+                }
+                break;
+            }
+            case content_image:
+                break;
+            default:
+                assert("Unexpected type found while dumping content list." == NULL);
+                break;
+        }
+    }
+}
+
+void content_dump_brief(const content_t *content)
+{
+    content_dump_brief_aux(content, 0);
+}
+
 static content_t *
 cmp_and_merge(content_t *q1, int q1pos, int len1, int n, content_cmp_fn *cmp)
 {
