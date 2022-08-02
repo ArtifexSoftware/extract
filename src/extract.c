@@ -1118,8 +1118,12 @@ split_to_new_span(extract_alloc_t *alloc, content_t *content, span_t *span0)
     return span;
 }
 
+/*
+This routine returns the previous non-space-char, UNLESS the span
+starts with a space, in which case we accept that one.
+*/
 static span_t *
-find_previous_non_space_char(content_t *content, int *char_num, int *intervening_space)
+find_previous_non_space_char_ish(content_t *content, int *char_num, int *intervening_space)
 {
     content_t *s;
     int i;
@@ -1134,7 +1138,7 @@ find_previous_non_space_char(content_t *content, int *char_num, int *intervening
 
         for (i = span->chars_num-1; i >= 0; i--)
         {
-            if (span->chars[i].ucs != 32)
+            if (span->chars[i].ucs != 32 || i == 0)
             {
                 *char_num = i;
                 return span;
@@ -1204,7 +1208,7 @@ int extract_add_char(extract_t *extract,
     outf("(%f %f) ucs=% 5i=%c adv=%f", x, y, ucs, (ucs >=32 && ucs< 127) ? ucs : ' ', adv);
 
     /* Now, check whether we need to break to a new line, or add (or subtract) a space. */
-    span0 = find_previous_non_space_char(&subpage->content, &char_num0, &intervening_space);
+    span0 = find_previous_non_space_char_ish(&subpage->content, &char_num0, &intervening_space);
 
     if (span0 == NULL)
     {
