@@ -512,55 +512,6 @@ static double line_font_size_max(line_t* line)
 
 
 
-/* Find distance between parallel lines line_a and line_b, both at <angle>.
-
-        _-R
-     _-
-    A------------_P
-     \        _-
-      \    _B
-       \_-
-        Q
-
-A is (ax, ay)
-B is (bx, by)
-APB and PAR are both <angle>.
-
-AR and QBP are parallel, and are the lines of text a and b
-respectively.
-
-AQB is a right angle. We need to find AQ.
-*/
-static double line_distance_y(double ax, double ay, double bx, double by, double angle)
-{
-    double dx = bx - ax;
-    double dy = by - ay;
-
-    return dx * sin(angle) + dy * cos(angle);
-}
-
-/* Returns distance QB in above diagram. */
-static double line_distance_x(double ax, double ay, double bx, double by, double angle)
-{
-    double dx = bx - ax;
-    double dy = by - ay;
-
-    return dx * cos(angle) - dy * sin(angle);
-}
-
-static double line_distance_xp(point_t a, point_t b, double angle)
-{
-    return line_distance_x(a.x, a.y, b.x, b.y, angle);
-}
-
-static int lines_overlap(point_t a_left, point_t a_right, point_t b_left, point_t b_right, double angle)
-{
-    if (line_distance_xp(a_left, b_right, angle) < 0)  return 0;
-    if (line_distance_xp(a_right, b_left, angle) >= 0) return 0;
-    return 1;
-}
-
-
 /* A comparison function, for sorting paragraphs within a
 page. */
 static int paragraphs_cmp(const content_t *a, const content_t *b)
