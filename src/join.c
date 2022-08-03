@@ -18,6 +18,12 @@ static char_t *span_char_first(span_t *span)
     return &span->chars[0];
 }
 
+static char_t *span_char_last(span_t *span)
+{
+    assert(span->chars_num > 0);
+    return &span->chars[span->chars_num-1];
+}
+
 /* Returns first char_t in a line. */
 static char_t *line_item_first(line_t *line)
 {
@@ -612,20 +618,36 @@ make_paragraphs(extract_alloc_t *alloc,
             }
 
             {
-                span_t *span_b = extract_line_span_first(line_b);
-                char_t *first_a = span_char_first(span_a);
-                char_t *first_b = span_char_first(span_b);
+                span_t *line_a_first_span = extract_line_span_first(line_a);
+                span_t *line_a_last_span  = extract_line_span_last(line_a);
+                span_t *line_b_first_span = extract_line_span_first(line_b);
+                span_t *line_b_last_span  = extract_line_span_last(line_b);
+                char_t *first_a = span_char_first(line_a_first_span);
+                char_t *first_b = span_char_first(line_b_first_span);
+                char_t *last_a = span_char_last(line_a_last_span);
+                char_t *last_b = span_char_last(line_b_last_span);
                 point_t dir = { 1 - span_a->flags.wmode, span_a->flags.wmode };
-                point_t tdir = extract_matrix4_transform_point(span_a->ctm, dir);
+                point_t tdir_a = extract_matrix4_transform_point(line_a_last_span->ctm, dir);
+                point_t tdir_b = extract_matrix4_transform_point(line_b_last_span->ctm, dir);
                 /* Find the difference between the start of span_a and the start of span_b. */
-                point_t diff = { first_b->x - first_a->x, first_b->y - first_a->y };
+                point_t start_diff = { first_b->x - first_a->x, first_b->y - first_a->y };
+                point_t end_a = { last_a->x + last_a->adv * tdir_a.x, last_a->y + last_a->adv * tdir_a.y };
+                point_t end_b = { last_b->x + last_b->adv * tdir_b.x, last_b->y + last_b->adv * tdir_b.y };
                 /* Now find the perpendicular difference in position. */
                 double scale_squared = ((span_a->flags.wmode) ?
                                         (span_a->ctm.c * span_a->ctm.c + span_a->ctm.d * span_a->ctm.d) :
                                         (span_a->ctm.a * span_a->ctm.a + span_a->ctm.b * span_a->ctm.b));
-                double perp     = (diff.x * tdir.y - diff.y * tdir.x) / sqrt(scale_squared);
+                double perp     = (start_diff.x * tdir_a.y - start_diff.y * tdir_a.x) / sqrt(scale_squared);
                 /* perp is now a post-transform space distance. */
                 double score;
+                /* Now consider the linear difference between: 1) start of a to end of a, 2) start of a to start of b,
+                 * 3) start of a and the end of b. */
+                point_t saea = { end_a.x    - first_a->x, end_a.y    - first_a->y };
+                point_t sasb = { first_b->x - first_a->x, first_b->y - first_a->y };
+                point_t saeb = { end_b.x    - first_a->x, end_b.y    - first_a->y };
+                double dot_saea = ( saea.x * tdir_a.x + saea.y * tdir_a.y );
+                double dot_sasb = ( sasb.x * tdir_a.x + sasb.y * tdir_a.y );
+                double dot_saeb = ( saeb.x * tdir_a.x + saeb.y * tdir_a.y );
 
                 /* We are only interested in scoring down the page. */
                 score = -perp;
@@ -636,7 +658,17 @@ make_paragraphs(extract_alloc_t *alloc,
                 printf("And:\n");
                 content_dump_brief(&paragraph_b->content);
                 printf("score=%g\n", score);
+                printf("saea=%g sasb=%g saeb=%g\n", dot_saea, dot_sasb, dot_saeb);
 #endif
+
+                /* Check for "horizontal" alignment of the two lines. If line_b starts
+                 * entirely to the right of the end of line_a, we can't join with it. */
+                if (dot_sasb > dot_saea)
+                    continue;
+                /* If line_b ends entirely to the left of the start of line_a, we can't
+                 * join with it. */
+                if (dot_saeb < 0)
+                    continue;
 
                 if (score >= 0 && (!nearest_paragraph || score < nearest_score))
                 {
