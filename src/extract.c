@@ -2425,6 +2425,31 @@ rect_t extract_block_pre_rotation_bounds(block_t *block, double angle)
     }
 #endif
 
+    /* And a further adjustment. If we mess up line widths, text can wrap too early,
+     * resulting in content extending too far down the page, and truncating at the
+     * bottom of the text frame. Similarly, line spacing. We can't tell word 'make
+     * the box large enough', so we have to add a fudge factor and extend the bottom
+     * of the box ourselves. As long as we aren't filling the background, or drawing
+     * a bounding box, this should be fine.
+     *
+     * Unfortunately, we can't just extend pre_box downwards, because we rotate from
+     * the centre of the box, so we need to adjust for that.
+     */
+    /* Double the height of the box. */
+    {
+        /* extra = how much to extend the box downwards. */
+        double extra = pre_box.max.y - pre_box.min.y;
+        /* So we are offsetting the centre of the box by offset. */
+        point_t offset = { 0, extra/2 };
+        point_t toffset;
+        pre_box.max.y += extra;
+        toffset = extract_matrix4_transform_point(rotate, offset);
+        pre_box.min.x += toffset.x - offset.x;
+        pre_box.min.y += toffset.y - offset.y;
+        pre_box.max.x += toffset.x - offset.x;
+        pre_box.max.y += toffset.y - offset.y;
+    }
+
     return pre_box;
 }
 
