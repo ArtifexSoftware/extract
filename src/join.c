@@ -784,6 +784,203 @@ end:
     return ret;
 }
 
+/* Return the last non space char of a span (or the first one if
+ * they are all spaces. */
+static char_t *
+last_non_space_char(span_t *span)
+{
+    int i = span->chars_num - 1;
+
+    while (i > 0 && span->chars[i].ucs == 32)
+        i--;
+
+    return &span->chars[i];
+}
+
+/*
+On entry:
+  <content> is a list of paragraphs.
+
+On exit:
+  <content> is a list of paragraphs, with information about alignment etc.
+*/
+static int
+analyse_paragraphs(extract_alloc_t *alloc,
+                   content_t       *content)
+{
+    content_paragraph_iterator  pit;
+    paragraph_t                *paragraph;
+
+    /* Examine each paragraph in turn. */
+    for (paragraph = content_paragraph_iterator_init(&pit, content); paragraph != NULL; paragraph = content_paragraph_iterator_next(&pit))
+    {
+        content_line_iterator  lit;
+        line_t                *line;
+        double                 para_l = 0, para_r = 0;
+        int                    first_span_of_para = 1;
+        matrix4_t              inverse;
+        double                 space_guess;
+        int                    previous_line_flags = -1;
+        double                 previous_line_spare = 0;
+        int                    first_line = 1;
+
+        /* Bound this paragraph on the left and right, pre-transform. */
+        for (line = content_line_iterator_init(&lit, &paragraph->content); line != NULL; line = content_line_iterator_next(&lit))
+        {
+            content_span_iterator  sit;
+            span_t                *span;
+
+            for (span = content_span_iterator_init(&sit, &line->content); span != NULL; span = content_span_iterator_next(&sit))
+            {
+                char_t    *lc     = &span->chars[0];
+                char_t    *rc     = last_non_space_char(span);
+                point_t    dir    = { rc->adv * (1 - span->flags.wmode), rc->adv * span->flags.wmode };
+                point_t    tdir   = extract_matrix4_transform_point(span->ctm, dir);
+                point_t    left   = { lc->x, lc->y };
+                point_t    right  = { rc->x + tdir.x, rc->y + tdir.y };
+                double     l, r;
+
+                /* We examine the ctm on the first span, and store its inverse. We then map all
+                 * the coords we encounter back through this, to give us a position in a consistent
+                 * source space (i.e. we don't use each different ctm we meet for different spans). */
+                if (first_span_of_para)
+                {
+                    inverse = extract_matrix4_invert(&span->ctm);
+                    space_guess = (span->font_bbox.max.x - span->font_bbox.min.x)/2;
+                }
+
+                left  = extract_matrix4_transform_point(inverse, left);
+                right = extract_matrix4_transform_point(inverse, right);
+                l = span->flags.wmode ? left.y  : left.x;
+                r = span->flags.wmode ? right.y : right.x;
+
+                if (l < para_l || first_span_of_para)
+                    para_l = l;
+                if (r > para_r || first_span_of_para)
+                    para_r = r;
+                first_span_of_para = 0;
+            }
+        }
+
+        /* So now we know that para_l/para_r are the bounds for this paragraph, under the ctm of the first_span. */
+
+        /* Now, look again at the lines that made up that paragraph, to figure out how well each line
+         * fills those bounds. */
+        for (line = content_line_iterator_init(&lit, &paragraph->content); line != NULL; line = content_line_iterator_next(&lit))
+        {
+            content_span_iterator  sit;
+            span_t                *span;
+            double                 line_l = 0, line_r = 0;
+            int                    first_span = 1;
+
+            /* If we're not the first line, then we want to find the first word. */
+            int                    first_word = !first_line;
+            int                    word_width_found = 0;
+            point_t                word_end;
+            int                    word_wmode;
+
+            /* For each line, find the line bounds. */
+            for (span = content_span_iterator_init(&sit, &line->content); span != NULL; span = content_span_iterator_next(&sit))
+            {
+                char_t    *lc     = &span->chars[0];
+                char_t    *rc     = last_non_space_char(span);
+                point_t    dir    = { 1 - span->flags.wmode, span->flags.wmode };
+                point_t    tdir   = extract_matrix4_transform_point(span->ctm, dir);
+                point_t    left   = { lc->x, lc->y };
+                point_t    right  = { rc->x + tdir.x * rc->adv, rc->y + tdir.y * rc->adv };
+                double     l, r;
+
+                /* If we're not the first line, then calculate the length of the first word on the
+                 * new line. */
+                if (first_word)
+                {
+                    int i;
+
+                    for (i = 0; i < span->chars_num; i++)
+                    {
+                        if (span->chars[i].ucs == 32)
+                            break;
+                    }
+                    if (i > 0)
+                    {
+                        double adv = span->chars[i-1].adv;
+                        word_end.x = span->chars[i-1].x + adv * tdir.x;
+                        word_end.y = span->chars[i-1].y + adv * tdir.y;
+                        word_wmode = span->flags.wmode;
+                        word_width_found = 1;
+                        if (i < span->chars_num)
+                            first_word = 0;
+                    }
+                }
+
+                left  = extract_matrix4_transform_point(inverse, left);
+                right = extract_matrix4_transform_point(inverse, right);
+                l = span->flags.wmode ? left.y  : left.x;
+                r = span->flags.wmode ? right.y : right.x;
+
+                if (l < line_l || first_span)
+                    line_l = l;
+                if (r < line_r || first_span)
+                    line_r = r;
+                first_span = 0;
+            }
+
+#if 0
+            printf("Considering:\n");
+            content_dump_brief(&line->content);
+            printf("\n");
+#endif
+
+            /* Did we find a width for the first word? */
+            if (word_width_found)
+            {
+                double w;
+                word_end = extract_matrix4_transform_point(inverse, word_end);
+                w = word_wmode ? word_end.y : word_end.x;
+                w -= line_l;
+                /* Now w = the extent of the word. */
+                /* If the previous line had enough room for this extent, plus a space,
+                 * then we know that this paragraph can't just be breaking lines when
+                 * they get full. */
+                if (previous_line_spare > w + space_guess)
+                    paragraph->line_flags |= paragraph_breaks_strangely;
+            }
+
+            if (previous_line_flags != -1)
+            {
+                paragraph->line_flags |= previous_line_flags;
+            }
+            previous_line_flags = 0;
+            if (line_l > para_l + space_guess)
+                previous_line_flags |= paragraph_not_aligned_left;
+            if (line_r < para_r - space_guess)
+                previous_line_flags |= paragraph_not_aligned_right;
+            {
+                /* In order to figure out if we are plausibly centred,
+                 * calculate the l and r gaps. */
+                double l = line_l - para_l;
+                double r = para_r - line_r;
+
+                if (fabs(l - r) > space_guess/2)
+                    paragraph->line_flags |= paragraph_not_centred;
+                if (l > space_guess/2)
+                    paragraph->line_flags |= paragraph_not_fully_justified;
+                if (r > space_guess/2)
+                    previous_line_flags |= paragraph_not_fully_justified;
+            }
+            previous_line_spare = para_r - line_r + line_l - para_l;
+            first_line = 0;
+        }
+
+        if (previous_line_flags != -1)
+        {
+            paragraph->line_flags |= (previous_line_flags & paragraph_not_aligned_left);
+        }
+    }
+
+    return 0;
+}
+
 static int
 spot_rotated_blocks(extract_alloc_t *alloc,
                     content_t       *lines)
@@ -941,6 +1138,8 @@ join_content(extract_alloc_t *alloc,
     if (make_lines(alloc, lines))
         return -1;
     if (make_paragraphs(alloc, lines))
+        return -1;
+    if (analyse_paragraphs(alloc, lines))
         return -1;
     if (spot_rotated_blocks(alloc, lines))
         return -1;

@@ -142,6 +142,23 @@ document_to_docx_content_paragraph(extract_alloc_t   *alloc,
 
     if (docx_paragraph_start(alloc, content)) goto end;
 
+    if ((paragraph->line_flags & paragraph_not_fully_justified) == 0)
+    {
+        if (extract_astring_cat(alloc, content, "<w:pPr><w:jc w:val=\"both\"/></w:pPr>")) goto end;
+    }
+    else if ((paragraph->line_flags & paragraph_not_centred) == 0)
+    {
+        if (extract_astring_cat(alloc, content, "<w:pPr><w:jc w:val=\"center\"/></w:pPr>")) goto end;
+    }
+    else if ((paragraph->line_flags & (paragraph_not_aligned_left | paragraph_not_aligned_right)) == paragraph_not_aligned_left)
+    {
+        if (extract_astring_cat(alloc, content, "<w:pPr><w:jc w:val=\"right\"/></w:pPr>")) goto end;
+    }
+    else if ((paragraph->line_flags & (paragraph_not_aligned_left | paragraph_not_aligned_right)) == paragraph_not_aligned_right)
+    {
+        if (extract_astring_cat(alloc, content, "<w:pPr><w:jc w:val=\"left\"/></w:pPr>")) goto end;
+    }
+
     for (line = content_line_iterator_init(&lit, &paragraph->content); line != NULL; line = content_line_iterator_next(&lit))
     {
         content_span_iterator  sit;
@@ -178,6 +195,10 @@ document_to_docx_content_paragraph(extract_alloc_t   *alloc,
             }
             /* Remove any trailing '-' at end of line. */
             if (docx_char_truncate_if(content, '-')) goto end;
+        }
+        if (paragraph->line_flags & paragraph_breaks_strangely)
+        {
+            if (extract_astring_cat(alloc, content, "<w:br/>")) goto end;
         }
     }
     if (content_state->font.name)

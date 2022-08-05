@@ -446,8 +446,28 @@ paragraph. */
 struct paragraph_t
 {
     content_t base;
+    int       line_flags;
     content_t content;
 };
+
+typedef enum
+{
+    /* If the paragraph is ever not aligned to the left hand edge, we set this flag. */
+    paragraph_not_aligned_left = 1,
+
+    /* If the paragraph is ever not aligned to the right hand edge, we set this flag. */
+    paragraph_not_aligned_right = 2,
+
+    /* If the paragraph ever has a line that doesn't look centred, we set this flag. */
+    paragraph_not_centred = 4,
+
+    /* If the paragraph ever has a line that doesn't look fully justified, we set this flag. */
+    paragraph_not_fully_justified = 8,
+
+    /* If the paragraph ever breaks at a place where it looks like first word from the
+     * next line could have fitted, then set this flag.*/
+    paragraph_breaks_strangely = 16
+} paragraph_flags;
 
 void extract_paragraph_init(paragraph_t *paragraph);
 
