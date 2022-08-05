@@ -82,54 +82,6 @@ static double span_adv_total(span_t *span)
     return sqrt(dx*dx + dy*dy) + adv;
 }
 
-static double span_angle(span_t *span)
-{
-    double ret = atan2(-span->ctm.c, span->ctm.a);
-    if (0)
-    {
-        /* This is an attempt to take into account the trm matrix when looking
-        at spans, because for agstat.pdf vertical text seems to be achieved
-        by making trm rotate by 90 degrees. But it messes up the ordering of
-        rotated paragraphs in Python2.pdf so is disabled for now. */
-        point_t dir;
-        double ret;
-        dir.x = span->flags.wmode ? 0 : 1;
-        dir.y = span->flags.wmode ? 1 : 0;
-        dir = extract_matrix4_transform_point(span->ctm, dir);
-        ret = atan2(dir.y, dir.x);
-        return ret;
-    }
-    /* Assume ctm is a rotation matrix. */
-    outfx("ctm.a=%f ctm.b=%f ret=%f", span->ctm.a, span->ctm.b, ret);
-    return ret;
-    /* Not sure whether this is right. Inclined text seems to be done by
-    setting the ctm matrix, so not really sure what trm matrix does. This code
-    assumes that it also inclines text, but maybe it only rotates individual
-    glyphs? */
-    /*if (span->wmode == 0) {
-        return atan2(span->trm.b, span->trm.a);
-    }
-    else {
-        return atan2(span->trm.d, span->trm.c);
-    }*/
-}
-
-static double span_angle2(span_t *span)
-{
-    if (span->chars_num > 1)
-    {
-        double dx = span->chars[span->chars_num-1].x - span->chars[0].x;
-        double dy = span->chars[span->chars_num-1].y - span->chars[0].y;
-        double ret1 = span_angle(span);
-        double ret2 = atan2(-dy, dx);
-        if (fabs(ret2 - ret1) > 0.01)
-        {
-            outf("### ret1=%f ret2=%f: %s", ret1, ret2, extract_span_string(NULL, span));
-        }
-    }
-    return span_angle(span);
-}
-
 /* Returns static string containing brief info about span_t. */
 static const char *span_string2(extract_alloc_t *alloc, span_t *span)
 {
@@ -144,13 +96,6 @@ static const char *span_string2(extract_alloc_t *alloc, span_t *span)
     extract_astring_catc(alloc, &ret, '"');
 
     return ret.chars;
-}
-
-/* Returns angle of <line>. */
-static double line_angle(line_t *line)
-{
-    /* All spans in a line must have same angle, so just use the first span. */
-    return span_angle(content_first_span(&line->content));
 }
 
 /* Returns static string containing brief info about line_t. */
