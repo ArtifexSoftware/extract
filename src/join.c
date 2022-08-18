@@ -672,7 +672,7 @@ analyse_paragraphs(extract_alloc_t *alloc,
         double                 para_l = 0, para_r = 0;
         int                    first_span_of_para = 1;
         matrix4_t              inverse;
-        double                 space_guess;
+        double                 space_guess = 0; /* Stop clever-clever compilers warning. */
         int                    previous_line_flags = -1;
         double                 previous_line_spare = 0;
         int                    first_line = 1;
@@ -845,7 +845,7 @@ spot_rotated_blocks(extract_alloc_t *alloc,
     them into a block. */
     content_iterator  cit;
     content_t        *content;
-    content_iterator  cit0;
+    content_iterator  cit0 = { 0 }; /* Stop clever-clever compilers warning. */
     content_t        *content0 = NULL;
     int               ret = -1;
     matrix4_t         ctm0;
