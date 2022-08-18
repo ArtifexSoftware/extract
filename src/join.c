@@ -428,24 +428,6 @@ end:
 }
 
 
-/* Returns max font size of all span_t's in an line_t. */
-static double line_font_size_max(line_t* line)
-{
-    double                 size_max = 0;
-    content_span_iterator  sit;
-    span_t                *span;
-
-    for (span = content_span_iterator_init(&sit, &line->content); span != NULL; span = content_span_iterator_next(&sit)) {
-        double size = extract_font_size(&span->ctm);
-
-        if (size > size_max)
-            size_max = size;
-    }
-    return size_max;
-}
-
-
-
 /* A comparison function, for sorting paragraphs within a
 page. */
 static int paragraphs_cmp(const content_t *a, const content_t *b)
