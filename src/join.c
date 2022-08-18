@@ -77,17 +77,6 @@ const char *extract_matrix4_string(const matrix4_t *matrix)
     return ret[i];
 }
 
-/* Returns total width of span. */
-static double span_adv_total(span_t *span)
-{
-    double dx = extract_span_char_last(span)->x - span_char_first(span)->x;
-    double dy = extract_span_char_last(span)->y - span_char_first(span)->y;
-    /* We add on the advance of the last item; this avoids us returning zero if
-    there's only one item. */
-    double adv = extract_span_char_last(span)->adv * extract_matrix_expansion(span->ctm);
-    return sqrt(dx*dx + dy*dy) + adv;
-}
-
 /* Returns static string containing brief info about span_t. */
 static const char *span_string2(extract_alloc_t *alloc, span_t *span)
 {
@@ -380,12 +369,6 @@ make_lines(extract_alloc_t *alloc,
             /* line_a and nearest_line are aligned so we can move line_b's
             spans on to the end of line_a. */
             span_t *span_b = extract_line_span_first(nearest_line);
-            /* Find average advance of the two adjacent spans in the two
-            lines we are considering joining, so that we can decide whether
-            the distance between them is large enough to merit joining with
-            a space character). */
-            double average_adv = ((span_adv_total(span_a) + span_adv_total(span_b)) /
-                                  (double) (span_a->chars_num + span_b->chars_num));
             b = nearest_line_b;
 
             if (extract_span_char_last(span_a)->ucs != ' ' &&
