@@ -24,30 +24,6 @@ static char_t *span_char_last(span_t *span)
     return &span->chars[span->chars_num-1];
 }
 
-/* Returns first char_t in a line. */
-static char_t *line_item_first(line_t *line)
-{
-    span_t *span = extract_line_span_first(line);
-    return span_char_first(span);
-}
-
-/* Returns last char_t in a line. */
-static char_t *line_item_last(line_t *line)
-{
-    span_t *span = extract_line_span_last(line);
-    return extract_span_char_last(span);
-}
-
-static point_t char_to_point(const char_t *char_)
-{
-    point_t ret;
-
-    ret.x = char_->x;
-    ret.y = char_->y;
-
-    return ret;
-}
-
 const char *extract_matrix_string(const matrix_t *matrix)
 {
     static char ret[5][64];
