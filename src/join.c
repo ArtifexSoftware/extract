@@ -658,8 +658,7 @@ On exit:
   <content> is a list of paragraphs, with information about alignment etc.
 */
 static int
-analyse_paragraphs(extract_alloc_t *alloc,
-                   content_t       *content)
+analyse_paragraphs(content_t       *content)
 {
     content_paragraph_iterator  pit;
     paragraph_t                *paragraph;
@@ -992,7 +991,7 @@ join_content(extract_alloc_t *alloc,
         return -1;
     if (make_paragraphs(alloc, lines))
         return -1;
-    if (analyse_paragraphs(alloc, lines))
+    if (analyse_paragraphs(lines))
         return -1;
     if (spot_rotated_blocks(alloc, lines))
         return -1;

@@ -2302,9 +2302,7 @@ double extract_font_size(matrix4_t *ctm)
 rect_t extract_block_pre_rotation_bounds(block_t *block, double angle)
 {
     content_paragraph_iterator  pit;
-    paragraph_t                *paragraph = content_first_paragraph(&block->content);
-    line_t                     *line0     = content_first_line(&paragraph->content);
-    span_t                     *span0     = content_first_span(&line0->content);
+    paragraph_t                *paragraph;
     rect_t                      pre_box   = extract_rect_empty;
     matrix4_t                   unrotate, rotate;
     point_t                     centre, trans_centre;

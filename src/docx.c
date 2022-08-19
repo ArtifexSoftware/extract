@@ -522,7 +522,6 @@ docx_append_rotated_paragraphs(extract_alloc_t    *alloc,
                                content_state_t    *state,
                                block_t            *block,
                                int                *text_box_id,
-                               const matrix4_t    *ctm,
                                double              angle,
                                extract_astring_t  *output)
 {
@@ -640,7 +639,7 @@ extract_document_to_docx_content(extract_alloc_t   *alloc,
                     if (rotation && angle != 0)
                     {
                         assert(block);
-                        if (docx_append_rotated_paragraphs(alloc, &content_state, block, &text_box_id, ctm, angle, output)) goto end;
+                        if (docx_append_rotated_paragraphs(alloc, &content_state, block, &text_box_id, angle, output)) goto end;
                     }
                     else if (block)
                     {
