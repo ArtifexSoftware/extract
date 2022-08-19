@@ -11,11 +11,7 @@
 <style:style style:name="extract.table.column" style:family="table-column"/>
 <office:body><office:text><text:sequence-decls><text:sequence-decl text:display-outline-level="0" text:name="Illustration"/><text:sequence-decl text:display-outline-level="0" text:name="Table"/><text:sequence-decl text:display-outline-level="0" text:name="Text"/><text:sequence-decl text:display-outline-level="0" text:name="Drawing"/><text:sequence-decl text:display-outline-level="0" text:name="Figure"/></text:sequence-decls><text:p text:style-name="Standard"/>
 
-<text:p><text:span text:style-name="T11">Black RGB </text:span></text:p>
-
-<text:p><text:span text:style-name="T11">Gray RGB </text:span></text:p>
-
-<text:p><text:span text:style-name="T11">Neutral CIELAB</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="left"/></w:pPr><text:span text:style-name="T11">Black RGB Gray RGB Neutral CIELAB</text:span></text:p>
 <text:p text:style-name="Standard">
 <draw:frame draw:style-name="fr1" draw:name="Picture rId11" text:anchor-type="as-char" svg:width="4.277778in" svg:height="3.208333in" draw:z-index="0">
 <draw:image xlink:href="Pictures/image11.jpeg" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad" draw:mime-type="image/jpeg"/>

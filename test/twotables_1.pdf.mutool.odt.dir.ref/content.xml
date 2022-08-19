@@ -27,52 +27,52 @@
             <table:table-cell table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T11">Sl. No. </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T11">Sl. No. </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">Name of </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Name of </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T11">Name of District </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Name of District </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T11">Disease/ Illness </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Disease/ Illness </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T11">No. of Cases </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T11">No. of Cases </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T11">No. of Deaths </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T11">No. of Deaths </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T11">Date of start of outbreak </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T11">Date of start of outbreak </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T11">Date of reporting </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="left"/></w:pPr><text:span text:style-name="T11">Date of reporting </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T11">Current Status </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Current Status </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">Comments/ Action taken </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Comments/ Action taken </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -80,7 +80,7 @@
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T11">State/UT </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">State/UT </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -92,7 +92,7 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11"> </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11"> </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -108,69 +108,59 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11"> </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11"> </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell table:number-rows-spanned="4">
 
 
-<text:p><text:span text:style-name="T11"> </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11"> </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="4">
 
 
-<text:p><text:span text:style-name="T11"> </text:span></text:p>
-
-<text:p><text:span text:style-name="T11"> </text:span></text:p>
-
-<text:p><text:span text:style-name="T11"> </text:span></text:p>
-
-<text:p><text:span text:style-name="T11">West Bengal </text:span></text:p>
-
-<text:p><text:span text:style-name="T11"> </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T11"> <w:br/> <w:br/> <w:br/>West Bengal <w:br/> <w:br/></text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="4">
 
 
-<text:p><text:span text:style-name="T11">Bankura </text:span></text:p>
-
-<text:p><text:span text:style-name="T11"> </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Bankura  </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">xix.</text:span><text:span text:style-name="T12"> </text:span><text:span text:style-name="T11">Acute </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">xix.</text:span><text:span text:style-name="T12"> </text:span><text:span text:style-name="T11"> Acute </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">46 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">46 </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">0 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">0 </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">10/11/13 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">10/11/13 </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">15/11/13 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">15/11/13 </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">Under Control</text:span><text:span text:style-name="T14"> </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="left"/></w:pPr><text:span text:style-name="T13">Under Control</text:span><text:span text:style-name="T14"> </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">Cases of loose motion and vomiting reported from Village Daldali, SC Binodnagar, Block Onda, District Bankura. District RRT and Block health team investigated the outbreak. Active search for cases done. Cases treated at local health centre. 2 stool samples collected were negative for cholera culture. Out of 3 water samples collected 1 sample was non potable. Chlorination of water sources done. Health education given regarding safe drinking water and sanitation. </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="left"/></w:pPr><text:span text:style-name="T13">Cases of loose motion and vomiting reported from Village <w:br/>Daldali, SC Binodnagar, Block Onda, District Bankura. District <w:br/>RRT and Block health team investigated the outbreak. Active <w:br/>search for cases done. Cases treated at local health centre. 2 stool <w:br/>samples  collected were negative for cholera culture. Out of 3 <w:br/>water samples collected 1 sample was non potable. Chlorination <w:br/>of water sources done. Health education given regarding safe <w:br/>drinking water and sanitation. <w:br/></text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -180,7 +170,7 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">Diarrhoeal Disease </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Diarrhoeal Disease </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -196,37 +186,37 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">xx.</text:span><text:span text:style-name="T12"> </text:span><text:span text:style-name="T11">Acute </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">xx.</text:span><text:span text:style-name="T12"> </text:span><text:span text:style-name="T11"> Acute </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">34 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">34 </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">0 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">0 </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">10/11/13 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">10/11/13 </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">14/11/13 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">14/11/13 </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">Under Control</text:span><text:span text:style-name="T14"> </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="left"/></w:pPr><text:span text:style-name="T13">Under Control</text:span><text:span text:style-name="T14"> </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">Cases of loose motion and vomiting reported from Village Icharia, SC Mankhamar, Block Onda, District Bankura. District RRT and Block health team investigated the outbreak. House to house survey done. All cases treated locally. 4 stool samples collected were negative for cholera culture. Out of 34 water samples collected, 8 samples were non potable. Chlorination of water sources done. Health education given regarding safe drinking water and sanitation. </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="left"/></w:pPr><text:span text:style-name="T13">Cases of loose motion and vomiting reported from Village <w:br/>Icharia, SC Mankhamar, Block Onda, District Bankura. District <w:br/>RRT and Block health team investigated the outbreak. House to <w:br/>house survey done. All cases treated locally. 4 stool samples <w:br/>collected were negative for cholera culture. Out of 34 water <w:br/>samples collected, 8 samples were non potable. Chlorination of <w:br/>water sources done. Health education given regarding safe <w:br/>drinking water and sanitation. <w:br/></text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -236,7 +226,7 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">Diarrhoeal Disease </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Diarrhoeal Disease </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -248,7 +238,7 @@
     </table:table>
 
 
-<text:p><text:span text:style-name="T11"> </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11"> </text:span></text:p>
     <table:table text:style-name="extract.table" table:name="extract.table.2">
         <table:table-columns>
             <table:table-column table:style-name="extract.table.column"/>
@@ -265,7 +255,9 @@
             <table:table-cell table:number-columns-spanned="9">
 
 
-<text:p><text:span text:style-name="T13"> </text:span><text:span text:style-name="T11">DISEASE OUTBREAKS  OF PREVIOUS WEEKS REPORTED LATE </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13"> </text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">DISEASE OUTBREAKS  OF PREVIOUS WEEKS REPORTED LATE </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -280,47 +272,47 @@
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T11">Sl. No </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T11">Sl. No </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">Name of </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Name of </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T11">Name of District </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Name of District </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T11">Disease/ Illness </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Disease/ Illness  </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T11">Cases </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Cases  </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T11">Deaths </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Deaths  </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T11">Date of start of outbreak </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T11">Date of start of outbreak </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T11">Current Status </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T11">Current Status </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T11">Comments/ Action taken </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Comments/ Action taken </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -328,7 +320,7 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">State/UT </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">State/UT </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -342,21 +334,17 @@
             <table:table-cell table:number-rows-spanned="10">
 
 
-<text:p><text:span text:style-name="T11">1 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">1 </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="10">
 
 
-<text:p><text:span text:style-name="T11"> </text:span></text:p>
-
-<text:p><text:span text:style-name="T11">Bihar </text:span></text:p>
-
-<text:p><text:span text:style-name="T11"> </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T11"> Bihar  </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="4">
 
 
-<text:p><text:span text:style-name="T11">Madhubani </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Madhubani </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
@@ -364,27 +352,27 @@
             <table:table-cell table:number-rows-spanned="4">
 
 
-<text:p><text:span text:style-name="T13">69 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">69 </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="4">
 
 
-<text:p><text:span text:style-name="T13">0 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">0 </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="4">
 
 
-<text:p><text:span text:style-name="T13">30/09/13 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">30/09/13 </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="4">
 
 
-<text:p><text:span text:style-name="T13">Under Control </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T13">Under Control </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="4">
 
 
-<text:p><text:span text:style-name="T13">Cases of diarrhoea and vomiting reported from Village Indra Mandal tola, SC Sugapatti, PHC Phulparas, District Madhubani. District RRT investigated the outbreak. House to house survey done. Medical camp organized. Symptomatic treatement given to cases. ORS packets and halogen tablets distributed in the community. Chlorination of water sources done. IEC done regarding safe drinking water and sanitation.  </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="left"/></w:pPr><text:span text:style-name="T13">Cases of diarrhoea and vomiting reported from Village Indra Mandal tola, SC <w:br/>Sugapatti, PHC Phulparas, District Madhubani. District RRT investigated the <w:br/>outbreak. House to house survey done.  Medical camp organized. <w:br/>Symptomatic treatement given to cases. ORS packets and halogen tablets <w:br/>distributed in the community. Chlorination of water sources done. IEC done <w:br/>regarding safe drinking water and sanitation.  <w:br/></text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -394,22 +382,7 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">xxi.</text:span><text:span text:style-name="T12"> </text:span><text:span text:style-name="T11">Acute </text:span></text:p>
-            </table:table-cell>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-        </table:table-row>
-        <table:table-row>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T11">Diarrhoeal </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">xxi.</text:span><text:span text:style-name="T12"> </text:span><text:span text:style-name="T11">Acute </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -424,59 +397,7 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">Disease </text:span></text:p>
-            </table:table-cell>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-        </table:table-row>
-        <table:table-row>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:table-cell table:number-rows-spanned="4">
-
-
-<text:p><text:span text:style-name="T11">Madhubani </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-            </table:table-cell>
-            <table:table-cell table:number-rows-spanned="4">
-
-
-<text:p><text:span text:style-name="T13">30 </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell table:number-rows-spanned="4">
-
-
-<text:p><text:span text:style-name="T13">1 </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell table:number-rows-spanned="4">
-
-
-<text:p><text:span text:style-name="T13">28/10/13 </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell table:number-rows-spanned="4">
-
-
-<text:p><text:span text:style-name="T13">Under Control </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell table:number-rows-spanned="4">
-
-
-<text:p><text:span text:style-name="T13">Cases of diarrhoea and vomiting reported from Village/SC Rupauli, PHC Jhanjharpur, District Madhubani. District RRT and Block health team investigated the outbreak. Active search for cases done. Medical camp organized. All cases treated. One death occurred in 14yr old female child. ORS packets and halogen tablets distributed. Chlorination of water sources done. IEC activity regarding safe drinking water done. </text:span></text:p>
-            </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T11">xxii.</text:span><text:span text:style-name="T12"> </text:span><text:span text:style-name="T11">Acute </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Diarrhoeal </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -491,7 +412,59 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">Diarrhoeal </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Disease </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:table-cell table:number-rows-spanned="4">
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Madhubani </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="4">
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">30 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="4">
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">1 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="4">
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">28/10/13 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="4">
+
+
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T13">Under Control </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-rows-spanned="4">
+
+
+<text:p><w:pPr><w:jc w:val="left"/></w:pPr><text:span text:style-name="T13">Cases of diarrhoea and vomiting reported from Village/SC Rupauli, PHC <w:br/>Jhanjharpur, District Madhubani. District RRT and Block health team <w:br/>investigated the outbreak. Active search for cases done. Medical camp <w:br/>organized. All cases treated. One death occurred in 14yr old female child. <w:br/>ORS packets and halogen tablets distributed. Chlorination of water sources <w:br/>done. IEC activity regarding safe drinking water done. <w:br/></text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">xxii.</text:span><text:span text:style-name="T12"> </text:span><text:span text:style-name="T11">Acute </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -506,7 +479,22 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">Disease </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Diarrhoeal </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Disease </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -520,27 +508,27 @@
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T11">Katihar </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Katihar </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">xxiii.</text:span><text:span text:style-name="T12"> </text:span><text:span text:style-name="T11">Acute </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">xxiii.</text:span><text:span text:style-name="T12"> </text:span><text:span text:style-name="T11">Acute </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">13 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">13 </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">3 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">3 </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">24/10/13 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">24/10/13 </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
@@ -550,7 +538,7 @@
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">Cases of diarrhoea reported from Village Ahuta, Alipur, SC Lachhor, PHC/Block Balrampur, District Katihar. District RRT investigated the outbreak.  House to house survey done. Cases occurred in a Adiwasi community. 3 deaths occurred in 45yr, 35yr and 5yr old male. Temporary medical camps organized. All cases treated symptomatically. Chlorination of water sources done. Health education given. </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="left"/></w:pPr><text:span text:style-name="T13">Cases of diarrhoea reported from Village Ahuta, Alipur, SC Lachhor, <w:br/>PHC/Block Balrampur, District Katihar. District RRT investigated the <w:br/>outbreak.  House to house survey done. Cases occurred in a Adiwasi <w:br/>community. 3 deaths occurred in 45yr, 35yr and 5yr old male. Temporary <w:br/>medical camps organized. All cases treated symptomatically. Chlorination of <w:br/>water sources done. Health education given. <w:br/></text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -560,7 +548,7 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">Diarrhoeal Disease </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Diarrhoeal Disease </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -571,6 +559,8 @@
     </table:table>
 
 
-<text:p><text:span text:style-name="T14">5</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">5</text:span></text:p>
 
-<text:p><text:span text:style-name="T14">  </text:span></text:p></office:text></office:body></office:document-content>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> </text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> </text:span></text:p></office:text></office:body></office:document-content>

@@ -3,16 +3,13 @@
 <div>
 
 
-<p><b>INPUT SURVEY, 1996-1997
+<p><b>PAGE NO. 1
 </p></b>
 
-<p><b>TABLE 5J : ESTIMATED AREA UNDER PADDY  TREATED WITH AZETOBACTOR BY SIZE GROUPS.
+<p><b>INPUT SURVEY, 1996-1997 TABLE 5J : ESTIMATED AREA UNDER PADDY  TREATED WITH AZETOBACTOR BY SIZE GROUPS. STATE : ANDHRA PRADESH
 </p></b>
 
-<p><b>ANDHRA PRADESH DISTRICT : PAGE NO.
-</p></b>
-
-<p><b>STATE : ADILABAD 1
+<p><b>DISTRICT : ADILABAD
 </p></b>
 
 <table border="1" style="border-collapse:collapse">
@@ -47,7 +44,7 @@
     </tr>
     <tr>
         <td rowspan="3"><p>1</p></td>
-        <td colspan="14" rowspan="3"><p>MARGINAL (BELOW 1.0)</p><p><b>I</b> 39053 0 12142 3322 15464 0 0 0</p><p><b>UI</b> 7429 0 2088 1560 3648 0 0 0</p><p><b>T</b> 46484 0 14230 4882 19112 0 0 0</p></td>
+        <td colspan="14" rowspan="3"><p>MARGINAL (BELOW 1.0) <b>I UI T</p><p></b> 15464  3648  19112</p><p> 0  0  0</p><p> 39053  7429  46484</p><p> 12142  2088  14230</p><p> 3322  1560  4882</p><p> 0  0  0</p><p> 0  0  0</p><p> 0  0  0</p></td>
     </tr>
     <tr>
     </tr>
@@ -55,7 +52,7 @@
     </tr>
     <tr>
         <td rowspan="3"><p>2</p></td>
-        <td colspan="14" rowspan="3"><p>SMALL (1.0 - 1.99)</p><p><b>I</b> 20341 0 16685 1631 18316 0 0 0</p><p><b>UI</b> 6854 0 4594 1885 6479 0 0 0</p><p><b>T</b> 27197 0 21279 3516 24795 0 0 0</p></td>
+        <td colspan="14" rowspan="3"><p>SMALL (1.0 - 1.99) <b>I UI T</p><p></b> 18316  6479  24795</p><p> 0  0  0</p><p> 20341  6854  27197</p><p> 16685  4594  21279</p><p> 1631  1885  3516</p><p> 0  0  0</p><p> 0  0  0</p><p> 0  0  0</p></td>
     </tr>
     <tr>
     </tr>
@@ -63,7 +60,7 @@
     </tr>
     <tr>
         <td rowspan="3"><p>3</p></td>
-        <td colspan="14" rowspan="3"><p>SEMI-MEDIUM (2.0 - 3.99)</p><p><b>I</b> 20800 0 16991 7643 24634 0 0 0</p><p><b>UI</b> 5856 0 1017 4819 5836 0 0 0</p><p><b>T</b> 26555 0 18008 12462 30470 0 0 0</p></td>
+        <td colspan="14" rowspan="3"><p>SEMI-MEDIUM (2.0 - 3.99) <b>I UI T</p><p></b> 24634  5836  30470</p><p> 0  0  0</p><p> 20800  5856  26555</p><p> 16991  1017  18008</p><p> 7643  4819  12462</p><p> 0  0  0</p><p> 0  0  0</p><p> 0  0  0</p></td>
     </tr>
     <tr>
     </tr>
@@ -71,7 +68,7 @@
     </tr>
     <tr>
         <td rowspan="3"><p>4</p></td>
-        <td colspan="14" rowspan="3"><p>MEDIUM (4.0 - 9.99)</p><p><b>I</b> 11986 0 17576 4120 21696 0 0 0</p><p><b>UI</b> 4615 0 1446 6227 7673 0 0 0</p><p><b>T</b> 16312 0 19022 10347 29369 0 0 0</p></td>
+        <td colspan="14" rowspan="3"><p>MEDIUM (4.0 - 9.99) <b>I UI T</p><p></b> 21696  7673  29369</p><p> 0  0  0</p><p> 11986  4615  16312</p><p> 17576  1446  19022</p><p> 4120  6227  10347</p><p> 0  0  0</p><p> 0  0  0</p><p> 0  0  0</p></td>
     </tr>
     <tr>
     </tr>
@@ -79,7 +76,7 @@
     </tr>
     <tr>
         <td rowspan="3"><p>5</p></td>
-        <td colspan="14" rowspan="3"><p>LARGE (10 AND ABOVE)</p><p><b>I</b> 2005 0 3671 639 4310 0 0 0</p><p><b>UI</b> 521 0 611 831 1442 0 0 0</p><p><b>T</b> 2485 0 4282 1470 5752 0 0 0</p></td>
+        <td colspan="14" rowspan="3"><p>LARGE (10 AND ABOVE) <b>I UI T</p><p></b> 4310  1442  5752</p><p> 0  0  0</p><p> 2005  521  2485</p><p> 3671  611  4282</p><p> 639  831  1470</p><p> 0  0  0</p><p> 0  0  0</p><p> 0  0  0</p></td>
     </tr>
     <tr>
     </tr>
@@ -87,7 +84,7 @@
     </tr>
     <tr>
         <td rowspan="3"><p>6</p></td>
-        <td colspan="14" rowspan="3"><p>ALL GROUPS</p><p><b>I</b> 94185 0 67065 17355 84420 0 0 0</p><p><b>UI</b> 25275 0 9756 15322 25078 0 0 0</p><p><b>T</b> 119033 0 76821 32677 109498 0 0 0</p></td>
+        <td colspan="14" rowspan="3"><p>ALL GROUPS <b>I UI T</p><p></b> 84420  25078  109498</p><p> 0  0  0</p><p> 94185  25275  119033</p><p> 67065  9756  76821</p><p> 17355  15322  32677</p><p> 0  0  0</p><p> 0  0  0</p><p> 0  0  0</p></td>
     </tr>
     <tr>
     </tr>

@@ -11,119 +11,59 @@
 <style:style style:name="extract.table.column" style:family="table-column"/>
 <office:body><office:text><text:sequence-decls><text:sequence-decl text:display-outline-level="0" text:name="Illustration"/><text:sequence-decl text:display-outline-level="0" text:name="Table"/><text:sequence-decl text:display-outline-level="0" text:name="Text"/><text:sequence-decl text:display-outline-level="0" text:name="Drawing"/><text:sequence-decl text:display-outline-level="0" text:name="Figure"/></text:sequence-decls><text:p text:style-name="Standard"/>
 <text:p text:style-name="Standard">
-<draw:frame text:anchor-type="paragraph" draw:z-index="5" draw:name="Shape1" draw:style-name="gr1" draw:text-style-name="Standard" svg:width="3.225657in" svg:height="4.214730in" draw:transform="rotate (-3.045849) translate (6.752333in 7.925972in)">
+<draw:frame text:anchor-type="paragraph" draw:z-index="5" draw:name="Shape1" draw:style-name="gr1" draw:text-style-name="Standard" svg:width="0.435097in" svg:height="0.567568in" draw:transform="rotate (-3.045849) translate (6.670201in 7.933860in)">
 <draw:text-box>
 
 
-<text:p><text:span text:style-name="T11">There was one who was famed for the number of things</text:span></text:p>
+<text:p><text:span text:style-name="T11">There was one who was famed for the number of things <w:br/>   He </text:span><text:span text:style-name="T12">forgot </text:span><text:span text:style-name="T11">when he entered the ship: <w:br/>His umbrella, his watch, all his jewels and rings, <w:br/>   And the clothes he had bought for the trip.<w:br/></text:span></text:p>
 
-<text:p><text:span text:style-name="T11">   He </text:span><text:span text:style-name="T12">forgot </text:span><text:span text:style-name="T11">when he entered the ship:</text:span></text:p>
-
-<text:p><text:span text:style-name="T11">His umbrella, his watch, all his jewels and rings,</text:span></text:p>
-
-<text:p><text:span text:style-name="T11">   And the clothes he had bought for the trip.</text:span></text:p>
-
-<text:p><text:span text:style-name="T11">He had </text:span><text:span text:style-name="T13">forty-two </text:span><text:span text:style-name="T11"> boxes, all carefully packed,</text:span></text:p>
-
-<text:p><text:span text:style-name="T11">   With his name painted clearly on each:</text:span></text:p>
-
-<text:p><text:span text:style-name="T11">But, since he omitted to mention the fact,</text:span></text:p>
-
-<text:p><text:span text:style-name="T11">   They were all left behind on the beach.</text:span></text:p>
+<text:p><text:span text:style-name="T11">He had </text:span><text:span text:style-name="T13">forty-two</text:span><text:span text:style-name="T11"> boxes, all carefully packed, <w:br/>   With his name painted clearly on each: <w:br/>But, since he omitted to mention the fact, <w:br/>   They were all left behind on the beach.<w:br/></text:span></text:p>
 </draw:text-box>
 </draw:frame>
 </text:p>
 
 <text:p text:style-name="Standard">
-<draw:frame text:anchor-type="paragraph" draw:z-index="5" draw:name="Shape2" draw:style-name="gr1" draw:text-style-name="Standard" svg:width="2.395263in" svg:height="1.541583in" draw:transform="rotate (2.477539) translate (2.109778in 6.750042in)">
+<draw:frame text:anchor-type="paragraph" draw:z-index="5" draw:name="Shape2" draw:style-name="gr1" draw:text-style-name="Standard" svg:width="0.325556in" svg:height="0.207593in" draw:transform="rotate (2.477539) translate (2.044881in 6.699252in)">
 <draw:text-box>
 
 
-<text:p><text:span text:style-name="T14">The crew was complete: it included a </text:span><text:span text:style-name="T15">Boots</text:span><text:span text:style-name="T14">&#x2014;    A maker of Bonnets and Hoods&#x2014; A </text:span><text:span text:style-name="T15">Barrister</text:span><text:span text:style-name="T14">, brought to arrange their disputes&#x2014;    And a </text:span><text:span text:style-name="T15">Broker</text:span><text:span text:style-name="T14">, to value their goods.</text:span></text:p>
+<text:p><text:span text:style-name="T14">The crew was complete: it included a </text:span><text:span text:style-name="T15">Boots</text:span><text:span text:style-name="T14">&#x2014; <w:br/>   A maker of Bonnets and Hoods&#x2014; <w:br/>A </text:span><text:span text:style-name="T15">Barrister</text:span><text:span text:style-name="T14">, brought to arrange their disputes&#x2014; <w:br/>   And a </text:span><text:span text:style-name="T15">Broker</text:span><text:span text:style-name="T14">, to value their goods.<w:br/></text:span></text:p>
 
-<text:p><text:span text:style-name="T14">A </text:span><text:span text:style-name="T15">Billiard-marker</text:span><text:span text:style-name="T14">, whose skill was immense,    Might perhaps have won more than his share&#x2014; But a </text:span><text:span text:style-name="T15">Banker</text:span><text:span text:style-name="T14">, engaged at enormous expense,    Had the whole of their </text:span><text:span text:style-name="T16">cash </text:span><text:span text:style-name="T14">in his care.</text:span></text:p>
+<text:p><text:span text:style-name="T14">A </text:span><text:span text:style-name="T15">Billiard-marker</text:span><text:span text:style-name="T14">, whose skill was immense, <w:br/>   Might perhaps have won more than his share&#x2014; <w:br/>But a </text:span><text:span text:style-name="T15">Banker</text:span><text:span text:style-name="T14">, engaged at enormous expense, <w:br/>   Had the whole of their </text:span><text:span text:style-name="T16">cash </text:span><text:span text:style-name="T14">in his care.<w:br/></text:span></text:p>
 
-<text:p><text:span text:style-name="T14">There was also a </text:span><text:span text:style-name="T15">Beaver</text:span><text:span text:style-name="T14">, that paced on the deck,    Or would sit making lace in the bow: And had often (the </text:span><text:span text:style-name="T15">Bellman </text:span><text:span text:style-name="T14">said) saved them from wreck,    Though none of the sailors knew how.</text:span></text:p>
+<text:p><text:span text:style-name="T14">There was also a </text:span><text:span text:style-name="T15">Beaver</text:span><text:span text:style-name="T14">, that paced on the deck, <w:br/>   Or would sit making lace in the bow: <w:br/>And had often (the </text:span><text:span text:style-name="T15">Bellman </text:span><text:span text:style-name="T14">said) saved them from wreck, <w:br/>   Though none of the sailors knew how.<w:br/></text:span></text:p>
 </draw:text-box>
 </draw:frame>
 </text:p>
 
 <text:p text:style-name="Standard">
-<draw:frame text:anchor-type="paragraph" draw:z-index="5" draw:name="Shape3" draw:style-name="gr1" draw:text-style-name="Standard" svg:width="3.124056in" svg:height="2.028653in" draw:transform="rotate (-1.783173) translate (7.624278in 3.348042in)">
+<draw:frame text:anchor-type="paragraph" draw:z-index="5" draw:name="Shape3" draw:style-name="gr1" draw:text-style-name="Standard" svg:width="0.312406in" svg:height="0.202865in" draw:transform="rotate (-1.783173) translate (7.624278in 3.348042in)">
 <draw:text-box>
 
 
-<text:p><text:span text:style-name="T17">&quot;Just the place for a </text:span><text:span text:style-name="T18">Snark</text:span><text:span text:style-name="T17">!&quot; the </text:span><text:span text:style-name="T19">Bellman </text:span><text:span text:style-name="T17">cried,</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="left"/></w:pPr><text:span text:style-name="T17">&quot;Just the place for a </text:span><text:span text:style-name="T18">Snark</text:span><text:span text:style-name="T17">!&quot; the </text:span><text:span text:style-name="T19">Bellman </text:span><text:span text:style-name="T17">cried, <w:br/>   As he landed his crew with care; <w:br/>Supporting each man on the top of the tide <w:br/>   By a finger entwined in his hair.<w:br/></text:span></text:p>
 
-<text:p><text:span text:style-name="T17">   As he landed his crew with care;</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">Supporting each man on the top of the tide</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">   By a finger entwined in his hair.</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">&quot;Just the place for a </text:span><text:span text:style-name="T18">Snark</text:span><text:span text:style-name="T17">! I have said it twice:</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">   That alone should encourage the crew.</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">Just the place for a </text:span><text:span text:style-name="T18">Snark</text:span><text:span text:style-name="T17">! I have said it thrice:</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">   What I tell you </text:span><text:span text:style-name="T19">three </text:span><text:span text:style-name="T17">times is true.&quot;</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="left"/></w:pPr><text:span text:style-name="T17">&quot;Just the place for a </text:span><text:span text:style-name="T18">Snark</text:span><text:span text:style-name="T17">! I have said it twice: <w:br/>   That alone should encourage the crew. <w:br/>Just the place for a </text:span><text:span text:style-name="T18">Snark</text:span><text:span text:style-name="T17">! I have said it thrice: <w:br/>   What I tell you </text:span><text:span text:style-name="T19">three </text:span><text:span text:style-name="T17">times is true.&quot;<w:br/></text:span></text:p>
 </draw:text-box>
 </draw:frame>
 </text:p>
 
 <text:p text:style-name="Standard">
-<draw:frame text:anchor-type="paragraph" draw:z-index="5" draw:name="Shape4" draw:style-name="gr1" draw:text-style-name="Standard" svg:width="2.525194in" svg:height="1.087708in" draw:transform="rotate (-0.579428) translate (5.400722in 0.528625in)">
+<draw:frame text:anchor-type="paragraph" draw:z-index="5" draw:name="Shape4" draw:style-name="gr1" draw:text-style-name="Standard" svg:width="0.252519in" svg:height="0.108771in" draw:transform="rotate (-0.579428) translate (5.400722in 0.528625in)">
 <draw:text-box>
 
 
-<text:p><text:span text:style-name="T17">There was a young man of </text:span><text:span text:style-name="T20">Madras</text:span><text:span text:style-name="T17">,</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">Whose balls were </text:span><text:span text:style-name="T21">constructed </text:span><text:span text:style-name="T17">of brass,</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">When jangled together,</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">They played &#x201c;</text:span><text:span text:style-name="T22">Stormy Weather</text:span><text:span text:style-name="T17">&#x201d;,</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">And </text:span><text:span text:style-name="T23">lightning</text:span><text:span text:style-name="T21"> </text:span><text:span text:style-name="T17">shot out of his ass.</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="left"/></w:pPr><text:span text:style-name="T17">There was a young man of </text:span><text:span text:style-name="T20">Madras</text:span><text:span text:style-name="T17">, <w:br/>Whose balls were </text:span><text:span text:style-name="T21">constructed </text:span><text:span text:style-name="T17">of brass, <w:br/>When jangled together, <w:br/>They played &#x201c;</text:span><text:span text:style-name="T22">Stormy Weather</text:span><text:span text:style-name="T17">&#x201d;, <w:br/>And </text:span><text:span text:style-name="T23">lightning</text:span><text:span text:style-name="T21"> </text:span><text:span text:style-name="T17">shot out of his ass.<w:br/></text:span></text:p>
 </draw:text-box>
 </draw:frame>
 </text:p>
 
 <text:p text:style-name="Standard">
-<draw:frame text:anchor-type="paragraph" draw:z-index="5" draw:name="Shape5" draw:style-name="gr1" draw:text-style-name="Standard" svg:width="2.285973in" svg:height="3.268209in" draw:transform="rotate (0.478675) translate (0.450069in 1.370778in)">
+<draw:frame text:anchor-type="paragraph" draw:z-index="5" draw:name="Shape5" draw:style-name="gr1" draw:text-style-name="Standard" svg:width="0.228597in" svg:height="0.326821in" draw:transform="rotate (0.478675) translate (0.450069in 1.370778in)">
 <draw:text-box>
 
 
-<text:p><text:span text:style-name="T17">A Python, I should not advise,</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">For it needs a doctor for its eyes,</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">And has the Measles yearly.</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">However, if </text:span><text:span text:style-name="T24">you feel</text:span><text:span text:style-name="T17"> inclined</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">To get one (to improve your mind,</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">And not from fashion merely),</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">Allow no </text:span><text:span text:style-name="T21">music</text:span><text:span text:style-name="T17"> near its cage;</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">And when it </text:span><text:span text:style-name="T19">flies</text:span><text:span text:style-name="T17"> into a rage</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">Chastise it, most severely.</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">I had an Aunt in Yucatan</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">Who bought a Python from a man</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">And kept it for a pet.</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">She </text:span><text:span text:style-name="T20">died</text:span><text:span text:style-name="T17">, because she never knew</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">These simple little rules and few; &#x2014;</text:span></text:p>
-
-<text:p><text:span text:style-name="T17">The snake is living yet.</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="left"/></w:pPr><text:span text:style-name="T17">A Python, I should not advise, <w:br/>For it needs a doctor for its eyes, <w:br/>And has the Measles yearly. <w:br/>However, if </text:span><text:span text:style-name="T24">you feel</text:span><text:span text:style-name="T17"> inclined <w:br/>To get one (to improve your mind, <w:br/>And not from fashion merely), <w:br/>Allow no </text:span><text:span text:style-name="T21">music</text:span><text:span text:style-name="T17"> near its cage; <w:br/>And when it </text:span><text:span text:style-name="T19">flies</text:span><text:span text:style-name="T17"> into a rage <w:br/>Chastise it, most severely. <w:br/>I had an Aunt in Yucatan <w:br/>Who bought a Python from a man <w:br/>And kept it for a pet. <w:br/>She </text:span><text:span text:style-name="T20">died</text:span><text:span text:style-name="T17">, because she never knew <w:br/>These simple little rules and few; &#x2014; <w:br/>The snake is living yet.<w:br/></text:span></text:p>
 </draw:text-box>
 </draw:frame>
 </text:p>

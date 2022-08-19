@@ -11,21 +11,19 @@
 <style:style style:name="extract.table.column" style:family="table-column"/>
 <office:body><office:text><text:sequence-decls><text:sequence-decl text:display-outline-level="0" text:name="Illustration"/><text:sequence-decl text:display-outline-level="0" text:name="Table"/><text:sequence-decl text:display-outline-level="0" text:name="Text"/><text:sequence-decl text:display-outline-level="0" text:name="Drawing"/><text:sequence-decl text:display-outline-level="0" text:name="Figure"/></text:sequence-decls><text:p text:style-name="Standard"/>
 <text:p text:style-name="Standard">
-<draw:frame text:anchor-type="paragraph" draw:z-index="5" draw:name="Shape1" draw:style-name="gr1" draw:text-style-name="Standard" svg:width="1.266052in" svg:height="11.062500in" draw:transform="rotate (-0.000003) translate (-0.000005in 11.749953in)">
+<draw:frame text:anchor-type="paragraph" draw:z-index="5" draw:name="Shape1" draw:style-name="gr1" draw:text-style-name="Standard" svg:width="0.140672in" svg:height="0.000000in" draw:transform="rotate (-0.000003) translate (6.254059in 0.342172in)">
 <draw:text-box>
 
 
-<text:p><text:span text:style-name="T11">Annual Report 2009-10</text:span></text:p>
-
-<text:p><text:span text:style-name="T11">29</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Annual Report 2009-10</text:span></text:p>
 </draw:text-box>
 </draw:frame>
 </text:p>
 
 
-<text:p><text:span text:style-name="T12">The Red Ribbon Express (RRE) is the world&#x2019;s largest mass mobilisation drive on HIV/AIDS. The train will travel through 22 states, during its one year long journey, halting at 152 stations. Through the RRE, NACO, intends to break the silence surrounding the issue of HIV/AIDS, by taking the messages on prevention, care and support to people living in small towns and villages across the country. The aim is also to create an environment, free from stigma and discrimination faced by people living with HIV, so they can access the services, without fear and prejudice, and live a life of dignity. It has proved to be a successful multi- sectoral initiative, of the NACO and a powerful advocacy tool, both at the state and district level, besides enhancing local capacity to deal with HIV prevention.</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">The Red Ribbon Express (RRE) is the world&#x2019;s largest mass mobilisation drive on HIV/AIDS. The train will travel through 22 states, during its one year long journey, halting at 152 stations. Through the RRE, NACO, intends to break the silence surrounding the issue of HIV/AIDS, by taking the messages on prevention, care and support to people living in small towns and villages across the country. The aim is also to create an environment, free from stigma and discrimination faced by people living with HIV, so they can access the services, without fear and prejudice, and live a life of dignity. It has proved to be a successful multi- sectoral initiative, of the NACO and a powerful advocacy tool, both at the state and district level, besides enhancing local capacity to deal with HIV prevention.</text:span></text:p>
 
-<text:p><text:span text:style-name="T12">Table 6.1: The highlights of RRE&#x2013;II coverage (till 11 March, 2010) </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">Table 6.1: The highlights of RRE&#x2013;II coverage (till 11 March, 2010) </text:span></text:p>
     <table:table text:style-name="extract.table" table:name="extract.table.1">
         <table:table-columns>
             <table:table-column table:style-name="extract.table.column"/>
@@ -41,96 +39,96 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">State </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">State </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Date </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Date </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Halt stations </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T13">Halt stations </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Halt days</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Halt days</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Persons directly reached (in lakh)</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Persons directly reached (in lakh)</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Persons trained</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Persons trained</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Persons counseled</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T13">Persons counseled</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Persons tested for HIV</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Persons tested for HIV</text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">Delhi</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">Delhi</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">1.12.2009</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">1.12.2009</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T14">8</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">8</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T14">17</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">17</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T14">1.29</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">1.29</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T14">3,665</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">3,665</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T14">2,409</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">2,409</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T14">1,000</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">1,000</text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">Rajasthan</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">Rajasthan</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">2.12.2009 to 19.12.2009</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T14">2.12.2009 to 19.12.2009</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -143,214 +141,230 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">Gujarat</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">Gujarat</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">20.12.2009 to 3.1.2010</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T14">20.12.2009 to 3.1.2010</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">6</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">6</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">13</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">13</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">6.03</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">6.03</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">3,810</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">3,810</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">2,317</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">2,317</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">1,453</text:span></text:p>
-            </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T14">Maharashtra</text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T14">4.01.2010 to 1.2.2010</text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T14">13</text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T14">26</text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T14">1.27</text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T14">5,680</text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T14">9,027</text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T14">4,153</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">1,453</text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">Karnataka </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">Maharashtra</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">2.2.2010 to 22.2.2010</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T14">4.01.2010 to 1.2.2010</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">11</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">13</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">19</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">26</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">1.80</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">1.27</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">5,741</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">5,680</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">3,658</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">9,027</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">3,183</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">4,153</text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">Kerala</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">Karnataka </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">23.2.2010 to 11.3.2010</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T14">2.2.2010 to 22.2.2010</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">9</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">11</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">17</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">19</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">1.42</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">1.80</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">3,559</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">5,741</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">2,173</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">3,658</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T14">855</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">3,183</text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">Kerala</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T14">23.2.2010 to 11.3.2010</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">9</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">17</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">1.42</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">3,559</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">2,173</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">855</text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell table:number-columns-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">Total</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Total</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">47</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">47</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">92</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">92</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">11.81</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">11.81</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">22,455</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">22,455</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">19,584</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">19,584</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">10,644</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">10,644</text:span></text:p>
             </table:table-cell>
         </table:table-row>
     </table:table>
 
 
-<text:p><text:span text:style-name="T15">It includes visitors to train exhibition and those reached through outreach activities</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T15">It includes visitors to train exhibition and those reached through outreach activities</text:span></text:p>
 
-<text:p><text:span text:style-name="T12">about injecting drug use and unprotected sex, </text:span><text:span text:style-name="T16">Radio programmes: </text:span><text:span text:style-name="T12">Three radio programmes in reducing stigma and discrimination associated Hindi &#x2013; &#x201c;</text:span><text:span text:style-name="T17">Babli Boli</text:span><text:span text:style-name="T12">&#x201d;, &#x201c;</text:span><text:span text:style-name="T17">5 Down Mohabbat Express</text:span><text:span text:style-name="T12">&#x201d; attached to HIV/AIDS and promoting HIV and &#x201c;</text:span><text:span text:style-name="T17">Kitne Door, Kitne Pass</text:span><text:span text:style-name="T12">&#x201d; were launched by related services. The music competitions and NACO, targeting rural women, rural youth and football tournaments organised at district level urban migrants respectively. The programmes culminated in the state level mega events, which were aired for six months from September, saw huge youth participation. 2009 to March, 2010. The duration of the each episode was half an hour and two episodes Faith based organisations were also sensitised of each programme were aired every week. and involved in the campaign. A special effort The programmes were linked to the ground was made to reach out to the out-of-school youth mobilisation in 21 vulnerable districts, in the in the states through training of youth clubs at states of UP, Bihar, Rajasthan, MP and Delhi district, block and village levels. The winners through 100 Radio Listener Clubs formed in each of the music competitions positioned as &quot;youth of these districts. The radio clubs promoted not icons&quot; are further reaching out with messages on only listenership of the programmes, but also HIV/AIDS to the community through road shows at helped in further dissemination of messages in village/block level in their respective districts. the communities. The SACS also produce and air </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="left"/></w:pPr><text:span text:style-name="T12">about injecting drug use and unprotected sex, </text:span><text:span text:style-name="T16">Radio programmes: </text:span><text:span text:style-name="T12">Three radio programmes in <w:br/>reducing stigma and discrimination associated Hindi &#x2013; &#x201c;</text:span><text:span text:style-name="T17">Babli Boli</text:span><text:span text:style-name="T12">&#x201d;, &#x201c;</text:span><text:span text:style-name="T17">5 Down Mohabbat Express</text:span><text:span text:style-name="T12">&#x201d; <w:br/>attached to HIV/AIDS and promoting HIV and &#x201c;</text:span><text:span text:style-name="T17">Kitne Door, Kitne Pass</text:span><text:span text:style-name="T12">&#x201d; were launched by <w:br/>related services. The music competitions and NACO, targeting rural women, rural youth and <w:br/>football tournaments organised at district level urban migrants respectively. The programmes <w:br/>culminated in the state level mega events, which were aired for six months from September, <w:br/>saw huge youth participation.<w:br/></text:span></text:p>
+
+<text:p><text:span text:style-name="T12">2009 to March, 2010. The duration of the each <w:br/>episode was half an hour and two episodes <w:br/>Faith based organisations were also sensitised of each programme were aired every week. <w:br/>and involved in the campaign. A special effort The programmes were linked to the ground <w:br/>was made to reach out to the out-of-school youth mobilisation in 21 vulnerable districts, in the <w:br/>in the states through training of youth clubs at <w:br/>district, block and village levels. The winners <w:br/>of the music competitions positioned as &quot;youth of these districts. The radio clubs promoted not <w:br/>icons&quot; are further reaching out with messages on only listenership of the programmes, but also <w:br/>HIV/AIDS to the community through road shows at helped in further dissemination of messages in <w:br/>village/block level in their respective districts. <w:br/></text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">states of UP, Bihar, Rajasthan, MP and Delhi through 100 Radio Listener Clubs formed in each </text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">the communities. The SACS also produce and air </text:span></text:p>
+<text:p text:style-name="Standard">
+<draw:frame text:anchor-type="paragraph" draw:z-index="5" draw:name="Shape2" draw:style-name="gr1" draw:text-style-name="Standard" svg:width="0.014561in" svg:height="0.000000in" draw:transform="rotate (-0.000003) translate (4.039335in 11.404630in)">
+<draw:text-box>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">29</text:span></text:p>
+</draw:text-box>
+</draw:frame>
+</text:p>
+
 <text:p text:style-name="Standard">
 <draw:frame draw:style-name="fr1" draw:name="Picture rId11" text:anchor-type="as-char" svg:width="2.527778in" svg:height="2.958333in" draw:z-index="0">
 <draw:image xlink:href="Pictures/image11.jpeg" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad" draw:mime-type="image/jpeg"/>

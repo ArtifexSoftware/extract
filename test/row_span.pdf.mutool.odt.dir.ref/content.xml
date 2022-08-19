@@ -21,58 +21,44 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">Plan Type </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Plan Type </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">County </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">County </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">Plan Name </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Plan Name </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T11">Totals </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T11">Totals </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell table:number-rows-spanned="10">
 
 
-<text:p><text:span text:style-name="T12">GMC </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">GMC </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="4">
 
 
-<text:p><text:span text:style-name="T13">Sacramento </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Sacramento </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Anthem Blue Cross </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Anthem Blue Cross </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">164,380 </text:span></text:p>
-            </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">Health Net </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">126,547 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">164,380 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -81,12 +67,12 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Kaiser Foundation </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Health Net </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">74,620 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">126,547 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -95,12 +81,26 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Molina Healthcare </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Kaiser Foundation </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">59,989 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">74,620 </text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Molina Healthcare </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">59,989 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -108,31 +108,17 @@
             <table:table-cell table:number-rows-spanned="5">
 
 
-<text:p><text:span text:style-name="T13">San Diego </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">San Diego </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Care 1st Health Plan </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Care 1st Health Plan </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">71,831 </text:span></text:p>
-            </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">Community Health Group </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">264,639 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">71,831 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -141,26 +127,12 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Health Net </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Community Health Group </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">72,404 </text:span></text:p>
-            </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">Kaiser </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">50,415 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">264,639 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -169,12 +141,40 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Molina Healthcare </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Health Net </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">206,430 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">72,404 </text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Kaiser </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">50,415 </text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Molina Healthcare </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">206,430 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -182,49 +182,35 @@
             <table:table-cell table:number-columns-spanned="2">
 
 
-<text:p><text:span text:style-name="T12">Total GMC Enrollment </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">Total GMC Enrollment </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T12">1,091,255 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">1,091,255 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell table:number-rows-spanned="23">
 
 
-<text:p><text:span text:style-name="T12">COHS </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">COHS </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Marin </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Marin </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="14">
 
 
-<text:p><text:span text:style-name="T13">Partnership Health Plan of CA </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Partnership Health Plan of CA </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">36,006 </text:span></text:p>
-            </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">Mendocino</text:span></text:p>
-            </table:table-cell>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">                         37,243 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">36,006 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -232,27 +218,13 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Napa </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Mendocino</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">28,398 </text:span></text:p>
-            </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">Solano </text:span></text:p>
-            </table:table-cell>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">113,220 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">                         37,243 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -260,27 +232,13 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Sonoma </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Napa </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">112,271 </text:span></text:p>
-            </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">Yolo </text:span></text:p>
-            </table:table-cell>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">52,674 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">28,398 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -288,27 +246,13 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Del Norte </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Solano </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">11,242 </text:span></text:p>
-            </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">Humboldt </text:span></text:p>
-            </table:table-cell>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">49,911 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">113,220 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -316,27 +260,13 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Lake </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Sonoma </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">29,149 </text:span></text:p>
-            </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">Lassen </text:span></text:p>
-            </table:table-cell>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">7,360 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">112,271 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -344,27 +274,13 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Modoc </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Yolo </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">2,940 </text:span></text:p>
-            </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">Shasta </text:span></text:p>
-            </table:table-cell>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">61,763 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">52,674 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -372,27 +288,13 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Siskiyou </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Del Norte </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">16,715 </text:span></text:p>
-            </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">Trinity </text:span></text:p>
-            </table:table-cell>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">4,542 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">11,242 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -400,31 +302,115 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Merced</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Humboldt </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">49,911 </text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Lake </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">29,149 </text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Lassen </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">7,360 </text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Modoc </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">2,940 </text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Shasta </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">61,763 </text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Siskiyou </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">16,715 </text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Trinity </text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">4,542 </text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Merced</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T13">Central California Alliance for Health</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Central California Alliance for Health</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">                       123,907 </text:span></text:p>
-            </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">Monterey </text:span></text:p>
-            </table:table-cell>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">                       147,397 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">                       123,907 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -432,13 +418,13 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Santa Cruz</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Monterey </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">                         69,458 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">                       147,397 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -446,31 +432,31 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Santa Barbara </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Santa Cruz</text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">                         69,458 </text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Santa Barbara </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">CenCal </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">CenCal </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">117,609 </text:span></text:p>
-            </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">San Luis Obispo </text:span></text:p>
-            </table:table-cell>
-            <table:covered-table-cell/>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">55,761 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">117,609 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -478,17 +464,13 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Orange </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">San Luis Obispo </text:span></text:p>
             </table:table-cell>
+            <table:covered-table-cell/>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">CalOptima </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">783,079 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">55,761 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -496,17 +478,17 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">San Mateo </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Orange </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Health Plan of San Mateo </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">CalOptima </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">113,202 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">783,079 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -514,17 +496,35 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Ventura </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">San Mateo </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Gold Coast Health Plan </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Health Plan of San Mateo </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">202,217 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">113,202 </text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Ventura </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Gold Coast Health Plan </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">202,217 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -532,49 +532,49 @@
             <table:table-cell table:number-columns-spanned="2">
 
 
-<text:p><text:span text:style-name="T12">Total COHS Enrollment </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">Total COHS Enrollment </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T12">2,176,064 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">2,176,064 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell table:number-columns-spanned="3">
 
 
-<text:p><text:span text:style-name="T12">Subtotal for Two-Plan, Regional Model, GMC and COHS </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">Subtotal for Two-Plan, Regional Model, GMC and COHS </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T12">10,132,022 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">10,132,022 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T12">PCCM </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">PCCM </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Los Angeles </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Los Angeles </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">AIDS Healthcare Foundation </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">AIDS Healthcare Foundation </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">828 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">828 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -582,17 +582,17 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">San Francisco </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">San Francisco </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Family Mosaic </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Family Mosaic </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">25 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">25 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -600,34 +600,36 @@
             <table:table-cell table:number-columns-spanned="2">
 
 
-<text:p><text:span text:style-name="T12">Total PHP Enrollment </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">Total PHP Enrollment </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T12">853 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">853 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell table:number-columns-spanned="3">
 
 
-<text:p><text:span text:style-name="T12">All Models Total Enrollments </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">All Models Total Enrollments </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T12">10,132,875 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">10,132,875 </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell table:number-columns-spanned="4">
 
 
-<text:p><text:span text:style-name="T13">Source:   Data Warehouse 12/14/15 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Source:   Data Warehouse </text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">12/14/15 </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -636,4 +638,4 @@
     </table:table>
 
 
-<text:p><text:span text:style-name="T14">.</text:span><text:span text:style-name="T15"> </text:span></text:p></office:text></office:body></office:document-content>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">.</text:span><text:span text:style-name="T15"> </text:span></text:p></office:text></office:body></office:document-content>

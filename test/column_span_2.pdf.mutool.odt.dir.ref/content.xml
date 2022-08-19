@@ -11,7 +11,7 @@
 <style:style style:name="extract.table.column" style:family="table-column"/>
 <office:body><office:text><text:sequence-decls><text:sequence-decl text:display-outline-level="0" text:name="Illustration"/><text:sequence-decl text:display-outline-level="0" text:name="Table"/><text:sequence-decl text:display-outline-level="0" text:name="Text"/><text:sequence-decl text:display-outline-level="0" text:name="Drawing"/><text:sequence-decl text:display-outline-level="0" text:name="Figure"/></text:sequence-decls><text:p text:style-name="Standard"/>
 
-<text:p><text:span text:style-name="T11">The sample size required for each State for various investigations among different target groups of individuals are given below:</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="right"/></w:pPr><text:span text:style-name="T11">The sample size required for each State for various investigations among different target groups of individuals are given below:</text:span></text:p>
     <table:table text:style-name="extract.table" table:name="extract.table.1">
         <table:table-columns>
             <table:table-column table:style-name="extract.table.column"/>
@@ -26,54 +26,54 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T12">Investigations</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">Investigations</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T12">No. of HHs</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">HHs No. of</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T12">Age/Sex/Physiological Group</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">Physiological Group Age/Sex/</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T12">Prevalence</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">Preva- lence</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T12">C.I*</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">C.I* </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T12">Relative Precision</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">Relative Precision </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T12">Sample size per State</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T12">Sample size per State</text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Anthropometry</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Anthropometry</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">2400</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-columns-spanned="5" table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T13">                           All the available individuals</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">                           All the available individuals</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -84,20 +84,7 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Clinical Examination</text:span></text:p>
-            </table:table-cell>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-        </table:table-row>
-        <table:table-row>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T13">History of morbidity</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Clinical Examination </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -110,17 +97,30 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Diet survey</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">History of morbidity</text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Diet survey</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">1200</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">1200 </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-columns-spanned="5">
 
 
-<text:p><text:span text:style-name="T13">All the individuals partaking meals in the HH</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">All the individuals partaking meals in the HH</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -131,37 +131,37 @@
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">Blood Pressure #</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Blood Pressure #</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">2400</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Men (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18yrs)</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Men (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18yrs)</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">10%</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">10% </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">95%</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">95% </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">20%</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">20%</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">1728</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">1728</text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -170,7 +170,7 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Women (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18 yrs)</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Women (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18 yrs)</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -178,44 +178,44 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">1728</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">1728</text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">Fasting blood glucose</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Fasting blood glucose </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">2400</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Men (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18 yrs)</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Men (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18 yrs)</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">5%</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">5% </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">95%</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">95% </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">20%</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">20%</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">1825</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">1825</text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -224,7 +224,7 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Women (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18 yrs)</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Women (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18 yrs)</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -232,44 +232,44 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">1825</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">1825</text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">Knowledge &amp; Practices on HTN &amp; DM</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="left"/></w:pPr><text:span text:style-name="T13">Knowledge &amp; Practices on HTN &amp; DM</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">2400 </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Men (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18 yrs)</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Men (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18 yrs)</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13"></text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13"></text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13"></text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13"></text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13"></text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13"></text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">1728</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">1728</text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
@@ -277,57 +277,49 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">2400</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">2400 </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">Women (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18 yrs)</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Women (</text:span><text:span text:style-name="T14">&#x2265;</text:span><text:span text:style-name="T13"> 18 yrs)</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13"></text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13"></text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13"></text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13"></text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13"></text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13"></text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">1728</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">1728</text:span></text:p>
             </table:table-cell>
         </table:table-row>
     </table:table>
 
 
-<text:p><text:span text:style-name="T13">*CI: Confidence Interval       # Design effect 2</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">*CI: Confidence Interval       # Design effect 2</text:span></text:p>
 
-<text:p><text:span text:style-name="T15">3.4.2. Measurement of blood pressure</text:span></text:p>
+<text:p><text:span text:style-name="T15">3.4.2. Measurement of blood pressure <w:br/></text:span><text:span text:style-name="T11">Earlier studies have revealed that the prevalence of hypertension among the rural <w:br/></text:span><text:span text:style-name="T16">3 <w:br/></text:span><text:span text:style-name="T11">adults of </text:span><text:span text:style-name="T17">&#x2265;</text:span><text:span text:style-name="T11">18 years in the State of Gujarat was 10% which was lowest compared to <w:br/>other NNMB States. Assuming 10% prevalence of hypertension among rural adults, <w:br/>with 95% confidence interval, 20% relative precision and design effect of 2, the sample <w:br/>size computed for each State was 1,728 adults in each gender.<w:br/></text:span></text:p>
 
-<text:p><text:span text:style-name="T11">Earlier studies have revealed that the prevalence of hypertension among the rural</text:span></text:p>
+<text:p><text:span text:style-name="T15">3.4.3. Estimation of fasting blood glucose <w:br/></text:span><text:span text:style-name="T11">Earlier studies have revealed that the overall prevalence of diabetes among the <w:br/></text:span><text:span text:style-name="T16">3 <w:br/></text:span><text:span text:style-name="T11">rural adults of </text:span><text:span text:style-name="T17">&#x2265;</text:span><text:span text:style-name="T11">18 years was about 5% . Assuming 5% prevalence of diabetes among <w:br/>rural adults, with 95% confidence interval and 20% relative precision, the sample size <w:br/>computed was 1,825 adults in each gender.<w:br/></text:span></text:p>
 
-<text:p><text:span text:style-name="T16">3 </text:span><text:span text:style-name="T11">adults of </text:span><text:span text:style-name="T17">&#x2265;</text:span><text:span text:style-name="T11">18 years in the State of Gujarat was 10% which was lowest compared to other NNMB States. Assuming 10% prevalence of hypertension among rural adults, with 95% confidence interval, 20% relative precision and design effect of 2, the sample size computed for each State was 1,728 adults in each gender.</text:span></text:p>
+<text:p><text:span text:style-name="T15">3.5. Investigations <w:br/></text:span><text:span text:style-name="T11">The following investigations were carried out in the selected HHs:<w:br/></text:span></text:p>
 
-<text:p><text:span text:style-name="T15">3.4.3. Estimation of fasting blood glucose</text:span></text:p>
+<text:p><text:span text:style-name="T15">3.5.1. Socio-economic and demographic particulars of households </text:span><text:span text:style-name="T11">Socioeconomic and demographic particulars, such as age, sex, occupation, annual family income, family size, type of family, literacy level of individuals, information about possession of agricultural land, types of crops raised, their yield during previous year, live stock, type of dwelling, environmental sanitation etc. from all the selected 20 HHs were collected using pre-tested questionnaires.</text:span></text:p>
 
-<text:p><text:span text:style-name="T11">Earlier studies have revealed that the overall prevalence of diabetes among the</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">NNMB</text:span></text:p>
 
-<text:p><text:span text:style-name="T16">3 </text:span><text:span text:style-name="T11">rural adults of </text:span><text:span text:style-name="T17">&#x2265;</text:span><text:span text:style-name="T11">18 years was about 5% . Assuming 5% prevalence of diabetes among rural adults, with 95% confidence interval and 20% relative precision, the sample size computed was 1,825 adults in each gender.</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">Rural-Third Repeat Survey 2011-12</text:span></text:p>
 
-<text:p><text:span text:style-name="T15">3.5. Investigations</text:span></text:p>
-
-<text:p><text:span text:style-name="T11">The following investigations were carried out in the selected HHs:</text:span></text:p>
-
-<text:p><text:span text:style-name="T15">3.5.1. Socioeconomic and demographic particulars of households</text:span></text:p>
-
-<text:p><text:span text:style-name="T11">Socioeconomic and demographic particulars, such as age, sex, occupation, annual family income, family size, type of family, literacy level of individuals, information about possession of agricultural land, types of crops raised, their yield during previous year, live stock, type of dwelling, environmental sanitation etc. from all the selected 20 HHs were collected using pretested questionnaires.</text:span></text:p>
-
-<text:p><text:span text:style-name="T18">NNMB 3 RuralThird Repeat Survey 201112</text:span></text:p></office:text></office:body></office:document-content>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">3</text:span></text:p></office:text></office:body></office:document-content>

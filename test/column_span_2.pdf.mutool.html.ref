@@ -9,11 +9,11 @@
 <table border="1" style="border-collapse:collapse">
     <tr>
         <td><p><b>Investigations</p></b></td>
-        <td><p><b>No. of HHs</p></b></td>
-        <td><p><b>Age/Sex/ Physiological Group</p></b></td>
-        <td><p><b>Preva lence</p></b></td>
-        <td><p><b>C.I*</p></b></td>
-        <td><p><b>Relative Precision</p></b></td>
+        <td><p><b>HHs No. of</p></b></td>
+        <td><p><b>Physiological Group Age/Sex/</p></b></td>
+        <td><p><b>Preva- lence</p></b></td>
+        <td><p><b>C.I* </p></b></td>
+        <td><p><b>Relative Precision </p></b></td>
         <td><p><b>Sample size per State</p></b></td>
     </tr>
     <tr>
@@ -22,22 +22,22 @@
         <td colspan="5" rowspan="3"><p><i>                           All the available individuals</p></i></td>
     </tr>
     <tr>
-        <td><p><i>Clinical Examination</p></i></td>
+        <td><p><i>Clinical Examination </p></i></td>
     </tr>
     <tr>
         <td><p><i>History of morbidity</p></i></td>
     </tr>
     <tr>
         <td><p><i>Diet survey</p></i></td>
-        <td><p><i>1200</p></i></td>
+        <td><p><i>1200 </p></i></td>
         <td colspan="5"><p><i>All the individuals partaking meals in the HH</p></i></td>
     </tr>
     <tr>
         <td rowspan="2"><p><i>Blood Pressure #</p></i></td>
         <td rowspan="2"><p><i>2400</p></i></td>
         <td><p><i>Men (</i>&#x2265;<i> 18yrs)</p></i></td>
-        <td rowspan="2"><p><i>10%</p></i></td>
-        <td rowspan="2"><p><i>95%</p></i></td>
+        <td rowspan="2"><p><i>10% </p></i></td>
+        <td rowspan="2"><p><i>95% </p></i></td>
         <td rowspan="2"><p><i>20%</p></i></td>
         <td><p><i>1728</p></i></td>
     </tr>
@@ -46,11 +46,11 @@
         <td><p><i>1728</p></i></td>
     </tr>
     <tr>
-        <td rowspan="2"><p><i>Fasting blood glucose</p></i></td>
+        <td rowspan="2"><p><i>Fasting blood glucose </p></i></td>
         <td rowspan="2"><p><i>2400</p></i></td>
         <td><p><i>Men (</i>&#x2265;<i> 18 yrs)</p></i></td>
-        <td rowspan="2"><p><i>5%</p></i></td>
-        <td rowspan="2"><p><i>95%</p></i></td>
+        <td rowspan="2"><p><i>5% </p></i></td>
+        <td rowspan="2"><p><i>95% </p></i></td>
         <td rowspan="2"><p><i>20%</p></i></td>
         <td><p><i>1825</p></i></td>
     </tr>
@@ -60,7 +60,7 @@
     </tr>
     <tr>
         <td rowspan="2"><p><i>Knowledge &amp; Practices on HTN &amp; DM</p></i></td>
-        <td><p><i>2400</p></i></td>
+        <td><p><i>2400 </p></i></td>
         <td><p><i>Men (</i>&#x2265;<i> 18 yrs)</p></i></td>
         <td><p><i>-</p></i></td>
         <td><p><i>-</p></i></td>
@@ -68,7 +68,7 @@
         <td><p><i>1728</p></i></td>
     </tr>
     <tr>
-        <td><p><i>2400</p></i></td>
+        <td><p><i>2400 </p></i></td>
         <td><p><i>Women (</i>&#x2265;<i> 18 yrs)</p></i></td>
         <td><p><i>-</p></i></td>
         <td><p><i>-</p></i></td>
@@ -82,37 +82,25 @@
 <p><i>*CI: Confidence Interval       # Design effect 2
 </p></i>
 
-<p><b>3.4.2. Measurement of blood pressure
-</p></b>
-
-<p><i>Earlier studies have revealed that the prevalence of hypertension among the rural
+<p><b>3.4.2. Measurement of blood pressure </b><i>Earlier studies have revealed that the prevalence of hypertension among the rural 3 adults of </i>&#x2265;<i>18 years in the State of Gujarat was 10% which was lowest compared to other NNMB States. Assuming 10% prevalence of hypertension among rural adults, with 95% confidence interval, 20% relative precision and design effect of 2, the sample size computed for each State was 1,728 adults in each gender.
 </p></i>
 
-<p><i>3 adults of </i>&#x2265;<i>18 years in the State of Gujarat was 10% which was lowest compared to other NNMB States. Assuming 10% prevalence of hypertension among rural adults, with 95% confidence interval, 20% relative precision and design effect of 2, the sample size computed for each State was 1,728 adults in each gender.
+<p><b>3.4.3. Estimation of fasting blood glucose </b><i>Earlier studies have revealed that the overall prevalence of diabetes among the 3 rural adults of </i>&#x2265;<i>18 years was about 5% . Assuming 5% prevalence of diabetes among rural adults, with 95% confidence interval and 20% relative precision, the sample size computed was 1,825 adults in each gender.
 </p></i>
 
-<p><b>3.4.3. Estimation of fasting blood glucose
-</p></b>
-
-<p><i>Earlier studies have revealed that the overall prevalence of diabetes among the
+<p><b>3.5. Investigations </b><i>The following investigations were carried out in the selected HHs:
 </p></i>
 
-<p><i>3 rural adults of </i>&#x2265;<i>18 years was about 5% . Assuming 5% prevalence of diabetes among rural adults, with 95% confidence interval and 20% relative precision, the sample size computed was 1,825 adults in each gender.
+<p><b>3.5.1. Socio-economic and demographic particulars of households </b><i>Socioeconomic and demographic particulars, such as age, sex, occupation, annual family income, family size, type of family, literacy level of individuals, information about possession of agricultural land, types of crops raised, their yield during previous year, live stock, type of dwelling, environmental sanitation etc. from all the selected 20 HHs were collected using pre-tested questionnaires.
 </p></i>
 
-<p><b>3.5. Investigations
-</p></b>
-
-<p><i>The following investigations were carried out in the selected HHs:
+<p><i>NNMB
 </p></i>
 
-<p><b>3.5.1. Socio-economic and demographic particulars of households
-</p></b>
-
-<p><i>Socioeconomic and demographic particulars, such as age, sex, occupation, annual family income, family size, type of family, literacy level of individuals, information about possession of agricultural land, types of crops raised, their yield during previous year, live stock, type of dwelling, environmental sanitation etc. from all the selected 20 HHs were collected using pre-tested questionnaires.
+<p><i>Rural-Third Repeat Survey 2011-12
 </p></i>
 
-<p><i>NNMB 3 Rural-Third Repeat Survey 2011-12
+<p><i>3
 </p></i></div>
 </body>
 </html>

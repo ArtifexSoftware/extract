@@ -11,29 +11,7 @@
 <style:style style:name="extract.table.column" style:family="table-column"/>
 <office:body><office:text><text:sequence-decls><text:sequence-decl text:display-outline-level="0" text:name="Illustration"/><text:sequence-decl text:display-outline-level="0" text:name="Table"/><text:sequence-decl text:display-outline-level="0" text:name="Text"/><text:sequence-decl text:display-outline-level="0" text:name="Drawing"/><text:sequence-decl text:display-outline-level="0" text:name="Figure"/></text:sequence-decls><text:p text:style-name="Standard"/>
 
-<text:p><text:span text:style-name="T11">2 Quantifying Fuel-Saving Opportunities from Specific Driving Behavior Changes </text:span></text:p>
-
-<text:p><text:span text:style-name="T12">2.1 </text:span><text:span text:style-name="T13">Savings from Improving Individual Driving Profiles</text:span><text:span text:style-name="T12"> </text:span></text:p>
-
-<text:p><text:span text:style-name="T14">2.1.1 Drive Profile Subsample from Real-World Travel Survey </text:span></text:p>
-
-<text:p><text:span text:style-name="T15">The interim report (Gonder et al. 2010) included results from detailed analyses on five cycles selected from a large set of real-world global positioning system (GPS) travel data collected in 2006 as part of a study by the Texas Transportation Institute and the Texas Department of Transportation (Ojah and Pearson 2008). The cycles were selected to reflect a range of kinetic intensity (KI) values. (KI represents a ratio of characteristic acceleration to aerodynamic speed and has been shown to be a useful drive cycle classification parameter [O&#x2019;Keefe et al. 2007].)  To determine the maximum possible cycle improvement fuel savings, the real-world cycles were converted into equivalent &#x201c;ideal&#x201d; cycles using the following steps:  </text:span></text:p>
-
-<text:p><text:span text:style-name="T15">1.</text:span><text:span text:style-name="T16"> </text:span><text:span text:style-name="T15">Calculate the trip distance of each sample trip. </text:span></text:p>
-
-<text:p><text:span text:style-name="T15">2.</text:span><text:span text:style-name="T16"> </text:span><text:span text:style-name="T15">Eliminate stop-and-go and idling within each trip.  </text:span></text:p>
-
-<text:p><text:span text:style-name="T15">3.</text:span><text:span text:style-name="T16"> </text:span><text:span text:style-name="T15">Set the acceleration rate to 3 mph/s.  </text:span></text:p>
-
-<text:p><text:span text:style-name="T15">4.</text:span><text:span text:style-name="T16"> </text:span><text:span text:style-name="T15">Set the cruising speed to 40 mph. </text:span></text:p>
-
-<text:p><text:span text:style-name="T15">5.</text:span><text:span text:style-name="T16"> </text:span><text:span text:style-name="T15">Continue cruising at 40 mph until the trip distance is reached. </text:span></text:p>
-
-<text:p><text:span text:style-name="T15">To compare vehicle simulations over each real-world cycle and its corresponding ideal cycle, a midsize conventional vehicle model from a previous NREL study was used (Earleywine et al. 2010). The results indicated a fuel savings potential of roughly 60% for the drive profiles with either very high or very low KI and of 30%&#x2013;40% for the cycles with moderate KI values.  </text:span></text:p>
-
-<text:p><text:span text:style-name="T15">Table 2-1 takes the analysis of these five cycles from the interim report a step further by examining the impact of the optimization steps one at a time in isolation. As indicated by other simulations from the interim report (Gonder et al. 2010), acceleration rate reductions can deliver some small fuel savings, but avoiding accelerations and decelerations (accel/decel) altogether saves larger amounts of fuel. This suggests that driving style improvements should focus on reducing the number of stops in high KI cycles, and not just the rate of accelerating out of a stop. </text:span></text:p>
-
-<text:p><text:span text:style-name="T17">Table 2-1. Simulated fuel savings from isolated cycle improvements </text:span></text:p>
+<text:p><text:span text:style-name="T11">2 Quantifying Fuel-Saving Opportunities from Specific Driving <w:br/>Behavior Changes <w:br/></text:span><text:span text:style-name="T12">2.1 </text:span><text:span text:style-name="T13">Savings from Improving Individual Driving Profiles</text:span><text:span text:style-name="T12"> <w:br/></text:span><text:span text:style-name="T14">2.1.1 Drive Profile Subsample from Real-World Travel Survey <w:br/></text:span><text:span text:style-name="T15">The interim report (Gonder et al. 2010) included results from detailed analyses on five cycles <w:br/>selected from a large set of real-world global positioning system (GPS) travel data collected in <w:br/>2006 as part of a study by the Texas Transportation Institute and the Texas Department of <w:br/>Transportation (Ojah and Pearson 2008). The cycles were selected to reflect a range of kinetic <w:br/>intensity (KI) values. (KI represents a ratio of characteristic acceleration to aerodynamic speed <w:br/>and has been shown to be a useful drive cycle classification parameter [O&#x2019;Keefe et al. 2007].)  <w:br/>To determine the maximum possible cycle improvement fuel savings, the real-world cycles were <w:br/>converted into equivalent &#x201c;ideal&#x201d; cycles using the following steps:  <w:br/>1.</text:span><text:span text:style-name="T16"> </text:span><text:span text:style-name="T15"> Calculate the trip distance of each sample trip. <w:br/>2.</text:span><text:span text:style-name="T16"> </text:span><text:span text:style-name="T15"> Eliminate stop-and-go and idling within each trip.  <w:br/>3.</text:span><text:span text:style-name="T16"> </text:span><text:span text:style-name="T15"> Set the acceleration rate to 3 mph/s.  <w:br/>4.</text:span><text:span text:style-name="T16"> </text:span><text:span text:style-name="T15"> Set the cruising speed to 40 mph. <w:br/>5.</text:span><text:span text:style-name="T16"> </text:span><text:span text:style-name="T15"> Continue cruising at 40 mph until the trip distance is reached. <w:br/>To compare vehicle simulations over each real-world cycle and its corresponding ideal cycle, a <w:br/>midsize conventional vehicle model from a previous NREL study was used (Earleywine et al. <w:br/>2010). The results indicated a fuel savings potential of roughly 60% for the drive profiles with <w:br/>either very high or very low KI and of 30%&#x2013;40% for the cycles with moderate KI values.  <w:br/>Table 2-1 takes the analysis of these five cycles from the interim report a step further by <w:br/>examining the impact of the optimization steps one at a time in isolation. As indicated by other <w:br/>simulations from the interim report (Gonder et al. 2010), acceleration rate reductions can deliver <w:br/>some small fuel savings, but avoiding accelerations and decelerations (accel/decel) altogether <w:br/>saves larger amounts of fuel. This suggests that driving style improvements should focus on <w:br/>reducing the number of stops in high KI cycles, and not just the rate of accelerating out of a stop. <w:br/></text:span><text:span text:style-name="T17">Table 2-1. Simulated fuel savings from isolated cycle improvements <w:br/></text:span></text:p>
     <table:table text:style-name="extract.table" table:name="extract.table.1">
         <table:table-columns>
             <table:table-column table:style-name="extract.table.column"/>
@@ -48,22 +26,22 @@
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T17">Cycle Name </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T17">Cycle Name </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T17">KI (1/km) </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T17">KI (1/km) </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T17">Distance (mi) </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T17">Distance (mi) </text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-columns-spanned="4">
 
 
-<text:p><text:span text:style-name="T17">Percent Fuel Savings </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T17">Percent Fuel Savings </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -76,212 +54,212 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T17">Improved Speed </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T17">Improved Speed </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T17">Decreased Accel </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T17">Decreased Accel </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T17">Eliminate Stops </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T17">Eliminate Stops </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T17">Decreased Idle </text:span></text:p>
-            </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T18">2012_2 </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T18">3.30 </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T18">1.3 </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T18">5.9% </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T18">9.5% </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T18">29.2% </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T18">17.4% </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T17">Decreased Idle </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">2145_1 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">2012_2 </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">0.68 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">3.30 </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">11.2 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">1.3 </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">2.4% </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">5.9% </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">0.1% </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">9.5% </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">9.5% </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">29.2% </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">2.7% </text:span></text:p>
-            </table:table-cell>
-        </table:table-row>
-        <table:table-row>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T18">4234_1 </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T18">0.59 </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T18">58.7 </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T18">8.5% </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T18">1.3% </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T18">8.5% </text:span></text:p>
-            </table:table-cell>
-            <table:table-cell>
-
-
-<text:p><text:span text:style-name="T18">3.3% </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">17.4% </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">2032_2 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">2145_1 </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">0.17 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">0.68 </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">57.8 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">11.2 </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">21.7% </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">2.4% </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">0.3% </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">0.1% </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">2.7% </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">9.5% </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">1.2% </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">2.7% </text:span></text:p>
             </table:table-cell>
         </table:table-row>
         <table:table-row>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">4171_1 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">4234_1 </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">0.07 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">0.59 </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">173.9 </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">58.7 </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">58.1% </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">8.5% </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">1.6% </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">1.3% </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">2.1% </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">8.5% </text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T18">0.5% </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">3.3% </text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">2032_2 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">0.17 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">57.8 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">21.7% </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">0.3% </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">2.7% </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">1.2% </text:span></text:p>
+            </table:table-cell>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">4171_1 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">0.07 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">173.9 </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">58.1% </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">1.6% </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">2.1% </text:span></text:p>
+            </table:table-cell>
+            <table:table-cell>
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T18">0.5% </text:span></text:p>
             </table:table-cell>
         </table:table-row>
     </table:table>
 
 
-<text:p><text:span text:style-name="T19"> </text:span><text:span text:style-name="T15">Figure 2-1 extends the analysis from eliminating stops for the five example cycles and examines the additional benefit from avoiding slow-and-go driving below various speed thresholds. </text:span></text:p>
+<text:p><text:span text:style-name="T19"> <w:br/></text:span><text:span text:style-name="T15">Figure 2-1 extends the analysis from eliminating stops for the five example cycles and examines <w:br/>the additional benefit from avoiding slow-and-go driving below various speed thresholds. <w:br/>3 <w:br/></text:span></text:p>
 
-<text:p><text:span text:style-name="T15">3  </text:span></text:p></office:text></office:body></office:document-content>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T15"> </text:span></text:p></office:text></office:body></office:document-content>

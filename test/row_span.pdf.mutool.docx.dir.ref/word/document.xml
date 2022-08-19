@@ -15,8 +15,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="20.400000"/><w:szCs w:val="15.300000"/></w:rPr><w:t xml:space="preserve">Plan Type </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="20.400000"/><w:szCs w:val="20.400000"/></w:rPr><w:t xml:space="preserve">Plan Type </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -29,8 +29,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="20.400000"/><w:szCs w:val="15.300000"/></w:rPr><w:t xml:space="preserve">County </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="20.400000"/><w:szCs w:val="20.400000"/></w:rPr><w:t xml:space="preserve">County </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -43,8 +43,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="20.400000"/><w:szCs w:val="15.300000"/></w:rPr><w:t xml:space="preserve">Plan Name </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="20.400000"/><w:szCs w:val="20.400000"/></w:rPr><w:t xml:space="preserve">Plan Name </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -57,8 +57,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="20.400000"/><w:szCs w:val="15.300000"/></w:rPr><w:t xml:space="preserve">Totals </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="20.400000"/><w:szCs w:val="20.400000"/></w:rPr><w:t xml:space="preserve">Totals </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -75,8 +75,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">GMC </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">GMC </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -90,8 +90,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Sacramento </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Sacramento </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -104,8 +104,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Anthem Blue Cross </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Anthem Blue Cross </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -118,63 +118,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">164,380 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Health Net </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">126,547 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">164,380 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -214,8 +159,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Kaiser Foundation </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Health Net </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -228,8 +173,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">74,620 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">126,547 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -269,8 +214,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Molina Healthcare </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Kaiser Foundation </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -283,8 +228,63 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">59,989 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">74,620 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Molina Healthcare </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">59,989 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -313,8 +313,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">San Diego </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">San Diego </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -327,8 +327,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Care 1st Health Plan </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Care 1st Health Plan </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -341,63 +341,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">71,831 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Community Health Group </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">264,639 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">71,831 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -437,8 +382,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Health Net </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Community Health Group </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -451,63 +396,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">72,404 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Kaiser </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">50,415 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">264,639 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -547,8 +437,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Molina Healthcare </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Health Net </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -561,8 +451,118 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">206,430 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">72,404 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Kaiser </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">50,415 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Molina Healthcare </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">206,430 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -591,8 +591,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Total GMC Enrollment </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Total GMC Enrollment </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -605,8 +605,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">1,091,255 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">1,091,255 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -623,8 +623,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">COHS </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">COHS </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -637,781 +637,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Marin </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="restart"/>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Partnership Health Plan of CA </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">36,006 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Mendocino</w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">                         37,243 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Napa </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">28,398 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Solano </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">113,220 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Sonoma </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">112,271 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Yolo </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">52,674 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Del Norte </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">11,242 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Humboldt </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">49,911 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Lake </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">29,149 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Lassen </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">7,360 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Modoc </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">2,940 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Shasta </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">61,763 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Siskiyou </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">16,715 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Trinity </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">4,542 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Merced</w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Marin </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -1425,8 +652,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Central California Alliance for Health</w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Partnership Health Plan of CA </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -1439,63 +666,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">                       123,907 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Monterey </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">                       147,397 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">36,006 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -1523,8 +695,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Santa Cruz</w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Mendocino</w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -1549,8 +721,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">                         69,458 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">                         37,243 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -1578,8 +750,668 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Santa Barbara </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Napa </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">28,398 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Solano </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">113,220 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Sonoma </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">112,271 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Yolo </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">52,674 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Del Norte </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">11,242 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Humboldt </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">49,911 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Lake </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">29,149 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Lassen </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">7,360 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Modoc </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">2,940 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Shasta </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">61,763 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Siskiyou </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">16,715 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Trinity </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">4,542 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Merced</w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -1593,8 +1425,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">CenCal </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Central California Alliance for Health</w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -1607,63 +1439,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">117,609 </w:t></w:r>
-</w:p>            </w:tc>
-        </w:tr>
-        <w:tr>
-            <w:trPr/>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">San Luis Obispo </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                    <w:vMerge w:val="continue"/>
-                </w:tcPr>
-<w:p/>
-            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">55,761 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">                       123,907 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -1691,9 +1468,21 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Orange </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Monterey </w:t></w:r>
 </w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1705,22 +1494,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">CalOptima </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">783,079 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">                       147,397 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -1748,9 +1523,21 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">San Mateo </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Santa Cruz</w:t></w:r>
 </w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1762,22 +1549,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Health Plan of San Mateo </w:t></w:r>
-</w:p>            </w:tc>
-            <w:tc>
-                <w:tcPr>
-                    <w:tcBorders>
-                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
-                    </w:tcBorders>
-                </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">113,202 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">                         69,458 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -1805,8 +1578,23 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Ventura </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Santa Barbara </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="restart"/>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">CenCal </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -1819,8 +1607,92 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Gold Coast Health Plan </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">117,609 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">San Luis Obispo </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">55,761 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Orange </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -1833,8 +1705,136 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">202,217 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">CalOptima </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">783,079 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">San Mateo </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Health Plan of San Mateo </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">113,202 </w:t></w:r>
+</w:p>            </w:tc>
+        </w:tr>
+        <w:tr>
+            <w:trPr/>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                    <w:vMerge w:val="continue"/>
+                </w:tcPr>
+<w:p/>
+            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Ventura </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Gold Coast Health Plan </w:t></w:r>
+</w:p>            </w:tc>
+            <w:tc>
+                <w:tcPr>
+                    <w:tcBorders>
+                        <w:top w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:start w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:bottom w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                        <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
+                    </w:tcBorders>
+                </w:tcPr>
+
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">202,217 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -1863,8 +1863,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Total COHS Enrollment </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Total COHS Enrollment </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -1877,8 +1877,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">2,176,064 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">2,176,064 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -1895,8 +1895,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Subtotal for Two-Plan, Regional Model, GMC and COHS </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Subtotal for Two-Plan, Regional Model, GMC and COHS </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -1909,8 +1909,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">10,132,022 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">10,132,022 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -1927,8 +1927,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">PCCM </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">PCCM </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -1941,8 +1941,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Los Angeles </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Los Angeles </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -1955,8 +1955,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">AIDS Healthcare Foundation </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">AIDS Healthcare Foundation </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -1969,8 +1969,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">828 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">828 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -1998,8 +1998,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">San Francisco </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">San Francisco </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -2012,8 +2012,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Family Mosaic </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Family Mosaic </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -2026,8 +2026,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">25 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">25 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -2056,8 +2056,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Total PHP Enrollment </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Total PHP Enrollment </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -2070,8 +2070,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">853 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">853 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -2088,8 +2088,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">All Models Total Enrollments </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">All Models Total Enrollments </w:t></w:r>
 </w:p>            </w:tc>
             <w:tc>
                 <w:tcPr>
@@ -2102,8 +2102,8 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">10,132,875 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Arial-BoldMT" w:hAnsi="Arial-BoldMT"/><w:b/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">10,132,875 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
         <w:tr>
@@ -2120,14 +2120,18 @@
                 </w:tcPr>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="14.040000"/></w:rPr><w:t xml:space="preserve">Source:   Data Warehouse 12/14/15 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">Source:   Data Warehouse </w:t></w:r>
+</w:p>
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="ArialMT" w:hAnsi="ArialMT"/><w:sz w:val="18.720000"/><w:szCs w:val="18.720000"/></w:rPr><w:t xml:space="preserve">12/14/15 </w:t></w:r>
 </w:p>            </w:tc>
         </w:tr>
     </w:tbl>
 
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/><w:sz w:val="17.280000"/><w:szCs w:val="12.960000"/></w:rPr><w:t xml:space="preserve">.</w:t></w:r>
-<w:r><w:rPr><w:rFonts w:ascii="Times-Roman" w:hAnsi="Times-Roman"/><w:sz w:val="17.280000"/><w:szCs w:val="12.960000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/><w:sz w:val="17.280000"/><w:szCs w:val="17.280000"/></w:rPr><w:t xml:space="preserve">.</w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Times-Roman" w:hAnsi="Times-Roman"/><w:sz w:val="17.280000"/><w:szCs w:val="17.280000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
 </w:p></w:body></w:document>

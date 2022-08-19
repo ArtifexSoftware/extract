@@ -11,13 +11,11 @@
 <style:style style:name="extract.table.column" style:family="table-column"/>
 <office:body><office:text><text:sequence-decls><text:sequence-decl text:display-outline-level="0" text:name="Illustration"/><text:sequence-decl text:display-outline-level="0" text:name="Table"/><text:sequence-decl text:display-outline-level="0" text:name="Text"/><text:sequence-decl text:display-outline-level="0" text:name="Drawing"/><text:sequence-decl text:display-outline-level="0" text:name="Figure"/></text:sequence-decls><text:p text:style-name="Standard"/>
 
-<text:p><text:span text:style-name="T11">INPUT SURVEY, 1996-1997</text:span></text:p>
+<text:p><text:span text:style-name="T11">INPUT SURVEY, 1996-1997 <w:br/></text:span><text:span text:style-name="T12">TABLE 5J : ESTIMATED AREA UNDER PADDY  TREATED WITH AZETOBACTOR BY SIZE GROUPS. <w:br/>STATE : ANDHRA PRADESH<w:br/></text:span></text:p>
 
-<text:p><text:span text:style-name="T12">TABLE 5J : ESTIMATED AREA UNDER PADDY  TREATED WITH AZETOBACTOR BY SIZE GROUPS.</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">PAGE NO. 1</text:span></text:p>
 
-<text:p><text:span text:style-name="T12">STATE : ADILABAD 1</text:span></text:p>
-
-<text:p><text:span text:style-name="T12">ANDHRA PRADESH DISTRICT : PAGE NO.</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T12">DISTRICT : ADILABAD</text:span></text:p>
     <table:table text:style-name="extract.table" table:name="extract.table.1">
         <table:table-columns>
             <table:table-column table:style-name="extract.table.column"/>
@@ -40,32 +38,32 @@
             <table:table-cell table:number-columns-spanned="2" table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">Sl.No</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">Sl.No</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell table:number-columns-spanned="2" table:number-rows-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">SIZE GROUP (HA) </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T13">SIZE GROUP (HA) </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell table:number-columns-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">NO. OF HOLDINGS GROWING THE CROP </text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T13">NO. OF HOLDINGS GROWING THE CROP </text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell table:number-columns-spanned="3">
 
 
-<text:p><text:span text:style-name="T13">AREA UNDER THE CROP</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">AREA UNDER THE CROP</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
             <table:table-cell table:number-columns-spanned="6">
 
 
-<text:p><text:span text:style-name="T13">AREA UNDER THE CROP TREATED WITH THE  MANURE</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T13">AREA UNDER THE CROP TREATED WITH THE  MANURE</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -81,44 +79,44 @@
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">TOTAL NO.</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">TOTAL NO.</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">NO. TREATED WITH THE  MANURE</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="center"/></w:pPr><text:span text:style-name="T13">NO. TREATED WITH THE  MANURE</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">HYV</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">HYV</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">OTHERS</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">OTHERS</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">TOTAL</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">TOTAL</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-columns-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">HYV</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">HYV</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell table:number-columns-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">OTHERS</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">OTHERS</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell table:number-columns-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">TOTAL</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">TOTAL</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
         </table:table-row>
@@ -126,140 +124,85 @@
             <table:table-cell table:number-columns-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">(1)</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">(1)</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell table:number-columns-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">(2)</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">(2)</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">(3)</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">(3)</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">(4)</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">(4)</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">(5)</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">(5)</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">(6)</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">(6)</text:span></text:p>
             </table:table-cell>
             <table:table-cell>
 
 
-<text:p><text:span text:style-name="T13">(7)</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">(7)</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-columns-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">(8)</text:span></text:p>
-            </table:table-cell>
-            <table:covered-table-cell/>
-            <table:table-cell table:number-columns-spanned="2">
-
-
-<text:p><text:span text:style-name="T13">(9)</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">(8)</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:table-cell table:number-columns-spanned="2">
 
 
-<text:p><text:span text:style-name="T13">(10)</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">(9)</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
-        </table:table-row>
-        <table:table-row>
-            <table:table-cell table:number-rows-spanned="3">
+            <table:table-cell table:number-columns-spanned="2">
 
 
-<text:p><text:span text:style-name="T14">1</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T13">(10)</text:span></text:p>
             </table:table-cell>
-            <table:table-cell table:number-columns-spanned="14" table:number-rows-spanned="3">
-
-
-<text:p><text:span text:style-name="T14">MARGINAL (BELOW 1.0)</text:span></text:p>
-
-<text:p><text:span text:style-name="T12">I</text:span><text:span text:style-name="T14"> 39053 0 12142 3322 15464 0 0 0</text:span></text:p>
-
-<text:p><text:span text:style-name="T12">UI</text:span><text:span text:style-name="T14"> 7429 0 2088 1560 3648 0 0 0</text:span></text:p>
-
-<text:p><text:span text:style-name="T12">T</text:span><text:span text:style-name="T14"> 46484 0 14230 4882 19112 0 0 0</text:span></text:p>
-            </table:table-cell>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-        </table:table-row>
-        <table:table-row>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-        </table:table-row>
-        <table:table-row>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
-            <table:covered-table-cell/>
             <table:covered-table-cell/>
         </table:table-row>
         <table:table-row>
             <table:table-cell table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T14">2</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">1</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-columns-spanned="14" table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T14">SMALL (1.0 - 1.99)</text:span></text:p>
+<text:p><text:span text:style-name="T14">MARGINAL (BELOW 1.0) <w:br/></text:span><text:span text:style-name="T12">I <w:br/>UI <w:br/>T<w:br/></text:span></text:p>
 
-<text:p><text:span text:style-name="T12">I</text:span><text:span text:style-name="T14"> 20341 0 16685 1631 18316 0 0 0</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 15464  3648  19112</text:span></text:p>
 
-<text:p><text:span text:style-name="T12">UI</text:span><text:span text:style-name="T14"> 6854 0 4594 1885 6479 0 0 0</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
 
-<text:p><text:span text:style-name="T12">T</text:span><text:span text:style-name="T14"> 27197 0 21279 3516 24795 0 0 0</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 39053  7429  46484</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 12142  2088  14230</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 3322  1560  4882</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -313,18 +256,28 @@
             <table:table-cell table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T14">3</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">2</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-columns-spanned="14" table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T14">SEMI-MEDIUM (2.0 - 3.99)</text:span></text:p>
+<text:p><text:span text:style-name="T14">SMALL (1.0 - 1.99) <w:br/></text:span><text:span text:style-name="T12">I <w:br/>UI <w:br/>T<w:br/></text:span></text:p>
 
-<text:p><text:span text:style-name="T12">I</text:span><text:span text:style-name="T14"> 20800 0 16991 7643 24634 0 0 0</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 18316  6479  24795</text:span></text:p>
 
-<text:p><text:span text:style-name="T12">UI</text:span><text:span text:style-name="T14"> 5856 0 1017 4819 5836 0 0 0</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
 
-<text:p><text:span text:style-name="T12">T</text:span><text:span text:style-name="T14"> 26555 0 18008 12462 30470 0 0 0</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 20341  6854  27197</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 16685  4594  21279</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 1631  1885  3516</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -378,18 +331,28 @@
             <table:table-cell table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T14">4</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">3</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-columns-spanned="14" table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T14">MEDIUM (4.0 - 9.99)</text:span></text:p>
+<text:p><text:span text:style-name="T14">SEMI-MEDIUM (2.0 - 3.99) <w:br/></text:span><text:span text:style-name="T12">I <w:br/>UI <w:br/>T<w:br/></text:span></text:p>
 
-<text:p><text:span text:style-name="T12">I</text:span><text:span text:style-name="T14"> 11986 0 17576 4120 21696 0 0 0</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 24634  5836  30470</text:span></text:p>
 
-<text:p><text:span text:style-name="T12">UI</text:span><text:span text:style-name="T14"> 4615 0 1446 6227 7673 0 0 0</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
 
-<text:p><text:span text:style-name="T12">T</text:span><text:span text:style-name="T14"> 16312 0 19022 10347 29369 0 0 0</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 20800  5856  26555</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 16991  1017  18008</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 7643  4819  12462</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -443,18 +406,28 @@
             <table:table-cell table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T14">5</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">4</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-columns-spanned="14" table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T14">LARGE (10 AND ABOVE)</text:span></text:p>
+<text:p><text:span text:style-name="T14">MEDIUM (4.0 - 9.99) <w:br/></text:span><text:span text:style-name="T12">I <w:br/>UI <w:br/>T<w:br/></text:span></text:p>
 
-<text:p><text:span text:style-name="T12">I</text:span><text:span text:style-name="T14"> 2005 0 3671 639 4310 0 0 0</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 21696  7673  29369</text:span></text:p>
 
-<text:p><text:span text:style-name="T12">UI</text:span><text:span text:style-name="T14"> 521 0 611 831 1442 0 0 0</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
 
-<text:p><text:span text:style-name="T12">T</text:span><text:span text:style-name="T14"> 2485 0 4282 1470 5752 0 0 0</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 11986  4615  16312</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 17576  1446  19022</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 4120  6227  10347</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -508,18 +481,103 @@
             <table:table-cell table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T14">6</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">5</text:span></text:p>
             </table:table-cell>
             <table:table-cell table:number-columns-spanned="14" table:number-rows-spanned="3">
 
 
-<text:p><text:span text:style-name="T14">ALL GROUPS</text:span></text:p>
+<text:p><text:span text:style-name="T14">LARGE (10 AND ABOVE) <w:br/></text:span><text:span text:style-name="T12">I <w:br/>UI <w:br/>T<w:br/></text:span></text:p>
 
-<text:p><text:span text:style-name="T12">I</text:span><text:span text:style-name="T14"> 94185 0 67065 17355 84420 0 0 0</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 4310  1442  5752</text:span></text:p>
 
-<text:p><text:span text:style-name="T12">UI</text:span><text:span text:style-name="T14"> 25275 0 9756 15322 25078 0 0 0</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
 
-<text:p><text:span text:style-name="T12">T</text:span><text:span text:style-name="T14"> 119033 0 76821 32677 109498 0 0 0</text:span></text:p>
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 2005  521  2485</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 3671  611  4282</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 639  831  1470</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
+            </table:table-cell>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+            <table:covered-table-cell/>
+        </table:table-row>
+        <table:table-row>
+            <table:table-cell table:number-rows-spanned="3">
+
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14">6</text:span></text:p>
+            </table:table-cell>
+            <table:table-cell table:number-columns-spanned="14" table:number-rows-spanned="3">
+
+
+<text:p><text:span text:style-name="T14">ALL GROUPS <w:br/></text:span><text:span text:style-name="T12">I <w:br/>UI <w:br/>T<w:br/></text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 84420  25078  109498</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 94185  25275  119033</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 67065  9756  76821</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 17355  15322  32677</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
+
+<text:p><w:pPr><w:jc w:val="both"/></w:pPr><text:span text:style-name="T14"> 0  0  0</text:span></text:p>
             </table:table-cell>
             <table:covered-table-cell/>
             <table:covered-table-cell/>
@@ -572,4 +630,4 @@
     </table:table>
 
 
-<text:p><text:span text:style-name="T12">NOTE: I-IRRIGATED           UI-UNIRRIGATED           T = TOTAL OF I &amp; UI IN CASE OF COLUMNS 3 AND 4 </text:span></text:p></office:text></office:body></office:document-content>
+<text:p><w:pPr><w:jc w:val="left"/></w:pPr><text:span text:style-name="T12">NOTE: I-IRRIGATED           UI-UNIRRIGATED           T = TOTAL OF I &amp; UI IN CASE OF COLUMNS 3 AND 4 </text:span></text:p></office:text></office:body></office:document-content>

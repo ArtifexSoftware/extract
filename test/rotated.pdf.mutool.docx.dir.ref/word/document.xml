@@ -14,19 +14,8 @@
                     </w:tcBorders>
                     <w:vMerge w:val="restart"/>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2011-12)</w:t></w:r>
-</w:p>
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">(No.ofadults:</w:t></w:r>
-</w:p>
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">FastingBloodSugar </w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -36,11 +25,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">Women</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -50,11 +36,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2391</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -64,11 +47,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">1739</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -78,11 +58,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2028</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -92,11 +69,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">1529</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -106,11 +80,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">1599</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -120,11 +91,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2503</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -134,11 +102,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">1709</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -148,11 +113,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">1628</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -162,11 +124,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2027</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -176,11 +135,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">1366</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -190,11 +146,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">18519</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -228,11 +181,8 @@
                     </w:tcBorders>
                     <w:vMerge w:val="restart"/>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">*Datanotavailable </w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
         </w:tr>
         <w:tr>
             <w:trPr/>
@@ -257,11 +207,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">Men</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -271,11 +218,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">1645</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -285,11 +229,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">1119</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -299,11 +240,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">1628</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -313,11 +251,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">1111</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -327,11 +262,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">1417</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -341,11 +273,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2122</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -355,11 +284,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">1579</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -369,11 +295,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">1093</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -383,11 +306,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">1413</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -397,11 +317,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">1185</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -411,11 +328,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">14312</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -464,19 +378,8 @@
                     </w:tcBorders>
                     <w:vMerge w:val="restart"/>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2011-12)</w:t></w:r>
-</w:p>
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">(No.ofadults: </w:t></w:r>
-</w:p>
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">BloodPressure </w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -486,11 +389,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">Women</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -500,11 +400,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">3195</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -514,11 +411,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2858</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -528,11 +422,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2894</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -542,11 +433,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2493</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -556,11 +444,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2648</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -570,11 +455,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">3021</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -584,11 +466,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2150</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -598,11 +477,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2624</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -612,11 +488,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2743</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -626,11 +499,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2415</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -640,11 +510,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">27041</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -704,11 +571,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">Men</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -718,11 +582,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2161</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -732,11 +593,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2134</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -746,11 +604,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2467</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -760,11 +615,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">1899</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -774,11 +626,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2368</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -788,11 +637,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2687</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -802,11 +648,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">1965</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -816,11 +659,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2040</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -830,11 +670,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2058</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -844,11 +681,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2139</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -858,11 +692,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">21918</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -911,19 +742,8 @@
                     </w:tcBorders>
                     <w:gridSpan w:val="2"/>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">2011-12)</w:t></w:r>
-</w:p>
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">IYCFPractices </w:t></w:r>
-</w:p>
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">(No.ofmothers: </w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -933,11 +753,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">245</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -947,11 +764,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">413</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -961,11 +775,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">428</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -975,11 +786,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">557</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -989,11 +797,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">467</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1003,11 +808,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">477</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1017,11 +819,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">470</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1031,11 +830,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">398</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1045,11 +841,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">423</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1059,11 +852,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">581</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1073,11 +863,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">4459</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1126,15 +913,8 @@
                     </w:tcBorders>
                     <w:vMerge w:val="restart"/>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">(No.ofindividuals) </w:t></w:r>
-</w:p>
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">NutritionalAssessment </w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1144,11 +924,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="20.020000"/><w:szCs w:val="15.015000"/></w:rPr><w:t xml:space="preserve">2011-12 </w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1158,11 +935,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">8297</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1172,11 +946,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">7851</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1186,11 +957,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">8958</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1200,11 +968,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">8300</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1214,11 +979,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">9525</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1228,11 +990,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">9645</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1242,11 +1001,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">7942</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1256,11 +1012,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">8473</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1270,11 +1023,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">8047</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1284,11 +1034,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">9860</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1298,11 +1045,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">86898</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1362,11 +1106,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="20.020000"/><w:szCs w:val="15.015000"/></w:rPr><w:t xml:space="preserve">1996-97</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1376,11 +1117,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">8864</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1390,11 +1128,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">5813</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1404,11 +1139,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">12606</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1418,11 +1150,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">9545</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1432,11 +1161,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">6883</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1446,11 +1172,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">4866</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1460,11 +1183,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">*</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1474,11 +1194,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">12024</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1488,11 +1205,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">*</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1502,11 +1216,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">*</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1516,11 +1227,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">60601</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1580,11 +1288,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="20.020000"/><w:szCs w:val="15.015000"/></w:rPr><w:t xml:space="preserve">1988-90</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1594,11 +1299,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">6633</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1608,11 +1310,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">10217</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1622,11 +1321,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">8138</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1636,11 +1332,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">9920</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1650,11 +1343,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">7796</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1664,11 +1354,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">5374</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1678,11 +1365,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">*</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1692,11 +1376,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">5540</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1706,11 +1387,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">*</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1720,11 +1398,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">*</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1734,11 +1409,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">53618</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1798,11 +1470,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="20.020000"/><w:szCs w:val="15.015000"/></w:rPr><w:t xml:space="preserve">1975-79</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1812,11 +1481,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">5738</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1826,11 +1492,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">7387</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1840,11 +1503,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">6453</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1854,11 +1514,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">5844</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1868,11 +1525,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">5161</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1882,11 +1536,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">4403</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1896,11 +1547,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">*</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1910,11 +1558,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">3756</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1924,11 +1569,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">*</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1938,11 +1580,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">*</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -1952,11 +1591,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">38742</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -2005,11 +1641,8 @@
                     </w:tcBorders>
                     <w:gridSpan w:val="2"/>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">State</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -2019,11 +1652,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">Kerala</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -2033,11 +1663,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">TamilNadu</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -2047,11 +1674,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">Karnataka</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -2061,11 +1685,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">AndhraPradesh</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -2075,11 +1696,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">Maharashtra</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -2089,11 +1707,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">Gujarat</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -2103,11 +1718,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">MadhyaPradesh</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -2117,11 +1729,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">Orissa</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -2131,11 +1740,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">WestBengal</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -2145,11 +1751,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">UttarPradesh</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -2159,11 +1762,8 @@
                         <w:end w:val="double" w:sz="2" w:space="0" w:color="808080"/>
                     </w:tcBorders>
                 </w:tcPr>
-
-
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">Pooled</w:t></w:r>
-</w:p>            </w:tc>
+<w:p/>
+            </w:tc>
             <w:tc>
                 <w:tcPr>
                     <w:tcBorders>
@@ -2204,13 +1804,71 @@
 
 
 <w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">(Contd...)</w:t></w:r>
+  <w:r>
+    <mc:AlternateContent>
+      <mc:Choice Requires="wps">
+        <w:drawing>
+          <wp:anchor distT="0" distB="0" distL="0" distR="0" simplePos="0" relativeHeight="0" behindDoc="0" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="53A210D1" wp14:editId="2B7E8016">
+            <wp:simplePos x="0" y="0"/>
+            <wp:positionH relativeFrom="page">
+              <wp:posOffset>3165564</wp:posOffset>
+            </wp:positionH>
+            <wp:positionV relativeFrom="page">
+              <wp:posOffset>-1617824</wp:posOffset>
+            </wp:positionV>
+            <wp:extent cx="8244555" cy="13206043"/>
+            <wp:wrapNone/>
+            <wp:docPr id="1" name="Text Box 1"/>
+            <wp:cNvGraphicFramePr/>
+            <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+              <a:graphicData uri="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+                <wps:wsp>
+                  <wps:cNvSpPr txBox="1"/>
+                  <wps:spPr>
+                    <a:xfrm rot="-5400000">
+                      <a:off x="0" y="0"/>
+                    </a:xfrm>
+                    <a:prstGeom prst="rect">
+                      <a:avLst/>
+                    </a:prstGeom>
+                  </wps:spPr>
+                  <wps:txbx>
+                    <w:txbxContent>
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="22.000000"/></w:rPr><w:t xml:space="preserve">Table 1 : STATE WISE COVERAGE PARTICULARS BY PERIOD OF SURVEY </w:t></w:r>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="22.000000"/><w:szCs w:val="22.000000"/></w:rPr><w:t xml:space="preserve">(Contd...)</w:t></w:r>
 </w:p>
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica-Bold" w:hAnsi="Helvetica-Bold"/><w:b/><w:sz w:val="22.000000"/><w:szCs w:val="16.500000"/></w:rPr><w:t xml:space="preserve">Table1:STATEWISECOVERAGEPARTICULARSBYPERIODOFSURVEY </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="20.020000"/><w:szCs w:val="20.020000"/></w:rPr><w:t xml:space="preserve">NNMB                                                                                                   72  </w:t></w:r>
 </w:p>
 
-<w:p>
-<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="20.020000"/><w:szCs w:val="15.015000"/></w:rPr><w:t xml:space="preserve">NNMB72Rural-ThirdRepeatSurvey2011-12 </w:t></w:r>
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="20.020000"/><w:szCs w:val="20.020000"/></w:rPr><w:t xml:space="preserve">   </w:t></w:r>
+</w:p>
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="20.020000"/><w:szCs w:val="20.020000"/></w:rPr><w:t xml:space="preserve"> </w:t></w:r>
+</w:p>
+
+<w:p><w:pPr><w:jc w:val="both"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="Helvetica" w:hAnsi="Helvetica"/><w:sz w:val="20.020000"/><w:szCs w:val="20.020000"/></w:rPr><w:t xml:space="preserve">       Rural-Third Repeat Survey 2011-12 </w:t></w:r>
+</w:p>
+                    </w:txbxContent>
+                  </wps:txbx>
+                  <wps:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow" horzOverflow="overflow" vert="horz" wrap="square" lIns="91440" tIns="45720" rIns="91440" bIns="45720" numCol="1" spcCol="0" rtlCol="0" fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0" compatLnSpc="1">
+                    <a:prstTxWarp prst="textNoShape">
+                      <a:avLst/>
+                    </a:prstTxWarp>
+                    <a:noAutofit/>
+                  </wps:bodyPr>
+                </wps:wsp>
+              </a:graphicData>
+            </a:graphic>
+          </wp:anchor>
+        </w:drawing>
+      </mc:Choice>
+    </mc:AlternateContent>
+  </w:r>
 </w:p></w:body></w:document>
