@@ -748,7 +748,7 @@ extract_page_to_odt_content(extract_alloc_t      *alloc,
         {
             content_t *images, *next;
             outf("subpage->images_num=%i", content_count_images(&subpage->content));
-            for (images = subpage->content.next; images != &subpage->content; images = next)
+            for (images = subpage->content.base.next; images != &subpage->content.base; images = next)
             {
                 image_t *image = (image_t *)images;
                 next = images->next;

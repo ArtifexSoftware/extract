@@ -128,7 +128,7 @@ etc. */
 static int
 paragraphs_to_html_content(extract_alloc_t    *alloc,
                            content_state_t    *state,
-                           content_t          *paragraphs,
+                           content_root_t     *paragraphs,
                            int                 single_line,
                            extract_astring_t  *content)
 {

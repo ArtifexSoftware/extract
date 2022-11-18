@@ -240,6 +240,7 @@ int extract_page_end(extract_t *extract);
 typedef enum
 {
 	extract_struct_INVALID = -1,
+	extract_struct_UNDEFINED,
 
 	/* Grouping elements (PDF 1.7 - Table 10.20) */
 	extract_struct_DOCUMENT,
@@ -254,6 +255,15 @@ typedef enum
 	extract_struct_INDEX,
 	extract_struct_NONSTRUCT,
 	extract_struct_PRIVATE,
+	/* Grouping elements (PDF 2.0 - Table 364) */
+	extract_struct_DOCUMENTFRAGMENT,
+	/* Grouping elements (PDF 2.0 - Table 365) */
+	extract_struct_ASIDE,
+	/* Grouping elements (PDF 2.0 - Table 366) */
+	extract_struct_TITLE,
+	extract_struct_FENOTE,
+	/* Grouping elements (PDF 2.0 - Table 367) */
+	extract_struct_SUB,
 
 	/* Paragraphlike elements (PDF 1.7 - Table 10.21) */
 	extract_struct_P,
@@ -289,6 +299,9 @@ typedef enum
 	extract_struct_CODE,
 	extract_struct_LINK,
 	extract_struct_ANNOT,
+	/* Inline elements (PDF 2.0 - Table 368) */
+	extract_struct_EM,
+	extract_struct_STRONG,
 
 	/* Ruby inline element (PDF 1.7 - Table 10.26) */
 	extract_struct_RUBY,
@@ -304,12 +317,17 @@ typedef enum
 	/* Illustration elements (PDF 1.7 - Table 10.27) */
 	extract_struct_FIGURE,
 	extract_struct_FORMULA,
-	extract_struct_FORM
+	extract_struct_FORM,
+
+	/* Artifact structure type (PDF 2.0 - Table 375) */
+	extract_struct_ARTIFACT
 } extract_struct_t;
 
-int extract_begin_struct(extract_t *extract, extract_struct_t type);
+int extract_begin_struct(extract_t *extract, extract_struct_t type, int uid, int score);
 
 int extract_end_struct(extract_t *extract);
+
+const char *extract_struct_string(extract_struct_t type);
 
 
 /*
@@ -371,7 +389,6 @@ void extract_end(extract_t **pextract);
 
 /* Enables/Disables the layout analysis phase. */
 int extract_set_layout_analysis(extract_t *extract, int enable);
-
 
 /* Things below are not generally used. */
 

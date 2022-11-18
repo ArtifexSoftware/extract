@@ -170,14 +170,14 @@ char_t *extract_span_char_last(span_t *span)
 /* Returns first span in a line. */
 span_t *extract_line_span_last(line_t *line)
 {
-    assert(line->content.prev != &line->content && line->content.prev->type == content_span);
-    return (span_t *)line->content.prev;
+    assert(line->content.base.prev != &line->content.base && line->content.base.prev->type == content_span);
+    return (span_t *)line->content.base.prev;
 }
 
 span_t *extract_line_span_first(line_t *line)
 {
-    assert(line->content.next != &line->content && line->content.next->type == content_span);
-    return (span_t *)line->content.next;
+    assert(line->content.base.next != &line->content.base && line->content.base.next->type == content_span);
+    return (span_t *)line->content.base.next;
 }
 
 void extract_paragraph_free(extract_alloc_t *alloc, paragraph_t **pparagraph)
@@ -218,6 +218,18 @@ void extract_table_free(extract_alloc_t *alloc, table_t **ptable)
     extract_free(alloc, ptable);
 }
 
+static void
+structure_clear(extract_alloc_t *alloc, structure_t *structure)
+{
+    while (structure != NULL)
+    {
+        structure_t *next = structure->sibling_next;
+        structure_clear(alloc, structure->kids_first);
+        extract_free(alloc, &structure);
+        structure = next;
+    }
+}
+
 void extract_subpage_free(extract_alloc_t *alloc, subpage_t **psubpage)
 {
     subpage_t *subpage = *psubpage;
@@ -245,62 +257,63 @@ static void page_free(extract_alloc_t *alloc, extract_page_t **ppage)
         subpage_t *subpage = page->subpages[c];
         extract_subpage_free(alloc, &subpage);
     }
+    extract_split_free(alloc, &page->split);
     extract_free(alloc, &page->subpages);
     extract_free(alloc, ppage);
 }
 
-void content_append(content_t *root, content_t *content)
+void content_append(content_root_t *root, content_t *content)
 {
-    assert(root && root->type == content_root);
+    assert(root && root->base.type == content_root);
 
     /* Unlink content from anywhere it might be. */
     content_unlink(content);
 
     /* Sanity check root. */
-    if (root->next == root)
+    if (root->base.next == &root->base)
     {
-        assert(root->prev == root);
+        assert(root->base.prev == &root->base);
     }
 
     /* And append content */
-    content->next = root;
-    content->prev = root->prev;
+    content->next = &root->base;
+    content->prev = root->base.prev;
     content->prev->next = content;
-    root->prev = content;
+    root->base.prev = content;
 }
 
-void content_append_span(content_t *root, span_t *span)
+void content_append_span(content_root_t *root, span_t *span)
 {
     content_append(root, &span->base);
 }
 
-void content_append_line(content_t *root, line_t *line)
+void content_append_line(content_root_t *root, line_t *line)
 {
     content_append(root, &line->base);
 }
 
-void content_append_paragraph(content_t *root, paragraph_t *paragraph)
+void content_append_paragraph(content_root_t *root, paragraph_t *paragraph)
 {
     content_append(root, &paragraph->base);
 }
 
-void content_append_block(content_t *root, block_t *block)
+void content_append_block(content_root_t *root, block_t *block)
 {
     content_append(root, &block->base);
 }
 
-int content_new_root(extract_alloc_t *alloc, content_t **pcontent)
+int content_new_root(extract_alloc_t *alloc, content_root_t **proot)
 {
-    if (extract_malloc(alloc, pcontent, sizeof(**pcontent))) return -1;
-    content_init(*pcontent, content_root);
+    if (extract_malloc(alloc, proot, sizeof(**proot))) return -1;
+    content_init_root(*proot, NULL);
 
     return 0;
 }
 
-int content_new_span(extract_alloc_t *alloc, span_t **pspan)
+int content_new_span(extract_alloc_t *alloc, span_t **pspan, structure_t *structure)
 {
     if (extract_malloc(alloc, pspan, sizeof(**pspan))) return -1;
-    extract_span_init(*pspan);
+    extract_span_init(*pspan, structure);
 
     return 0;
 }
@@ -328,6 +341,7 @@ int content_new_block(extract_alloc_t *alloc, block_t **pblock)
 
     return 0;
 }
+
 int content_new_table(extract_alloc_t *alloc, table_t **ptable)
 {
     if (extract_malloc(alloc, ptable, sizeof(**ptable))) return -1;
@@ -337,16 +351,16 @@ int content_new_table(extract_alloc_t *alloc, table_t **ptable)
 }
 
 /* Appends new empty span content to a content_list_t; returns -1 with errno set on error. */
-int content_append_new_span(extract_alloc_t *alloc, content_t *root, span_t **pspan)
+int content_append_new_span(extract_alloc_t *alloc, content_root_t *root, span_t **pspan, structure_t *structure)
 {
-    if (content_new_span(alloc, pspan)) return -1;
+    if (content_new_span(alloc, pspan, structure)) return -1;
     content_append(root, &(*pspan)->base);
 
     return 0;
 }
 
 /* Appends new empty line content to a content_list_t; returns -1 with errno set on error. */
-int content_append_new_line(extract_alloc_t *alloc, content_t *root, line_t **pline)
+int content_append_new_line(extract_alloc_t *alloc, content_root_t *root, line_t **pline)
 {
     if (content_new_line(alloc, pline)) return -1;
     content_append(root, &(*pline)->base);
@@ -355,7 +369,7 @@ int content_append_new_line(extract_alloc_t *alloc, content_t *root, line_t **pl
 }
 
 /* Appends new empty paragraph content to a content_list_t; returns -1 with errno set on error. */
-int content_append_new_paragraph(extract_alloc_t *alloc, content_t *root, paragraph_t **pparagraph)
+int content_append_new_paragraph(extract_alloc_t *alloc, content_root_t *root, paragraph_t **pparagraph)
 {
     if (content_new_paragraph(alloc, pparagraph)) return -1;
     content_append(root, &(*pparagraph)->base);
@@ -364,7 +378,7 @@ int content_append_new_paragraph(extract_alloc_t *alloc, content_t *root, paragr
 }
 
 /* Appends new empty block content to a content_list_t; returns -1 with errno set on error. */
-int content_append_new_block(extract_alloc_t *alloc, content_t *root, block_t **pblock)
+int content_append_new_block(extract_alloc_t *alloc, content_root_t *root, block_t **pblock)
 {
     if (content_new_block(alloc, pblock)) return -1;
     content_append(root, &(*pblock)->base);
@@ -373,7 +387,7 @@ int content_append_new_block(extract_alloc_t *alloc, content_t *root, block_t **
 }
 
 /* Appends new empty table content to a content_list_t; returns -1 with errno set on error. */
-int content_append_new_table(extract_alloc_t *alloc, content_t *root, table_t **ptable)
+int content_append_new_table(extract_alloc_t *alloc, content_root_t *root, table_t **ptable)
 {
     if (content_new_table(alloc, ptable)) return -1;
     content_append(root, &(*ptable)->base);
@@ -382,7 +396,7 @@ int content_append_new_table(extract_alloc_t *alloc, content_t *root, table_t **
 }
 
 /* Appends new empty image content to a content_list_t; returns -1 with errno set on error. */
-int content_append_new_image(extract_alloc_t *alloc, content_t *root, image_t **pimage)
+int content_append_new_image(extract_alloc_t *alloc, content_root_t *root, image_t **pimage)
 {
     if (extract_malloc(alloc, pimage, sizeof(**pimage))) return -1;
     extract_image_init(*pimage);
@@ -545,6 +559,8 @@ static void extract_document_free(extract_alloc_t *alloc, document_t *document)
     extract_free(alloc, &document->pages);
     document->pages = NULL;
     document->pages_num = 0;
+
+    structure_clear(alloc, document->structure);
 }
 
 
@@ -645,6 +661,9 @@ static void document_init(document_t *document)
 {
     document->pages = NULL;
     document->pages_num = 0;
+
+    document->structure = NULL;
+    document->current = NULL;
 }
 
 /* If we exceed MAX_STRUCT_NEST then this probably indicates that
@@ -713,11 +732,6 @@ struct extract_t
         } stroke;
     } path;
 
-    int struct_depth;
-    struct {
-        extract_struct_t type;
-        int uid;
-    } struct_nest[MAX_STRUCT_NEST];
     int next_uid;
 };
 
@@ -755,6 +769,8 @@ int extract_begin(extract_alloc_t      *alloc,
     extract->format = format;
     extract->tables_csv_format = NULL;
     extract->tables_csv_i = 0;
+
+    extract->next_uid = 1;
 
     *pextract = extract;
 
@@ -1036,7 +1052,6 @@ end:
     return ret;
 }
 
-
 int
 extract_span_begin(extract_t  *extract,
                    const char *font_name,
@@ -1056,11 +1071,12 @@ extract_span_begin(extract_t  *extract,
     extract_page_t *page;
     subpage_t      *subpage;
     span_t         *span;
+    document_t     *document = &extract->document;
 
     /* FIXME: RJW: Should continue the last span if everything is the same. */
 
-    assert(extract->document.pages_num > 0);
-    page = extract->document.pages[extract->document.pages_num-1];
+    assert(document->pages_num > 0);
+    page = document->pages[document->pages_num-1];
     subpage = page->subpages[page->subpages_num-1];
     outf("extract_span_begin(): ctm=(%f %f %f %f) font_name=%s, wmode=%i",
          ctm_a,
@@ -1069,7 +1085,7 @@ extract_span_begin(extract_t  *extract,
          ctm_d,
          font_name,
          wmode);
-    if (content_append_new_span(extract->alloc, &subpage->content, &span)) goto end;
+    if (content_append_new_span(extract->alloc, &subpage->content, &span, document->current)) goto end;
     span->ctm.a = ctm_a;
     span->ctm.b = ctm_b;
     span->ctm.c = ctm_c;
@@ -1098,7 +1114,7 @@ end:
 
 /* Create a new empty span, based on the current one. */
 static span_t *
-split_to_new_span(extract_alloc_t *alloc, content_t *content, span_t *span0)
+split_to_new_span(extract_alloc_t *alloc, content_root_t *content, span_t *span0)
 {
     content_t  save;
     span_t    *span;
@@ -1107,7 +1123,7 @@ split_to_new_span(extract_alloc_t *alloc, content_t *content, span_t *span0)
     if (extract_strdup(alloc, span0->font_name, &name))
         return NULL;
 
-    if (content_append_new_span(alloc, content, &span))
+    if (content_append_new_span(alloc, content, &span, span0->structure))
     {
         extract_free(alloc, &name);
         return NULL;
@@ -1128,13 +1144,13 @@ This routine returns the previous non-space-char, UNLESS the span
 starts with a space, in which case we accept that one.
 */
 static span_t *
-find_previous_non_space_char_ish(content_t *content, int *char_num, int *intervening_space)
+find_previous_non_space_char_ish(content_root_t *content, int *char_num, int *intervening_space)
 {
     content_t *s;
     int i;
 
     *intervening_space = 0;
-    for (s = content->prev; s != content; s = s->prev)
+    for (s = content->base.prev; s != &content->base; s = s->prev)
     {
         span_t *span = (span_t *)s;
 
@@ -1185,16 +1201,16 @@ int extract_add_char(extract_t *extract,
                      double     x1,
                      double     y1)
 {
-    int             e       = -1;
-    char_t         *char_;
-    extract_page_t *page    = extract->document.pages[extract->document.pages_num-1];
-    subpage_t      *subpage = page->subpages[page->subpages_num-1];
-    span_t         *span    = content_last_span(&subpage->content);
-    span_t         *span0;
-    int             char_num0;
-    double          dist, perp, scale_squared;
-    point_t         dir;
-    int             intervening_space;
+    int              e       = -1;
+    char_t          *char_;
+    extract_page_t  *page    = extract->document.pages[extract->document.pages_num-1];
+    subpage_t       *subpage = page->subpages[page->subpages_num-1];
+    span_t          *span    = content_last_span(&subpage->content);
+    span_t          *span0;
+    int              char_num0;
+    double           dist, perp, scale_squared;
+    point_t          dir;
+    int              intervening_space;
 
     if (span->flags.wmode)
     {
@@ -1212,15 +1228,21 @@ int extract_add_char(extract_t *extract,
 
     outf("(%f %f) ucs=% 5i=%c adv=%f", x, y, ucs, (ucs >=32 && ucs< 127) ? ucs : ' ', adv);
 
-    /* Now, check whether we need to break to a new line, or add (or subtract) a space. */
+    /* Is there a previous span to which we should consider attaching this char. */
     span0 = find_previous_non_space_char_ish(&subpage->content, &char_num0, &intervening_space);
+
+    /* Spans can't continue over different structure elements. */
+    if (span0 && span0->structure != extract->document.current)
+        span0 = NULL;
 
     if (span0 == NULL)
     {
+        /* No previous continuable span. */
         outf("%c x=%g y=%g adv=%g\n", ucs, x, y, adv);
     }
     else
     {
+        /* We have a span. Check whether we need to break to a new line, or add (or subtract) a space. */
         char_t *char_prev = &span0->chars[char_num0];
         double adv0 = char_prev->adv;
         point_t predicted_end_of_char0 = extract_predicted_end_of_char(char_prev, span0);
@@ -1553,13 +1575,13 @@ int extract_subpage_alloc(extract_alloc_t *alloc, rect_t mediabox, extract_page_
     }
     subpage = *psubpage;
     subpage->mediabox = mediabox;
-    content_init(&subpage->content, content_root);
+    content_init_root(&subpage->content, NULL);
     subpage->images_num = 0;
     subpage->tablelines_horizontal.tablelines = NULL;
     subpage->tablelines_horizontal.tablelines_num = 0;
     subpage->tablelines_vertical.tablelines = NULL;
     subpage->tablelines_vertical.tablelines_num = 0;
-    content_init(&subpage->tables, content_root);
+    content_init_root(&subpage->tables, NULL);
 
     if (extract_realloc2(alloc,
                          &page->subpages,
@@ -1581,8 +1603,15 @@ static int extract_subpage_begin(extract_t *extract, double x0, double y0, doubl
     extract_page_t *page = extract->document.pages[extract->document.pages_num - 1];
     subpage_t      *subpage;
     rect_t          mediabox = { { x0, y0 }, { x1, y1 } };
+    int             e;
 
-    return extract_subpage_alloc(extract->alloc, mediabox, page, &subpage);
+    e = extract_subpage_alloc(extract->alloc, mediabox, page, &subpage);
+
+    if (e == 0)
+    {
+    }
+
+    return e;
 }
 
 /* Appends new empty page_t to an extract->document. */
@@ -1858,14 +1887,35 @@ int extract_page_end(extract_t *extract)
     return 0;
 }
 
-int extract_begin_struct(extract_t *extract, extract_struct_t type)
+int extract_begin_struct(extract_t *extract, extract_struct_t type, int uid, int score)
 {
-    int n = extract->struct_depth++;
+    document_t  *document = &extract->document;
+    structure_t *structure;
 
-    if (n < MAX_STRUCT_NEST)
+    if (extract_malloc(extract->alloc, &structure, sizeof(*structure)))
+        return -1;
+
+    structure->parent = document->current;
+    structure->sibling_next = NULL;
+    structure->sibling_prev = NULL;
+    structure->kids_first = NULL;
+    structure->kids_tail = &structure->kids_first;
+    structure->type = type;
+    structure->score = score;
+    structure->uid = uid;
+
+    if (document->current == NULL)
     {
-        extract->struct_nest[n].type = type;
-        extract->struct_nest[n].uid = extract->next_uid++;
+        /* New topmost entry. */
+        document->current = structure;
+        document->structure = structure;
+    }
+    else
+    {
+        /* Add a child */
+        *document->current->kids_tail = structure;
+        document->current->kids_tail = &structure->sibling_next;
+        document->current = structure;
     }
 
     return 0;
@@ -1873,13 +1923,141 @@ int extract_begin_struct(extract_t *extract, extract_struct_t type)
 
 int extract_end_struct(extract_t *extract)
 {
-    if (extract->struct_depth)
-        extract->struct_depth--;
+    document_t *document = &extract->document;
+
+    assert(document->current != NULL);
+
+    document->current = document->current->parent;
 
     return 0;
 }
 
-
+const char *extract_struct_string(extract_struct_t type)
+{
+    switch (type)
+    {
+    default:
+        return "UNKNOWN";
+    case extract_struct_INVALID:
+        return "INVALID";
+    case extract_struct_UNDEFINED:
+        return "UNDEFINED";
+    case extract_struct_DOCUMENT:
+        return "DOCUMENT";
+    case extract_struct_PART:
+        return "PART";
+    case extract_struct_ART:
+        return "ART";
+    case extract_struct_SECT:
+        return "SECT";
+    case extract_struct_DIV:
+        return "DIV";
+    case extract_struct_BLOCKQUOTE:
+        return "BLOCKQUOTE";
+    case extract_struct_CAPTION:
+        return "CAPTION";
+    case extract_struct_TOC:
+        return "TOC";
+    case extract_struct_TOCI:
+        return "TOCI";
+    case extract_struct_INDEX:
+        return "INDEX";
+    case extract_struct_NONSTRUCT:
+        return "NONSTRUCT";
+    case extract_struct_PRIVATE:
+        return "PRIVATE";
+    case extract_struct_DOCUMENTFRAGMENT:
+        return "DOCUMENTFRAGMENT";
+    case extract_struct_ASIDE:
+        return "ASIDE";
+    case extract_struct_TITLE:
+        return "TITLE";
+    case extract_struct_FENOTE:
+        return "FENOTE";
+    case extract_struct_SUB:
+        return "SUB";
+    case extract_struct_P:
+        return "P";
+    case extract_struct_H:
+        return "H";
+    case extract_struct_H1:
+        return "H1";
+    case extract_struct_H2:
+        return "H2";
+    case extract_struct_H3:
+        return "H3";
+    case extract_struct_H4:
+        return "H4";
+    case extract_struct_H5:
+        return "H5";
+    case extract_struct_H6:
+        return "H6";
+    case extract_struct_LIST:
+        return "LIST";
+    case extract_struct_LISTITEM:
+        return "LISTITEM";
+    case extract_struct_LABEL:
+        return "LABEL";
+    case extract_struct_LISTBODY:
+        return "LISTBODY";
+    case extract_struct_TABLE:
+        return "TABLE";
+    case extract_struct_TR:
+        return "TR";
+    case extract_struct_TH:
+        return "TH";
+    case extract_struct_TD:
+        return "TD";
+    case extract_struct_THEAD:
+        return "THEAD";
+    case extract_struct_TBODY:
+        return "TBODY";
+    case extract_struct_TFOOT:
+        return "TFOOT";
+    case extract_struct_SPAN:
+        return "SPAN";
+    case extract_struct_QUOTE:
+        return "QUOTE";
+    case extract_struct_NOTE:
+        return "NOTE";
+    case extract_struct_REFERENCE:
+        return "REFERENCE";
+    case extract_struct_BIBENTRY:
+        return "BIBENTRY";
+    case extract_struct_CODE:
+        return "CODE";
+    case extract_struct_LINK:
+        return "LINK";
+    case extract_struct_ANNOT:
+        return "ANNOT";
+    case extract_struct_EM:
+        return "EM";
+    case extract_struct_STRONG:
+        return "STRONG";
+    case extract_struct_RUBY:
+        return "RUBY";
+    case extract_struct_RB:
+        return "RB";
+    case extract_struct_RT:
+        return "RT";
+    case extract_struct_RP:
+        return "RP";
+    case extract_struct_WARICHU:
+        return "WARICHU";
+    case extract_struct_WT:
+        return "WT";
+    case extract_struct_WP:
+        return "WP";
+    case extract_struct_FIGURE:
+        return "FIGURE";
+    case extract_struct_FORMULA:
+        return "FORMULA";
+    case extract_struct_FORM:
+        return "FORM";
+    case extract_struct_ARTIFACT:
+        return "ARTIFACT";
+    }
+}
 
 static int
 paragraph_to_text(extract_alloc_t   *alloc,
@@ -1921,7 +2099,7 @@ paragraph_to_text(extract_alloc_t   *alloc,
 
 static int
 paragraphs_to_text_content(extract_alloc_t   *alloc,
-                           content_t         *paragraphs,
+                           content_root_t    *paragraphs,
                            extract_astring_t *text)
 {
     content_iterator  cit;
