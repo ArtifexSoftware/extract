@@ -2,6 +2,7 @@
 #include "outf.h"
 #include <assert.h>
 #include <stdio.h>
+#include <string.h>
 
 void
 content_init(content_t *content, content_type_t type)

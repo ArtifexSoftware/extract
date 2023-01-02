@@ -1,7 +1,6 @@
-#include "../include/extract_alloc.h"
+#include "extract/alloc.h"
 
 #include "mem.h"
-#include "memento.h"
 #include "outf.h"
 #include "xml.h"
 
@@ -10,12 +9,7 @@
 #include <float.h>
 #include <limits.h>
 
-#ifdef _MSC_VER
-    #include "compat_stdint.h"
-    #include "compat_strtoll.h"
-#else
-    #include <stdint.h>
-#endif
+#include "compat_stdint.h"
 
 #include <stdlib.h>
 #include <string.h>

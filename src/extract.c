@@ -1,5 +1,5 @@
-#include "../include/extract.h"
-#include "../include/extract_alloc.h"
+#include "extract/extract.h"
+#include "extract/alloc.h"
 
 #include "astring.h"
 #include "document.h"
@@ -7,7 +7,6 @@
 #include "docx_template.h"
 #include "html.h"
 #include "mem.h"
-#include "memento.h"
 #include "odt.h"
 #include "odt_template.h"
 #include "outf.h"
@@ -648,11 +647,13 @@ static void document_init(document_t *document)
     document->pages_num = 0;
 }
 
+/* If we exceed MAX_STRUCT_NEST then this probably indicates that
+ * structure nesting is not to be trusted. */
+#define MAX_STRUCT_NEST 64
 
 struct extract_t
 {
     extract_alloc_t     *alloc;
-
     int                  layout_analysis;
 
     document_t           document;
@@ -711,16 +712,22 @@ struct extract_t
             int         point_set;
         } stroke;
     } path;
+
+    int struct_depth;
+    struct {
+        extract_struct_t type;
+        int uid;
+    } struct_nest[MAX_STRUCT_NEST];
+    int next_uid;
 };
 
-
-int extract_begin(extract_alloc_t   *alloc,
-                  extract_format_t   format,
-                  extract_t        **pextract)
+int extract_begin(extract_alloc_t      *alloc,
+                  extract_format_t      format,
+                  extract_t           **pextract)
 {
-    int        e = -1;
-    extract_t *extract;
+    extract_t       *extract;
 
+    *pextract = NULL;
     if (1
             && format != extract_format_ODT
             && format != extract_format_DOCX
@@ -733,14 +740,15 @@ int extract_begin(extract_alloc_t   *alloc,
         return -1;
     }
 
-    /* Use a temporary extract_alloc_t to allocate space for the extract_t. */
-    if (extract_malloc(alloc, &extract, sizeof(*extract))) goto end;
+    /* Create the extract structure. */
+    if (extract_malloc(alloc, &extract, sizeof(*extract)))
+        return -1;
 
     extract_bzero(extract, sizeof(*extract));
     extract->alloc = alloc;
     document_init(&extract->document);
 
-    /* Start at 10 because template document might use some low-numbered IDs.
+    /* FIXME: Start at 10 because template document might use some low-numbered IDs.
     */
     extract->image_n = 10;
 
@@ -748,12 +756,9 @@ int extract_begin(extract_alloc_t   *alloc,
     extract->tables_csv_format = NULL;
     extract->tables_csv_i = 0;
 
-    e = 0;
-end:
+    *pextract = extract;
 
-    *pextract = (e) ? NULL : extract;
-
-    return e;
+    return 0;
 }
 
 int extract_set_layout_analysis(extract_t *extract, int enable)
@@ -1852,6 +1857,29 @@ int extract_page_end(extract_t *extract)
 
     return 0;
 }
+
+int extract_begin_struct(extract_t *extract, extract_struct_t type)
+{
+    int n = extract->struct_depth++;
+
+    if (n < MAX_STRUCT_NEST)
+    {
+        extract->struct_nest[n].type = type;
+        extract->struct_nest[n].uid = extract->next_uid++;
+    }
+
+    return 0;
+}
+
+int extract_end_struct(extract_t *extract)
+{
+    if (extract->struct_depth)
+        extract->struct_depth--;
+
+    return 0;
+}
+
+
 
 static int
 paragraph_to_text(extract_alloc_t   *alloc,

@@ -1,13 +1,10 @@
 #ifndef ARTIFEX_EXTRACT_DOCUMENT_H
 #define ARTIFEX_EXTRACT_DOCUMENT_H
 
-#include "../include/extract.h"
+#include "extract/extract.h"
+#include "extract/alloc.h"
 
-#ifdef _MSC_VER
-    #include "compat_stdint.h"
-#else
-    #include <stdint.h>
-#endif
+#include "compat_stdint.h"
 #include <assert.h>
 
 typedef struct span_t span_t;
@@ -59,6 +56,8 @@ typedef struct content_t {
     content_type_t type;
     struct content_t *prev;
     struct content_t *next;
+    extract_struct_t stype;
+    int uid;
 } content_t;
 
 

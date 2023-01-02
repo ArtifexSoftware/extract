@@ -5,7 +5,7 @@ Caller must call things in a sensible order to create valid content -
 e.g. don't call odt_paragraph_start() twice without intervening call to
 odt_paragraph_finish(). */
 
-#include "../include/extract.h"
+#include "extract/extract.h"
 
 #include "odt_template.h"
 

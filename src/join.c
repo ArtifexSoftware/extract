@@ -1,5 +1,5 @@
-#include "../include/extract.h"
-#include "../include/extract_alloc.h"
+#include "extract/extract.h"
+#include "extract/alloc.h"
 
 #include "astring.h"
 #include "document.h"

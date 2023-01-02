@@ -47,7 +47,7 @@
 build = debug
 
 flags_link      = -W -Wall -lm
-flags_compile   = -W -Wall -Wextra -Wpointer-sign -Wmissing-declarations -Wmissing-prototypes -Wdeclaration-after-statement -Wpointer-arith -Wconversion -Wno-sign-conversion -Werror -MMD -MP
+flags_compile   = -W -Wall -Wextra -Wpointer-sign -Wmissing-declarations -Wmissing-prototypes -Wdeclaration-after-statement -Wpointer-arith -Wconversion -Wno-sign-conversion -Werror -MMD -MP -Iinclude
 
 uname = $(shell uname)
 
