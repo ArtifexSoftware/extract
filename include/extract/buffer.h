@@ -77,6 +77,10 @@ extract_buffer_write(extract_buffer_t *buffer,
                      size_t            numbytes,
                      size_t           *o_actual);
 
+static inline int
+extract_buffer_cat(extract_buffer_t *buffer,
+                   const char       *string);
+
 
 /* Return number of bytes read or written so far. */
 size_t extract_buffer_pos(extract_buffer_t *buffer);
@@ -354,6 +358,15 @@ static inline int extract_buffer_write(
     cache->pos += numbytes;
     if (o_actual) *o_actual = numbytes;
     return 0;
+}
+
+static inline int
+extract_buffer_cat(extract_buffer_t *buffer,
+                   const char       *string)
+{
+    if (string == NULL)
+        return 0;
+    return extract_buffer_write(buffer, string, strlen(string), NULL);
 }
 
 #endif

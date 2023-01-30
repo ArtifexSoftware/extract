@@ -36,13 +36,17 @@ typedef struct extract_buffer_t extract_buffer_t;
 		Outputs one line per paragraph, encoding text as utf8.
 		Ligatures and and some unicode characters such as dash
 		(0x2212) are converted into ascii equvalents.
+
+	extract_format_JSON:
+		Outputs json.
 */
 typedef enum
 {
     extract_format_ODT,
     extract_format_DOCX,
     extract_format_HTML,
-    extract_format_TEXT
+    extract_format_TEXT,
+    extract_format_JSON
 } extract_format_t;
 
 

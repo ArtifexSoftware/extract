@@ -6,6 +6,7 @@
 #include "docx.h"
 #include "docx_template.h"
 #include "html.h"
+#include "json.h"
 #include "mem.h"
 #include "odt.h"
 #include "odt_template.h"
@@ -748,6 +749,7 @@ int extract_begin(extract_alloc_t      *alloc,
             && format != extract_format_DOCX
             && format != extract_format_HTML
             && format != extract_format_TEXT
+            && format != extract_format_JSON
             )
     {
         outf0("Invalid format=%i\n", format);
@@ -2222,8 +2224,9 @@ int extract_process(extract_t *extract,
 
     if (extract_document_join(extract->alloc, &extract->document, extract->layout_analysis)) goto end;
 
-    if (extract->format == extract_format_ODT)
+    switch (extract->format)
     {
+    case extract_format_ODT:
         if (extract_document_to_odt_content(
                 extract->alloc,
                 &extract->document,
@@ -2233,9 +2236,8 @@ int extract_process(extract_t *extract,
                 &extract->contentss[extract->contentss_num - 1],
                 &extract->odt_styles
                 )) goto end;
-    }
-    else if (extract->format == extract_format_DOCX)
-    {
+        break;
+    case extract_format_DOCX:
         if (extract_document_to_docx_content(
                 extract->alloc,
                 &extract->document,
@@ -2244,9 +2246,8 @@ int extract_process(extract_t *extract,
                 images,
                 &extract->contentss[extract->contentss_num - 1]
                 )) goto end;
-    }
-    else if (extract->format == extract_format_HTML)
-    {
+        break;
+    case extract_format_HTML:
         if (extract_document_to_html_content(
                 extract->alloc,
                 &extract->document,
@@ -2254,8 +2255,17 @@ int extract_process(extract_t *extract,
                 images,
                 &extract->contentss[extract->contentss_num - 1]
                 )) goto end;
-    }
-    else if (extract->format == extract_format_TEXT)
+        break;
+    case extract_format_JSON:
+        if (extract_document_to_json_content(
+                extract->alloc,
+                &extract->document,
+                rotation,
+                images,
+                &extract->contentss[extract->contentss_num - 1]
+                )) goto end;
+        break;
+    case extract_format_TEXT:
     {
         int p;
         for (p=0; p<extract->document.pages_num; ++p)
@@ -2272,9 +2282,9 @@ int extract_process(extract_t *extract,
                     )) goto end;
             }
         }
+        break;
     }
-    else
-    {
+    default:
         outf0("Invalid format=%i", extract->format);
         assert(0);
         errno = EINVAL;
@@ -2310,7 +2320,9 @@ int extract_write(extract_t *extract, extract_buffer_t *buffer)
     char          *text2 = NULL;
     int            i;
 
-    if (extract->format == extract_format_ODT)
+    switch (extract->format)
+    {
+    case extract_format_ODT:
     {
         if (extract_zip_open(buffer, &zip)) goto end;
         for (i=0; i<odt_template_items_num; ++i) {
@@ -2343,8 +2355,9 @@ int extract_write(extract_t *extract, extract_buffer_t *buffer)
             if (extract_zip_write_file(zip, image->data, image->data_size, text2)) goto end;
         }
         if (extract_zip_close(&zip)) goto end;
+        break;
     }
-    else if (extract->format == extract_format_DOCX)
+    case extract_format_DOCX:
     {
         if (extract_zip_open(buffer, &zip)) goto end;
         for (i=0; i<docx_template_items_num; ++i) {
@@ -2376,24 +2389,33 @@ int extract_write(extract_t *extract, extract_buffer_t *buffer)
             if (extract_zip_write_file(zip, image->data, image->data_size, text2)) goto end;
         }
         if (extract_zip_close(&zip)) goto end;
-
+        break;
     }
-    else if (extract->format == extract_format_HTML)
-    {
+    case extract_format_HTML:
+    case extract_format_TEXT:
         for (i=0; i<extract->contentss_num; ++i)
         {
             if (extract_buffer_write(buffer, extract->contentss[i].chars, extract->contentss[i].chars_num, NULL)) goto end;
         }
-    }
-    else if (extract->format == extract_format_TEXT)
+        break;
+    case extract_format_JSON:
     {
+        int first = 1;
+        if (extract_buffer_cat(buffer, "{\n\"elements\" : "))
+            goto end;
         for (i=0; i<extract->contentss_num; ++i)
         {
+            if (!first && extract_buffer_cat(buffer, ",\n"))
+                goto end;
+            if (extract->contentss[i].chars_num > 0)
+                first = 0;
             if (extract_buffer_write(buffer, extract->contentss[i].chars, extract->contentss[i].chars_num, NULL)) goto end;
         }
+        if (extract_buffer_cat(buffer, "\n}\n"))
+            goto end;
+        break;
     }
-    else
-    {
+    default:
         outf0("Invalid format=%i", extract->format);
         assert(0);
         errno = EINVAL;
