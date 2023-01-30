@@ -59,6 +59,7 @@ static void char_init(char_t* item)
     item->y = 0;
     item->ucs = 0;
     item->adv = 0;
+    item->bbox = extract_rect_empty;
 }
 
 const char *extract_point_string(const point_t *point)
