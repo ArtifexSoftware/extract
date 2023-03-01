@@ -117,15 +117,3 @@ void extract_alloc_exp_min(extract_alloc_t *alloc, size_t size)
 {
 	alloc->exp_min_alloc_size = size;
 }
-
-void extract_alloc_set_ctx(extract_alloc_t *alloc, extract_caller_context_t *ctx)
-{
-	assert(alloc->realloc_state == NULL);
-	alloc->realloc_state = ctx;
-}
-
-void extract_alloc_clear_ctx(extract_alloc_t *alloc)
-{
-	assert(alloc->realloc_state);
-	alloc->realloc_state = NULL;
-}

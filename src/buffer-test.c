@@ -1,5 +1,5 @@
-#include "../include/extract_buffer.h"
-#include "../include/extract_alloc.h"
+#include "extract/buffer.h"
+#include "extract/alloc.h"
 
 #include "mem.h"
 #include "memento.h"
