@@ -699,10 +699,10 @@ extract_page_to_odt_content(
 			line_t *first_line = paragraph ? content_first_line(&paragraph->content) : NULL;
 			span_t *first_span = first_line ? content_first_span(&first_line->content) : NULL;
 			if (!paragraph && !table)   break;
-			y_paragraph = (paragraph) ? first_span->chars[0].y : DBL_MAX;
+			y_paragraph = (first_span) ? first_span->chars[0].y : DBL_MAX;
 			y_table = (table) ? table->pos.y : DBL_MAX;
 
-			if (paragraph && y_paragraph < y_table)
+			if (first_span && y_paragraph < y_table)
 			{
 				const matrix4_t *ctm = &first_span->ctm;
 				double           rotate = atan2(ctm->b, ctm->a);

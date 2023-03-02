@@ -335,7 +335,6 @@ end:
 		/* Free everything. */
 		extract_span_free(alloc, &span);
 		content_clear(alloc, lines);
-		extract_free(alloc, &lines);
 	}
 	return ret;
 }

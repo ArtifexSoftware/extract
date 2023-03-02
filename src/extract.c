@@ -1336,7 +1336,7 @@ int extract_add_char(
 	e = 0;
 end:
 
-	if (span->chars_num == 0)
+	if (span && span->chars_num == 0)
 	{
 		extract_span_free(extract->alloc, &span);
 	}

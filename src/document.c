@@ -474,7 +474,7 @@ content_dump_line_aux(const line_t *line, int depth)
 	char_t *char1 = (span1 && span1->chars_num > 0) ? &span1->chars[span1->chars_num-1] : NULL;
 	space_prefix(depth);
 	printf("<line");
-	if (char0)
+	if (char0 && char1)
 	{
 		printf(" x0=%g y0=%g x1=%g y1=%g\n", char0->x, char0->y, char1->x, char1->y);
 	}

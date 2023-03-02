@@ -235,7 +235,7 @@ static void file_close(void *handle)
 {
 	FILE *file = handle;
 
-	if (file);
+	if (file)
 		fclose(file);
 }
 
