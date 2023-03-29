@@ -583,6 +583,13 @@ make_paragraphs(
 					{
 						/* The span is now empty, unlink and free it. */
 						extract_span_free(alloc, &a_span);
+
+						/* If this leaves the line empty, remove the line. */
+						if (line_a->content.base.next == &line_a->content.base)
+						{
+							extract_line_free(alloc, &line_a);
+							a--; /* Keep the index correct. */
+						}
 					}
 				}
 				else if (extract_span_char_last(a_span)->ucs == ' ')
